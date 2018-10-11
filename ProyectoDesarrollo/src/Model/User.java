@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package modelo;
+package Model;
 
 /**
  * Clase padre para todos los empleados de la empresa XYZ
  * @author crist
  */
-public class Usuario {
+public class User {
     
     //-------------------------------------------------------------------------
     // CONSTANTES
@@ -79,7 +79,7 @@ public class Usuario {
      * @param cuentaBancaria
      * @param fechaRegistro 
      */
-    public Usuario(String id, String nombre, String nombreUsuario, String cedula, String cargo, String correo, int genero, String direccion, String telefono, double salario, String fechaNacimiento, String cuentaBancaria, String fechaRegistro) {
+    public User(String id, String nombre, String nombreUsuario, String cedula, String cargo, String correo, int genero, String direccion, String telefono, double salario, String fechaNacimiento, String cuentaBancaria, String fechaRegistro) {
         this.id = id;
         this.nombre = nombre;
         this.nombreUsuario = nombreUsuario;
@@ -103,7 +103,7 @@ public class Usuario {
      * @param correo
      * @param fechaNacimiento 
      */
-    public Usuario(String id, String nombreUsuario, String cedula, String correo, String fechaNacimiento) {
+    public User(String id, String nombreUsuario, String cedula, String correo, String fechaNacimiento) {
         this.id = id;
         this.nombreUsuario = nombreUsuario;
         this.cedula = cedula;

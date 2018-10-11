@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package modelo;
+package Model;
 
 /**
  * Clase del super usuario encargado de gestionar los gerentes en la empresa XYZ
  * @author crist
  */
-public class SuperUsuario extends Usuario{
+public class SU extends User{
     
     /**
      * Constructor del super usuario
@@ -19,8 +19,8 @@ public class SuperUsuario extends Usuario{
      * @param correo
      * @param fechaNacimiento 
      */
-    public SuperUsuario(String id, String nombreUsuario, String cedula, String correo, String fechaNacimiento) {
+    public SU(String id, String nombreUsuario, String cedula, String correo, String fechaNacimiento) {
         super(id, nombreUsuario, cedula, correo, fechaNacimiento);
-        Usuario usuario = new SuperUsuario(id, nombreUsuario, cedula, correo, fechaNacimiento);
+        User usuario = new SU(id, nombreUsuario, cedula, correo, fechaNacimiento);
     }    
 }
