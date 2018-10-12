@@ -19,8 +19,9 @@ public class SU extends User{
      * @param correo
      * @param fechaNacimiento 
      */
-    public SU(String id, String nombreUsuario, String cedula, String correo, String fechaNacimiento) {
-        super(id, nombreUsuario, cedula, correo, fechaNacimiento);
-        User usuario = new SU(id, nombreUsuario, cedula, correo, fechaNacimiento);
+    public SU(String id, String nombreUsuario, String cedula, String correo, 
+            String fechaNacimiento, String username, String password) {
+        super(id, nombreUsuario, cedula, correo, 
+            fechaNacimiento, username, password);
     }    
 }

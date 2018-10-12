@@ -79,7 +79,10 @@ public class User {
      * @param cuentaBancaria
      * @param fechaRegistro 
      */
-    public User(String id, String nombre, String nombreUsuario, String cedula, String cargo, String correo, int genero, String direccion, String telefono, double salario, String fechaNacimiento, String cuentaBancaria, String fechaRegistro) {
+    public User(String id, String nombre, String nombreUsuario, String cedula, 
+            String cargo, String correo, int genero, String direccion, 
+            String telefono, double salario, String fechaNacimiento, 
+            String cuentaBancaria, String fechaRegistro) {
         this.id = id;
         this.nombre = nombre;
         this.nombreUsuario = nombreUsuario;
@@ -103,12 +106,15 @@ public class User {
      * @param correo
      * @param fechaNacimiento 
      */
-    public User(String id, String nombreUsuario, String cedula, String correo, String fechaNacimiento) {
+    public User(String id, String nombreUsuario, String cedula, String correo, 
+            String fechaNacimiento, String username, String password) {
         this.id = id;
         this.nombreUsuario = nombreUsuario;
         this.cedula = cedula;
         this.correo = correo;
         this.fechaNacimiento = fechaNacimiento;
+        this.nombreUsuario = username;
+        this.contrasena = password;
     }
     
     //-------------------------------------------------------------------------
