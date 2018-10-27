@@ -11,13 +11,12 @@ package Model;
  */
 public class Manager extends User{
     
-    public Manager(String id, String nombre, String nombreUsuario, String cedula, 
+    public Manager(String id, String nombre, String cedula, 
             String cargo, String correo, int genero, String direccion, 
             String telefono, double salario, String fechaNacimiento, 
             String cuentaBancaria, String fechaRegistro) {
-        super(id, nombre, nombreUsuario, cedula, cargo, correo, 
+        super(id, nombre, cedula, cargo, correo, 
                 genero, direccion, telefono, salario, fechaNacimiento, 
                 cuentaBancaria, fechaRegistro);
-    }
-    
+    }    
 }

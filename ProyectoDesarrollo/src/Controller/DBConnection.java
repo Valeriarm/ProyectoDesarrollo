@@ -5,6 +5,8 @@
  */
 package Controller;
 
+import Model.Foreman;
+import Model.Manager;
 import Model.User;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -46,8 +48,15 @@ public class DBConnection {
      * Constructor
      */
     public DBConnection(){
-        callSU();
-        System.out.println(deleteManagerById("12345"));
+        //readSU();        
+        //System.out.println(updateManager("1234","Mateo Gregory","1144070011", Manager.GERENTE,"matgre@hotmail.com", 0,"Same","3117307659  ",1000,"05/10/1999","03142571"));
+        System.out.println(updateForeman("1234","Mateo Gregory","1144070011", Manager.GERENTE,"matgre@hotmail.com", 0,"Same","3117307659  ",1000,"05/10/1999","03142571","1234"));
+        Manager g = readManagerById("1234");
+        if(g == null){
+            System.out.println("No existe");
+        }else{
+            System.out.println(g.getNombre());
+        }
     }
     
     /**
@@ -55,7 +64,7 @@ public class DBConnection {
      * Lo hago aquí porque me resulta mas cómodo hacer el llamado solo una vez, que estarlo haciendo todo el tiempo
      * en cada método.
      */
-    public void Connect(){
+    public void connect(){
         try{            
             //Esto crea una clase de tipo driver necesaria para la conexion
             Class.forName("org.postgresql.Driver");
@@ -72,9 +81,9 @@ public class DBConnection {
     /**
      * En este metodo hacemos el llamado de los datos de todos los super usuarios
      */
-    public void callSU(){
+    public void readSU(){
         //Llamamos el metodo que cree arriba para poder conectarnos a la base de datos
-        Connect();
+        connect();
         //Creo la sentencia sql de lo que quiero hacer, en este caso, quiero todas las columnas de la tabla
         sql = "SELECT * FROM superusuario";
         //Necesito un try catch porque esto me puede arrojar un error de consulta (SQL)
@@ -99,11 +108,11 @@ public class DBConnection {
         }
     }  
     
-    public String addManager(String id, String nombre, String nombreUsuario, String cedula, 
+    public String createManager(String id, String nombre, String cedula, 
             String cargo, String correo, int genero, String direccion, 
             String telefono, double salario, String fechaNacimiento, 
             String cuentaBancaria, String fechaRegistro){
-        Connect();
+        connect();
         sql = "SELECT id_gerente FROM gerente WHERE id_gerente = '"+id+"'";
         try {
 
@@ -127,36 +136,74 @@ public class DBConnection {
        return "Gerente agregado con éxito";
     }
     
-    public String updateManager(String id, String nombre, String nombreUsuario, String cedula, 
-            String cargo, String correo, int genero, String direccion, 
-            String telefono, double salario, String fechaNacimiento, 
-            String cuentaBancaria, String fechaRegistro){
-        Connect();
-        sql = "SELECT id_gerente FROM gerente WHERE id_gerente = '"+id+"'";
+    /**
+     * Lectura de la base de datos para los gerentes
+     * @param id
+     * @return null si no encuentra el gerente
+     */
+    public Manager readManagerById(String id){
+        connect();
+        sql = "SELECT * FROM gerente WHERE id_gerente = '"+id+"'";
         try {
-
             rs = st.executeQuery(sql);
             if(rs.next()){
-                return "El gerente con el id "+id+" ya existe";
-            }else{                
-                sql = "INSERT INTO gerente VALUES ('"+id+"','','"+nombre+"','"+cedula+"','"+cargo+"','"+telefono+"','"+direccion+
-                        "','"+genero+"','"+fechaNacimiento+"','"+correo+"','"+salario+"','"+cuentaBancaria+"','"
-                        +fechaRegistro+"')";
+                String nombre = rs.getString("nombre_gerente");
+                String cedula = rs.getString("cedula");
+                String cargo = rs.getString("cargo");
+                String telefono = rs.getString("telefono");
+                String direccion = rs.getString("direccion");
+                int genero = Integer.parseInt(rs.getString("genero"));
+                String fechaNa = rs.getString("fecha_nacimiento");
+                String email = rs.getString("e_mail");
+                double salario = rs.getDouble("salario");
+                String cuentaBanc = rs.getString("cuenta_bancaria");
+                String fechaReg = rs.getString("fecha_registro");
                 
+                Manager gerente = new Manager(id, nombre, cedula, cargo, email, 
+                genero, direccion, telefono, salario, fechaNa, 
+                cuentaBanc, fechaReg);
+                
+                rs.close();
+                st.close();
+                connection.close();
+                
+                return gerente;
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return null;
+    }
+    
+    //TODO
+    public String updateManager(String id, String nombre, String cedula, 
+            String cargo, String correo, int genero, String direccion, 
+            String telefono, double salario, String fechaNacimiento, 
+            String cuentaBancaria){
+        connect();
+        sql = "SELECT id_gerente FROM gerente WHERE id_gerente = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                sql = "UPDATE gerente SET nombre_gerente = '"+nombre+"', cedula = '"+cedula+"', cargo = '"+cargo+"', telefono = '"+telefono+"',"
+                        +" genero = '"+genero+"', fecha_nacimiento = '"+fechaNacimiento+"', e_mail = '"+correo+"', salario = "+salario+", cuenta_bancaria = '"+cuentaBancaria+
+                        "', direccion = '"+direccion+"' WHERE id_gerente = '"+id+"'";
                 st.executeUpdate(sql);
                 rs.close();
                 st.close();
                 connection.close();
+            }else{        
+                return "El gerente con el id "+id+" no existe";
             }
             
         } catch (Exception e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
-       return "Gerente agregado con éxito";
-    }
+       return "Gerente actualizado con éxito";
+    }   
     
     public String deleteManagerById(String id){
-        Connect();
+        connect();
         sql = "SELECT id_gerente FROM gerente WHERE id_gerente = '"+id+"'";
         try {
             rs = st.executeQuery(sql);
@@ -169,6 +216,117 @@ public class DBConnection {
                 return "El gerente fue borrado exitosamente";
             }else{              
                 return "El gerente con el id "+id+" no existe";
+            }
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return "";
+    }
+    
+    public String createForeman(String id, String nombre, String nombreUsuario, String cedula, 
+            String cargo, String correo, int genero, String direccion, 
+            String telefono, double salario, String fechaNacimiento, 
+            String cuentaBancaria, String fechaRegistro, String managerId){
+        connect();
+        sql = "SELECT id_jefe FROM jefe_taller WHERE id_jefe = '"+id+"'";
+        try {
+
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                return "El Jefe de taller con el id "+id+" ya existe";
+            }else{                
+                sql = "INSERT INTO jefe_taller VALUES ('"+id+"','','"+nombre+"','"+cedula+"','"+cargo+"','"+telefono+"','"+direccion+
+                        "','"+genero+"','"+fechaNacimiento+"','"+correo+"','"+salario+"','"+cuentaBancaria+"','"
+                        +fechaRegistro+",'"+managerId+"')";
+                
+                st.executeUpdate(sql);
+                rs.close();
+                st.close();
+                connection.close();
+            }
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+       return "Gerente agregado con éxito";
+    }
+    
+    public Foreman readForemanById(String id){
+        connect();
+        sql = "SELECT * FROM jefe_taller WHERE id_jefe = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                String nombre = rs.getString("nombre_gerente");
+                String cedula = rs.getString("cedula");
+                String cargo = rs.getString("cargo");
+                String telefono = rs.getString("telefono");
+                String direccion = rs.getString("direccion");
+                int genero = Integer.parseInt(rs.getString("genero"));
+                String fechaNa = rs.getString("fecha_nacimiento");
+                String email = rs.getString("e_mail");
+                double salario = rs.getDouble("salario");
+                String cuentaBanc = rs.getString("cuenta_bancaria");
+                String fechaReg = rs.getString("fecha_registro");
+                String managerId = rs.getString("id_gerente");
+                
+                Foreman jefe = new Foreman(id, nombre, cedula, cargo, email, 
+                genero, direccion, telefono, salario, fechaNa, 
+                cuentaBanc, fechaReg, managerId);
+                
+                rs.close();
+                st.close();
+                connection.close();
+                
+                return jefe;
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return null;
+    }
+
+    public String updateForeman(String id, String nombre, String cedula, 
+            String cargo, String correo, int genero, String direccion, 
+            String telefono, double salario, String fechaNacimiento, 
+            String cuentaBancaria, String managerId){
+        connect();
+        sql = "SELECT id_jefe FROM jefe_taller WHERE id_jefe = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                sql = "UPDATE jefe SET nombre_jefe = '"+nombre+"', cedula = '"+cedula+"', cargo = '"+cargo+"', telefono = '"+telefono+"',"
+                        +" genero = '"+genero+"', fecha_nacimiento = '"+fechaNacimiento+"', e_mail = '"+correo+"', salario = "+salario+", cuenta_bancaria = '"+cuentaBancaria+
+                        "', direccion = '"+direccion+"', id_gerente = '"+managerId+"' WHERE id_gerente = '"+id+"'";
+                st.executeUpdate(sql);
+                rs.close();
+                st.close();
+                connection.close();
+            }else{        
+                return "El jefe de taller con el id "+id+" no existe";
+            }
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+       return "Jefe de taller actualizado con éxito";
+    }
+    
+    public String deleteForemanById(String id){
+        connect();
+        sql = "SELECT id_jefe FROM jefe_taller WHERE id_jefe = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                sql = "DELETE FROM jefe_taller WHERE id_jefe = '"+id+"'";
+                st.executeUpdate(sql);
+                rs.close();
+                st.close();
+                connection.close();
+                return "El jefe de taller fue borrado exitosamente";
+            }else{              
+                return "El jefe de taller con el id "+id+" no existe";
             }
             
         } catch (Exception e) {

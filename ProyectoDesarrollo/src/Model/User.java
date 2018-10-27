@@ -97,6 +97,40 @@ public class User {
         this.cuentaBancaria = cuentaBancaria;
         this.fechaRegistro = fechaRegistro;
     }
+    
+    /**
+     * Sin nombre de usuario
+     * @param id
+     * @param nombre
+     * @param cedula
+     * @param cargo
+     * @param correo
+     * @param genero
+     * @param direccion
+     * @param telefono
+     * @param salario
+     * @param fechaNacimiento
+     * @param cuentaBancaria
+     * @param fechaRegistro 
+     */
+    public User(String id, String nombre, String cedula, 
+            String cargo, String correo, int genero, String direccion, 
+            String telefono, double salario, String fechaNacimiento, 
+            String cuentaBancaria, String fechaRegistro) {
+        this.id = id;
+        this.nombre = nombre;
+        this.nombreUsuario = nombreUsuario;
+        this.cedula = cedula;
+        this.cargo = cargo;
+        this.correo = correo;
+        this.genero = genero;
+        this.direccion = direccion;
+        this.telefono = telefono;
+        this.salario = salario;
+        this.fechaNacimiento = fechaNacimiento;
+        this.cuentaBancaria = cuentaBancaria;
+        this.fechaRegistro = fechaRegistro;
+    }
  
     /**
      * Segundo constructor para la clase de super usuario
