@@ -11,13 +11,28 @@ package Model;
  */
 public class Seller extends User{
     
-    public Seller(String id, String nombre, String nombreUsuario, String cedula, 
+    private String managerId;
+    
+    public Seller(String id, String nombre,  String cedula, 
             String cargo, String correo, int genero, String direccion, 
             String telefono, double salario, String fechaNacimiento, 
-            String cuentaBancaria, String fechaRegistro) {
-        super(id, nombre, nombreUsuario, cedula, cargo, correo, genero, 
+            String cuentaBancaria, String fechaRegistro, String managerId) {
+        super(id, nombre, cedula, cargo, correo, genero, 
                 direccion, telefono, salario, fechaNacimiento, cuentaBancaria, 
                 fechaRegistro);
+        this.managerId = managerId;
     }
+
+    public String getManagerId() {
+        return managerId;
+    }
+
+    public void setManagerId(String managerId) {
+        this.managerId = managerId;
+    }
+    
+    
+    
+    
     
 }
