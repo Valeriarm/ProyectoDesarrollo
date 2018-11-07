@@ -180,6 +180,7 @@ public class Login extends javax.swing.JFrame {
             public void run() {
                 try {
                     new Login().setVisible(true);
+                    
                 } catch (UnsupportedLookAndFeelException ex) {
                     Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                 }

@@ -10,7 +10,7 @@ package Model;
  * @author MATEO
  */
 public class WorkOrder {
-    private int idOrden;
+    private String idOrden;
     private String nombreCliente;
     private int costo;
     private int esCliente;
@@ -18,9 +18,9 @@ public class WorkOrder {
     private String telefonoCliente;
     private String estado;
     private String fechaEntrega;
-    private int idJefe;
+    private String idJefe;
 
-    public WorkOrder(int idOrden, String nombreCliente, int costo, int esCliente, String descripcionOrden, String telefonoCliente, String estado, String fechaEntrega, int idJefe) {
+    public WorkOrder(String idOrden, String nombreCliente, int costo, int esCliente, String descripcionOrden, String telefonoCliente, String estado, String fechaEntrega, String idJefe) {
         this.idOrden = idOrden;
         this.nombreCliente = nombreCliente;
         this.costo = costo;
@@ -32,11 +32,11 @@ public class WorkOrder {
         this.idJefe = idJefe;
     }
     
-    public int getIdOrden() {
+    public String getIdOrden() {
         return idOrden;
     }
 
-    public void setIdOrden(int idOrden) {
+    public void setIdOrden(String idOrden) {
         this.idOrden = idOrden;
     }
 
@@ -96,11 +96,11 @@ public class WorkOrder {
         this.fechaEntrega = fechaEntrega;
     }
 
-    public int getIdJefe() {
+    public String getIdJefe() {
         return idJefe;
     }
 
-    public void setIdJefe(int idJefe) {
+    public void setIdJefe(String idJefe) {
         this.idJefe = idJefe;
     }
     

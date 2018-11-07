@@ -14,9 +14,10 @@ public class Manager extends User{
     public Manager(String id, String nombre, String cedula, 
             String cargo, String correo, int genero, String direccion, 
             String telefono, double salario, String fechaNacimiento, 
-            String cuentaBancaria, String fechaRegistro) {
+            String cuentaBancaria, String fechaRegistro, String nombreUsuario,
+            String contrasena, boolean habilitado) {
         super(id, nombre, cedula, cargo, correo, 
                 genero, direccion, telefono, salario, fechaNacimiento, 
-                cuentaBancaria, fechaRegistro);
+                cuentaBancaria, fechaRegistro, nombreUsuario, contrasena, habilitado);
     }    
 }

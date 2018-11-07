@@ -10,14 +10,14 @@ package Model;
  * @author MATEO
  */
 public class Inventory {
-    private int idProducto;
+    private String idProducto;
     private String nombreProducto;
     private int valorUnitario;
     private String descripcion;
     private int lote;
     private int cantidadLote;
 
-    public Inventory(int idProducto, String nombreProducto, int valorUnitario, String descripcion, int lote, int cantidadLote) {
+    public Inventory(String idProducto, String nombreProducto, int valorUnitario, String descripcion, int lote, int cantidadLote) {
         this.idProducto = idProducto;
         this.nombreProducto = nombreProducto;
         this.valorUnitario = valorUnitario;
@@ -28,11 +28,11 @@ public class Inventory {
 
     
     
-    public int getIdProducto() {
+    public String getIdProducto() {
         return idProducto;
     }
 
-    public void setIdProducto(int idProducto) {
+    public void setIdProducto(String idProducto) {
         this.idProducto = idProducto;
     }
 
