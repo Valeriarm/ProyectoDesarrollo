@@ -7,6 +7,7 @@ package Controller;
 
 import Model.Foreman;
 import Model.Manager;
+import Model.Sede;
 import Model.Seller;
 import Model.User;
 import java.sql.Connection;
@@ -57,15 +58,15 @@ public class DBConnection {
         //System.out.println(createForeman("1234","Mateo Gregory","1144070011", Manager.GERENTE,"matgre@hotmail.com", 0,"Same","3117307659  ",1000,"05/10/1999","03142571","1234"));
         //System.out.println(createSeller("345","Melissa Fuentes","114402571", User.VENDEDOR,"melissa@hotmail.com", 1,"Av 2 45 12","30025584",80000,"02/07/1998","12321434","29/10/2018","12345"));
         //System.out.println(updateSeller("345","Juan Felipe Gil","114402571", User.VENDEDOR,"melissa@hotmail.com", 1,"Av 2 45 12","30025584",80000,"02/07/1998","12321434","1234"));
+        System.out.println(createQuotation("123", "Tuerca", 500, 2, "Tuerca para carro","Codetrans", "3114470", "Calle 66 1 bis","345"));
         
-        
-        Seller g = readSellerById("345");
+        /**Seller g = readSellerById("345");
         if(g == null){
             System.out.println("No existe");
         }else{
             System.out.println(g.getNombre());
             System.out.println(g.getCedula());
-        }
+        }*/
     }
     
     /**
@@ -431,6 +432,123 @@ public class DBConnection {
                 connection.close();
             }else{        
                 return "El vendedor con el id "+id+" no existe";
+            }
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+       return "Vendedor actualizado con éxito";
+    }
+     
+    public String createQuotation(String id, String nombreProducto, double valorUnitario, int cantidad, String descripcionProducto, String nombreEmpresa, String telefonoEmpresa, String direccionEmpresa, String idVendedor){
+        connect();
+        
+        try {
+                                
+            sql = "INSERT INTO cotizacion VALUES ('"+id+"','','"+nombreProducto+"','"+valorUnitario+"','"+cantidad+"','"+descripcionProducto+"','"+nombreEmpresa+
+                    "','"+telefonoEmpresa+"','"+direccionEmpresa+"','"+idVendedor+"')";
+
+            st.executeUpdate(sql);
+            rs.close();
+            st.close();
+            connection.close();
+        }            
+        catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        
+        return "La cotización fue ingresada con éxito";
+    }
+    
+    public String updateQuotation(String id, String nombreProducto, double valorUnitario, int cantidad, String descripcionProducto, String nombreEmpresa, String telefonoEmpresa, String direccionEmpresa, String idVendedor){
+        
+        sql = "SELECT id_cotizacion FROM cotizacion WHERE id_cotizacion = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                sql = "UPDATE cotizacion SET nombre_producto = '"+nombreProducto+"', valor_unitario = '"+valorUnitario+"', cantidad = '"+cantidad+"', descripcion_producto = '"+descripcionProducto+"',"
+                        +" nombre_empresa = '"+nombreEmpresa+"', telefono_empresa = '"+telefonoEmpresa+"', direccion_empresa = '"+direccionEmpresa+"', id_vendedor = '"+idVendedor+"'";
+                st.executeUpdate(sql);
+                rs.close();
+                st.close();
+                connection.close();
+            }else{        
+                return "La cotización con la serie "+id+" no existe";
+            }
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }      
+        
+       return "Cotización modificada con éxito";
+    }
+    
+    //PARTE DE MATEO 
+    
+    public String createSede(int idSede, String nombreSede, String direccion, String fechaCreacion, String fechaFinalizacion){
+        connect();
+        sql = "SELECT id_sede FROM sede WHERE id_sede = '"+idSede+"'";
+        try {
+
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                return "La sede con el id "+idSede+" ya existe";
+            }else{                
+                sql = "INSERT INTO sede VALUES ('"+idSede+"','"+nombreSede+"','"+direccion+"','"+fechaCreacion+"','"+fechaFinalizacion+"')";
+                
+                st.executeUpdate(sql);
+                rs.close();
+                st.close();
+                connection.close();
+            }
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+       return "Vendedor agregado con éxito";
+    }
+     
+    public Sede readSedeById(String id){
+        connect();
+        sql = "SELECT * FROM sede WHERE id_sede = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                int idSede = rs.getInt("id_sede");
+                String nombreSede = rs.getString("nombre_sede");
+                String direccion = rs.getString("direccion");
+                String fechaCreacion = rs.getString("fecha_creacion");
+                String fechaFinalizacion = rs.getString("fecha_finalizacion");
+                
+                
+                Sede sede = new Sede(idSede, nombreSede, direccion, fechaCreacion, fechaFinalizacion);
+                
+                rs.close();
+                st.close();
+                connection.close();
+                
+                return sede;
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return null;
+    }
+     
+     public String updateSede(int idSede, String nombreSede, String direccion, String fechaCreacion, String fechaFinalizacion){
+        connect();
+        sql = "SELECT id_sede FROM sede WHERE id_sede = '"+idSede+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                sql = "UPDATE sede SET nombre_sede = '"+nombreSede+"', direccion = '"+direccion+"', fecha_creacion = '"+fechaCreacion
+                        +"', fecha_finalizacion = '"+fechaFinalizacion+"'";
+                st.executeUpdate(sql);
+                rs.close();
+                st.close();
+                connection.close();
+            }else{        
+                return "El vendedor con el id "+idSede+" no existe";
             }
             
         } catch (Exception e) {
