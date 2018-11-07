@@ -5,10 +5,7 @@
  */
 package Controller;
 
-import Model.Foreman;
-import Model.Manager;
-import Model.Seller;
-import Model.User;
+import Model.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -131,7 +128,7 @@ public class DBConnection {
             }else{                
                 sql = "INSERT INTO gerente VALUES ('"+id+"','','"+nombre+"','"+cedula+"','"+cargo+"','"+telefono+"','"+direccion+
                         "','"+genero+"','"+fechaNacimiento+"','"+correo+"','"+salario+"','"+cuentaBancaria+"','"
-                        +fechaRegistro+"')";
+                        +fechaRegistro+"','" +id+"','"+cedula+"','"+true+"')";
                 
                 st.executeUpdate(sql);
                 rs.close();
@@ -167,10 +164,13 @@ public class DBConnection {
                 double salario = rs.getDouble("salario");
                 String cuentaBanc = rs.getString("cuenta_bancaria");
                 String fechaReg = rs.getString("fecha_registro");
+                String nombreUsuario = rs.getString("nombre_Usuario");
+                String contrasenia = rs.getString("contrasenia");
+                
                 
                 Manager gerente = new Manager(id, nombre, cedula, cargo, email, 
                 genero, direccion, telefono, salario, fechaNa, 
-                cuentaBanc, fechaReg);
+                cuentaBanc, fechaReg, nombreUsuario, contrasenia, true);
                 
                 rs.close();
                 st.close();
@@ -413,7 +413,7 @@ public class DBConnection {
         return null;
     }
      
-     public String updateSeller(String id, String nombre, String cedula, 
+    public String updateSeller(String id, String nombre, String cedula, 
             String cargo, String correo, int genero, String direccion, 
             String telefono, double salario, String fechaNacimiento, 
             String cuentaBancaria, String managerId){
@@ -437,6 +437,336 @@ public class DBConnection {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
        return "Vendedor actualizado con éxito";
+    }
+    
+    public String deleteSeller(String id){
+        connect();
+        sql = "SELECT id_Vendedor FROM Vendedor WHERE id_Vendedor = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                sql = "DELETE FROM Vendedor WHERE id_Vendedor = '"+id+"'";
+                st.executeUpdate(sql);
+                rs.close();
+                st.close();
+                connection.close();
+                return "El Vendedor fue borrado exitosamente";
+            }else{              
+                return "El Vendedor con el id "+id+" no existe";
+            }
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return "";        
+    }
+     
+    public String createSale(String id, String nombreCliente, String telefonoCliente, 
+           String cedulaCliente, int valorVenta, String descripcionVenta, String idVendedor){
+        
+        connect();
+        sql = "SELECT id_venta FROM venta WHERE id_Factura = '"+id+"'";
+        try {
+
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                return "La venta con el id "+id+" ya existe";
+            }else{                
+                sql = "INSERT INTO venta VALUES ('"+id+"','','"+nombreCliente+"','"+telefonoCliente+"','"+cedulaCliente+"','"
+                        +valorVenta+"','"+descripcionVenta+"','"+idVendedor+"')";
+                
+                st.executeUpdate(sql);
+                rs.close();
+                st.close();
+                connection.close();
+            }
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+       return "Venta agregada con éxito";
+        
+        
+    }
+    
+    public Sale readSaleById(String id){
+        connect();
+        sql = "SELECT * FROM venta WHERE id_Factura = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                String nombreCliente = rs.getString("nombre_cliente");
+                String telefonoCliente = rs.getString("telefono_Cliente");
+                String cedulaCliente = rs.getString("cedula_Cliente");
+                int valorVenta = Integer.parseInt(rs.getString("valor_Venta"));
+                String descripcionVenta = rs.getString("descripcion_Venta");
+                String idVendedor = rs.getString("id_Vendedor");
+                
+                Sale venta = new Sale(id, nombreCliente, telefonoCliente, cedulaCliente, valorVenta, 
+                descripcionVenta, idVendedor);
+                
+                rs.close();
+                st.close();
+                connection.close();
+                
+                return venta;
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return null;
+    }
+    
+    public String updateSaleById(String id, String nombreCliente, String telefonoCliente, 
+           String cedulaCliente, int valorVenta, String descripcionVenta, String idVendedor){
+        connect();
+        sql = "SELECT id_Factura FROM venta WHERE id_Factura = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                sql = "UPDATE venta SET nombre_Cliente = '"+nombreCliente+"', tefelono_Cliente = '"+telefonoCliente+"', cedula_Cliente = '"+cedulaCliente+
+                        "', valor_Venta = '"+valorVenta+"', descripcion_Venta = '"+descripcionVenta+"' WHERE id_Factura = '"+id+"'";
+                st.executeUpdate(sql);
+                rs.close();
+                st.close();
+                connection.close();
+            }else{        
+                return "La venta con el id "+id+" no existe";
+            }
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+       return "Venta actualizada con éxito";
+    }
+    
+    public String deleteSale(String id){
+        connect();
+        sql = "SELECT id_Factura FROM Venta WHERE id_Factura = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                sql = "DELETE FROM Venta WHERE id_Factura = '"+id+"'";
+                st.executeUpdate(sql);
+                rs.close();
+                st.close();
+                connection.close();
+                return "La venta fue borrada exitosamente";
+            }else{              
+                return "La venta con el id "+id+" no existe";
+            }
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return "";        
+    }
+    
+    public String createWorkOrder(String id, String nombreCliente, int costo, int esCliente, 
+           String descripcionOrden, String telefonoCliente, String estado, String fechaEntrega, String idJefe){
+        
+        connect();
+        sql = "SELECT id_Orden FROM Orden_Trabajo WHERE id_Orden = '"+id+"'";
+        try {
+
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                return "La orden de trabajo con el id "+id+" ya existe";
+            }else{                
+                sql = "INSERT INTO Orden_Trabajo VALUES ('"+id+"','','"+nombreCliente+"','"+costo+"','"+esCliente+"','"+descripcionOrden+"','"
+                        +telefonoCliente+"','"+estado+"','"+fechaEntrega+"','"+idJefe+"')";
+                
+                st.executeUpdate(sql);
+                rs.close();
+                st.close();
+                connection.close();
+            }
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+       return "Orden de Trabajo agregada con éxito";
+    }
+    
+    public WorkOrder readWorkOrderById(String id){
+        connect();
+        sql = "SELECT * FROM Orden_Trabajo WHERE id_Orden = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                String nombreCliente = rs.getString("nombre_cliente");
+                String idCliente = rs.getString("id_Cliente");
+                String telefonoCliente = rs.getString("telefono_Cliente");
+                int valorOrden = Integer.parseInt(rs.getString("valor_Orden"));
+                int esCliente = Integer.parseInt(rs.getString("es_Cliente"));                
+                String descripcionOrden = rs.getString("descripcion_Orden");
+                String estadoOrden = rs.getString("estado_Orden");
+                String fechaEntrega = rs.getString("fecha_Entrega");
+                String idJefe = rs.getString("id_Jefe");
+                
+                WorkOrder orden = new WorkOrder(id, nombreCliente, valorOrden, esCliente, descripcionOrden, 
+                telefonoCliente, estadoOrden, fechaEntrega ,idJefe);
+                
+                rs.close();
+                st.close();
+                connection.close();
+                
+                return orden;
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return null;
+    }
+    
+    public String updateWorkOrderById(String id, String nombreCliente, int costo, int esCliente, 
+           String descripcionOrden, String telefonoCliente, String estado, String fechaEntrega, String idJefe){
+        
+        connect();
+        sql = "SELECT id_Orden FROM Orden_Trabajo WHERE id_Orden = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                sql = "UPDATE Orden_Trabajo SET nombre_Cliente = '"+nombreCliente+"', valor_Orden = '"+costo+"', es_Cliente = '"+esCliente+
+                        "', descripcion_Orden = '"+descripcionOrden+"', telefono_Cliente = '"+telefonoCliente+"', "
+                        + "estado = '"+estado+ "fecha_Entrega = '"+fechaEntrega+ "id_Jefe = '"+idJefe+"' WHERE id_Orden = '"+id+"'";
+                
+                rs.close();
+                st.close();
+                connection.close();
+            }else{        
+                return "La orden con el id "+id+" no existe";
+            }
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+       return "Orden actualizada con éxito";           
+    }
+    
+    public String deleteWorkOrder(String id){
+        connect();
+        sql = "SELECT id_Orden FROM Orden_Trabajo WHERE id_Orden = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                sql = "DELETE FROM Orden_Trabajo WHERE id_Orden = '"+id+"'";
+                st.executeUpdate(sql);
+                rs.close();
+                st.close();
+                connection.close();
+                return "La orden fue borrada exitosamente";
+            }else{              
+                return "La orden con el id "+id+" no existe";
+            }
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return "";        
+    }
+    
+    public String createInventory(String id, String nombreProducto, int valorUnitario, 
+            String descripcion, int lote, int cantidadLote){
+        connect();
+        sql = "SELECT id_producto FROM inventario WHERE id_producto = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                return "El Producto con el id "+id+" ya existe";
+                
+            }else{ 
+                sql = "SELECT id_producto FROM inventario WHERE id_producto = '"+id+"'";
+                rs = st.executeQuery(sql);
+                if(rs.next()){
+                    sql = "INSERT INTO inventario VALUES ('"+id+"','"+nombreProducto+"','"+valorUnitario+"','"+descripcion+"','"+lote+"','"+cantidadLote+"')";                
+                    st.executeUpdate(sql);
+                    rs.close();
+                    st.close();
+                    connection.close();
+                }else{
+                    return "El producto con el id "+id+" no existe";
+                }
+                
+            }
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+       return "Jefe de taller agregado con éxito";
+    }
+    
+    public Inventory readInventoryId(String id){
+        connect();
+        sql = "SELECT * FROM inventario WHERE id_inventario = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                String idProducto = rs.getString("id_producto");
+                String nombreProducto = rs.getString("nombre_producto");
+                int valorUnitario = rs.getInt("valor_unitario");
+                String descripcion = rs.getString("descripcion");
+                int lote = rs.getInt("lote");
+                int cantidadLote = rs.getInt("cantidad_lote");
+                
+                Inventory inventario = new Inventory(idProducto, nombreProducto, valorUnitario, 
+                        descripcion, lote, cantidadLote);
+                
+                rs.close();
+                st.close();
+                connection.close();
+                
+                return inventario;
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return null;
+    }
+
+    public String updateInventory(String id, String nombreProducto, int valorUnitario, 
+            String descripcion, int lote, int cantidadLote){
+        connect();
+        sql = "SELECT id_producto FROM inventario WHERE id_producto = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                sql = "UPDATE inventario SET nombre_producto = '"+nombreProducto+"', valor_unitario = '"+valorUnitario+
+                        "', descripcion = '"+descripcion+"', lote = '"+lote+"',"+" cantidad_lote = '"+cantidadLote+"'";
+                st.executeUpdate(sql);
+                rs.close();
+                st.close();
+                connection.close();
+            }else{        
+                return "El producto con el id "+id+" no existe";
+            }
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+       return "Inventario actualizado con éxito";
+    }
+    
+    public String deleteInventoryId(String id){
+        connect();
+        sql = "SELECT id_producto FROM inventario WHERE id_producto = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                sql = "DELETE FROM inventario WHERE id_producto = '"+id+"'";
+                st.executeUpdate(sql);
+                rs.close();
+                st.close();
+                connection.close();
+                return "El producto fue borrado exitosamente";
+            }else{              
+                return "El producto con el id "+id+" no existe";
+            }
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return "";
     }
     
     public static void main(String args[]) {    

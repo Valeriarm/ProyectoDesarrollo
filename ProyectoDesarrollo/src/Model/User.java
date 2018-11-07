@@ -78,11 +78,14 @@ public class User {
      * @param fechaNacimiento
      * @param cuentaBancaria
      * @param fechaRegistro 
+     * @param contrasena
+     * @param habilitado
      */
-    public User(String id, String nombre, String nombreUsuario, String cedula, 
+    public User(String id, String nombre, String cedula, 
             String cargo, String correo, int genero, String direccion, 
             String telefono, double salario, String fechaNacimiento, 
-            String cuentaBancaria, String fechaRegistro) {
+            String cuentaBancaria, String fechaRegistro, String nombreUsuario,
+            String contrasena, boolean habilitado) {
         this.id = id;
         this.nombre = nombre;
         this.nombreUsuario = nombreUsuario;
@@ -96,6 +99,8 @@ public class User {
         this.fechaNacimiento = fechaNacimiento;
         this.cuentaBancaria = cuentaBancaria;
         this.fechaRegistro = fechaRegistro;
+        this.contrasena = contrasena;
+        this.habilitado = habilitado;
     }
     
     /**
