@@ -15,7 +15,7 @@ public class Foreman extends User{
     
     public Foreman(String id, String contrasenia, String nombreUsuario, String nombre, String cedula, 
             String cargo, String telefono, String direccion, int genero,
-            String fechaNacimiento, String correo, double salario, 
+            String fechaNacimiento, String correo, float salario, 
             String cuentaBancaria, String fechaRegistro, String managerId) {
         super(id, nombre, cedula, cargo, correo, 
                 genero, direccion, telefono, salario, fechaNacimiento, 

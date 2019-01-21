@@ -23,7 +23,7 @@ public class Sale {
     
     private String cedulaCliente;
     
-    private int valorVenta;
+    private float valorVenta;
     
     private String descripcionVenta;
     
@@ -34,7 +34,7 @@ public class Sale {
     //-------------------------------------------------------------------------
 
 
-    public Sale(String id, String nombreCliente, String telefonoCliente, String cedulaCliente, int valorVenta, String descripcionVenta, String idVendedor) {
+    public Sale(String id, String nombreCliente, String telefonoCliente, String cedulaCliente, float valorVenta, String descripcionVenta, String idVendedor) {
         this.id = id;
         this.nombreCliente = nombreCliente;
         this.telefonoCliente = telefonoCliente;
@@ -81,7 +81,7 @@ public class Sale {
         this.cedulaCliente = cedulaCliente;
     }
 
-    public int getValorVenta() {
+    public float getValorVenta() {
         return valorVenta;
     }
 

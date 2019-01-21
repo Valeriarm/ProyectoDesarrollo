@@ -10,13 +10,13 @@ package Model;
  * @author MATEO
  */
 public class Sede {
-    private int idSede;
+    private String idSede;
     private String nombreSede;
     private String direccion;
     private String fechaCreacion;
     private String fechaFinalizacion;
 
-    public Sede(int idSede, String nombreSede, String direccion, String fechaCreacion, String fechaFinalizacion) {
+    public Sede(String idSede, String nombreSede, String direccion, String fechaCreacion, String fechaFinalizacion) {
         this.idSede = idSede;
         this.nombreSede = nombreSede;
         this.direccion = direccion;
@@ -24,11 +24,11 @@ public class Sede {
         this.fechaFinalizacion = fechaFinalizacion;
     }
     
-    public int getIdSede() {
+    public String getIdSede() {
         return idSede;
     }
 
-    public void setIdSede(int idSede) {
+    public void setIdSede(String idSede) {
         this.idSede = idSede;
     }
 
