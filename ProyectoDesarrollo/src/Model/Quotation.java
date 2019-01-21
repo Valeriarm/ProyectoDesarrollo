@@ -19,7 +19,7 @@ public class Quotation {
     
     private String nombreProducto;
     
-    private double valorUnitario;
+    private float valorUnitario;
     
     private int cantidad;
     
@@ -37,7 +37,7 @@ public class Quotation {
     // CONSTRUCTOR
     //-------------------------------------------------------------------------
 
-    public Quotation(String id, String nombreProducto, double valorUnitario, int cantidad, String descripcionProducto, String nombreEmpresa, String telefonoEmpresa, String direccionEmpresa, String idVendedor) {
+    public Quotation(String id, String nombreProducto, float valorUnitario, int cantidad, String descripcionProducto, String nombreEmpresa, String telefonoEmpresa, String direccionEmpresa, String idVendedor) {
         this.id = id;
         this.nombreProducto = nombreProducto;
         this.valorUnitario = valorUnitario;
@@ -70,11 +70,11 @@ public class Quotation {
         this.nombreProducto = nombreProducto;
     }
 
-    public double getValorUnitario() {
+    public float getValorUnitario() {
         return valorUnitario;
     }
 
-    public void setValorUnitario(double valorUnitario) {
+    public void setValorUnitario(float valorUnitario) {
         this.valorUnitario = valorUnitario;
     }
 

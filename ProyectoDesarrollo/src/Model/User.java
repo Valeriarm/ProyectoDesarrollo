@@ -49,7 +49,7 @@ public class User {
     
     private String telefono;
     
-    private double salario;
+    private float salario;
     
     private String fechaNacimiento;
     
@@ -83,7 +83,7 @@ public class User {
      */
     public User(String id, String nombre, String cedula, 
             String cargo, String correo, int genero, String direccion, 
-            String telefono, double salario, String fechaNacimiento, 
+            String telefono, float salario, String fechaNacimiento, 
             String cuentaBancaria, String fechaRegistro, String nombreUsuario,
             String contrasena, boolean habilitado) {
         this.id = id;
@@ -120,7 +120,7 @@ public class User {
      */
     public User(String id, String nombre, String cedula, 
             String cargo, String correo, int genero, String direccion, 
-            String telefono, double salario, String fechaNacimiento, 
+            String telefono, float salario, String fechaNacimiento, 
             String cuentaBancaria, String fechaRegistro) {
         this.id = id;
         this.nombre = nombre;
@@ -272,11 +272,11 @@ public class User {
         this.telefono = telefono;
     }
 
-    public double getSalario() {
+    public float getSalario() {
         return salario;
     }
 
-    public void setSalario(double salario) {
+    public void setSalario(float salario) {
         this.salario = salario;
     }
 

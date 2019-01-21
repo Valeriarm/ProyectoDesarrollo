@@ -14,9 +14,10 @@ public class Seller extends User{
     private String managerId;
     
     public Seller(String id, String nombre,  String cedula, 
-            String cargo, String correo, int genero, String direccion, 
-            String telefono, double salario, String fechaNacimiento, 
-            String cuentaBancaria, String fechaRegistro, String managerId) {
+            String cargo, String telefono, String direccion, int genero,
+            String fechaNacimiento, String correo, float salario, 
+            String cuentaBancaria, String fechaRegistro, String nombreUsuario,
+            String contrasenia, String managerId, boolean habilitado) {
         super(id, nombre, cedula, cargo, correo, genero, 
                 direccion, telefono, salario, fechaNacimiento, cuentaBancaria, 
                 fechaRegistro);
