@@ -1,4 +1,4 @@
-﻿DROP TABLE IF EXISTS Gerente CASCADE;
+DROP TABLE IF EXISTS Gerente CASCADE;
 DROP TABLE IF EXISTS Vendedor CASCADE;
 DROP TABLE IF EXISTS Jefe_Taller CASCADE;
 DROP TABLE IF EXISTS Inventario CASCADE;
@@ -56,8 +56,6 @@ CREATE TABLE Gerente (
 
 CREATE TABLE Vendedor (
   id_Vendedor  VARCHAR(100) NOT NULL,
-  contrasenia VARCHAR(100) NOT NULL,
-  nombre_Usuario VARCHAR(100) NOT NULL,
   nombre_Vendedor VARCHAR(100) NOT NULL ,
   cedula VARCHAR(100) NOT NULL,
   cargo VARCHAR(100) NOT NULL ,
@@ -69,8 +67,10 @@ CREATE TABLE Vendedor (
   salario double NOT NULL ,
   cuenta_Bancaria VARCHAR(100) NOT NULL ,
   fecha_Registro VARCHAR(100) NOT NULL,
-  habilitado boolean NOT NULL,
+  nombre_Usuario VARCHAR(100) NOT NULL,
+  contrasenia VARCHAR(100) NOT NULL,
   id_Gerente VARCHAR(100) NOT NULL, 
+  habilitado boolean NOT NULL,
 
   PRIMARY KEY (id_Vendedor),
   FOREIGN KEY (id_Gerente) REFERENCES Gerente(id_Gerente)
@@ -91,13 +91,13 @@ CREATE TABLE Jefe_Taller (
   cargo VARCHAR(100) NOT NULL ,
   telefono VARCHAR(100) NOT NULL ,
   direccion VARCHAR(100) NOT NULL ,
-  genero VARCHAR(100) NOT NULL ,
+  genero int NOT NULL ,
   fecha_Nacimiento VARCHAR(100) NOT NULL ,
   e_mail VARCHAR(100) NOT NULL ,
   salario double NOT NULL ,
-  cuenta_Bancario VARCHAR(100) NOT NULL ,
+  cuenta_Bancaria VARCHAR(100) NOT NULL ,
   fecha_Registro VARCHAR(100) NOT NULL,
-  id_Gerente int NOT NULL,  
+  id_Gerente VARCHAR(100) NOT NULL,  
 
   PRIMARY KEY (id_Jefe),
   FOREIGN KEY (id_Gerente) REFERENCES Gerente(id_Gerente)
