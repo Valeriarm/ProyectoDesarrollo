@@ -1,10 +1,9 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ * To changetFhis license header, choose License Headers in Project Properties.
+ * To changetFhis template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package Controller;
-
 import Model.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,12 +21,12 @@ public class DBConnection {
     //----------------------------------------------------------------------
     
     //Usuario de la base de datos en postgresql
-    private String dBUser = "bloodymist";
-    private String dBPassword = "crilake01";
+    private String dBUser = "desarrollo";
+    private String dBPassword = "desarrollo";
     //puerto
-    private String port = "5432";
+    private String port = "5433";
     //Nombre de la base de datos
-    private String dBName = "xyz";
+    private String dBName = "muebles_XYZ";
     //Dirección del host de la base de datos
     private String host = "localhost";
     //URL para la conexion en postgresql
@@ -124,7 +123,7 @@ public class DBConnection {
     
     public String createManager(String id, String nombre, String cedula, 
             String cargo, String correo, int genero, String direccion, 
-            String telefono, double salario, String fechaNacimiento, 
+            String telefono, float salario, String fechaNacimiento, 
             String cuentaBancaria, String fechaRegistro, String nombreUsuario,
             String contrasenia, boolean habilitado){
         connect();
@@ -169,7 +168,7 @@ public class DBConnection {
                 int genero = Integer.parseInt(rs.getString("genero"));
                 String direccion = rs.getString("direccion");
                 String telefono = rs.getString("telefono");
-                double salario = rs.getDouble("salario");
+                float salario = rs.getFloat("salario");
                 String fechaNa = rs.getString("fecha_Nacimiento");
                 String cuentaBanc = rs.getString("cuenta_bancaria");
                 String fechaReg = rs.getString("fecha_registro");
@@ -197,7 +196,7 @@ public class DBConnection {
     //TODO
     public String updateManager(String id, String nombre, String cedula, 
             String cargo, String correo, int genero, String direccion, 
-            String telefono, double salario, String fechaNacimiento, 
+            String telefono, float salario, String fechaNacimiento, 
             String cuentaBancaria, String fechaRegistro, String nombreUsuario,
             String contrasenia, boolean habilitado){
         connect();
@@ -255,7 +254,7 @@ public class DBConnection {
     
     
     public String createForeman(String idJefe, String contrasenia, String nombreUsuario, String nombreJefe, String cedula, 
-            String cargo, String telefono, String direccion, int genero, String fechaNacimiento, String correo, double salario,
+            String cargo, String telefono, String direccion, int genero, String fechaNacimiento, String correo, float salario,
             String cuentaBancaria, String fechaRegistro, String idGerente){
         connect();
         sql = "SELECT id_Jefe FROM Jefe_Taller WHERE id_Jefe = '"+idJefe+"'";
@@ -298,7 +297,7 @@ public class DBConnection {
                 int genero = Integer.parseInt(rs.getString("genero"));
                 String fechaNa = rs.getString("fecha_nacimiento");
                 String email = rs.getString("e_mail");
-                double salario = rs.getDouble("salario");
+                float salario = rs.getFloat("salario");
                 String cuentaBanc = rs.getString("cuenta_bancario");
                 String fechaReg = rs.getString("fecha_registro");
                 String managerId = rs.getString("id_gerente");
@@ -321,7 +320,7 @@ public class DBConnection {
 
     
     public String updateForeman(String id, String contrasenia, String nombreUsuario, String nombreJefe, String cedula, 
-            String cargo, String telefono, String direccion, int genero, String fechaNacimiento, String correo, double salario,
+            String cargo, String telefono, String direccion, int genero, String fechaNacimiento, String correo, float salario,
             String cuentaBancaria, String fechaRegistro, String idGerente){
         connect();
         sql = "SELECT id_Jefe FROM Jefe_Taller WHERE id_jefe = '"+id+"'";
@@ -379,7 +378,7 @@ public class DBConnection {
     
      public String createSeller(String id, String nombre, String cedula, 
             String cargo, String telefono, String direccion, int genero, 
-            String fechaNacimiento, String correo, double salario, 
+            String fechaNacimiento, String correo, float salario, 
             String cuentaBancaria, String fechaRegistro, String nombreUsuario,
             String contrasenia, String managerId, boolean habilitado){
         connect();
@@ -420,7 +419,7 @@ public class DBConnection {
                 int genero = Integer.parseInt(rs.getString("genero"));
                 String fechaNa = rs.getString("fecha_Nacimiento");
                 String email = rs.getString("e_mail");
-                double salario = rs.getDouble("salario");
+                float salario = rs.getFloat("salario");
                 String cuentaBanc = rs.getString("cuenta_Bancaria");
                 String fechaReg = rs.getString("fecha_Registro");
                 String managerId = rs.getString("id_Gerente");
@@ -446,7 +445,7 @@ public class DBConnection {
      
     public String updateSeller(String id, String nombre, String cedula, 
             String cargo, String telefono, String direccion, int genero, 
-            String fechaNacimiento, String correo, double salario, 
+            String fechaNacimiento, String correo, float salario, 
             String cuentaBancaria, String fechaRegistro, String nombreUsuario,
             String contrasenia, String managerId, boolean habilitado){
         connect();
@@ -728,7 +727,7 @@ public class DBConnection {
     
     
     
-    public String createInventory(String id, String nombreProducto, int valorUnitario, 
+    public String createInventory(String id, String nombreProducto, float valorUnitario, 
             String descripcion, int lote, int cantidadLote, String idJefe){
         connect();
         sql = "SELECT id_Producto FROM Inventario WHERE id_Producto = '"+id+"'";
@@ -766,7 +765,7 @@ public class DBConnection {
             if(rs.next()){
                 String idProducto = rs.getString("id_Producto");
                 String nombreProducto = rs.getString("nombre_Producto");
-                int valorUnitario = rs.getInt("valor_Unitario");
+                float valorUnitario = rs.getFloat("valor_Unitario");
                 String descripcion = rs.getString("descripcion_Producto");
                 int lote = rs.getInt("lote");
                 int cantidadLote = rs.getInt("cantidad_Lote");
@@ -787,7 +786,7 @@ public class DBConnection {
         return null;
     }
 
-    public String updateInventory(String id, String nombreProducto, int valorUnitario, 
+    public String updateInventory(String id, String nombreProducto, float valorUnitario, 
             String descripcion, int lote, int cantidadLote){
         connect();
         sql = "SELECT id_Producto FROM Inventario WHERE id_Producto = '"+id+"'";
@@ -832,8 +831,127 @@ public class DBConnection {
         return "";
     }
     
+        ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////CRUD COTIZACION///////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    
+    
+    
+    
+    public String createQuotation(String id, String nombre_Producto, float valor_Unitario, int cantidad,
+                                    String descripcion_Producto, String nombreEmpresa, String telefono,
+                                    String direccion, String id_Vendedor){
+        connect();
+        sql = "SELECT id_Cotizacion FROM Cotizacion WHERE id_Cotizacion = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                return "La Cotizacion con el id "+id+" ya existe";
+                
+            }else{ 
+                sql = "SELECT id_Cotizacion FROM Cotizacion WHERE id_Cotizacion = '"+id+"'";
+                rs = st.executeQuery(sql);
+                if(rs.next()){
+                    sql = "INSERT INTO Cotizacion VALUES ('"+id+"','"+nombre_Producto+"','"+valor_Unitario+"','"+cantidad+"','"+descripcion_Producto+"','"+nombreEmpresa+"','"+telefono+"','"+direccion+"','"+id_Vendedor+"')";                
+                    st.executeUpdate(sql);
+                    rs.close();
+                    st.close();
+                    connection.close();
+                }else{
+                    return "La Cotizacion con el id "+id+" no existe";
+                }
+                
+            }
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+       return "Cotizacion agregado con éxito";
+    }
+    
+    public Quotation readQuotationId(String id){
+        connect();
+        sql = "SELECT * FROM Cotizacion WHERE id_Cotizacion = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                String idCotizacion = rs.getString("id_Cotizacion");
+                String nombreProducto = rs.getString("nombre_Producto");
+                float valorUnitario = rs.getFloat("valor_Unitario");
+                int cantidad = rs.getInt("cantidad");
+                String descripcion = rs.getString("descripcion_Producto");
+                String nombreEmpresa = rs.getString("nombre_Empresa");
+                String telefonoEmpresa = rs.getString("telefono_Empresa");
+                String direccionEmpresa = rs.getString("direccion_Empresa");
+                String idVendedor = rs.getString("id_Vendedor");
+                
+                Quotation cotizacion = new Quotation(idCotizacion, nombreProducto, valorUnitario, 
+                        cantidad, descripcion, nombreEmpresa, telefonoEmpresa, direccionEmpresa, idVendedor);
+                
+                rs.close();
+                st.close();
+                connection.close();
+                
+                return cotizacion;
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return null;
+    }
+
+    public String updateQuotation(String id, String nombre_Producto, float valor_Unitario, int cantidad,
+                                    String descripcion_Producto, String nombreEmpresa, String telefono,
+                                    String direccion, String id_Vendedor){
+        connect();
+        sql = "SELECT id_Cotizacion FROM Cotizacion WHERE id_Cotizacion = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                sql = "UPDATE Cotizacion SET nombre_Producto = '"+nombre_Producto+"', valor_Unitario = '"+valor_Unitario+
+                        "', descripcion_Producto = '"+descripcion_Producto+"', cantidad = '"+cantidad+"',"+" nombre_Empresa = '"+nombreEmpresa+"'"
+                        +" telefono_Empresa = '"+telefono+"'"+" direccion_Empresa = '"+direccion+"'"+" id_Vendedor = '"+id_Vendedor+"'";
+                st.executeUpdate(sql);
+                rs.close();
+                st.close();
+                connection.close();
+            }else{        
+                return "La Cotizacion con el id "+id+" no existe";
+            }
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+       return "Cotizacion actualizada con éxito";
+    }
+    
+    public String deleteQuotationId(String id){
+        connect();
+        sql = "SELECT id_Cotizacion FROM Cotizacion WHERE id_Cotizacion = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                sql = "DELETE FROM Cotizacion WHERE id_Cotizacion = '"+id+"'";
+                st.executeUpdate(sql);
+                rs.close();
+                st.close();
+                connection.close();
+                return "La Cotizacion fue borrada exitosamente";
+            }else{              
+                return "La Cotizacion con el id "+id+" no existe";
+            }
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return "";
+    }
+    
     public static void main(String args[]) {    
         DBConnection prueba = new DBConnection();
+        prueba.readSU();
     }
     
 }

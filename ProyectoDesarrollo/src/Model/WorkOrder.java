@@ -14,7 +14,7 @@ public class WorkOrder {
     private String nombreCliente;
     private String idCliente;
     private String telefonoCliente;
-    private double valorOrden;
+    private float valorOrden;
     private int esCliente;
     private String descripcionOrden;
     private String estadoOrden;
@@ -52,11 +52,11 @@ public class WorkOrder {
         this.nombreCliente = nombreCliente;
     }
 
-    public double getValorOrden() {
+    public float getValorOrden() {
         return valorOrden;
     }
 
-    public void setValorOrden(double valorOrden) {
+    public void setValorOrden(float valorOrden) {
         this.valorOrden = valorOrden;
     }
 
