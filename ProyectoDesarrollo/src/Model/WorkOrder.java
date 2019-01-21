@@ -12,22 +12,26 @@ package Model;
 public class WorkOrder {
     private String idOrden;
     private String nombreCliente;
-    private int costo;
+    private String idCliente;
+    private String telefonoCliente;
+    private double valorOrden;
     private int esCliente;
     private String descripcionOrden;
-    private String telefonoCliente;
-    private String estado;
+    private String estadoOrden;
     private String fechaEntrega;
     private String idJefe;
 
-    public WorkOrder(String idOrden, String nombreCliente, int costo, int esCliente, String descripcionOrden, String telefonoCliente, String estado, String fechaEntrega, String idJefe) {
+    public WorkOrder(String idOrden, String nombreCliente, String idCliente,String telefonoCliente,
+            int valorOrden, int esCliente, String descripcionOrden, String estadoOrden, String fechaEntrega, String idJefe) {
         this.idOrden = idOrden;
         this.nombreCliente = nombreCliente;
-        this.costo = costo;
+        this.idCliente = idCliente;
+        this.telefonoCliente = telefonoCliente;
+        this.valorOrden = valorOrden;
         this.esCliente = esCliente;
         this.descripcionOrden = descripcionOrden;
         this.telefonoCliente = telefonoCliente;
-        this.estado = estado;
+        this.estadoOrden = estadoOrden;
         this.fechaEntrega = fechaEntrega;
         this.idJefe = idJefe;
     }
@@ -48,12 +52,12 @@ public class WorkOrder {
         this.nombreCliente = nombreCliente;
     }
 
-    public int getCosto() {
-        return costo;
+    public double getValorOrden() {
+        return valorOrden;
     }
 
-    public void setCosto(int costo) {
-        this.costo = costo;
+    public void setValorOrden(double valorOrden) {
+        this.valorOrden = valorOrden;
     }
 
     public int getEsCliente() {
@@ -80,12 +84,12 @@ public class WorkOrder {
         this.telefonoCliente = telefonoCliente;
     }
 
-    public String getEstado() {
-        return estado;
+    public String getEstadoOrden() {
+        return estadoOrden;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setEstadoOrden(String estadoOrden) {
+        this.estadoOrden = estadoOrden;
     }
 
     public String getFechaEntrega() {
