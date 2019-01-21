@@ -91,7 +91,7 @@ public class DBConnection {
         //Llamamos el metodo que cree arriba para poder conectarnos a la base de datos
         connect();
         //Creo la sentencia sql de lo que quiero hacer, en este caso, quiero todas las columnas de la tabla
-        sql = "SELECT * FROM superusuario";
+        sql = "SELECT * FROM Superusuario";
         //Necesito un try catch porque esto me puede arrojar un error de consulta (SQL)
         try {
             //Aquí usamos el metodo de Statment executeQuery y le pasamos la sentencia sql, esto lo guardamos en el 
@@ -99,7 +99,7 @@ public class DBConnection {
             rs = st.executeQuery(sql);
             while(rs.next()){
                 //Usando getString podemos obtener el resultado de nuestra consulta pasandole el nombre de la columna
-                String user = rs.getString("id_superusuario");
+                String user = rs.getString("id_Superusuario");
                 String contra = rs.getString("contrasenia");
                 
                 System.out.println(user + "," + contra);
@@ -114,21 +114,30 @@ public class DBConnection {
         }
     }  
     
+    
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////CRUD GERENTE/////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    
+    
     public String createManager(String id, String nombre, String cedula, 
             String cargo, String correo, int genero, String direccion, 
             String telefono, double salario, String fechaNacimiento, 
-            String cuentaBancaria, String fechaRegistro){
+            String cuentaBancaria, String fechaRegistro, String nombreUsuario,
+            String contrasenia, boolean habilitado){
         connect();
-        sql = "SELECT id_gerente FROM gerente WHERE id_gerente = '"+id+"'";
+        sql = "SELECT id_Gerente FROM Gerente WHERE id_Gerente = '"+id+"'";
         try {
 
             rs = st.executeQuery(sql);
             if(rs.next()){
                 return "El gerente con el id "+id+" ya existe";
             }else{                
-                sql = "INSERT INTO gerente VALUES ('"+id+"','','"+nombre+"','"+cedula+"','"+cargo+"','"+telefono+"','"+direccion+
-                        "','"+genero+"','"+fechaNacimiento+"','"+correo+"','"+salario+"','"+cuentaBancaria+"','"
-                        +fechaRegistro+"','" +id+"','"+cedula+"','"+true+"')";
+                sql = "INSERT INTO Gerente VALUES ('"+id+"','','"+nombre+"','"+cedula+"','"+cargo+"','"+correo+"','"+genero+
+                        "','"+direccion+"','"+telefono+"','"+salario+"','"+fechaNacimiento+"','"+cuentaBancaria+"','"
+                        +fechaRegistro+"','" +nombreUsuario+"','"+contrasenia+"','"+true+"')";
                 
                 st.executeUpdate(sql);
                 rs.close();
@@ -149,28 +158,29 @@ public class DBConnection {
      */
     public Manager readManagerById(String id){
         connect();
-        sql = "SELECT * FROM gerente WHERE id_gerente = '"+id+"'";
+        sql = "SELECT * FROM Gerente WHERE id_Gerente = '"+id+"'";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                String nombre = rs.getString("nombre_gerente");
+                String nombre = rs.getString("nombre_Gerente");
                 String cedula = rs.getString("cedula");
                 String cargo = rs.getString("cargo");
-                String telefono = rs.getString("telefono");
-                String direccion = rs.getString("direccion");
+                String correo = rs.getString("e_mail");
                 int genero = Integer.parseInt(rs.getString("genero"));
-                String fechaNa = rs.getString("fecha_nacimiento");
-                String email = rs.getString("e_mail");
+                String direccion = rs.getString("direccion");
+                String telefono = rs.getString("telefono");
                 double salario = rs.getDouble("salario");
+                String fechaNa = rs.getString("fecha_Nacimiento");
                 String cuentaBanc = rs.getString("cuenta_bancaria");
                 String fechaReg = rs.getString("fecha_registro");
                 String nombreUsuario = rs.getString("nombre_Usuario");
                 String contrasenia = rs.getString("contrasenia");
+                boolean habilitado = rs.getBoolean("habilitado");
                 
                 
-                Manager gerente = new Manager(id, nombre, cedula, cargo, email, 
+                Manager gerente = new Manager(id, nombre, cedula, cargo, correo, 
                 genero, direccion, telefono, salario, fechaNa, 
-                cuentaBanc, fechaReg, nombreUsuario, contrasenia, true);
+                cuentaBanc, fechaReg, nombreUsuario, contrasenia, habilitado);
                 
                 rs.close();
                 st.close();
@@ -188,15 +198,17 @@ public class DBConnection {
     public String updateManager(String id, String nombre, String cedula, 
             String cargo, String correo, int genero, String direccion, 
             String telefono, double salario, String fechaNacimiento, 
-            String cuentaBancaria){
+            String cuentaBancaria, String fechaRegistro, String nombreUsuario,
+            String contrasenia, boolean habilitado){
         connect();
-        sql = "SELECT id_gerente FROM gerente WHERE id_gerente = '"+id+"'";
+        sql = "SELECT id_Gerente FROM Gerente WHERE id_Gerente = '"+id+"'";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                sql = "UPDATE gerente SET nombre_gerente = '"+nombre+"', cedula = '"+cedula+"', cargo = '"+cargo+"', telefono = '"+telefono+"',"
-                        +" genero = '"+genero+"', fecha_nacimiento = '"+fechaNacimiento+"', e_mail = '"+correo+"', salario = "+salario+", cuenta_bancaria = '"+cuentaBancaria+
-                        "', direccion = '"+direccion+"' WHERE id_gerente = '"+id+"'";
+                sql = "UPDATE Gerente SET nombre_Gerente = '"+nombre+"', cedula = '"+cedula+"', cargo = '"+cargo+"', e_mail = '"+correo+"',"
+                        +" genero = '"+genero+"', direccion = '"+direccion+"', telefono = '"+telefono+"', salario = "+salario+", fecha_Nacimiento = '"+fechaNacimiento+
+                        "', cuenta_Bancaria = '"+cuentaBancaria+"', fecha_Registro = '"+fechaRegistro+", nombre_Usuario = "+nombreUsuario+", contrasenia = "+contrasenia+
+                        ", habilitado = "+habilitado+"' WHERE id_gerente = '"+id+"'";
                 st.executeUpdate(sql);
                 rs.close();
                 st.close();
@@ -213,11 +225,11 @@ public class DBConnection {
     
     public String deleteManagerById(String id){
         connect();
-        sql = "SELECT id_gerente FROM gerente WHERE id_gerente = '"+id+"'";
+        sql = "SELECT id_Gerente FROM Gerente WHERE id_gerente = '"+id+"'";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                sql = "DELETE FROM gerente WHERE id_gerente = '"+id+"'";
+                sql = "DELETE FROM Gerente WHERE id_Gerente = '"+id+"'";
                 st.executeUpdate(sql);
                 rs.close();
                 st.close();
@@ -233,32 +245,34 @@ public class DBConnection {
         return "";
     }
     
-    public String createForeman(String id, String nombre, String cedula, 
-            String cargo, String correo, int genero, String direccion, 
-            String telefono, double salario, String fechaNacimiento, 
-            String cuentaBancaria, String fechaRegistro, String managerId){
+    
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////CRUD JEFE DE TALLER/////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    
+    
+    
+    public String createForeman(String idJefe, String contrasenia, String nombreUsuario, String nombreJefe, String cedula, 
+            String cargo, String telefono, String direccion, int genero, String fechaNacimiento, String correo, double salario,
+            String cuentaBancaria, String fechaRegistro, String idGerente){
         connect();
-        sql = "SELECT id_jefe FROM jefe_taller WHERE id_jefe = '"+id+"'";
+        sql = "SELECT id_Jefe FROM Jefe_Taller WHERE id_Jefe = '"+idJefe+"'";
         try {
+
             rs = st.executeQuery(sql);
             if(rs.next()){
-                return "El Jefe de taller con el id "+id+" ya existe";
+                return "El jefe de taller con el id "+idJefe+" ya existe";
+            }else{                
+                sql = "INSERT INTO Jefe_Taller VALUES ('"+idJefe+"','','"+contrasenia+"','"+nombreUsuario+"','"+nombreJefe+"','"+cedula+"','"+cargo+
+                        "','"+telefono+"','"+direccion+"','"+genero+"','"+fechaNacimiento+"','"+correo+"','"
+                        +salario+"','" +cuentaBancaria+"','"+fechaRegistro+"','"+idGerente+"')";
                 
-            }else{ 
-                sql = "SELECT id_gerente FROM gerente WHERE id_gerente = '"+managerId+"'";
-                rs = st.executeQuery(sql);
-                if(rs.next()){
-                    sql = "INSERT INTO jefe_taller VALUES ('"+id+"','','"+nombre+"','"+cedula+"','"+cargo+"','"+telefono+"','"+direccion+
-                        "','"+genero+"','"+fechaNacimiento+"','"+correo+"',"+salario+",'"+cuentaBancaria+"','"
-                        +fechaRegistro+"','"+managerId+"')";                
-                    st.executeUpdate(sql);
-                    rs.close();
-                    st.close();
-                    connection.close();
-                }else{
-                    return "El gerente con el id "+managerId+" no existe";
-                }
-                
+                st.executeUpdate(sql);
+                rs.close();
+                st.close();
+                connection.close();
             }
             
         } catch (Exception e) {
@@ -267,13 +281,16 @@ public class DBConnection {
        return "Jefe de taller agregado con éxito";
     }
     
+    
     public Foreman readForemanById(String id){
         connect();
-        sql = "SELECT * FROM jefe_taller WHERE id_jefe = '"+id+"'";
+        sql = "SELECT * FROM Jefe_Taller WHERE id_Jefe = '"+id+"'";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
                 String nombre = rs.getString("nombre_jefe");
+                String nombreUsuario = rs.getString("nombre_Usuario");
+                String contrasenia = rs.getString("contrasenia");
                 String cedula = rs.getString("cedula");
                 String cargo = rs.getString("cargo");
                 String telefono = rs.getString("telefono");
@@ -286,8 +303,8 @@ public class DBConnection {
                 String fechaReg = rs.getString("fecha_registro");
                 String managerId = rs.getString("id_gerente");
                 
-                Foreman jefe = new Foreman(id, nombre, cedula, cargo, email, 
-                genero, direccion, telefono, salario, fechaNa, 
+                Foreman jefe = new Foreman(id, contrasenia, nombreUsuario, nombre, cedula, cargo, telefono, 
+                direccion, genero, fechaNa, email, salario, 
                 cuentaBanc, fechaReg, managerId);
                 
                 rs.close();
@@ -302,18 +319,20 @@ public class DBConnection {
         return null;
     }
 
-    public String updateForeman(String id, String nombre, String cedula, 
-            String cargo, String correo, int genero, String direccion, 
-            String telefono, double salario, String fechaNacimiento, 
-            String cuentaBancaria, String managerId){
+    
+    public String updateForeman(String id, String contrasenia, String nombreUsuario, String nombreJefe, String cedula, 
+            String cargo, String telefono, String direccion, int genero, String fechaNacimiento, String correo, double salario,
+            String cuentaBancaria, String fechaRegistro, String idGerente){
         connect();
-        sql = "SELECT id_jefe FROM jefe_taller WHERE id_jefe = '"+id+"'";
+        sql = "SELECT id_Jefe FROM Jefe_Taller WHERE id_jefe = '"+id+"'";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                sql = "UPDATE jefe_taller SET nombre_jefe = '"+nombre+"', cedula = '"+cedula+"', cargo = '"+cargo+"', telefono = '"+telefono+"',"
-                        +" genero = '"+genero+"', fecha_nacimiento = '"+fechaNacimiento+"', e_mail = '"+correo+"', salario = "+salario+", cuenta_bancario = '"+cuentaBancaria+
-                        "', direccion = '"+direccion+"', id_gerente = '"+managerId+"' WHERE id_jefe = '"+id+"'";
+                sql = "UPDATE Jefe_Taller SET nombre_Jefe = '"+nombreJefe+"', cedula = '"+cedula+"', cargo = '"+cargo+"', "
+                        + "telefono = '"+telefono+"'," +" genero = '"+genero+"', fecha_Nacimiento = '"+fechaNacimiento+"', "
+                        + "e_mail = '"+correo+"', salario = "+salario+", cuenta_Bancaria = '"+cuentaBancaria+
+                        "', direccion = '"+direccion+"', id_Gerente = '"+idGerente+"', contarasenia = '"+contrasenia+
+                        "', nombre_Usuario = '"+nombreUsuario+"', fecha_Registro = '"+fechaRegistro+"' WHERE id_jefe = '"+id+"'";
                 st.executeUpdate(sql);
                 rs.close();
                 st.close();
@@ -330,11 +349,11 @@ public class DBConnection {
     
     public String deleteForemanById(String id){
         connect();
-        sql = "SELECT id_jefe FROM jefe_taller WHERE id_jefe = '"+id+"'";
+        sql = "SELECT id_Jefe FROM Jefe_Taller WHERE id_Jefe = '"+id+"'";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                sql = "DELETE FROM jefe_taller WHERE id_jefe = '"+id+"'";
+                sql = "DELETE FROM Jefe_Taller WHERE id_Jefe = '"+id+"'";
                 st.executeUpdate(sql);
                 rs.close();
                 st.close();
@@ -350,21 +369,30 @@ public class DBConnection {
         return "";
     }
     
+    
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////CRUD VENTA///////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    
+    
      public String createSeller(String id, String nombre, String cedula, 
-            String cargo, String correo, int genero, String direccion, 
-            String telefono, double salario, String fechaNacimiento, 
-            String cuentaBancaria, String fechaRegistro, String managerId){
+            String cargo, String telefono, String direccion, int genero, 
+            String fechaNacimiento, String correo, double salario, 
+            String cuentaBancaria, String fechaRegistro, String nombreUsuario,
+            String contrasenia, String managerId, boolean habilitado){
         connect();
-        sql = "SELECT id_vendedor FROM vendedor WHERE id_vendedor = '"+id+"'";
+        sql = "SELECT id_Vendedor FROM Vendedor WHERE id_Vendedor = '"+id+"'";
         try {
 
             rs = st.executeQuery(sql);
             if(rs.next()){
                 return "El vendedor con el id "+id+" ya existe";
             }else{                
-                sql = "INSERT INTO vendedor VALUES ('"+id+"','','"+nombre+"','"+cedula+"','"+cargo+"','"+telefono+"','"+direccion+
+                sql = "INSERT INTO Vendedor VALUES ('"+id+"','','"+nombre+"','"+cedula+"','"+cargo+"','"+telefono+"','"+direccion+
                         "','"+genero+"','"+fechaNacimiento+"','"+correo+"','"+salario+"','"+cuentaBancaria+"','"
-                        +fechaRegistro+"','"+managerId+"')";
+                        +fechaRegistro+"','"+nombreUsuario+"','"+contrasenia+"','"+managerId+"','"+habilitado+"')";
                 
                 st.executeUpdate(sql);
                 rs.close();
@@ -380,26 +408,29 @@ public class DBConnection {
      
     public Seller readSellerById(String id){
         connect();
-        sql = "SELECT * FROM vendedor WHERE id_vendedor = '"+id+"'";
+        sql = "SELECT * FROM Vendedor WHERE id_Vendedor = '"+id+"'";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                String nombre = rs.getString("nombre_vendedor");
+                String nombre = rs.getString("nombre_Vendedor");
                 String cedula = rs.getString("cedula");
                 String cargo = rs.getString("cargo");
                 String telefono = rs.getString("telefono");
                 String direccion = rs.getString("direccion");
                 int genero = Integer.parseInt(rs.getString("genero"));
-                String fechaNa = rs.getString("fecha_nacimiento");
+                String fechaNa = rs.getString("fecha_Nacimiento");
                 String email = rs.getString("e_mail");
                 double salario = rs.getDouble("salario");
-                String cuentaBanc = rs.getString("cuenta_bancaria");
-                String fechaReg = rs.getString("fecha_registro");
-                String managerId = rs.getString("id_gerente");
+                String cuentaBanc = rs.getString("cuenta_Bancaria");
+                String fechaReg = rs.getString("fecha_Registro");
+                String managerId = rs.getString("id_Gerente");
+                String nombreUsuario = rs.getString("nombre_Usuario");
+                String contrasenia = rs.getString("contrasenia");
+                boolean habilitado = rs.getBoolean("habilitado");
                 
-                Seller vendedor = new Seller(id, nombre, cedula, cargo, email, 
-                genero, direccion, telefono, salario, fechaNa, 
-                cuentaBanc, fechaReg, managerId);
+                Seller vendedor = new Seller(id, nombre, cedula, cargo, telefono, 
+                direccion, genero, fechaNa, email, salario, cuentaBanc, fechaReg, 
+                nombreUsuario, contrasenia, managerId, habilitado);
                 
                 rs.close();
                 st.close();
@@ -414,17 +445,19 @@ public class DBConnection {
     }
      
     public String updateSeller(String id, String nombre, String cedula, 
-            String cargo, String correo, int genero, String direccion, 
-            String telefono, double salario, String fechaNacimiento, 
-            String cuentaBancaria, String managerId){
+            String cargo, String telefono, String direccion, int genero, 
+            String fechaNacimiento, String correo, double salario, 
+            String cuentaBancaria, String fechaRegistro, String nombreUsuario,
+            String contrasenia, String managerId, boolean habilitado){
         connect();
-        sql = "SELECT id_vendedor FROM vendedor WHERE id_vendedor = '"+id+"'";
+        sql = "SELECT id_Vendedor FROM Vendedor WHERE id_Vendedor = '"+id+"'";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                sql = "UPDATE vendedor SET nombre_vendedor = '"+nombre+"', cedula = '"+cedula+"', cargo = '"+cargo+"', telefono = '"+telefono+"',"
-                        +" genero = '"+genero+"', fecha_nacimiento = '"+fechaNacimiento+"', e_mail = '"+correo+"', salario = "+salario+", cuenta_bancaria = '"+cuentaBancaria+
-                        "', direccion = '"+direccion+"', id_gerente = '"+managerId+"' WHERE id_vendedor = '"+id+"'";
+                sql = "UPDATE Vendedor SET nombre_Vendedor = '"+nombre+"', cedula = '"+cedula+"', cargo = '"+cargo+"', telefono = '"+telefono+"',"
+                        +" genero = '"+genero+"', fecha_Nacimiento = '"+fechaNacimiento+"', e_mail = '"+correo+"', salario = "+salario+", cuenta_Bancaria = '"+cuentaBancaria+
+                        "', direccion = '"+direccion+"', id_Gerente = '"+managerId+"', fecha_Registro = '"+fechaRegistro+"'"
+                        + ", nombre_Usuario = '"+nombreUsuario+"', contrasenia = '"+contrasenia+"', habilitado = '"+habilitado+"' WHERE id_vendedor = '"+id+"'";
                 st.executeUpdate(sql);
                 rs.close();
                 st.close();
@@ -460,19 +493,29 @@ public class DBConnection {
         }
         return "";        
     }
+    
+    
+    
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////CRUD SALE//////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    
+    
      
     public String createSale(String id, String nombreCliente, String telefonoCliente, 
            String cedulaCliente, int valorVenta, String descripcionVenta, String idVendedor){
         
         connect();
-        sql = "SELECT id_venta FROM venta WHERE id_Factura = '"+id+"'";
+        sql = "SELECT id_Factura FROM Venta WHERE id_Factura = '"+id+"'";
         try {
 
             rs = st.executeQuery(sql);
             if(rs.next()){
                 return "La venta con el id "+id+" ya existe";
             }else{                
-                sql = "INSERT INTO venta VALUES ('"+id+"','','"+nombreCliente+"','"+telefonoCliente+"','"+cedulaCliente+"','"
+                sql = "INSERT INTO Venta VALUES ('"+id+"','','"+nombreCliente+"','"+telefonoCliente+"','"+cedulaCliente+"','"
                         +valorVenta+"','"+descripcionVenta+"','"+idVendedor+"')";
                 
                 st.executeUpdate(sql);
@@ -491,7 +534,7 @@ public class DBConnection {
     
     public Sale readSaleById(String id){
         connect();
-        sql = "SELECT * FROM venta WHERE id_Factura = '"+id+"'";
+        sql = "SELECT * FROM Venta WHERE id_Factura = '"+id+"'";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
@@ -524,8 +567,8 @@ public class DBConnection {
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                sql = "UPDATE venta SET nombre_Cliente = '"+nombreCliente+"', tefelono_Cliente = '"+telefonoCliente+"', cedula_Cliente = '"+cedulaCliente+
-                        "', valor_Venta = '"+valorVenta+"', descripcion_Venta = '"+descripcionVenta+"' WHERE id_Factura = '"+id+"'";
+                sql = "UPDATE Venta SET nombre_Cliente = '"+nombreCliente+"', tefelono_Cliente = '"+telefonoCliente+"', cedula_Cliente = '"+cedulaCliente+
+                        "', valor_Venta = '"+valorVenta+"', descripcion_Venta = '"+descripcionVenta+"',id_Vendedor = '"+idVendedor+"'  WHERE id_Factura = '"+id+"'";
                 st.executeUpdate(sql);
                 rs.close();
                 st.close();
@@ -562,6 +605,15 @@ public class DBConnection {
         return "";        
     }
     
+    
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////CRUD ORDEN///////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    
+    
+    
     public String createWorkOrder(String id, String nombreCliente, int costo, int esCliente, 
            String descripcionOrden, String telefonoCliente, String estado, String fechaEntrega, String idJefe){
         
@@ -594,7 +646,8 @@ public class DBConnection {
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                String nombreCliente = rs.getString("nombre_cliente");
+                String idOrden = rs.getString("id_Orden");
+                String nombreCliente = rs.getString("nombre_Cliente");
                 String idCliente = rs.getString("id_Cliente");
                 String telefonoCliente = rs.getString("telefono_Cliente");
                 int valorOrden = Integer.parseInt(rs.getString("valor_Orden"));
@@ -604,8 +657,8 @@ public class DBConnection {
                 String fechaEntrega = rs.getString("fecha_Entrega");
                 String idJefe = rs.getString("id_Jefe");
                 
-                WorkOrder orden = new WorkOrder(id, nombreCliente, valorOrden, esCliente, descripcionOrden, 
-                telefonoCliente, estadoOrden, fechaEntrega ,idJefe);
+                WorkOrder orden = new WorkOrder(idOrden, nombreCliente, idCliente, telefonoCliente,
+                                    valorOrden, esCliente, descripcionOrden, estadoOrden, fechaEntrega, idJefe);
                 
                 rs.close();
                 st.close();
@@ -666,20 +719,29 @@ public class DBConnection {
         return "";        
     }
     
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////CRUD INVENTARIO///////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    
+    
+    
+    
     public String createInventory(String id, String nombreProducto, int valorUnitario, 
-            String descripcion, int lote, int cantidadLote){
+            String descripcion, int lote, int cantidadLote, String idJefe){
         connect();
-        sql = "SELECT id_producto FROM inventario WHERE id_producto = '"+id+"'";
+        sql = "SELECT id_Producto FROM Inventario WHERE id_Producto = '"+id+"'";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
                 return "El Producto con el id "+id+" ya existe";
                 
             }else{ 
-                sql = "SELECT id_producto FROM inventario WHERE id_producto = '"+id+"'";
+                sql = "SELECT id_Producto FROM Inventario WHERE id_Producto = '"+id+"'";
                 rs = st.executeQuery(sql);
                 if(rs.next()){
-                    sql = "INSERT INTO inventario VALUES ('"+id+"','"+nombreProducto+"','"+valorUnitario+"','"+descripcion+"','"+lote+"','"+cantidadLote+"')";                
+                    sql = "INSERT INTO Inventario VALUES ('"+id+"','"+nombreProducto+"','"+valorUnitario+"','"+descripcion+"','"+lote+"','"+cantidadLote+"','"+idJefe+"')";                
                     st.executeUpdate(sql);
                     rs.close();
                     st.close();
@@ -693,24 +755,25 @@ public class DBConnection {
         } catch (Exception e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
-       return "Jefe de taller agregado con éxito";
+       return "Producto agregado con éxito";
     }
     
     public Inventory readInventoryId(String id){
         connect();
-        sql = "SELECT * FROM inventario WHERE id_inventario = '"+id+"'";
+        sql = "SELECT * FROM Inventario WHERE id_Producto = '"+id+"'";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                String idProducto = rs.getString("id_producto");
-                String nombreProducto = rs.getString("nombre_producto");
-                int valorUnitario = rs.getInt("valor_unitario");
-                String descripcion = rs.getString("descripcion");
+                String idProducto = rs.getString("id_Producto");
+                String nombreProducto = rs.getString("nombre_Producto");
+                int valorUnitario = rs.getInt("valor_Unitario");
+                String descripcion = rs.getString("descripcion_Producto");
                 int lote = rs.getInt("lote");
-                int cantidadLote = rs.getInt("cantidad_lote");
+                int cantidadLote = rs.getInt("cantidad_Lote");
+                String idJefe = rs.getString("id_Jefe");
                 
                 Inventory inventario = new Inventory(idProducto, nombreProducto, valorUnitario, 
-                        descripcion, lote, cantidadLote);
+                        descripcion, lote, cantidadLote, idJefe);
                 
                 rs.close();
                 st.close();
@@ -727,12 +790,12 @@ public class DBConnection {
     public String updateInventory(String id, String nombreProducto, int valorUnitario, 
             String descripcion, int lote, int cantidadLote){
         connect();
-        sql = "SELECT id_producto FROM inventario WHERE id_producto = '"+id+"'";
+        sql = "SELECT id_Producto FROM Inventario WHERE id_Producto = '"+id+"'";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                sql = "UPDATE inventario SET nombre_producto = '"+nombreProducto+"', valor_unitario = '"+valorUnitario+
-                        "', descripcion = '"+descripcion+"', lote = '"+lote+"',"+" cantidad_lote = '"+cantidadLote+"'";
+                sql = "UPDATE Inventario SET nombre_Producto = '"+nombreProducto+"', valor_Unitario = '"+valorUnitario+
+                        "', descripcion_Producto = '"+descripcion+"', lote = '"+lote+"',"+" cantidad_Lote = '"+cantidadLote+"'";
                 st.executeUpdate(sql);
                 rs.close();
                 st.close();
@@ -749,11 +812,11 @@ public class DBConnection {
     
     public String deleteInventoryId(String id){
         connect();
-        sql = "SELECT id_producto FROM inventario WHERE id_producto = '"+id+"'";
+        sql = "SELECT id_Producto FROM Inventario WHERE id_Producto = '"+id+"'";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                sql = "DELETE FROM inventario WHERE id_producto = '"+id+"'";
+                sql = "DELETE FROM Inventario WHERE id_Producto = '"+id+"'";
                 st.executeUpdate(sql);
                 rs.close();
                 st.close();
