@@ -949,6 +949,119 @@ public class DBConnection {
         return "";
     }
     
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////CRUD SEDE/////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    
+    
+    
+    
+        public String createSede(String id, String nombreSede, String direccion, String fechaCreacion,
+                                    String fechaFinalizacion, String idGerente){
+        connect();
+        sql = "SELECT id_Sede FROM Sede WHERE id_Sede = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                return "La Sede con el id "+id+" ya existe";
+                
+            }else{ 
+                sql = "SELECT id_Sede FROM Sede WHERE id_Sede = '"+id+"'";
+                rs = st.executeQuery(sql);
+                if(rs.next()){
+                    sql = "INSERT INTO Sede VALUES ('"+id+"','"+nombreSede+"','"+direccion+"','"+fechaCreacion+"','"+fechaFinalizacion+"','"+idGerente+"')";                
+                    st.executeUpdate(sql);
+                    rs.close();
+                    st.close();
+                    connection.close();
+                }else{
+                    return "La Sede con el id "+id+" no existe";
+                }
+                
+            }
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+       return "Sede agregada con éxito";
+    }
+    
+    public Sede readSedenId(String id){
+        connect();
+        sql = "SELECT * FROM Sede WHERE id_Sede = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                String idSede = rs.getString("id_Sede");
+                String nombreSede = rs.getString("nombre_Sede");
+                String direccion = rs.getString("direccion");
+                String fechaCreacion = rs.getString("fecha_Creacion");
+                String fechaFinalizacion = rs.getString("fecha_Finalizacion");
+                String idGerente = rs.getString("id_Gerente");
+                
+                Sede sede = new Sede(idSede, nombreSede, direccion, 
+                         fechaCreacion, fechaFinalizacion, idGerente);
+                
+                rs.close();
+                st.close();
+                connection.close();
+                
+                return sede;
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return null;
+    }
+
+    public String updateSede(String id, String nombreSede, String direccion, String fechaCreacion,
+                             String fechaFinalizacion, String idGerente){
+        connect();
+        sql = "SELECT id_Sede FROM Sede WHERE id_Sede = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                sql = "UPDATE Sede SET nombre_Sede = '"+nombreSede+"', direccion = '"+direccion+
+                        "', fecha_Creacion = '"+fechaCreacion+"', fecha_Finalizacion = '"+fechaFinalizacion+"',"+" id_Gerente = '"+idGerente+"'";
+                st.executeUpdate(sql);
+                rs.close();
+                st.close();
+                connection.close();
+            }else{        
+                return "La Sede con el id "+id+" no existe";
+            }
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+       return "Sede actualizada con éxito";
+    }
+    
+    public String deleteSedeId(String id){
+        connect();
+        sql = "SELECT id_Sede FROM Sede WHERE id_Sede = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                sql = "DELETE FROM Sede WHERE id_Sede = '"+id+"'";
+                st.executeUpdate(sql);
+                rs.close();
+                st.close();
+                connection.close();
+                return "La Sede fue borrada exitosamente";
+            }else{              
+                return "La Sede con el id "+id+" no existe";
+            }
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return "";
+    }
+    
+    
     public static void main(String args[]) {    
         DBConnection prueba = new DBConnection();
         prueba.readSU();
