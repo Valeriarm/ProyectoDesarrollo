@@ -5,11 +5,13 @@
  */
 package Interface;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 /**
@@ -39,6 +41,27 @@ public class prinSuper extends javax.swing.JFrame {
         labEmple.setVisible(false);
         comboxEmple.setVisible(false);
        }
+
+    private boolean validarCampos(String nombreUsu, String contrasena, String nombre, String cedula, String correo, String cuenta, String direccion, String telefono, String salario, String diaCumple, String mesCumple, String anoCumple) {
+        boolean validacion = true;
+        String mensaje = "";        
+        
+        if(nombreUsu.equals("")) mensaje = mensaje+"- Nombre de Usuario\n"; validacion = false;
+        if(contrasena.equals("")) mensaje = mensaje+"- Contraseña\n"; validacion = false;
+        if(nombre.equals("")) mensaje = mensaje+"- Nombre\n"; validacion = false;
+        if(cedula.equals("")) mensaje = mensaje+"- Cedula\n"; validacion = false;
+        if(correo.equals("")) mensaje = mensaje+"- Correo\n"; validacion = false;
+        if(cuenta.equals("")) mensaje = mensaje+"- Cuenta\n"; validacion = false;
+        if(direccion.equals("")) mensaje = mensaje+"- Direccion\n"; validacion = false;
+        if(telefono.equals("")) mensaje = mensaje+"- Telefono\n"; validacion = false;
+        if(salario.equals("")) mensaje = mensaje+"- Salario\n"; validacion = false;
+        
+        if(!validacion && !mensaje.equals("")){
+            JOptionPane.showMessageDialog(this, "Los siguientes campos están vacios:\n"+mensaje);
+        }       
+        
+        return validacion;
+    }
 
     class hora implements ActionListener{
     
@@ -123,20 +146,19 @@ public class prinSuper extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addContainerGap()
                 .addComponent(labLogo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 337, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 310, Short.MAX_VALUE)
                 .addComponent(iconUsu)
                 .addGap(23, 23, 23))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(iconUsu)
-                    .addComponent(labLogo))
-                .addGap(18, 18, 18))
+                .addComponent(iconUsu)
+                .addGap(15, 15, 15))
+            .addComponent(labLogo, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
@@ -209,7 +231,7 @@ public class prinSuper extends javax.swing.JFrame {
                 .addComponent(bConsul)
                 .addGap(18, 18, 18)
                 .addComponent(bDespedir)
-                .addContainerGap(107, Short.MAX_VALUE))
+                .addContainerGap(129, Short.MAX_VALUE))
         );
 
         jSplitPane2.setLeftComponent(jPanel3);
@@ -237,27 +259,69 @@ public class prinSuper extends javax.swing.JFrame {
         labFechaNac.setText("Fecha de nacimiento:");
 
         tNombreUsu.setToolTipText("");
+        tNombreUsu.setPreferredSize(new java.awt.Dimension(152, 20));
 
         tCedula.setToolTipText("");
+        tCedula.setPreferredSize(new java.awt.Dimension(152, 20));
+        tCedula.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tCedulaKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tCedulaKeyTyped(evt);
+            }
+        });
 
         tCorreo.setToolTipText("");
+        tCorreo.setPreferredSize(new java.awt.Dimension(152, 20));
 
         tCuentaBan.setToolTipText("");
+        tCuentaBan.setPreferredSize(new java.awt.Dimension(152, 20));
+        tCuentaBan.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tCuentaBanKeyTyped(evt);
+            }
+        });
 
         tDir.setToolTipText("");
+        tDir.setPreferredSize(new java.awt.Dimension(152, 20));
 
         labNombre.setText("Nombre:");
         labNombre.setToolTipText("");
 
         tNombre.setToolTipText("");
+        tNombre.setName(""); // NOI18N
+        tNombre.setPreferredSize(new java.awt.Dimension(152, 20));
+        tNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tNombreKeyTyped(evt);
+            }
+        });
 
         comboxGenero.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Masculino", "Femenino" }));
 
         tTel.setToolTipText("");
+        tTel.setPreferredSize(new java.awt.Dimension(152, 20));
+        tTel.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tTelKeyTyped(evt);
+            }
+        });
 
         tSal.setToolTipText("");
+        tSal.setPreferredSize(new java.awt.Dimension(152, 20));
+        tSal.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tSalKeyTyped(evt);
+            }
+        });
 
-        comboxSedes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sin sede" }));
+        comboxSedes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No Seleccionada" }));
+        comboxSedes.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboxSedesItemStateChanged(evt);
+            }
+        });
 
         comboxDia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
 
@@ -269,14 +333,26 @@ public class prinSuper extends javax.swing.JFrame {
         comboxCargo.setEnabled(false);
 
         bAceptar.setText("Agregar");
+        bAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bAceptarActionPerformed(evt);
+            }
+        });
 
-        labEmple.setText("Empleado");
+        labEmple.setText("Empleado:");
 
         comboxEmple.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No seleccionado" }));
+        comboxEmple.setMinimumSize(new java.awt.Dimension(152, 20));
+        comboxEmple.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboxEmpleItemStateChanged(evt);
+            }
+        });
 
         labContra.setText("Contraseña:");
 
         tContra.setToolTipText("");
+        tContra.setPreferredSize(new java.awt.Dimension(152, 20));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -293,7 +369,7 @@ public class prinSuper extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(comboxDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(comboxMes, 0, 54, Short.MAX_VALUE)
+                                .addComponent(comboxMes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(comboxAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel4Layout.createSequentialGroup()
@@ -313,23 +389,23 @@ public class prinSuper extends javax.swing.JFrame {
                                     .addComponent(labContra))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(tDir)
-                                    .addComponent(tNombreUsu)
-                                    .addComponent(tCedula)
-                                    .addComponent(tCorreo)
-                                    .addComponent(tCuentaBan)
-                                    .addComponent(tNombre)
-                                    .addComponent(comboxGenero, 0, 152, Short.MAX_VALUE)
-                                    .addComponent(tTel)
-                                    .addComponent(tSal)
+                                    .addComponent(tDir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(tCedula, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(tCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(tCuentaBan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(tNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(comboxGenero, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(tTel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(tSal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(comboxSedes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(comboxCargo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(comboxEmple, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(tContra)))))
+                                    .addComponent(tContra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(tNombreUsu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(comboxEmple, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(163, 163, 163)
                         .addComponent(bAceptar)))
-                .addContainerGap(116, Short.MAX_VALUE))
+                .addContainerGap(106, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -441,12 +517,12 @@ public class prinSuper extends javax.swing.JFrame {
                 .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 541, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 485, Short.MAX_VALUE)
+                .addGap(0, 507, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -464,8 +540,8 @@ public class prinSuper extends javax.swing.JFrame {
         botonAceptar = 1;
         bAceptar.setText("Agregar");
         bAceptar.setVisible(true);
-        bAceptar.setEnabled(true);
-
+        bAceptar.setEnabled(false);
+        bAceptar.setForeground(Color.BLACK);
     }//GEN-LAST:event_bAgregarMouseClicked
 
     private void bModfMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bModfMouseClicked
@@ -476,6 +552,7 @@ public class prinSuper extends javax.swing.JFrame {
         bAceptar.setText("Modificar");
         bAceptar.setVisible(true);              
         bAceptar.setEnabled(false);
+        bAceptar.setForeground(Color.BLACK);
         
         comboxEmple.setSelectedIndex(0);
     }//GEN-LAST:event_bModfMouseClicked
@@ -488,6 +565,7 @@ public class prinSuper extends javax.swing.JFrame {
         bAceptar.setText("Consultar");
         bAceptar.setVisible(true);
         bAceptar.setEnabled(false);
+        bAceptar.setForeground(Color.BLACK);
         
         comboxEmple.setSelectedIndex(0);
     }//GEN-LAST:event_bConsulMouseClicked
@@ -500,9 +578,130 @@ public class prinSuper extends javax.swing.JFrame {
         bAceptar.setText("Despedir");
         bAceptar.setVisible(true);
         bAceptar.setEnabled(false);
+        bAceptar.setForeground(Color.RED);
         
         comboxEmple.setSelectedIndex(0);
     }//GEN-LAST:event_bDespedirMouseClicked
+
+    private void tCedulaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tCedulaKeyPressed
+    }//GEN-LAST:event_tCedulaKeyPressed
+
+    private void tCedulaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tCedulaKeyTyped
+        char c = evt.getKeyChar();
+        if(c<'0' || c>'9'){            
+            evt.consume();
+        }
+    }//GEN-LAST:event_tCedulaKeyTyped
+
+    private void tTelKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tTelKeyTyped
+        char c = evt.getKeyChar();
+        if(c<'0' || c>'9'){            
+            evt.consume();
+        }
+    }//GEN-LAST:event_tTelKeyTyped
+
+    private void tCuentaBanKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tCuentaBanKeyTyped
+        char c = evt.getKeyChar();
+        if(c<'0' || c>'9'){            
+            evt.consume();
+        }
+    }//GEN-LAST:event_tCuentaBanKeyTyped
+
+    private void tSalKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tSalKeyTyped
+        int largoTexto = tSal.getText().length();
+        if(largoTexto>=8){
+            evt.consume();
+        }
+        
+        char c = evt.getKeyChar();
+        if(c<'0' || c>'9'){            
+            evt.consume();
+        }
+    }//GEN-LAST:event_tSalKeyTyped
+
+    private void tNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tNombreKeyTyped
+        char c = evt.getKeyChar();
+        if(c<'A' || c>'Z'){
+            if(c<'a' || c>'z'){
+                evt.consume();
+            }
+        }
+    }//GEN-LAST:event_tNombreKeyTyped
+
+    private void agregar(){
+        String nombreUsu = tNombreUsu.getText();
+        String contrasena = tContra.getText();
+        String nombre = tNombre.getText();
+        String cedula = tCedula.getText();
+        String cargo = "Gerente";
+        String correo = tCorreo.getText();
+        String cuenta = tCuentaBan.getText();
+        String genero = comboxGenero.getItemAt(comboxGenero.getSelectedIndex());
+        String direccion = tDir.getText();
+        String telefono = tTel.getText();
+        String salario = tSal.getText();
+        String sede = comboxSedes.getItemAt(comboxSedes.getSelectedIndex());
+        String diaCumple = comboxDia.getItemAt(comboxDia.getSelectedIndex());
+        String mesCumple = comboxMes.getItemAt(comboxMes.getSelectedIndex());
+        String anoCumple = comboxAno.getItemAt(comboxAno.getSelectedIndex());
+                       
+        boolean validacion = validarCampos(nombreUsu,contrasena,nombre,cedula,correo,cuenta,direccion,telefono,salario,diaCumple,mesCumple,anoCumple);
+        if(validacion){
+            
+        }        
+    }
+    
+    private void modificar(){
+        
+    }
+    
+    private void consultar(){
+        
+    }
+    
+    private void despedir(){
+        
+    }
+    
+    private void bAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAceptarActionPerformed
+        switch(botonAceptar){
+            //Agregar
+            case 1:
+                agregar();
+                break;
+            
+            //Modificar
+            case 2:
+                modificar();
+                break;
+            
+            //Consultar
+            case 3:
+                consultar();
+                break;
+                
+            //Despedir
+            case 4:
+                despedir();
+                break;
+        }
+    }//GEN-LAST:event_bAceptarActionPerformed
+
+    private void comboxEmpleItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboxEmpleItemStateChanged
+        if(comboxEmple.getSelectedIndex() == 0){
+            bAceptar.setEnabled(false);
+        }else{
+            bAceptar.setEnabled(true);
+        }
+    }//GEN-LAST:event_comboxEmpleItemStateChanged
+
+    private void comboxSedesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboxSedesItemStateChanged
+        if(comboxSedes.getSelectedIndex() == 0){
+            bAceptar.setEnabled(false);
+        }else{
+            bAceptar.setEnabled(true);
+        }
+    }//GEN-LAST:event_comboxSedesItemStateChanged
 
     
     //Quita los campos usados en la función agregar, consultar y despedir (ej:nombre,cedula,genero,cargo)
