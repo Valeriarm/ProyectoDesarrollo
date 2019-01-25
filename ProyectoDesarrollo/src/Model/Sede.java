@@ -10,25 +10,27 @@ package Model;
  * @author MATEO
  */
 public class Sede {
-    private int idSede;
+    private String idSede;
     private String nombreSede;
     private String direccion;
     private String fechaCreacion;
     private String fechaFinalizacion;
+    private String idGerente;
 
-    public Sede(int idSede, String nombreSede, String direccion, String fechaCreacion, String fechaFinalizacion) {
+    public Sede(String idSede, String nombreSede, String direccion, String fechaCreacion, String fechaFinalizacion, String idGerente) {
         this.idSede = idSede;
         this.nombreSede = nombreSede;
         this.direccion = direccion;
         this.fechaCreacion = fechaCreacion;
         this.fechaFinalizacion = fechaFinalizacion;
+        this.idGerente = idGerente;
     }
     
-    public int getIdSede() {
+    public String getIdSede() {
         return idSede;
     }
 
-    public void setIdSede(int idSede) {
+    public void setIdSede(String idSede) {
         this.idSede = idSede;
     }
 
@@ -63,5 +65,14 @@ public class Sede {
     public void setFechaFinalizacion(String fechaFinalizacion) {
         this.fechaFinalizacion = fechaFinalizacion;
     }
+
+    public String getIdGerente() {
+        return idGerente;
+    }
+
+    public void setIdGerente(String idGerente) {
+        this.idGerente = idGerente;
+    }
+    
     
 }
