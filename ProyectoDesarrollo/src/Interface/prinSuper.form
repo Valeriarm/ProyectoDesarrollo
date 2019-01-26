@@ -103,6 +103,12 @@
           </SubComponents>
         </Container>
         <Container class="javax.swing.JSplitPane" name="jSplitPane2">
+          <Properties>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Cursor Por defecto"/>
+            </Property>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
               <BorderConstraints direction="Center"/>
@@ -123,11 +129,11 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace min="-2" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="bAgregar" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="bModf" alignment="0" max="32767" attributes="0"/>
-                              <Component id="bConsul" max="32767" attributes="0"/>
                               <Component id="bDespedir" max="32767" attributes="0"/>
+                              <Component id="bAgregar" alignment="0" max="32767" attributes="0"/>
+                              <Component id="bConsul" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -144,7 +150,7 @@
                           <Component id="bConsul" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="bDespedir" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="129" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="129" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -161,6 +167,9 @@
                     <Property name="text" type="java.lang.String" value="Agregar"/>
                     <Property name="borderPainted" type="boolean" value="false"/>
                     <Property name="contentAreaFilled" type="boolean" value="false"/>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[125, 57]"/>
+                    </Property>
                   </Properties>
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="bAgregarMouseClicked"/>
@@ -177,6 +186,9 @@
                     <Property name="text" type="java.lang.String" value="Modificar"/>
                     <Property name="borderPainted" type="boolean" value="false"/>
                     <Property name="contentAreaFilled" type="boolean" value="false"/>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[125, 57]"/>
+                    </Property>
                   </Properties>
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="bModfMouseClicked"/>
@@ -193,9 +205,17 @@
                     <Property name="text" type="java.lang.String" value="Consultar"/>
                     <Property name="borderPainted" type="boolean" value="false"/>
                     <Property name="contentAreaFilled" type="boolean" value="false"/>
+                    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[119, 57]"/>
+                    </Property>
+                    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[119, 57]"/>
+                    </Property>
+                    <Property name="name" type="java.lang.String" value="" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="bConsulMouseClicked"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bConsulActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="bDespedir">
@@ -209,6 +229,9 @@
                     <Property name="text" type="java.lang.String" value="Despedir"/>
                     <Property name="borderPainted" type="boolean" value="false"/>
                     <Property name="contentAreaFilled" type="boolean" value="false"/>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[125, 57]"/>
+                    </Property>
                   </Properties>
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="bDespedirMouseClicked"/>
@@ -217,6 +240,9 @@
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="jPanel4">
+              <Properties>
+                <Property name="enabled" type="boolean" value="false"/>
+              </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
                   <JSplitPaneConstraints position="right"/>
@@ -242,21 +268,19 @@
                                           <Component id="comboxAno" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                                  <Component id="labNombreUsu" alignment="0" max="32767" attributes="0"/>
-                                                  <Component id="labCedula" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="labCargo" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="labCorreo" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="labCuentaBan" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="labGenero" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="labNombre" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="labTel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="labSal" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="labSede" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="labEmple" alignment="0" max="32767" attributes="0"/>
-                                              </Group>
+                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Component id="labCedula" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="labCargo" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="labCorreo" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="labCuentaBan" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="labGenero" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="labNombre" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="labTel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="labSal" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="labSede" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="labEmple" alignment="0" max="-2" attributes="0"/>
                                               <Component id="labContra" min="-2" max="-2" attributes="0"/>
+                                              <Component id="labNombreUsu" alignment="0" max="32767" attributes="0"/>
                                           </Group>
                                           <EmptySpace type="separate" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -272,7 +296,7 @@
                                               <Component id="comboxCargo" alignment="0" max="32767" attributes="0"/>
                                               <Component id="tContra" alignment="0" max="32767" attributes="0"/>
                                               <Component id="tNombreUsu" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="comboxEmple" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="comboxEmple" alignment="0" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                   </Group>
@@ -282,17 +306,17 @@
                                   <Component id="bAceptar" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace pref="106" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="106" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="labEmple" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="comboxEmple" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="comboxEmple" min="-2" max="-2" attributes="0"/>
+                              <Component id="labEmple" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -363,7 +387,7 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="bAceptar" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="24" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -696,6 +720,9 @@
                 <Component class="javax.swing.JLabel" name="labEmple">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Empleado:"/>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[94, 14]"/>
+                    </Property>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JComboBox" name="comboxEmple">
@@ -706,6 +733,10 @@
                       </StringArray>
                     </Property>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[152, 20]"/>
+                    </Property>
+                    <Property name="name" type="java.lang.String" value="" noResource="true"/>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[152, 20]"/>
                     </Property>
                   </Properties>
