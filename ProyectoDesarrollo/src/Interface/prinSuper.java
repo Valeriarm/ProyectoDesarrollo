@@ -5,6 +5,7 @@
  */
 package Interface;
 
+import Controller.DBConnection;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,8 +25,12 @@ public class prinSuper extends javax.swing.JFrame {
     //1:Agregar, 2:Modificar, 3:Consultar, 4:Despedir, 0:nada
     private int botonAceptar = 0; 
     
-    public prinSuper() {
+    DBConnection bD;
+    
+    public prinSuper(DBConnection baseDatos) {
         initComponents();
+        
+        bD = baseDatos;
         
         //Fecha
         Date fechaSist = new Date(); 
@@ -163,11 +168,15 @@ public class prinSuper extends javax.swing.JFrame {
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
+        jSplitPane2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jSplitPane2.setEnabled(false);
+
         bAgregar.setForeground(new java.awt.Color(51, 51, 51));
         bAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO addUser.png"))); // NOI18N
         bAgregar.setText("Agregar");
         bAgregar.setBorderPainted(false);
         bAgregar.setContentAreaFilled(false);
+        bAgregar.setPreferredSize(new java.awt.Dimension(125, 57));
         bAgregar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bAgregarMouseClicked(evt);
@@ -179,6 +188,7 @@ public class prinSuper extends javax.swing.JFrame {
         bModf.setText("Modificar");
         bModf.setBorderPainted(false);
         bModf.setContentAreaFilled(false);
+        bModf.setPreferredSize(new java.awt.Dimension(125, 57));
         bModf.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bModfMouseClicked(evt);
@@ -190,9 +200,17 @@ public class prinSuper extends javax.swing.JFrame {
         bConsul.setText("Consultar");
         bConsul.setBorderPainted(false);
         bConsul.setContentAreaFilled(false);
+        bConsul.setMaximumSize(new java.awt.Dimension(119, 57));
+        bConsul.setMinimumSize(new java.awt.Dimension(119, 57));
+        bConsul.setName(""); // NOI18N
         bConsul.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bConsulMouseClicked(evt);
+            }
+        });
+        bConsul.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bConsulActionPerformed(evt);
             }
         });
 
@@ -201,6 +219,7 @@ public class prinSuper extends javax.swing.JFrame {
         bDespedir.setText("Despedir");
         bDespedir.setBorderPainted(false);
         bDespedir.setContentAreaFilled(false);
+        bDespedir.setPreferredSize(new java.awt.Dimension(125, 57));
         bDespedir.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bDespedirMouseClicked(evt);
@@ -213,28 +232,30 @@ public class prinSuper extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(bAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(bModf, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(bConsul, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(bDespedir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(bDespedir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bConsul, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(bAgregar)
+                .addComponent(bAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(bModf)
+                .addComponent(bModf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(bConsul)
+                .addComponent(bConsul, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(bDespedir)
-                .addContainerGap(129, Short.MAX_VALUE))
+                .addComponent(bDespedir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(129, 129, 129))
         );
 
         jSplitPane2.setLeftComponent(jPanel3);
+
+        jPanel4.setEnabled(false);
 
         labNombreUsu.setText("Nombre de usuario:");
 
@@ -340,9 +361,12 @@ public class prinSuper extends javax.swing.JFrame {
         });
 
         labEmple.setText("Empleado:");
+        labEmple.setPreferredSize(new java.awt.Dimension(94, 14));
 
         comboxEmple.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No seleccionado" }));
         comboxEmple.setMinimumSize(new java.awt.Dimension(152, 20));
+        comboxEmple.setName(""); // NOI18N
+        comboxEmple.setPreferredSize(new java.awt.Dimension(152, 20));
         comboxEmple.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 comboxEmpleItemStateChanged(evt);
@@ -373,20 +397,19 @@ public class prinSuper extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(comboxAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(labNombreUsu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(labCedula)
-                                        .addComponent(labCargo)
-                                        .addComponent(labCorreo)
-                                        .addComponent(labCuentaBan)
-                                        .addComponent(labGenero)
-                                        .addComponent(labNombre)
-                                        .addComponent(labTel)
-                                        .addComponent(labSal)
-                                        .addComponent(labSede)
-                                        .addComponent(labEmple, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addComponent(labContra))
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(labCedula)
+                                    .addComponent(labCargo)
+                                    .addComponent(labCorreo)
+                                    .addComponent(labCuentaBan)
+                                    .addComponent(labGenero)
+                                    .addComponent(labNombre)
+                                    .addComponent(labTel)
+                                    .addComponent(labSal)
+                                    .addComponent(labSede)
+                                    .addComponent(labEmple, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(labContra)
+                                    .addComponent(labNombreUsu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(tDir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -401,19 +424,19 @@ public class prinSuper extends javax.swing.JFrame {
                                     .addComponent(comboxCargo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(tContra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(tNombreUsu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(comboxEmple, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                    .addComponent(comboxEmple, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(163, 163, 163)
                         .addComponent(bAceptar)))
-                .addContainerGap(106, Short.MAX_VALUE))
+                .addGap(106, 106, 106))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labEmple)
-                    .addComponent(comboxEmple, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(comboxEmple, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labEmple, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labNombreUsu)
@@ -470,7 +493,7 @@ public class prinSuper extends javax.swing.JFrame {
                     .addComponent(comboxAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bAceptar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         jSplitPane2.setRightComponent(jPanel4);
@@ -703,6 +726,10 @@ public class prinSuper extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_comboxSedesItemStateChanged
 
+    private void bConsulActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bConsulActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bConsulActionPerformed
+
     
     //Quita los campos usados en la función agregar, consultar y despedir (ej:nombre,cedula,genero,cargo)
     //varControl: true para indicar que sea visible los campos de agregar, false para los de consultar y despedir
@@ -796,7 +823,7 @@ public class prinSuper extends javax.swing.JFrame {
     public static void main(String args[]) {            
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new prinSuper().setVisible(true);
+                //new prinSuper().setVisible(true);
             }
         });
     }
