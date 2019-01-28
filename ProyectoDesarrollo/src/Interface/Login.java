@@ -6,6 +6,7 @@
 package Interface;
 
 import Controller.DBConnection;
+import java.awt.event.KeyEvent;
 import java.security.Principal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,7 +61,7 @@ public class Login extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         tContra = new javax.swing.JPasswordField();
         tNombreUsu = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        bIngresar = new javax.swing.JButton();
         labMensaje = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
@@ -84,15 +85,20 @@ public class Login extends javax.swing.JFrame {
                 tContraActionPerformed(evt);
             }
         });
+        tContra.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tContraKeyTyped(evt);
+            }
+        });
 
         tNombreUsu.setFont(new java.awt.Font("Ebrima", 0, 18)); // NOI18N
 
-        jButton1.setFont(new java.awt.Font("Ebrima", 0, 18)); // NOI18N
-        jButton1.setText("Ingresar");
-        jButton1.setToolTipText("");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        bIngresar.setFont(new java.awt.Font("Ebrima", 0, 18)); // NOI18N
+        bIngresar.setText("Ingresar");
+        bIngresar.setToolTipText("");
+        bIngresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                bIngresarActionPerformed(evt);
             }
         });
 
@@ -109,7 +115,7 @@ public class Login extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel2Layout.createSequentialGroup()
                             .addGap(209, 209, 209)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(bIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel2Layout.createSequentialGroup()
                             .addGap(106, 106, 106)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -135,7 +141,7 @@ public class Login extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(labMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(bIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
@@ -163,7 +169,7 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tContraActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void bIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bIngresarActionPerformed
         String user = tNombreUsu.getText();
         String contra = String.valueOf(tContra.getPassword());
         
@@ -185,7 +191,10 @@ public class Login extends javax.swing.JFrame {
                 }
             }            
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_bIngresarActionPerformed
+
+    private void tContraKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tContraKeyTyped
+    }//GEN-LAST:event_tContraKeyTyped
 
     /**
      * @param args the command line arguments
@@ -228,7 +237,7 @@ public class Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton bIngresar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
