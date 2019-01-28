@@ -6,16 +6,23 @@ DROP TABLE IF EXISTS Cotizacion CASCADE;
 DROP TABLE IF EXISTS Venta CASCADE;
 DROP TABLE IF EXISTS Orden_Trabajo CASCADE;
 DROP TABLE IF EXISTS Sede CASCADE;
+DROP TABLE IF EXISTS SuperUsuario CASCADE;
 
 
 --
--- TABLE: Gerente
+-- TABLE: SuperUsuario
 -- 
 --  
 
 CREATE TABLE SuperUsuario (
   id_SuperUsuario VARCHAR(100) NOT NULL,
-  contrasenia VARCHAR(100) NOT NULL,
+  nombre_SuperUsuario VARCHAR (100) NOT NULL,
+  cedula VARCHAR (100) NOT NULL,
+  correo  VARCHAR(100) NOT NULL,
+  fecha_Nacimiento VARCHAR(100) NOT NULL ,
+  nombre_Usuario VARCHAR(100) NOT NULL,
+  contrasenia VARCHAR(100) NOT NULL,  
+
 
   PRIMARY KEY (id_SuperUsuario)
 );
@@ -34,13 +41,14 @@ CREATE TABLE Gerente (
   genero int NOT NULL ,
   direccion VARCHAR(100) NOT NULL ,
   telefono VARCHAR(100) NOT NULL ,
-  salario double NOT NULL ,
+  salario float NOT NULL ,
   fecha_Nacimiento VARCHAR(100) NOT NULL ,
   cuenta_Bancaria VARCHAR(100) NOT NULL ,
   fecha_Registro VARCHAR(100) NOT NULL,
   nombre_Usuario VARCHAR(100) NOT NULL,
   contrasenia VARCHAR(100) NOT NULL,  
   habilitado boolean NOT NULL,
+  fecha_Despido VARCHAR(100),
 
 
   PRIMARY KEY (id_Gerente)
@@ -64,13 +72,14 @@ CREATE TABLE Vendedor (
   genero int NOT NULL ,
   fecha_Nacimiento VARCHAR(100) NOT NULL ,
   e_mail VARCHAR(100) NOT NULL ,
-  salario double NOT NULL ,
+  salario float NOT NULL ,
   cuenta_Bancaria VARCHAR(100) NOT NULL ,
   fecha_Registro VARCHAR(100) NOT NULL,
   nombre_Usuario VARCHAR(100) NOT NULL,
   contrasenia VARCHAR(100) NOT NULL,
   id_Gerente VARCHAR(100) NOT NULL, 
   habilitado boolean NOT NULL,
+  fecha_Despido VARCHAR(100),
 
   PRIMARY KEY (id_Vendedor),
   FOREIGN KEY (id_Gerente) REFERENCES Gerente(id_Gerente)
@@ -94,10 +103,12 @@ CREATE TABLE Jefe_Taller (
   genero int NOT NULL ,
   fecha_Nacimiento VARCHAR(100) NOT NULL ,
   e_mail VARCHAR(100) NOT NULL ,
-  salario double NOT NULL ,
+  salario float NOT NULL ,
   cuenta_Bancaria VARCHAR(100) NOT NULL ,
   fecha_Registro VARCHAR(100) NOT NULL,
-  id_Gerente VARCHAR(100) NOT NULL,  
+  id_Gerente VARCHAR(100) NOT NULL,
+  habilitado boolean NOT NULL,
+  fecha_Despido VARCHAR(100),  
 
   PRIMARY KEY (id_Jefe),
   FOREIGN KEY (id_Gerente) REFERENCES Gerente(id_Gerente)
@@ -130,7 +141,7 @@ CREATE TABLE Sede (
 CREATE TABLE Inventario (
   id_Producto VARCHAR(100) NOT NULL,
   nombre_Producto VARCHAR(100) NOT NULL ,
-  valor_Unitario double NOT NULL ,
+  valor_Unitario float NOT NULL ,
   descripcion_Producto VARCHAR(100) NOT NULL ,
   lote int NOT NULL ,
   catidad_Lote int NOT NULL,
@@ -151,7 +162,7 @@ CREATE TABLE Venta (
   nombre_Cliente VARCHAR(100) NOT NULL ,
   telefono_Cliente VARCHAR(100) NOT NULL ,
   cedula_Cliente int NOT NULL ,
-  valor_Venta double NOT NULL ,
+  valor_Venta float NOT NULL ,
   descripcion_Venta VARCHAR(100) NOT NULL,
   id_Vendedor VARCHAR(100) NOT NULL,
 
@@ -171,7 +182,7 @@ CREATE TABLE Orden_Trabajo (
   nombre_Cliente VARCHAR(100) NOT NULL ,
   id_Cliente VARCHAR(100) NOT NULL,
   telefono_Cliente VARCHAR(100) NOT NULL ,
-  valor_Orden double NOT NULL ,
+  valor_Orden float NOT NULL ,
   es_Cliente int NOT NULL,
   descripcion_Orden VARCHAR(100) NOT NULL ,
   estado_Orden VARCHAR(100) NOT NULL ,
@@ -191,7 +202,7 @@ CREATE TABLE Orden_Trabajo (
 CREATE TABLE Cotizacion (
   id_Cotizacion VARCHAR(100) NOT NULL,
   nombre_Producto VARCHAR(100) NOT NULL ,
-  valor_Unitario double NOT NULL ,
+  valor_Unitario float NOT NULL ,
   cantidad int NOT NULL ,
   descripcion_Producto VARCHAR(100) NOT NULL ,
   nombre_Empresa VARCHAR(100) NOT NULL ,
@@ -202,7 +213,3 @@ CREATE TABLE Cotizacion (
   PRIMARY KEY (id_Cotizacion),
   FOREIGN KEY (id_Vendedor) REFERENCES Vendedor(id_Vendedor) 
 );
-
-
-
-
