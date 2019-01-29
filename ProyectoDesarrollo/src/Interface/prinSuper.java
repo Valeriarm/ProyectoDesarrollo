@@ -6,7 +6,7 @@
 package Interface;
 
 import Controller.DBConnection;
-import Model.Manager;
+import Model.Gerente;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -157,7 +157,7 @@ public class prinSuper extends javax.swing.JFrame {
     
     private void llenarCamposModf(){
         String id = listaIds[comboxEmple.getSelectedIndex()-1];
-        Manager ger = bD.readManagerById(id);
+        Gerente ger = bD.leerGerentePorId(id);
         
         tNombreUsu.setText(ger.getNombreUsuario());
         tContra.setText(ger.getContrasena());
@@ -558,6 +558,11 @@ public class prinSuper extends javax.swing.JFrame {
                 comboxEmpleItemStateChanged(evt);
             }
         });
+        comboxEmple.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboxEmpleActionPerformed(evt);
+            }
+        });
 
         labContra.setText("Contraseña:");
 
@@ -921,7 +926,7 @@ public class prinSuper extends javax.swing.JFrame {
         
         //Datos Anteriores
         String id = listaIds[comboxEmple.getSelectedIndex()-1];
-        Manager ger = bD.readManagerById(id);
+        Gerente ger = bD.leerGerentePorId(id);
         
         //Comparación
         if(!nombreUsu.equals(ger.getNombreUsuario())) mensaje = mensaje+"Nombre Usuario\n";
@@ -941,7 +946,7 @@ public class prinSuper extends javax.swing.JFrame {
             int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
             
             if(opcion==0){ //Modificar
-                String respuesta = bD.updateManager(id, nombre, cedula, "Gerente", correo, genero, direccion, telefono, salario, fechaNac, cuenta, nombreUsu, contrasena);
+                String respuesta = bD.actualizarGerente(id, nombre, cedula, "Gerente", correo, genero, direccion, telefono, salario, fechaNac, cuenta, nombreUsu, contrasena);
                 JOptionPane.showMessageDialog(this, respuesta);
             }
         }else{
@@ -952,7 +957,7 @@ public class prinSuper extends javax.swing.JFrame {
     
     private void consultar(){
         String id = listaIds[comboxEmple.getSelectedIndex()-1];
-        Manager ger = bD.readManagerById(id);
+        Gerente ger = bD.leerGerentePorId(id);
         
         String genero;
         if(ger.getGenero()==0){
@@ -982,7 +987,7 @@ public class prinSuper extends javax.swing.JFrame {
     
     private void despedir(){
         String id = listaIds[comboxEmple.getSelectedIndex()-1];
-        Manager ger = bD.readManagerById(id);
+        Gerente ger = bD.leerGerentePorId(id);
         
         if(ger==null){
           JOptionPane.showMessageDialog(this, "El gerente no se encunetra registrado en el sistema"); ///CAMBIAR EL MENSAJE? 
@@ -1045,6 +1050,10 @@ public class prinSuper extends javax.swing.JFrame {
     private void tNombreUsuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tNombreUsuActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tNombreUsuActionPerformed
+
+    private void comboxEmpleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboxEmpleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboxEmpleActionPerformed
 
     
     //Quita los campos usados en la función agregar, consultar y despedir (ej:nombre,cedula,genero,cargo)

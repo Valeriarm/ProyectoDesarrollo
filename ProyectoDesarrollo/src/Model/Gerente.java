@@ -9,9 +9,9 @@ package Model;
  *
  * @author crist
  */
-public class Manager extends User{
+public class Gerente extends Usuario{
     
-    public Manager(String id, String nombre, String cedula, 
+    public Gerente(String id, String nombre, String cedula, 
             String cargo, String correo, int genero, String direccion, 
             String telefono, float salario, String fechaNacimiento, 
             String cuentaBancaria, String fechaRegistro, String nombreUsuario,

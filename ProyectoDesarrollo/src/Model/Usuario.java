@@ -9,7 +9,7 @@ package Model;
  * Clase padre para todos los empleados de la empresa XYZ
  * @author crist
  */
-public class User {
+public class Usuario {
     
     //-------------------------------------------------------------------------
     // CONSTANTES
@@ -81,7 +81,7 @@ public class User {
      * @param contrasena
      * @param habilitado
      */
-    public User(String id, String nombre, String cedula, 
+    public Usuario(String id, String nombre, String cedula, 
             String cargo, String correo, int genero, String direccion, 
             String telefono, float salario, String fechaNacimiento, 
             String cuentaBancaria, String fechaRegistro, String nombreUsuario,
@@ -118,7 +118,7 @@ public class User {
      * @param cuentaBancaria
      * @param fechaRegistro 
      */
-    public User(String id, String nombre, String cedula, 
+    public Usuario(String id, String nombre, String cedula, 
             String cargo, String correo, int genero, String direccion, 
             String telefono, float salario, String fechaNacimiento, 
             String cuentaBancaria, String fechaRegistro) {
@@ -145,7 +145,7 @@ public class User {
      * @param correo
      * @param fechaNacimiento 
      */
-    public User(String id, String nombreUsuario, String cedula, String correo, 
+    public Usuario(String id, String nombreUsuario, String cedula, String correo, 
             String fechaNacimiento, String username, String password) {
         this.id = id;
         this.nombreUsuario = nombreUsuario;
