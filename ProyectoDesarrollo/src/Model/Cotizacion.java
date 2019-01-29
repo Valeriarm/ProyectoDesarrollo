@@ -9,7 +9,7 @@ package Model;
  *
  * @author crist
  */
-public class Quotation {
+public class Cotizacion {
     
     //-------------------------------------------------------------------------
     // ATRIBUTOS
@@ -37,7 +37,7 @@ public class Quotation {
     // CONSTRUCTOR
     //-------------------------------------------------------------------------
 
-    public Quotation(String id, String nombreProducto, float valorUnitario, int cantidad, String descripcionProducto, String nombreEmpresa, String telefonoEmpresa, String direccionEmpresa, String idVendedor) {
+    public Cotizacion(String id, String nombreProducto, float valorUnitario, int cantidad, String descripcionProducto, String nombreEmpresa, String telefonoEmpresa, String direccionEmpresa, String idVendedor) {
         this.id = id;
         this.nombreProducto = nombreProducto;
         this.valorUnitario = valorUnitario;

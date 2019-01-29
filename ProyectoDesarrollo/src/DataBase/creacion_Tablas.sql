@@ -126,7 +126,7 @@ CREATE TABLE Sede (
   direccion VARCHAR(100) NOT NULL ,
   fecha_Creacion VARCHAR(100) NOT NULL ,
   fecha_Finalizacion VARCHAR(100) NOT NULL,
-  id_Gerente VARCHAR(100) NOT NULL,
+  id_Gerente VARCHAR(100),
 
   PRIMARY KEY (id_Sede),
   FOREIGN KEY (id_Gerente) REFERENCES Gerente(id_Gerente)

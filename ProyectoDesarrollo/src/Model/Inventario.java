@@ -9,7 +9,7 @@ package Model;
  *
  * @author MATEO
  */
-public class Inventory {
+public class Inventario {
     private String idProducto;
     private String nombreProducto;
     private float valorUnitario;
@@ -18,7 +18,7 @@ public class Inventory {
     private int cantidadLote;
     private String idJefe;
 
-    public Inventory(String idProducto, String nombreProducto, float valorUnitario, String descripcion, int lote, int cantidadLote, String idJefe) {
+    public Inventario(String idProducto, String nombreProducto, float valorUnitario, String descripcion, int lote, int cantidadLote, String idJefe) {
         this.idProducto = idProducto;
         this.nombreProducto = nombreProducto;
         this.valorUnitario = valorUnitario;
