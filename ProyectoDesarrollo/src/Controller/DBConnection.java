@@ -1252,7 +1252,7 @@ public class DBConnection {
     
         
     public String createSede(String id, String nombreSede, String direccion, String fechaCreacion,
-                             String fechaFinalizacion, String idGerente){
+                             String fechaFinalizacion){
         connect();
         sql = "SELECT id_Sede FROM Sede WHERE id_Sede = '"+id+"'";
         try {
@@ -1264,7 +1264,7 @@ public class DBConnection {
                 sql = "SELECT id_Sede FROM Sede WHERE id_Sede = '"+id+"'";
                 rs = st.executeQuery(sql);
                 if(rs.next()){
-                    sql = "INSERT INTO Sede VALUES ('"+id+"','"+nombreSede+"','"+direccion+"','"+fechaCreacion+"','"+fechaFinalizacion+"','"+idGerente+"')";                
+                    sql = "INSERT INTO Sede VALUES ('"+id+"','"+nombreSede+"','"+direccion+"','"+fechaCreacion+"','"+fechaFinalizacion+"')";                
                     st.executeUpdate(sql);
                     rs.close();
                     st.close();
