@@ -9,7 +9,7 @@ package Model;
  * Clase del super usuario encargado de gestionar los gerentes en la empresa XYZ
  * @author crist
  */
-public class SU extends User{
+public class SU extends Usuario{
     
     /**
      * Constructor del super usuario

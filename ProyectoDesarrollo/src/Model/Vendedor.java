@@ -9,11 +9,11 @@ package Model;
  *
  * @author crist
  */
-public class Seller extends User{
+public class Vendedor extends Usuario{
     
     private String managerId;
     
-    public Seller(String id, String nombre,  String cedula, 
+    public Vendedor(String id, String nombre,  String cedula, 
             String cargo, String telefono, String direccion, int genero,
             String fechaNacimiento, String correo, float salario, 
             String cuentaBancaria, String fechaRegistro, String nombreUsuario,
