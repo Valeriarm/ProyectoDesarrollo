@@ -1,4 +1,4 @@
-﻿DROP TABLE IF EXISTS Gerente CASCADE;
+DROP TABLE IF EXISTS Gerente CASCADE;
 DROP TABLE IF EXISTS Vendedor CASCADE;
 DROP TABLE IF EXISTS Jefe_Taller CASCADE;
 DROP TABLE IF EXISTS Inventario CASCADE;
@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS SuperUsuario CASCADE;
 
 
 --
--- TABLE: Gerente
+-- TABLE: SuperUsuario
 -- 
 --  
 
@@ -48,6 +48,7 @@ CREATE TABLE Gerente (
   nombre_Usuario VARCHAR(100) NOT NULL,
   contrasenia VARCHAR(100) NOT NULL,  
   habilitado boolean NOT NULL,
+  fecha_Despido VARCHAR(100),
 
 
   PRIMARY KEY (id_Gerente)
@@ -78,6 +79,7 @@ CREATE TABLE Vendedor (
   contrasenia VARCHAR(100) NOT NULL,
   id_Gerente VARCHAR(100) NOT NULL, 
   habilitado boolean NOT NULL,
+  fecha_Despido VARCHAR(100),
 
   PRIMARY KEY (id_Vendedor),
   FOREIGN KEY (id_Gerente) REFERENCES Gerente(id_Gerente)
@@ -104,7 +106,9 @@ CREATE TABLE Jefe_Taller (
   salario float NOT NULL ,
   cuenta_Bancaria VARCHAR(100) NOT NULL ,
   fecha_Registro VARCHAR(100) NOT NULL,
-  id_Gerente VARCHAR(100) NOT NULL,  
+  id_Gerente VARCHAR(100) NOT NULL,
+  habilitado boolean NOT NULL,
+  fecha_Despido VARCHAR(100),  
 
   PRIMARY KEY (id_Jefe),
   FOREIGN KEY (id_Gerente) REFERENCES Gerente(id_Gerente)
@@ -209,7 +213,3 @@ CREATE TABLE Cotizacion (
   PRIMARY KEY (id_Cotizacion),
   FOREIGN KEY (id_Vendedor) REFERENCES Vendedor(id_Vendedor) 
 );
-
-
-
-
