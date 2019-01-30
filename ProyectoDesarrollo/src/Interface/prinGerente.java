@@ -5,11 +5,17 @@
  */
 package Interface;
 
+import Controller.DBConnection;
+import Model.*;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 /**
@@ -20,10 +26,14 @@ public class prinGerente extends javax.swing.JFrame {
     
     //la variable botonAceptar indica el uso que se le da al botón de la izquierda para cada boton principal
     //1:Agregar, 2:Modificar, 3:Consultar, 4:Despedir, 0:nada
-    private int botonAceptar = 0; 
+    private int botonAceptar = 0;
+    private DBConnection bD;
+    private String[] listaIds;
     
-    public prinGerente() {
+    public prinGerente(DBConnection baseDatos) {
         initComponents();
+        
+        bD = baseDatos;
         
         //Fecha
         Date fechaSist = new Date(); 
@@ -60,6 +70,442 @@ public class prinGerente extends javax.swing.JFrame {
         Calendar hoy = Calendar.getInstance();
         hora.setText(String.format(format.format(fechaHora), hoy));
       
+        }
+    }
+    
+    public static boolean validarFecha(String fecha) {
+        try {
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+            formatoFecha.setLenient(false);
+            formatoFecha.parse(fecha);
+        } catch (ParseException e) {
+            return false;
+        }
+            return true;
+    }    
+    
+    private boolean validarCampos(String nombreUsu, String nombre, String cedula, String correo, String cuenta, String direccion, String telefono, String salario, String fechaNac) {
+        boolean validacion = true, fechaValida; // validacion, en un principio, es solo para los campos vacios
+        String mensaje = ""; //En caso de hayan campos invalidos
+        
+        if(nombreUsu.equals("")){ mensaje = mensaje+"- Nombre de Usuario\n"; validacion = false; }       
+        if(nombre.equals("")){ mensaje = mensaje+"- Nombre\n"; validacion = false; }
+        if(cedula.equals("")){ mensaje = mensaje+"- Cedula\n"; validacion = false; }
+        if(correo.equals("")){ mensaje = mensaje+"- Correo\n"; validacion = false; }
+        if(cuenta.equals("")){ mensaje = mensaje+"- Cuenta\n"; validacion = false; }
+        if(direccion.equals("")){ mensaje = mensaje+"- Direccion\n"; validacion = false; }
+        if(telefono.equals("")){ mensaje = mensaje+"- Telefono\n"; validacion = false; }
+        if(salario.equals("")){ mensaje = mensaje+"- Salario\n"; validacion = false; }
+        fechaValida = validarFecha(fechaNac);
+        
+        System.out.println(mensaje);
+        
+        if(!validacion){ //Hay campos vacios
+            mensaje = "Los siguientes campos están vacios:\n"+mensaje;
+            if(fechaValida) mensaje = "La fecha de nacimiento es invalida\n\n"+mensaje;
+        }else{
+            if(fechaValida){ //No hay campos vacios, pero la fecha es invalida
+                mensaje = "La fecha de nacimiento es invalida";
+                validacion = false; //Se cambia ya que la fecha no es valida
+            }
+        }
+        
+        if(!mensaje.equals("")) JOptionPane.showMessageDialog(this, mensaje);
+        
+        return validacion;
+    }
+    
+    
+        //Retorna una lista con los Ids de los empleados en listaEmpleados el cual es una lista de strings del
+    //tipo {"id1,nombre1,cedula1",..."idN,nombreN,cedulaN"} donde N es la cantiadad de empleados
+    private String[] obtenerListaIds(String[] listaEmpleados){
+        String[] listaDeIds = new String[listaEmpleados.length];
+        String[] empleado;
+        
+        for(int i=0; i<(listaDeIds.length); i++){
+            empleado = listaEmpleados[i].split(",");
+            listaDeIds[i] = empleado[0];
+        }
+        
+        return listaDeIds;
+    }
+    
+    //Retorna una lista con las opciones para combobox comboxEmple con el formato
+    //{"nombre1 cedula1",..."nombreN cedulaN"} obtenidas de listaEmpleado el cual es una lista de strings del
+    //tipo {"id1,nombre1,cedula1",..."idN,nombreN,cedulaN"} donde N es la cantiadad de empleados
+    private String[] obtenerOpciones(String[] listaEmpleados){
+        String[] opciones = new String[listaEmpleados.length+1];
+        String[] empleado;
+        opciones[0] = "No seleccionado";
+        
+        for(int i=0,j=1; i<(listaEmpleados.length); i++,j++){
+            empleado = listaEmpleados[i].split(",");
+            opciones[j] = empleado[1]+" "+empleado[2].replace("$","");
+        }
+        
+        return opciones;
+    }
+    
+    private void actualizarComboxEmpleVendedores(){
+        String empleados = bD.listarVendedores();        
+        
+        if(empleados.equals("")){ //No Hay empleados
+           String[] opciones = { "No seleccionado" };
+           comboxEmple.setModel(new DefaultComboBoxModel(opciones));
+        }else{ //Hay empleados
+            String[] listaEmpleados = empleados.split("$");
+            listaIds = obtenerListaIds(listaEmpleados);
+            String[] opciones = obtenerOpciones(listaEmpleados);
+            comboxEmple.setModel(new DefaultComboBoxModel(opciones));
+            
+        }
+    }
+    
+    
+    private void actualizarComboxEmpleJefes(){
+        String empleados = bD.listarJefesTaller();        
+        
+        if(empleados.equals("")){ //No Hay empleados
+           String[] opciones = { "No seleccionado" };
+           comboxEmple.setModel(new DefaultComboBoxModel(opciones));
+        }else{ //Hay empleados
+            String[] listaEmpleados = empleados.split("$");
+            listaIds = obtenerListaIds(listaEmpleados);
+            String[] opciones = obtenerOpciones(listaEmpleados);
+            comboxEmple.setModel(new DefaultComboBoxModel(opciones));
+            
+        }
+    }
+        
+        
+    //Limpia los campos(jTextfields) de la interfaz
+    private void limpiarCamposUsuarios(){
+        tNombreUsu.setText("");
+        tContra.setText("");
+        tNombre.setText("");
+        tCedula.setText("");
+        tCorreo.setText("");
+        tCuentaBan.setText("");
+        tDir.setText("");
+        tTel.setText("");
+        tSal.setText("");
+        tIdGerente.setText("");
+        comboxDia.setSelectedIndex(0);
+        comboxMes.setSelectedIndex(0);
+        comboxAno.setSelectedIndex(0);
+    }
+    
+    private void llenarCamposModfVendedor(){
+        String id = listaIds[comboxEmple.getSelectedIndex()-1];
+        Vendedor ven = bD.leerVendedorPorId(id);
+        
+        tNombreUsu.setText(ven.getNombreUsuario());
+        tContra.setText(ven.getContrasena());
+        tNombre.setText(ven.getNombre());
+        tCedula.setText(ven.getCedula());
+        tCorreo.setText(ven.getCorreo());
+        tCuentaBan.setText(ven.getCuentaBancaria());
+        comboxGenero.setSelectedIndex(ven.getGenero());
+        tDir.setText(ven.getDireccion());
+        tTel.setText(ven.getTelefono());
+        tSal.setText(Float.toString(ven.getSalario()));
+        tIdGerente.setText(ven.getManagerId());
+        
+        String[] fechaNac = ven.getFechaNacimiento().split("/");
+        int diaNac = Integer.parseInt(fechaNac[0]);
+        int mesNac = obtenerMesNum(fechaNac[1]);
+        int anoNac = Integer.parseInt(fechaNac[2]);
+        
+        comboxDia.setSelectedIndex(diaNac-1); //El Combobox empieza desde 0
+        comboxMes.setSelectedIndex(mesNac-1);
+        comboxAno.setSelectedIndex((anoNac-2000)*-1); //El año 2000 es la posición 0, *-1 porque puede dar negativo
+    }
+    
+    private void llenarCamposModfJefeTaller(){
+        String id = listaIds[comboxEmple.getSelectedIndex()-1];
+        JefeTaller jef = bD.leerJefeTallerPorId(id);
+        
+        tNombreUsu.setText(jef.getNombreUsuario());
+        tContra.setText(jef.getContrasena());
+        tNombre.setText(jef.getNombre());
+        tCedula.setText(jef.getCedula());
+        tCorreo.setText(jef.getCorreo());
+        tCuentaBan.setText(jef.getCuentaBancaria());
+        comboxGenero.setSelectedIndex(jef.getGenero());
+        tDir.setText(jef.getDireccion());
+        tTel.setText(jef.getTelefono());
+        tSal.setText(Float.toString(jef.getSalario()));
+        tIdGerente.setText(jef.getManagerId());
+        
+        String[] fechaNac = jef.getFechaNacimiento().split("/");
+        int diaNac = Integer.parseInt(fechaNac[0]);
+        int mesNac = obtenerMesNum(fechaNac[1]);
+        int anoNac = Integer.parseInt(fechaNac[2]);
+        
+        comboxDia.setSelectedIndex(diaNac-1); //El Combobox empieza desde 0
+        comboxMes.setSelectedIndex(mesNac-1);
+        comboxAno.setSelectedIndex((anoNac-2000)*-1); //El año 2000 es la posición 0, *-1 porque puede dar negativo
+    }
+    
+    //Retorna el valor numerico del mes, la variable mes tiene el formato puesto en el comboxMes
+    private int obtenerMesNum(String mes){
+        //ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic
+        switch(mes){
+            case "ene":
+                return 1;
+            case "feb":
+                return 2;
+            case "mar":
+                return 3;
+            case "abr":
+                return 4;
+            case "may":
+                return 5;
+            case "jun":
+                return 6;
+            case "jul":
+                return 7;
+            case "ago":
+                return 8;
+            case "sep":
+                return 9;
+            case "oct":
+                return 10;
+            case "nov":
+                return 11;
+            case "dic":
+                return 12;
+        }
+        return 0;
+    }
+    
+    // Calcula la edad de nacimiento apartir de un string de fecha, ejemplo del string "01/jul/1985"
+    private int calcularEdad(String nacimiento){
+        int edad,anoN,anoHoy,mesN,mesHoy,diaN,diaHoy;
+        Date fechaSist = new Date(); 
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        String fechaHoy = formato.format(fechaSist);
+        
+        String[] fechaAct = fechaHoy.split("/");        
+        String[] fechaNac = nacimiento.split("/");
+        
+        anoN = Integer.parseInt(fechaNac[2]);
+        anoHoy = Integer.parseInt(fechaAct[2]);
+        mesN = obtenerMesNum(fechaNac[1]);
+        mesHoy = Integer.parseInt(fechaAct[1]);
+        diaN = Integer.parseInt(fechaNac[0]);
+        diaHoy = Integer.parseInt(fechaAct[0]);
+        
+        edad = anoHoy-anoN;
+        
+        if(mesHoy<mesN) edad--;
+        if(mesHoy==mesN){
+            if(diaHoy<diaN){
+                edad--;
+            }            
+        }
+        
+        return edad;
+    }
+    
+    private void agregarVendedor(){
+        String nombreUsu = tNombreUsu.getText();
+        String nombre = tNombre.getText();
+        String cedula = tCedula.getText();
+        String cargo = comboxCargo.getSelectedItem().toString();
+        String correo = tCorreo.getText();
+        String cuenta = tCuentaBan.getText();
+        String idGerente = tIdGerente.getText();
+        int genero = comboxGenero.getSelectedIndex();
+        String direccion = tDir.getText();
+        String telefono = tTel.getText();
+        float salario;
+        if(tSal.getText().equals("")){
+            salario = 0;
+        }else{
+            salario = Float.valueOf(tSal.getText());
+        }
+        String diaCumple = comboxDia.getItemAt(comboxDia.getSelectedIndex());
+        String mesCumple = comboxMes.getItemAt(comboxMes.getSelectedIndex());
+        String anoCumple = comboxAno.getItemAt(comboxAno.getSelectedIndex());
+        String fechaNac = diaCumple+"/"+mesCumple+"/"+anoCumple;
+                       
+        boolean validacion = validarCampos(nombreUsu,nombre,cedula,correo,cuenta,direccion,telefono,tSal.getText(),fechaNac);
+        if(validacion){
+            //Fecha de reg
+            Date fechaSist = new Date(); 
+            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+            String fechaReg = formato.format(fechaSist);           
+            
+            String respuesta = bD.crearVendedor(nombre, cedula,cargo,telefono,direccion,genero,fechaNac,correo,salario, cuenta,fechaReg, nombreUsu,idGerente);
+            if(respuesta.contains("La cedula")) limpiarCamposUsuarios();
+            JOptionPane.showMessageDialog(this, respuesta);
+        }        
+    }
+    
+    private void agregarJefeTaller(){
+    String nombreUsu = tNombreUsu.getText();
+    String nombre = tNombre.getText();
+    String cedula = tCedula.getText();
+    String cargo = comboxCargo.getSelectedItem().toString();
+    String correo = tCorreo.getText();
+    String cuenta = tCuentaBan.getText();
+    int genero = comboxGenero.getSelectedIndex();
+    String direccion = tDir.getText();
+    String telefono = tTel.getText();
+    String idGerente = tIdGerente.getText();
+    float salario;
+    if(tSal.getText().equals("")){
+        salario = 0;
+    }else{
+        salario = Float.valueOf(tSal.getText());
+    }
+    String diaCumple = comboxDia.getItemAt(comboxDia.getSelectedIndex());
+    String mesCumple = comboxMes.getItemAt(comboxMes.getSelectedIndex());
+    String anoCumple = comboxAno.getItemAt(comboxAno.getSelectedIndex());
+    String fechaNac = diaCumple+"/"+mesCumple+"/"+anoCumple;
+
+    boolean validacion = validarCampos(nombreUsu,nombre,cedula,correo,cuenta,direccion,telefono,tSal.getText(),fechaNac);
+    if(validacion){
+        //Fecha de reg
+        Date fechaSist = new Date(); 
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        String fechaReg = formato.format(fechaSist);           
+
+        String respuesta = bD.crearJefeTaller(nombreUsu,nombre,cedula,cargo, telefono,direccion,genero,fechaNac,correo,salario, cuenta, fechaReg, idGerente);
+        if(respuesta.contains("La cedula")) limpiarCamposUsuarios();
+        JOptionPane.showMessageDialog(this, respuesta);
+    }        
+}
+    
+    private void modificarVendedor(){        
+        String mensaje = "";
+        
+        //Datos Modf
+        String nombreUsu = tNombreUsu.getText();
+        String contrasena = tContra.getText();
+        String nombre = tNombre.getText();
+        String cedula = tCedula.getText();
+        String correo = tCorreo.getText();
+        String cuenta = tCuentaBan.getText();
+        String cargo = comboxCargo.getSelectedItem().toString();
+        int genero = comboxGenero.getSelectedIndex();
+        String direccion = tDir.getText();
+        String telefono = tTel.getText();
+        float salario;
+        
+        if(tSal.getText().equals("")){
+            salario = 0;
+        }else{
+            salario = Float.valueOf(tSal.getText());
+        }
+        
+        boolean estado;
+        if(comboxEstado.getSelectedItem().toString().equals("Activo")){
+            estado=true;
+        }else{
+            estado=false;
+        }
+        String diaCumple = comboxDia.getItemAt(comboxDia.getSelectedIndex());
+        String mesCumple = comboxMes.getItemAt(comboxMes.getSelectedIndex());
+        String anoCumple = comboxAno.getItemAt(comboxAno.getSelectedIndex());
+        String fechaNac = diaCumple+"/"+mesCumple+"/"+anoCumple;
+        
+        //Datos Anteriores
+        String id = listaIds[comboxEmple.getSelectedIndex()-1];
+        Vendedor ven = bD.leerVendedorPorId(id);
+        
+        //Comparación
+        if(!nombreUsu.equals(ven.getNombreUsuario())) mensaje = mensaje+"Nombre Usuario\n";
+        if(!contrasena.equals(ven.getContrasena())) mensaje = mensaje+"Contraseña\n";
+        if(!nombre.equals(ven.getNombre())) mensaje = mensaje+"Nombre\n";
+        if(!cedula.equals(ven.getCedula())) mensaje = mensaje+"Cedula\n";
+        if(!correo.equals(ven.getCorreo())) mensaje = mensaje+"Correo\n";
+        if(!cuenta.equals(ven.getCuentaBancaria())) mensaje = mensaje+"Cuenta Bancaria\n";
+        if(genero != ven.getGenero()) mensaje = mensaje+"Genero\n";
+        if(!direccion.equals(ven.getDireccion())) mensaje = mensaje+"Direccion\n";
+        if(!telefono.equals(ven.getTelefono())) mensaje = mensaje+"Telefono\n";
+        if(salario != ven.getSalario()) mensaje = mensaje+"Salario\n";
+        if(!fechaNac.equals(ven.getFechaNacimiento())) mensaje = mensaje+"Fecha de nacimiento\n";
+        if(estado != ven.isHabilitado()) mensaje = mensaje+"Estado\n";
+        
+        if(!mensaje.equals("")){
+            mensaje = "Los siguientes campos se van a modificar:\n"+mensaje;
+            int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
+            
+            if(opcion==0){ //Modificar
+                String respuesta = bD.actualizarVendedor(id, nombre,cedula, cargo,telefono,direccion,genero,fechaNac, correo, salario, cuenta, ven.getFechaRegistro(),nombreUsu, contrasena, ven.getManagerId(), estado, ven.getFechaDespido());
+                JOptionPane.showMessageDialog(this, respuesta);
+            }
+        }else{
+            mensaje = "Cambie un campo para modificar al Vendedor";
+            JOptionPane.showMessageDialog(this, mensaje);
+        }
+    }
+    
+    
+    private void modificarJefeTaller(){        
+        String mensaje = "";
+        
+        //Datos Modf
+        String nombreUsu = tNombreUsu.getText();
+        String contrasena = tContra.getText();
+        String nombre = tNombre.getText();
+        String cedula = tCedula.getText();
+        String correo = tCorreo.getText();
+        String cuenta = tCuentaBan.getText();
+        String cargo = comboxCargo.getSelectedItem().toString();
+        int genero = comboxGenero.getSelectedIndex();
+        String direccion = tDir.getText();
+        String telefono = tTel.getText();
+        float salario;
+        
+        if(tSal.getText().equals("")){
+            salario = 0;
+        }else{
+            salario = Float.valueOf(tSal.getText());
+        }
+        
+        boolean estado;
+        if(comboxEstado.getSelectedItem().toString().equals("Activo")){
+            estado=true;
+        }else{
+            estado=false;
+        }
+        String diaCumple = comboxDia.getItemAt(comboxDia.getSelectedIndex());
+        String mesCumple = comboxMes.getItemAt(comboxMes.getSelectedIndex());
+        String anoCumple = comboxAno.getItemAt(comboxAno.getSelectedIndex());
+        String fechaNac = diaCumple+"/"+mesCumple+"/"+anoCumple;
+        
+        //Datos Anteriores
+        String id = listaIds[comboxEmple.getSelectedIndex()-1];
+        JefeTaller jef = bD.leerJefeTallerPorId(id);
+        
+        //Comparación
+        if(!nombreUsu.equals(jef.getNombreUsuario())) mensaje = mensaje+"Nombre Usuario\n";
+        if(!contrasena.equals(jef.getContrasena())) mensaje = mensaje+"Contraseña\n";
+        if(!nombre.equals(jef.getNombre())) mensaje = mensaje+"Nombre\n";
+        if(!cedula.equals(jef.getCedula())) mensaje = mensaje+"Cedula\n";
+        if(!correo.equals(jef.getCorreo())) mensaje = mensaje+"Correo\n";
+        if(!cuenta.equals(jef.getCuentaBancaria())) mensaje = mensaje+"Cuenta Bancaria\n";
+        if(genero != jef.getGenero()) mensaje = mensaje+"Genero\n";
+        if(!direccion.equals(jef.getDireccion())) mensaje = mensaje+"Direccion\n";
+        if(!telefono.equals(jef.getTelefono())) mensaje = mensaje+"Telefono\n";
+        if(salario != jef.getSalario()) mensaje = mensaje+"Salario\n";
+        if(!fechaNac.equals(jef.getFechaNacimiento())) mensaje = mensaje+"Fecha de nacimiento\n";
+        if(estado != jef.isHabilitado()) mensaje = mensaje+"Estado\n";
+        
+        if(!mensaje.equals("")){
+            mensaje = "Los siguientes campos se van a modificar:\n"+mensaje;
+            int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
+            
+            if(opcion==0){ //Modificar
+                String respuesta = bD.actualizarJefe(id, contrasena,nombreUsu,nombre,cedula,cargo,telefono,direccion,genero, fechaNac,correo,salario,cuenta,jef.getFechaRegistro(),jef.getManagerId(),estado,jef.getFechaDespido());
+                JOptionPane.showMessageDialog(this, respuesta);
+            }
+        }else{
+            mensaje = "Cambie un campo para modificar al Jefe de Taller";
+            JOptionPane.showMessageDialog(this, mensaje);
         }
     }
     /**
@@ -121,6 +567,10 @@ public class prinGerente extends javax.swing.JFrame {
         comboxEmple = new javax.swing.JComboBox<>();
         labContra = new javax.swing.JLabel();
         tContra = new javax.swing.JTextField();
+        labSede1 = new javax.swing.JLabel();
+        tIdGerente = new javax.swing.JTextField();
+        labSede2 = new javax.swing.JLabel();
+        comboxEstado = new javax.swing.JComboBox<>();
         jPanel5 = new javax.swing.JPanel();
         fechaYhora = new javax.swing.JLabel();
         fecha = new javax.swing.JLabel();
@@ -178,9 +628,9 @@ public class prinGerente extends javax.swing.JFrame {
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        iconUsu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ICO menuSuper.png"))); // NOI18N
+        iconUsu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO menuSuper.png"))); // NOI18N
 
-        labLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/logo.png"))); // NOI18N
+        labLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/logo.png"))); // NOI18N
         labLogo.setName(""); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -190,24 +640,24 @@ public class prinGerente extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(labLogo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 337, Short.MAX_VALUE)
+                .addGap(310, 310, 310)
                 .addComponent(iconUsu)
                 .addGap(23, 23, 23))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(iconUsu)
                     .addComponent(labLogo))
-                .addGap(18, 18, 18))
+                .addGap(0, 0, 0))
         );
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
         bAgregar.setForeground(new java.awt.Color(51, 51, 51));
-        bAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ICO addUser.png"))); // NOI18N
+        bAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO addUser.png"))); // NOI18N
         bAgregar.setText("Agregar");
         bAgregar.setBorderPainted(false);
         bAgregar.setContentAreaFilled(false);
@@ -216,9 +666,14 @@ public class prinGerente extends javax.swing.JFrame {
                 bAgregarMouseReleased(evt);
             }
         });
+        bAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bAgregarActionPerformed(evt);
+            }
+        });
 
         bModf.setForeground(new java.awt.Color(51, 51, 51));
-        bModf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ICO modifyUser.png"))); // NOI18N
+        bModf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO modifyUser.png"))); // NOI18N
         bModf.setText("Modificar");
         bModf.setBorderPainted(false);
         bModf.setContentAreaFilled(false);
@@ -229,7 +684,7 @@ public class prinGerente extends javax.swing.JFrame {
         });
 
         bConsul.setForeground(new java.awt.Color(51, 51, 51));
-        bConsul.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ICO searchUser.png"))); // NOI18N
+        bConsul.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO searchUser.png"))); // NOI18N
         bConsul.setText("Consultar");
         bConsul.setBorderPainted(false);
         bConsul.setContentAreaFilled(false);
@@ -240,7 +695,7 @@ public class prinGerente extends javax.swing.JFrame {
         });
 
         bDespedir.setForeground(new java.awt.Color(51, 51, 51));
-        bDespedir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ICO fireUser.png"))); // NOI18N
+        bDespedir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO fireUser.png"))); // NOI18N
         bDespedir.setText("Despedir");
         bDespedir.setBorderPainted(false);
         bDespedir.setContentAreaFilled(false);
@@ -250,7 +705,7 @@ public class prinGerente extends javax.swing.JFrame {
             }
         });
 
-        jToggleButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/growth.png"))); // NOI18N
+        jToggleButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/gear.png"))); // NOI18N
         jToggleButton1.setText("Reportes");
         jToggleButton1.setBorderPainted(false);
         jToggleButton1.setContentAreaFilled(false);
@@ -338,10 +793,20 @@ public class prinGerente extends javax.swing.JFrame {
 
         comboxAno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2000", "1999", "1998", "1997", "1996", "1995", "1994", "1993", "1992", "1991", "1990", "1989", "1988", "1987", "1986", "1985", "1984", "1983", "1982", "1981", "1980", "1979", "1978", "1977", "1976", "1975", "1974", "1973", "1972", "1971", "1970", "1969", "1968", "1967", "1966", "1965", "1964", "1963", "1962", "1961", "1960", "1959", "1958", "1957", "1956", "1955", "1954", "1953", "1952", "1951", "1950", "1949", "1948", "1947", "1946", "1945", "1944" }));
 
-        comboxCargo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gerente" }));
+        comboxCargo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No seleccionado", "Vendedor", "Jefe de taller" }));
         comboxCargo.setEnabled(false);
 
         bAceptar.setText("Agregar");
+        bAceptar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bAceptarMouseClicked(evt);
+            }
+        });
+        bAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bAceptarActionPerformed(evt);
+            }
+        });
 
         labEmple.setText("Empleado");
 
@@ -351,21 +816,25 @@ public class prinGerente extends javax.swing.JFrame {
 
         tContra.setToolTipText("");
 
+        labSede1.setText("Id Gerente:");
+
+        tIdGerente.setToolTipText("");
+
+        labSede2.setText("Estado:");
+
+        comboxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGap(77, 77, 77)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(labFechaNac)
-                        .addGap(19, 19, 19)
-                        .addComponent(comboxDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(comboxMes, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(comboxAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(labSede2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(comboxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(labDir)
@@ -396,12 +865,23 @@ public class prinGerente extends javax.swing.JFrame {
                             .addComponent(tContra)
                             .addComponent(tNombre)
                             .addComponent(tDir)
-                            .addComponent(tTel, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(77, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(bAceptar)
-                .addGap(144, 144, 144))
+                            .addComponent(tTel, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(bAceptar)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(labFechaNac)
+                                .addGap(19, 19, 19)
+                                .addComponent(comboxDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(comboxMes, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(comboxAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
+                        .addComponent(labSede1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tIdGerente, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(87, 87, 87))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -458,15 +938,23 @@ public class prinGerente extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labSede)
                     .addComponent(comboxSedes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(3, 3, 3)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labSede1)
+                    .addComponent(tIdGerente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(2, 2, 2)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labSede2)
+                    .addComponent(comboxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labFechaNac)
                     .addComponent(comboxDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(comboxMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(comboxAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(bAceptar)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jSplitPane2.setRightComponent(jPanel4);
@@ -492,7 +980,7 @@ public class prinGerente extends javax.swing.JFrame {
                 .addComponent(fecha)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(hora)
-                .addGap(0, 334, Short.MAX_VALUE))
+                .addGap(0, 386, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -518,7 +1006,7 @@ public class prinGerente extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 510, Short.MAX_VALUE)
+                .addGap(0, 539, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -683,6 +1171,20 @@ public class prinGerente extends javax.swing.JFrame {
             bAceptar.setEnabled(false);
         }
     }//GEN-LAST:event_bDespedirMouseReleased
+
+    private void bAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAgregarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bAgregarActionPerformed
+
+    private void bAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAceptarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bAceptarActionPerformed
+
+    private void bAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAceptarMouseClicked
+        // TODO add your handling code here:
+
+        
+    }//GEN-LAST:event_bAceptarMouseClicked
 
     
     //Quita los campos usados en la función agregar, consultar y despedir (ej:nombre,cedula,genero,cargo)
@@ -868,7 +1370,8 @@ public class prinGerente extends javax.swing.JFrame {
     public static void main(String args[]) {            
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new prinGerente().setVisible(true);
+                 
+               // new prinGerente().setVisible(true);
             }
         });
     }
@@ -883,6 +1386,7 @@ public class prinGerente extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboxCargo;
     private javax.swing.JComboBox<String> comboxDia;
     private javax.swing.JComboBox<String> comboxEmple;
+    private javax.swing.JComboBox<String> comboxEstado;
     private javax.swing.JComboBox<String> comboxGenero;
     private javax.swing.JComboBox<String> comboxMes;
     private javax.swing.JComboBox<String> comboxSedes;
@@ -911,6 +1415,8 @@ public class prinGerente extends javax.swing.JFrame {
     private javax.swing.JLabel labNombreUsu;
     private javax.swing.JLabel labSal;
     private javax.swing.JLabel labSede;
+    private javax.swing.JLabel labSede1;
+    private javax.swing.JLabel labSede2;
     private javax.swing.JLabel labTel;
     private javax.swing.JPopupMenu opReporte;
     private javax.swing.JCheckBoxMenuItem sede;
@@ -920,6 +1426,7 @@ public class prinGerente extends javax.swing.JFrame {
     private javax.swing.JTextField tCorreo;
     private javax.swing.JTextField tCuentaBan;
     private javax.swing.JTextField tDir;
+    private javax.swing.JTextField tIdGerente;
     private javax.swing.JTextField tNombre;
     private javax.swing.JTextField tNombreUsu;
     private javax.swing.JTextField tSal;

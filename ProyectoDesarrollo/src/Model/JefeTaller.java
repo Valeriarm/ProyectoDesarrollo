@@ -16,7 +16,7 @@ public class JefeTaller extends Usuario{
     public JefeTaller(String id, String contrasenia, String nombreUsuario, String nombre, String cedula, 
             String cargo, String telefono, String direccion, int genero,
             String fechaNacimiento, String correo, float salario, 
-            String cuentaBancaria, String fechaRegistro, String managerId) {
+            String cuentaBancaria, String fechaRegistro, String managerId, boolean habilitado, String fechaDespido) {
         super(id, nombre, cedula, cargo, correo, 
                 genero, direccion, telefono, salario, fechaNacimiento, 
                 cuentaBancaria, fechaRegistro);
