@@ -178,7 +178,7 @@ public class Login extends javax.swing.JFrame {
             new prinSuper(bD).setVisible(true);
         }else{
             if(bD.validarGerente(user, contra)){ //Es un gerente?
-                labMensaje.setText("GERENTE");
+                new prinGerente(bD).setVisible(true);
             }else{
                 if(bD.validarVendedor(user, contra)){ //Es un vendedor
                     labMensaje.setText("VENDEDOR");
