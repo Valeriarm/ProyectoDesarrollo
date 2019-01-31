@@ -184,7 +184,7 @@ public class Login extends javax.swing.JFrame {
                     labMensaje.setText("VENDEDOR");
                 }else{
                     if(bD.validarJefeTaller(user, contra)){ //Es un Jefe de taller
-                        labMensaje.setText("JEFE DE TALLER");
+                        new prinJefeDeTaller(bD).setVisible(true);
                     }else{ //Usuario o contraseña incorrectos
                         labMensaje.setText("Usuario o contraseña incorrectos");
                     }

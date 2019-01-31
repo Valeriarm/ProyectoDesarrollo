@@ -5,6 +5,7 @@
  */
 package Interface;
 
+import Controller.DBConnection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -22,10 +23,12 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     
     //la variable botonAceptar indica el uso que se le da al botón de la izquierda para cada boton principal
     //1:Agregar, 2:Modificar, 3:Consultar, 4:Anular 0 Eliminar, 0:nada
-    private int botonAceptar = 0; 
+    private int botonAceptar = 0;  
+    private DBConnection bD;
     
-    public prinJefeDeTaller() {
+    public prinJefeDeTaller(DBConnection baseDatos) {
         initComponents();
+        bD = baseDatos;
         
         //Fecha
         Date fechaSist = new Date(); 
@@ -37,13 +40,10 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tiempo.start();
         
         cambiarVisibilidadCamposOrden(false);
+        cambiarVisibilidadCamposOrden(false);
         bAceptar.setVisible(false);
         
         //Elementos del popup menú para modf,agregar y consultar
-        this.ordenesDeTrabajo.setSelected(true);
-        this.itemDeInventario.setSelected(false);
-        
-        //Elementos del popup menú para reportes
         this.ordenesDeTrabajo.setSelected(true);
         this.itemDeInventario.setSelected(false);
         
@@ -1044,7 +1044,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     public static void main(String args[]) {            
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new prinJefeDeTaller().setVisible(true);
+                //new prinJefeDeTaller().setVisible(true);
             }
         });
     }
