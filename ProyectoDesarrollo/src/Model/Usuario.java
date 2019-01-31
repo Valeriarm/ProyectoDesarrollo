@@ -59,6 +59,8 @@ public class Usuario {
     
     private String fechaRegistro;
     
+    private String fechaDespido;
+    
     //-------------------------------------------------------------------------
     // CONSTRUCTORES
     //-------------------------------------------------------------------------
@@ -85,7 +87,7 @@ public class Usuario {
             String cargo, String correo, int genero, String direccion, 
             String telefono, float salario, String fechaNacimiento, 
             String cuentaBancaria, String fechaRegistro, String nombreUsuario,
-            String contrasena, boolean habilitado) {
+            String contrasena, boolean habilitado, String fechaDespido) {
         this.id = id;
         this.nombre = nombre;
         this.nombreUsuario = nombreUsuario;
@@ -101,6 +103,7 @@ public class Usuario {
         this.fechaRegistro = fechaRegistro;
         this.contrasena = contrasena;
         this.habilitado = habilitado;
+        this.fechaDespido = fechaDespido;
     }
     
     /**
@@ -287,4 +290,14 @@ public class Usuario {
     public void setFechaNacimiento(String fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
+
+    public String getFechaDespido() {
+        return fechaDespido;
+    }
+
+    public void setFechaDespido(String fechaDespido) {
+        this.fechaDespido = fechaDespido;
+    }
+    
+    
 }
