@@ -1027,7 +1027,7 @@ public class DBConnection {
     
     
     
-    public String crearOrden(String id, String nombreCliente, int costo, int esCliente, 
+    public String crearOrden(String id, String nombreCliente, float costo, int esCliente, 
            String descripcionOrden, String telefonoCliente, String estado, String fechaEntrega, String idJefe){
         
         connect();
@@ -1063,7 +1063,7 @@ public class DBConnection {
                 String nombreCliente = rs.getString("nombre_Cliente");
                 String idCliente = rs.getString("id_Cliente");
                 String telefonoCliente = rs.getString("telefono_Cliente");
-                int valorOrden = Integer.parseInt(rs.getString("valor_Orden"));
+                float valorOrden = Integer.parseInt(rs.getString("valor_Orden"));
                 int esCliente = Integer.parseInt(rs.getString("es_Cliente"));                
                 String descripcionOrden = rs.getString("descripcion_Orden");
                 String estadoOrden = rs.getString("estado_Orden");
@@ -1085,7 +1085,7 @@ public class DBConnection {
         return null;
     }
     
-    public String actualizarOrden(String id, String nombreCliente, int costo, int esCliente, 
+    public String actualizarOrden(String id, String nombreCliente, float costo, int esCliente, 
            String descripcionOrden, String telefonoCliente, String estado, String fechaEntrega, String idJefe){
         
         connect();
