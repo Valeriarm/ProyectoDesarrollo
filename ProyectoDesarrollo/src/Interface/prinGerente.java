@@ -153,7 +153,7 @@ public class prinGerente extends javax.swing.JFrame {
            String[] opciones = { "No seleccionado" };
            comboxEmple.setModel(new DefaultComboBoxModel(opciones));
         }else{ //Hay empleados
-            String[] listaEmpleados = empleados.split("$");
+            String[] listaEmpleados = empleados.split("\\$");
             listaIds = obtenerListaIds(listaEmpleados);
             String[] opciones = obtenerOpciones(listaEmpleados);
             comboxEmple.setModel(new DefaultComboBoxModel(opciones));
@@ -169,7 +169,7 @@ public class prinGerente extends javax.swing.JFrame {
            String[] opciones = { "No seleccionado" };
            comboxEmple.setModel(new DefaultComboBoxModel(opciones));
         }else{ //Hay empleados
-            String[] listaEmpleados = empleados.split("$");
+            String[] listaEmpleados = empleados.split("\\$");
             listaIds = obtenerListaIds(listaEmpleados);
             String[] opciones = obtenerOpciones(listaEmpleados);
             comboxEmple.setModel(new DefaultComboBoxModel(opciones));
