@@ -170,26 +170,26 @@ public class Login extends javax.swing.JFrame {
     private void bIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bIngresarActionPerformed
         String user = tNombreUsu.getText();
         String contra = String.valueOf(tContra.getPassword());
-        String[] validacion;
+        String validacion;
         
         validacion = bD.validarSuper(user, contra);
-        if(validacion[0].equals("verdadero")){ //Es un superUruasio?
+        if(validacion != null){ //Es un superUruasio?
             this.dispose();
             new prinSuper(bD).setVisible(true);
         }else{
             validacion = bD.validarGerente(user, contra);
-            if(validacion[0].equals("verdadero")){ //Es un gerente?
+            if(validacion != null){ //Es un gerente?
                 this.dispose();
-                new prinGerente(bD,validacion[1]).setVisible(true);
+                new prinGerente(bD,validacion).setVisible(true);
             }else{
                 validacion = bD.validarVendedor(user, contra);
-                if(validacion[0].equals("verdadero")){ //Es un vendedor
+                if(validacion != null){ //Es un vendedor
                     labMensaje.setText("VENDEDOR");
                 }else{
                     validacion = bD.validarJefeTaller(user, contra);
-                    if(validacion[0].equals("verdadero")){ //Es un Jefe de taller
+                    if(validacion != null){ //Es un Jefe de taller
                         this.dispose();
-                        new prinJefeDeTaller(bD,validacion[1]).setVisible(true);
+                        new prinJefeDeTaller(bD,validacion).setVisible(true);
                     }else{ //Usuario o contraseña incorrectos
                         labMensaje.setText("Usuario o contraseña incorrectos");
                     }
