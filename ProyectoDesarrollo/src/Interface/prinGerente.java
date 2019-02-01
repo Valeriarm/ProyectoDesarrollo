@@ -7,7 +7,6 @@ package Interface;
 
 import Controller.DBConnection;
 import Model.*;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
@@ -29,11 +28,13 @@ public class prinGerente extends javax.swing.JFrame {
     private int botonAceptar = 0;
     private DBConnection bD;
     private String[] listaIds;
+    private String idGerente;
     
-    public prinGerente(DBConnection baseDatos) {
+    public prinGerente(DBConnection baseDatos, String idGer) {
         initComponents();
         
         bD = baseDatos;
+        idGerente = idGer;
         
         //Fecha
         Date fechaSist = new Date(); 
