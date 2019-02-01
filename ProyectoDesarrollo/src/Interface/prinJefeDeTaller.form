@@ -70,7 +70,7 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="540" max="32767" attributes="0"/>
+              <EmptySpace pref="498" max="32767" attributes="0"/>
               <Component id="jPanel5" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -99,26 +99,23 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                       <Component id="labLogo" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="277" max="32767" attributes="0"/>
+                      <EmptySpace pref="413" max="32767" attributes="0"/>
                       <Component id="iconUsu" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="iconUsu" min="-2" max="-2" attributes="0"/>
                           <Component id="labLogo" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="iconUsu" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
-                          </Group>
                       </Group>
-                      <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -127,14 +124,14 @@
             <Component class="javax.swing.JLabel" name="iconUsu">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/Images/ICO userInfo.png"/>
+                  <Image iconType="3" name="/imagenes/ICO menuSuper.png"/>
                 </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="labLogo">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/Images/logo.png"/>
+                  <Image iconType="3" name="/imagenes/logo.png"/>
                 </Property>
                 <Property name="name" type="java.lang.String" value="" noResource="true"/>
               </Properties>
@@ -186,7 +183,7 @@
                           <Component id="bAnular" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="bReportes" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="146" max="32767" attributes="0"/>
+                          <EmptySpace pref="243" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -198,7 +195,7 @@
                       <Color blue="33" green="33" red="33" type="rgb"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/Images/ICO add.png"/>
+                      <Image iconType="3" name="/imagenes/ICO addUser.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Agregar"/>
                     <Property name="borderPainted" type="boolean" value="false"/>
@@ -215,7 +212,7 @@
                       <Color blue="33" green="33" red="33" type="rgb"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/Images/ICO edit.png"/>
+                      <Image iconType="3" name="/imagenes/ICO modifyUser.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Modificar"/>
                     <Property name="borderPainted" type="boolean" value="false"/>
@@ -231,7 +228,7 @@
                       <Color blue="33" green="33" red="33" type="rgb"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/Images/ICO search.png"/>
+                      <Image iconType="3" name="/imagenes/ICO searchUser.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Consultar"/>
                     <Property name="borderPainted" type="boolean" value="false"/>
@@ -247,7 +244,7 @@
                       <Color blue="33" green="33" red="33" type="rgb"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/Images/ICO delete.png"/>
+                      <Image iconType="3" name="/imagenes/ICO fireUser.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Anular"/>
                     <Property name="borderPainted" type="boolean" value="false"/>
@@ -260,9 +257,6 @@
                 </Component>
                 <Component class="javax.swing.JToggleButton" name="bReportes">
                   <Properties>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="33" green="33" red="33" type="rgb"/>
-                    </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/imagenes/growth.png"/>
                     </Property>
@@ -320,6 +314,7 @@
                                       <Component id="tIDJefeDeTaller" alignment="0" pref="152" max="32767" attributes="0"/>
                                       <Component id="tCantidadLote" alignment="0" max="32767" attributes="0"/>
                                       <Component id="tEstado" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="tEsCliente" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
@@ -327,7 +322,7 @@
                                   <Component id="bAceptar" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="11" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -349,6 +344,8 @@
                               <Component id="labIDCliente" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="tIDCliente" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="tEsCliente" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="labTelefonoCliente" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -384,7 +381,7 @@
                               <Component id="labDescripcion" min="-2" max="-2" attributes="0"/>
                               <Component id="tDescripcion" min="-2" pref="88" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="83" max="32767" attributes="0"/>
+                          <EmptySpace pref="12" max="32767" attributes="0"/>
                           <Component id="bAceptar" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                       </Group>
@@ -510,6 +507,11 @@
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                   </AuxValues>
                 </Component>
+                <Component class="javax.swing.JCheckBox" name="tEsCliente">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Es Cliente"/>
+                  </Properties>
+                </Component>
               </SubComponents>
             </Container>
           </SubComponents>
@@ -521,7 +523,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="479" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="442" max="32767" attributes="0"/>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>
@@ -547,7 +549,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="28" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="23" max="32767" attributes="0"/>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
