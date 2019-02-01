@@ -6,13 +6,11 @@
 package Interface;
 
 import Controller.DBConnection;
-import java.awt.event.KeyEvent;
 import java.security.Principal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -172,19 +170,26 @@ public class Login extends javax.swing.JFrame {
     private void bIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bIngresarActionPerformed
         String user = tNombreUsu.getText();
         String contra = String.valueOf(tContra.getPassword());
+        String[] validacion;
         
-        if(bD.validarSuper(user, contra)){ //Es un superUruasio?
+        validacion = bD.validarSuper(user, contra);
+        if(validacion[0].equals("verdadero")){ //Es un superUruasio?
             this.dispose();
             new prinSuper(bD).setVisible(true);
         }else{
-            if(bD.validarGerente(user, contra)){ //Es un gerente?
-                new prinGerente(bD).setVisible(true);
+            validacion = bD.validarGerente(user, contra);
+            if(validacion[0].equals("verdadero")){ //Es un gerente?
+                this.dispose();
+                new prinGerente(bD,validacion[1]).setVisible(true);
             }else{
-                if(bD.validarVendedor(user, contra)){ //Es un vendedor
+                validacion = bD.validarVendedor(user, contra);
+                if(validacion[0].equals("verdadero")){ //Es un vendedor
                     labMensaje.setText("VENDEDOR");
                 }else{
-                    if(bD.validarJefeTaller(user, contra)){ //Es un Jefe de taller
-                        new prinJefeDeTaller(bD).setVisible(true);
+                    validacion = bD.validarJefeTaller(user, contra);
+                    if(validacion[0].equals("verdadero")){ //Es un Jefe de taller
+                        this.dispose();
+                        new prinJefeDeTaller(bD,validacion[1]).setVisible(true);
                     }else{ //Usuario o contraseña incorrectos
                         labMensaje.setText("Usuario o contraseña incorrectos");
                     }

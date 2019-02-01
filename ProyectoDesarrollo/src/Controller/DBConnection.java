@@ -21,8 +21,8 @@ public class DBConnection {
     //----------------------------------------------------------------------
     
     //Usuario de la base de datos en postgresql
-    private String dBUser = "desarrollo";
-    private String dBPassword = "desarrollo";
+    private String dBUser = "postgres";
+    private String dBPassword = "1144211502";
     //puerto
     private String port = "5433";
     //Nombre de la base de datos
@@ -95,38 +95,33 @@ public class DBConnection {
     }
     
     //Valida si existe un super usuario con usuario user y contraseña contra
-    public boolean validarSuper(String user, String contra){
+    public String[] validarSuper(String user, String contra){
         //Llamamos el metodo para poder conectarnos a la base de datos
         connect();
+        String[] respuesta = new String[2];
+        respuesta[0] = "falso";
         sql = "SELECT * FROM Superusuario WHERE nombre_usuario = '"+user+"' AND contrasenia = '"+contra+"'";
         //try catch porque se puede arrojar un error de consulta (SQL)
-        try {
-            boolean validacion;
-            
+        try {            
             //Aquí usamos el metodo de Statment executeQuery y le pasamos la sentencia sql, esto lo guardamos en el 
             //Resultset y usamos next() para saltar entre filas, cada fila es un ingreso de la base de datos
             rs = st.executeQuery(sql);            
                        
-            if(!rs.next()){
-                validacion = false;
-            }else{
-                if((rs.getString("nombre_usuario").equals(user)) && (rs.getString("contrasenia").equals(contra))){
-                    validacion = true;
-                }else{
-                    validacion = false;
-                }
+            if(rs.next()){
+                respuesta[0] = "verdadero";
+                respuesta[1] = rs.getString("id_superusuario");
             }
             
             //POR ULTIMO E IMPORTANTE: hay que cerrar siempre las conexiones
             rs.close();
             st.close();
             connection.close();
-            return validacion;
+            return respuesta;
             
         } catch (Exception e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
-        return false;
+        return respuesta;
     }
     
     
@@ -134,7 +129,7 @@ public class DBConnection {
     private String idSiguiente(){
         connect();
         int[] idsMayor = new int[3];
-        int idMayor, idProvisional = 0;
+        int idMayor = 0;
         String id = "0";
         
         try {
@@ -144,28 +139,31 @@ public class DBConnection {
 
             while(rs.next()){//En caso de que hayan gerentes
                 id = rs.getString("id_Gerente");
+                if(idMayor<Integer.parseInt(id)) idMayor = Integer.parseInt(id); 
             }            
-             idsMayor[0] = Integer.parseInt(id);
+            idsMayor[0] = idMayor;
             
-            id = "0";
+            idMayor = 0;
             
             //////////////////Jefe Taller/////////////////////////////////
             sql = "SELECT id_jefe FROM Jefe_Taller";
             rs = st.executeQuery(sql);
             while(rs.next()){//En caso de que hayan jefes de taller
                 id = rs.getString("id_jefe");
+                if(idMayor<Integer.parseInt(id)) idMayor = Integer.parseInt(id);
             }            
-             idsMayor[1] = Integer.parseInt(id);
+            idsMayor[1] = idMayor;
             
-            id = "0";  
+            idMayor = 0;
             
             //////////////////Vendedor/////////////////////////////////
             sql = "SELECT id_vendedor FROM Vendedor";
             rs = st.executeQuery(sql);            
-            while(rs.next()){//En caso de que hayan jefes de taller
+            while(rs.next()){//En caso de que hayan vendedores
                 id = rs.getString("id_vendedor");
+                if(idMayor<Integer.parseInt(id)) idMayor = Integer.parseInt(id);
             }            
-             idsMayor[2] = Integer.parseInt(id);
+            idsMayor[2] = idMayor;
                     
             ////////////////////////////////////////////////////////////
             idMayor = idsMayor[0];
@@ -223,6 +221,40 @@ public class DBConnection {
         return cedulaValida;
     }
     
+    //Comprueba que el nombre de usuario no este registrado en la base de datos
+    private boolean validarNombreUsu(String nombreU){
+        connect();
+        boolean nombreUValido = true;
+        
+        try {
+            //////////////////SUPER///////////////////////////////////
+            sql = "SELECT nombre_usuario FROM Superusuario WHERE nombre_usuario = '"+nombreU+"'";
+            rs = st.executeQuery(sql);            
+            if(nombreUValido && rs.next()) nombreUValido = false;
+            //////////////////GERENTE/////////////////////////////////
+            sql = "SELECT nombre_usuario FROM Gerente WHERE nombre_usuario = '"+nombreU+"' AND habilitado = '"+true+"'";
+            rs = st.executeQuery(sql);            
+            if(nombreUValido && rs.next()) nombreUValido = false;            
+            //////////////////Jefe Taller/////////////////////////////
+            sql = "SELECT nombre_usuario FROM Jefe_Taller WHERE nombre_usuario = '"+nombreU+"' AND habilitado = '"+true+"'";
+            rs = st.executeQuery(sql);            
+            if(nombreUValido && rs.next()) nombreUValido = false;            
+            //////////////////Vendedor////////////////////////////////
+            sql = "SELECT nombre_usuario FROM Vendedor WHERE nombre_usuario = '"+nombreU+"' AND habilitado = '"+true+"'";
+            rs = st.executeQuery(sql);            
+            if(nombreUValido && rs.next()) nombreUValido = false;            
+            ////////////////////////////////////////////////////////////
+            rs.close();
+            st.close();
+            connection.close();
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        
+        return nombreUValido;
+    }
+    
     ////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////CRUD GERENTE/////////////////////////////////////////
@@ -230,38 +262,34 @@ public class DBConnection {
     ////////////////////////////////////////////////////////////////////////////////////////
     
     //Valida si existe un gerente con usuario user y contraseña contra
-    public boolean validarGerente(String user, String contra){
+    public String[] validarGerente(String user, String contra){
         //Llamamos el metodo para poder conectarnos a la base de datos
         connect();
+        String[] respuesta = new String[2];
+        respuesta[0] = "falso";
         sql = "SELECT * FROM Gerente WHERE nombre_usuario = '"+user+"' AND contrasenia = '"+contra+"'";
         //try catch porque se puede arrojar un error de consulta (SQL)
         try {
-            boolean validacion;
             
             //Aquí usamos el metodo de Statment executeQuery y le pasamos la sentencia sql, esto lo guardamos en el 
             //Resultset y usamos next() para saltar entre filas, cada fila es un ingreso de la base de datos
             rs = st.executeQuery(sql);            
                        
-            if(!rs.next()){
-                validacion = false;
-            }else{
-                if((rs.getString("nombre_usuario").equals(user)) && (rs.getString("contrasenia").equals(contra))){
-                    validacion = true;
-                }else{
-                    validacion = false;
-                }
+            if(rs.next()){
+                respuesta[0] = "verdadero";
+                respuesta[1] = rs.getString("id_gerente");
             }
             
             //POR ULTIMO E IMPORTANTE: hay que cerrar siempre las conexiones
             rs.close();
             st.close();
             connection.close();
-            return validacion;
+            return respuesta;
             
         } catch (Exception e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
-        return false;
+        return respuesta;
     }
     
     public String crearGerente(String nombre, String cedula, 
@@ -271,10 +299,17 @@ public class DBConnection {
         
         String respuesta = "Ocurrió un error";
         boolean cedulaValida = validarCedula(cedula);
+        boolean nombreUsuValido;
         
         if(!cedulaValida){ //// La cedula ya esta registrada en el sistema
             respuesta = "La cedula "+cedula+" ya esta registrada en el sistema";
             return respuesta;
+        }else{
+            nombreUsuValido = validarNombreUsu(nombreUsuario);
+            if(!nombreUsuValido){ //// El nombre de usuario ya esta registrado en el sistema
+                respuesta = "El nombre de usuario "+nombreUsuario+" ya esta registrado en el sistema";
+                return respuesta;
+            }   
         }
         
         String id = idSiguiente();
@@ -462,38 +497,33 @@ public class DBConnection {
     ////////////////////////////////////////////////////////////////////////////////////////
     
     //Valida si existe un jefe de taller con usuario user y contraseña contra
-    public boolean validarJefeTaller(String user, String contra){
+    public String[] validarJefeTaller(String user, String contra){
         //Llamamos el metodo para poder conectarnos a la base de datos
         connect();
+        String[] respuesta = new String[2];
+        respuesta[0] = "falso";
         sql = "SELECT * FROM Jefe_Taller WHERE nombre_Usuario = '"+user+"' AND contrasenia = '"+contra+"'";
         //try catch porque se puede arrojar un error de consulta (SQL)
         try {
-            boolean validacion;
-            
             //Aquí usamos el metodo de Statment executeQuery y le pasamos la sentencia sql, esto lo guardamos en el 
             //Resultset y usamos next() para saltar entre filas, cada fila es un ingreso de la base de datos
             rs = st.executeQuery(sql);            
                        
-            if(!rs.next()){
-                validacion = false;
-            }else{
-                if((rs.getString("nombre_Usuario").equals(user)) && (rs.getString("contrasenia").equals(contra))){
-                    validacion = true;
-                }else{
-                    validacion = false;
-                }
+            if(rs.next()){
+                respuesta[0] = "verdadero";
+                respuesta[1] = rs.getString("id_jefe");
             }
             
             //POR ULTIMO E IMPORTANTE: hay que cerrar siempre las conexiones
             rs.close();
             st.close();
             connection.close();
-            return validacion;
+            return respuesta;
             
         } catch (Exception e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
-        return false;
+        return respuesta;
     }
     
     public String crearJefeTaller(String nombreUsuario, String nombreJefe, String cedula, 
@@ -689,38 +719,33 @@ public class DBConnection {
     ////////////////////////////////////////////////////////////////////////////////////////
     
     //Valida si existe un vendedor con usuario user y contraseña contra
-    public boolean validarVendedor(String user, String contra){
+    public String[] validarVendedor(String user, String contra){
         //Llamamos el metodo para poder conectarnos a la base de datos
         connect();
+        String[] respuesta = new String[2];
+        respuesta[0] = "falso";
         sql = "SELECT * FROM Vendedor WHERE nombre_usuario = '"+user+"' AND contrasenia = '"+contra+"'";
         //try catch porque se puede arrojar un error de consulta (SQL)
         try {
-            boolean validacion;
-            
             //Aquí usamos el metodo de Statment executeQuery y le pasamos la sentencia sql, esto lo guardamos en el 
             //Resultset y usamos next() para saltar entre filas, cada fila es un ingreso de la base de datos
             rs = st.executeQuery(sql);            
                        
-            if(!rs.next()){
-                validacion = false;
-            }else{
-                if((rs.getString("nombre_usuario").equals(user)) && (rs.getString("contrasenia").equals(contra))){
-                    validacion = true;
-                }else{
-                    validacion = false;
-                }
+            if(rs.next()){
+                respuesta[0] = "verdadero";
+                respuesta[1] = rs.getString("id_vendedor");
             }
             
             //POR ULTIMO E IMPORTANTE: hay que cerrar siempre las conexiones
             rs.close();
             st.close();
             connection.close();
-            return validacion;
+            return respuesta;
             
         } catch (Exception e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
-        return false;
+        return respuesta;
     }
     
      public String crearVendedor(String nombre, String cedula, 
