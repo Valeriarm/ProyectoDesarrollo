@@ -67,8 +67,12 @@ public class prinSuper extends javax.swing.JFrame {
         boolean validacion = true, fechaValida; // validacion, en un principio, es solo para los campos vacios
         String mensaje = ""; //En caso de hayan campos invalidos
         
-        if(nombreUsu.equals("")){ mensaje = mensaje+"- Nombre de Usuario\n"; validacion = false; }       
-        if(nombre.equals("")){ mensaje = mensaje+"- Nombre\n"; validacion = false; }
+        if(nombreUsu.equals("")){ mensaje = mensaje+"- Nombre de Usuario\n"; validacion = false; }
+        if(nombre.equals("")){
+            mensaje = mensaje+"- Nombre\n"; validacion = false;
+        }else{
+            if(nombre.charAt(0) == ' ') validacion = false;
+        }        
         if(cedula.equals("")){ mensaje = mensaje+"- Cedula\n"; validacion = false; }
         if(correo.equals("")){ mensaje = mensaje+"- Correo\n"; validacion = false; }
         if(cuenta.equals("")){ mensaje = mensaje+"- Cuenta\n"; validacion = false; }
@@ -79,8 +83,9 @@ public class prinSuper extends javax.swing.JFrame {
         
         System.out.println(mensaje);
         
-        if(!validacion){ //Hay campos vacios
+        if(!validacion){ //Hay campos vacios            
             mensaje = "Los siguientes campos están vacios:\n"+mensaje;
+            if((!nombre.equals("")) && (nombre.charAt(0) == ' ')) mensaje = "Nombre de Usuario Invalido\n"+mensaje;
             if(fechaValida) mensaje = "La fecha de nacimiento es invalida\n\n"+mensaje;
         }else{
             if(fechaValida){ //No hay campos vacios, pero la fecha es invalida
@@ -464,6 +469,11 @@ public class prinSuper extends javax.swing.JFrame {
                 tNombreUsuActionPerformed(evt);
             }
         });
+        tNombreUsu.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tNombreUsuKeyTyped(evt);
+            }
+        });
 
         tCedula.setToolTipText("");
         tCedula.setPreferredSize(new java.awt.Dimension(190, 22));
@@ -478,6 +488,11 @@ public class prinSuper extends javax.swing.JFrame {
 
         tCorreo.setToolTipText("");
         tCorreo.setPreferredSize(new java.awt.Dimension(190, 22));
+        tCorreo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tCorreoKeyTyped(evt);
+            }
+        });
 
         tCuentaBan.setToolTipText("");
         tCuentaBan.setPreferredSize(new java.awt.Dimension(190, 22));
@@ -489,6 +504,11 @@ public class prinSuper extends javax.swing.JFrame {
 
         tDir.setToolTipText("");
         tDir.setPreferredSize(new java.awt.Dimension(190, 22));
+        tDir.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tDirKeyTyped(evt);
+            }
+        });
 
         labNombre.setText("Nombre:");
         labNombre.setToolTipText("");
@@ -867,8 +887,7 @@ public class prinSuper extends javax.swing.JFrame {
                     evt.consume();
                 }
             }
-        }
-            
+        }            
     }//GEN-LAST:event_tNombreKeyTyped
 
     private void agregar(){
@@ -900,7 +919,7 @@ public class prinSuper extends javax.swing.JFrame {
             String fechaReg = formato.format(fechaSist);           
             
             String respuesta = bD.crearGerente(nombre, cedula, cargo, correo, genero, direccion, telefono, salario, fechaNac, cuenta, fechaReg, nombreUsu);
-            if(respuesta.contains("La cedula")) limpiarCampos();
+            if((!respuesta.contains("La cedula")) && (!respuesta.contains("El nombre de usuario"))) limpiarCampos();
             JOptionPane.showMessageDialog(this, respuesta);
         }        
     }
@@ -1065,6 +1084,27 @@ public class prinSuper extends javax.swing.JFrame {
     private void bModfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bModfActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_bModfActionPerformed
+
+    private void tNombreUsuKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tNombreUsuKeyTyped
+        char c = evt.getKeyChar();
+        if(c == '$'){            
+            evt.consume();
+        }
+    }//GEN-LAST:event_tNombreUsuKeyTyped
+
+    private void tCorreoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tCorreoKeyTyped
+        char c = evt.getKeyChar();
+        if(c == '$'){            
+            evt.consume();
+        }
+    }//GEN-LAST:event_tCorreoKeyTyped
+
+    private void tDirKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tDirKeyTyped
+        char c = evt.getKeyChar();
+        if(c == '$'){            
+            evt.consume();
+        }
+    }//GEN-LAST:event_tDirKeyTyped
 
     
     //Quita los campos usados en la función agregar, consultar y despedir (ej:nombre,cedula,genero,cargo)

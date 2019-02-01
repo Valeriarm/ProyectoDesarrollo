@@ -22,7 +22,7 @@ public class OrdenTrabajo {
     private String idJefe;
 
     public OrdenTrabajo(String idOrden, String nombreCliente, String idCliente,String telefonoCliente,
-            int valorOrden, int esCliente, String descripcionOrden, String estadoOrden, String fechaEntrega, String idJefe) {
+            float valorOrden, int esCliente, String descripcionOrden, String estadoOrden, String fechaEntrega, String idJefe) {
         this.idOrden = idOrden;
         this.nombreCliente = nombreCliente;
         this.idCliente = idCliente;
@@ -106,6 +106,14 @@ public class OrdenTrabajo {
 
     public void setIdJefe(String idJefe) {
         this.idJefe = idJefe;
+    }
+    
+    public String getIdCliente(){
+        return idCliente;
+    }
+    
+    public void setIdCliente(String idCliente){
+        this.idCliente = idCliente;
     }
     
 }
