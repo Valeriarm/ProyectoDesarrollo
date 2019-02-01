@@ -9,7 +9,7 @@ package Model;
  *
  * @author MATEO
  */
-public class WorkOrder {
+public class OrdenTrabajo {
     private String idOrden;
     private String nombreCliente;
     private String idCliente;
@@ -21,8 +21,8 @@ public class WorkOrder {
     private String fechaEntrega;
     private String idJefe;
 
-    public WorkOrder(String idOrden, String nombreCliente, String idCliente,String telefonoCliente,
-            int valorOrden, int esCliente, String descripcionOrden, String estadoOrden, String fechaEntrega, String idJefe) {
+    public OrdenTrabajo(String idOrden, String nombreCliente, String idCliente,String telefonoCliente,
+            float valorOrden, int esCliente, String descripcionOrden, String estadoOrden, String fechaEntrega, String idJefe) {
         this.idOrden = idOrden;
         this.nombreCliente = nombreCliente;
         this.idCliente = idCliente;

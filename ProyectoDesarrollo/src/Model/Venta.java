@@ -9,7 +9,7 @@ package Model;
  *
  * @author crist
  */
-public class Sale {
+public class Venta {
     
     //-------------------------------------------------------------------------
     // ATRIBUTOS
@@ -34,7 +34,7 @@ public class Sale {
     //-------------------------------------------------------------------------
 
 
-    public Sale(String id, String nombreCliente, String telefonoCliente, String cedulaCliente, float valorVenta, String descripcionVenta, String idVendedor) {
+    public Venta(String id, String nombreCliente, String telefonoCliente, String cedulaCliente, float valorVenta, String descripcionVenta, String idVendedor) {
         this.id = id;
         this.nombreCliente = nombreCliente;
         this.telefonoCliente = telefonoCliente;

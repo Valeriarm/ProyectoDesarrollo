@@ -6,7 +6,7 @@
 package Interface;
 
 import Controller.DBConnection;
-import Model.Manager;
+import Model.Gerente;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -125,13 +125,13 @@ public class prinSuper extends javax.swing.JFrame {
     }
     
     private void actualizarComboxEmple(){
-        String empleados = bD.listarGerentes();        
+        String empleados = bD.listarGerentes(); 
         
         if(empleados.equals("")){ //No Hay empleados
            String[] opciones = { "No seleccionado" };
            comboxEmple.setModel(new DefaultComboBoxModel(opciones));
         }else{ //Hay empleados
-            String[] listaEmpleados = empleados.split("$");
+            String[] listaEmpleados = empleados.split("\\$");
             listaIds = obtenerListaIds(listaEmpleados);
             String[] opciones = obtenerOpciones(listaEmpleados);
             comboxEmple.setModel(new DefaultComboBoxModel(opciones));
@@ -157,7 +157,7 @@ public class prinSuper extends javax.swing.JFrame {
     
     private void llenarCamposModf(){
         String id = listaIds[comboxEmple.getSelectedIndex()-1];
-        Manager ger = bD.readManagerById(id);
+        Gerente ger = bD.leerGerentePorId(id);
         
         tNombreUsu.setText(ger.getNombreUsuario());
         tContra.setText(ger.getContrasena());
@@ -326,7 +326,7 @@ public class prinSuper extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labLogo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 310, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 351, Short.MAX_VALUE)
                 .addComponent(iconUsu)
                 .addGap(23, 23, 23))
         );
@@ -365,6 +365,11 @@ public class prinSuper extends javax.swing.JFrame {
         bModf.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bModfMouseClicked(evt);
+            }
+        });
+        bModf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bModfActionPerformed(evt);
             }
         });
 
@@ -558,6 +563,11 @@ public class prinSuper extends javax.swing.JFrame {
                 comboxEmpleItemStateChanged(evt);
             }
         });
+        comboxEmple.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboxEmpleActionPerformed(evt);
+            }
+        });
 
         labContra.setText("Contraseña:");
 
@@ -577,9 +587,9 @@ public class prinSuper extends javax.swing.JFrame {
                                 .addComponent(labFechaNac)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(comboxDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(18, 18, 18)
                                 .addComponent(comboxMes, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(comboxAno, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -616,7 +626,7 @@ public class prinSuper extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(163, 163, 163)
                         .addComponent(bAceptar)))
-                .addGap(48, 48, 48))
+                .addContainerGap(89, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -679,12 +689,12 @@ public class prinSuper extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(3, 3, 3)
                         .addComponent(labSede, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(6, 6, 6)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labFechaNac)
                     .addComponent(comboxDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(comboxMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboxAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboxAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labFechaNac))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bAceptar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -713,7 +723,7 @@ public class prinSuper extends javax.swing.JFrame {
                 .addComponent(fecha)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(hora)
-                .addGap(0, 334, Short.MAX_VALUE))
+                .addGap(0, 375, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -913,7 +923,9 @@ public class prinSuper extends javax.swing.JFrame {
             salario = 0;
         }else{
             salario = Float.valueOf(tSal.getText());
-        }
+        }        
+        
+
         String diaCumple = comboxDia.getItemAt(comboxDia.getSelectedIndex());
         String mesCumple = comboxMes.getItemAt(comboxMes.getSelectedIndex());
         String anoCumple = comboxAno.getItemAt(comboxAno.getSelectedIndex());
@@ -921,7 +933,7 @@ public class prinSuper extends javax.swing.JFrame {
         
         //Datos Anteriores
         String id = listaIds[comboxEmple.getSelectedIndex()-1];
-        Manager ger = bD.readManagerById(id);
+        Gerente ger = bD.leerGerentePorId(id);
         
         //Comparación
         if(!nombreUsu.equals(ger.getNombreUsuario())) mensaje = mensaje+"Nombre Usuario\n";
@@ -941,7 +953,7 @@ public class prinSuper extends javax.swing.JFrame {
             int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
             
             if(opcion==0){ //Modificar
-                String respuesta = bD.updateManager(id, nombre, cedula, "Gerente", correo, genero, direccion, telefono, salario, fechaNac, cuenta, nombreUsu, contrasena);
+                String respuesta = bD.actualizarGerente(id, nombre, cedula, "Gerente", correo, genero, direccion, telefono, salario, fechaNac, cuenta, nombreUsu, contrasena, ger.getFechaRegistro(), true, ger.getFechaDespido());
                 JOptionPane.showMessageDialog(this, respuesta);
             }
         }else{
@@ -952,7 +964,7 @@ public class prinSuper extends javax.swing.JFrame {
     
     private void consultar(){
         String id = listaIds[comboxEmple.getSelectedIndex()-1];
-        Manager ger = bD.readManagerById(id);
+        Gerente ger = bD.leerGerentePorId(id);
         
         String genero;
         if(ger.getGenero()==0){
@@ -982,7 +994,7 @@ public class prinSuper extends javax.swing.JFrame {
     
     private void despedir(){
         String id = listaIds[comboxEmple.getSelectedIndex()-1];
-        Manager ger = bD.readManagerById(id);
+        Gerente ger = bD.leerGerentePorId(id);
         
         if(ger==null){
           JOptionPane.showMessageDialog(this, "El gerente no se encunetra registrado en el sistema"); ///CAMBIAR EL MENSAJE? 
@@ -1045,6 +1057,14 @@ public class prinSuper extends javax.swing.JFrame {
     private void tNombreUsuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tNombreUsuActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tNombreUsuActionPerformed
+
+    private void comboxEmpleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboxEmpleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboxEmpleActionPerformed
+
+    private void bModfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bModfActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bModfActionPerformed
 
     
     //Quita los campos usados en la función agregar, consultar y despedir (ej:nombre,cedula,genero,cargo)

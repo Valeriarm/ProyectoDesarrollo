@@ -9,15 +9,15 @@ package Model;
  *
  * @author crist
  */
-public class Seller extends User{
+public class Vendedor extends Usuario{
     
     private String managerId;
     
-    public Seller(String id, String nombre,  String cedula, 
+    public Vendedor(String id, String nombre,  String cedula, 
             String cargo, String telefono, String direccion, int genero,
             String fechaNacimiento, String correo, float salario, 
             String cuentaBancaria, String fechaRegistro, String nombreUsuario,
-            String contrasenia, String managerId, boolean habilitado) {
+            String contrasenia, String managerId, boolean habilitado, String fechaDespido) {
         super(id, nombre, cedula, cargo, correo, genero, 
                 direccion, telefono, salario, fechaNacimiento, cuentaBancaria, 
                 fechaRegistro);
@@ -32,8 +32,7 @@ public class Seller extends User{
         this.managerId = managerId;
     }
     
-    
-    
+
     
     
 }

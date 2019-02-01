@@ -178,13 +178,13 @@ public class Login extends javax.swing.JFrame {
             new prinSuper(bD).setVisible(true);
         }else{
             if(bD.validarGerente(user, contra)){ //Es un gerente?
-                labMensaje.setText("GERENTE");
+                new prinGerente(bD).setVisible(true);
             }else{
                 if(bD.validarVendedor(user, contra)){ //Es un vendedor
                     labMensaje.setText("VENDEDOR");
                 }else{
                     if(bD.validarJefeTaller(user, contra)){ //Es un Jefe de taller
-                        labMensaje.setText("JEFE DE TALLER");
+                        new prinJefeDeTaller(bD).setVisible(true);
                     }else{ //Usuario o contraseña incorrectos
                         labMensaje.setText("Usuario o contraseña incorrectos");
                     }
