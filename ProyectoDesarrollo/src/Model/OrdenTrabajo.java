@@ -108,4 +108,12 @@ public class OrdenTrabajo {
         this.idJefe = idJefe;
     }
     
+    public String getIdCliente(){
+        return idCliente;
+    }
+    
+    public void setIdCliente(String idCliente){
+        this.idCliente = idCliente;
+    }
+    
 }
