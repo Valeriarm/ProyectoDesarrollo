@@ -7,6 +7,7 @@ package Interface;
 
 import Controller.DBConnection;
 import Model.OrdenTrabajo;
+import Model.Inventario;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import static java.lang.Integer.parseInt;
@@ -106,6 +107,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labCantidadLote = new javax.swing.JLabel();
         tCantidadLote = new javax.swing.JTextField();
         tEstado = new javax.swing.JComboBox<>();
+        tEsCliente = new javax.swing.JCheckBox();
         jPanel5 = new javax.swing.JPanel();
         fecha = new javax.swing.JLabel();
         fechaYhora = new javax.swing.JLabel();
@@ -260,7 +262,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 .addComponent(bAnular)
                 .addGap(18, 18, 18)
                 .addComponent(bReportes)
-                .addContainerGap(208, Short.MAX_VALUE))
+                .addContainerGap(243, Short.MAX_VALUE))
         );
 
         jSplitPane2.setLeftComponent(jPanel3);
@@ -316,6 +318,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
         tEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Recibido", "En Desarrollo", "Terminado" }));
 
+        tEsCliente.setText("Es Cliente");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -351,7 +355,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                             .addComponent(tFechaEntrega)
                             .addComponent(tIDJefeDeTaller, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
                             .addComponent(tCantidadLote)
-                            .addComponent(tEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(tEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tEsCliente)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(98, 98, 98)
                         .addComponent(bAceptar)))
@@ -372,6 +377,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labIDCliente)
                     .addComponent(tIDCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tEsCliente)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labTelefonoCliente)
@@ -400,7 +407,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labDescripcion)
                     .addComponent(tDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addComponent(bAceptar)
                 .addGap(20, 20, 20))
         );
@@ -473,7 +480,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(463, Short.MAX_VALUE)
+                .addContainerGap(498, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -678,7 +685,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             //Despedir
             case 4:
                 if(this.ordenesDeTrabajo.isSelected()){
-                    eliminarOrdenDeTrabajo();
+                    anularOrdenDeTrabajo();
                 }
                 if(this.itemDeInventario.isSelected()){
                     eliminarItemDeInventario();
@@ -1270,8 +1277,14 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         nombreCliente = tNombreCliente.getText();
         float costo = 0;
         costo = Float.parseFloat(tCosto.getText());
-        int idCliente = 0;
-        idCliente = parseInt(tIDCliente.getText());
+        int esCliente = 0;
+        if(tEsCliente.isSelected()){
+            esCliente = 1;
+        }else{
+            esCliente = 0;
+        }
+        String idCliente = "";
+        idCliente = tIDCliente.getText();
         String descripcion = "";
         descripcion = tDescripcion.getText();
         String telefonoCliente = "";
@@ -1283,7 +1296,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         String idJefeDeTaller = "";
         idJefeDeTaller = tIDJefeDeTaller.getText();
         
-        String respuesta = bD.crearOrden(idOrdenDeTrabajo, nombreCliente, costo, idCliente, 
+        String respuesta = bD.crearOrden(idOrdenDeTrabajo, nombreCliente, idCliente, costo, esCliente, 
            descripcion, telefonoCliente, estado, fechaEntrega, idJefeDeTaller);
         JOptionPane.showMessageDialog(this, respuesta);
         
@@ -1326,6 +1339,12 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         nombreCliente = tNombreCliente.getText();
         float costo = 0;
         costo = Float.parseFloat(tCosto.getText());
+        int esCliente = 0;
+        if(tEsCliente.isSelected()){
+            esCliente = 1;
+        }else{
+            esCliente = 0;
+        }
         String idCliente = "";
         idCliente = tIDCliente.getText();
         String descripcion = "";
@@ -1338,11 +1357,9 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         fechaEntrega = tFechaEntrega.getText();
         String idJefeDeTaller = "";
         idJefeDeTaller = tIDJefeDeTaller.getText();
-        int cantidadLote = 0;
-        cantidadLote = parseInt(tCantidadLote.getText());
         
-        String respuesta = bD.actualizarOrden(estado, nombreCliente, costo, WIDTH, descripcion, 
-                telefonoCliente, estado, fechaEntrega, idCliente);        
+        String respuesta = bD.actualizarOrden(idOrdenDeTrabajo, idCliente, nombreCliente, costo, esCliente, 
+           descripcion, telefonoCliente, estado, fechaEntrega, idJefeDeTaller);        
         JOptionPane.showMessageDialog(this, respuesta);
         
         return true;
@@ -1378,23 +1395,111 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         String idOrden = "";
         idOrden = tIDOrdenDeTrabajo.getText();
         OrdenTrabajo orden = bD.leerOrdenPorId(idOrden);
-        
+        String esCliente = "";
+        if(tEsCliente.isSelected()){
+            esCliente = "Cliente de la empresa";
+        }else{
+            esCliente = "No es cliente de la empresa";
+        }
         String mensaje = "";
         
+        mensaje = "ID Orden de trabajo: "+orden.getIdOrden()+"\n"
+                +"Nombre Cliente: "+orden.getNombreCliente()+"\n"
+                +"ID Cliente: "+orden.getIdCliente()+"\n"
+                +"Es Cliente: "+esCliente+"\n"
+                +"Telefono cliente: "+orden.getTelefonoCliente()+"\n"
+                +"Estado de la orden: "+orden.getEstadoOrden()+"\n"
+                +"Costo: "+orden.getValorOrden()+"\n"
+                +"Descripcion: "+ orden.getDescripcionOrden()+"\n"
+                +"ID Jefe de taller: "+ orden.getIdJefe()+ "\n";
+        JOptionPane.showMessageDialog(this, mensaje);        
         
         return true;
     }
     
-    private int consultarItemDeInventario(){
-        return 0;
+    private boolean consultarItemDeInventario(){
+        if(!validarCamposConsultarInventario()){
+            return false;            
+        }
+        String idInventario = "";
+        idInventario = tIDOrdenDeTrabajo.getText();
+        Inventario inventario = bD.leerInventarioPorId(idInventario);
+        
+        String mensaje = "";
+        mensaje = "ID producto: "+inventario.getIdProducto()+"\n"
+                +"Nombre producto: "+inventario.getNombreProducto()+"\n"
+                +"Valor unitario: "+inventario.getValorUnitario()+"\n"
+                +"Descripcion: "+inventario.getDescripcion()+"\n"
+                +"Lote: " +inventario.getLote()+"\n"
+                +"Cantidad lote: "+ inventario.getCantidadLote()+"\n"
+                +"ID Jefe de taller: "+ inventario.getIdJefe()+"\n";
+        JOptionPane.showMessageDialog(this, mensaje);   
+        
+        return true;
     }
     
-    private int eliminarOrdenDeTrabajo(){
-        return 0;
+    private boolean anularOrdenDeTrabajo(){
+        if(!validarCamposAnularOrdenDeTrabajo()){
+            return false;
+        }
+        String idOrden = "";
+        idOrden = tIDOrdenDeTrabajo.getText();
+        OrdenTrabajo orden = bD.leerOrdenPorId(idOrden);
+        String mensaje = "";
+        String esCliente = "";
+        if(orden.getEsCliente() == 1){
+            esCliente = "Cliente de la empresa";
+        }else{
+            esCliente = "No es cliente de la empresa";
+        }
+        
+        if(orden.equals(null)){
+            JOptionPane.showMessageDialog(this, "La orden de trabajo que intenta Anular no existe"); 
+            return false;
+        }
+        mensaje = "Esta seguro que desea anular la orden de trabajo con: "+"\n"
+                +"ID Orden de trabajo: "+orden.getIdOrden()+"\n"
+                +"Nombre Cliente: "+orden.getNombreCliente()+"\n"
+                +"ID Cliente: "+orden.getEsCliente()+"\n"
+                +"Es Cliente: "+esCliente+"\n"
+                +"Telefono cliente: "+orden.getTelefonoCliente()+"\n"
+                +"Estado de la orden: "+orden.getEstadoOrden()+"\n"
+                +"Costo: "+orden.getValorOrden()+"\n"
+                +"Descripcion: "+ orden.getDescripcionOrden()+"\n"
+                +"ID Jefe de taller: "+ orden.getIdJefe()+ "\n";        
+            int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
+            if(opcion == 0){
+                String respuesta = bD.eliminarOrden(idOrden);
+                JOptionPane.showMessageDialog(this, respuesta);
+            }
+        return true;
     }
     
-    private int eliminarItemDeInventario(){
-        return 0;
+    private boolean eliminarItemDeInventario(){
+        if(!validarCamposEliminarInventario()){
+            return false;
+        }
+        String idInventario = "";
+        idInventario = tIDOrdenDeTrabajo.getText();
+        Inventario inventario = bD.leerInventarioPorId(idInventario);
+        String mensaje = "";
+        if(inventario.equals(null)){
+            JOptionPane.showMessageDialog(this, "La orden de trabajo que intenta Anular no existe"); 
+            return false;
+        }
+        mensaje = "Esta seguro que desea anular la orden de trabajo con: "+"\n"
+                +"ID item de inventario: "+inventario.getIdProducto()+"\n"
+                +"Nombre producto: "+inventario.getNombreProducto()+"\n"
+                +"Costo: "+inventario.getValorUnitario()+"\n"
+                +"Lote: "+ inventario.getLote()+"\n"
+                +"Cantidad lote:"+inventario.getCantidadLote()+"\n"
+                +"Descripcion: : "+ inventario.getDescripcion()+ "\n";        
+            int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
+            if(opcion == 0){
+                String respuesta = bD.eliminarInventario(idInventario);
+                JOptionPane.showMessageDialog(this, respuesta);
+            }
+        return true;
     }
     public static void main(String args[]) {            
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -1438,6 +1543,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     private javax.swing.JTextField tCantidadLote;
     private javax.swing.JTextField tCosto;
     private javax.swing.JTextField tDescripcion;
+    private javax.swing.JCheckBox tEsCliente;
     private javax.swing.JComboBox<String> tEstado;
     private javax.swing.JTextField tFechaEntrega;
     private javax.swing.JTextField tIDCliente;
