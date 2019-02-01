@@ -1027,7 +1027,7 @@ public class DBConnection {
     
     
     
-    public String crearOrden(String id, String nombreCliente, float costo, int esCliente, 
+    public String crearOrden(String id, String nombreCliente, String idCliente, float costo, int esCliente, 
            String descripcionOrden, String telefonoCliente, String estado, String fechaEntrega, String idJefe){
         
         connect();
@@ -1038,7 +1038,7 @@ public class DBConnection {
             if(rs.next()){
                 return "La orden de trabajo con el id "+id+" ya existe";
             }else{                
-                sql = "INSERT INTO Orden_Trabajo VALUES ('"+id+"','','"+nombreCliente+"','"+costo+"','"+esCliente+"','"+descripcionOrden+"','"
+                sql = "INSERT INTO Orden_Trabajo VALUES ('"+id+"','','"+nombreCliente+"', id_Cliente = '"+idCliente+"','"+costo+"','"+esCliente+"','"+descripcionOrden+"','"
                         +telefonoCliente+"','"+estado+"','"+fechaEntrega+"','"+idJefe+"')";
                 
                 st.executeUpdate(sql);
@@ -1085,7 +1085,7 @@ public class DBConnection {
         return null;
     }
     
-    public String actualizarOrden(String id, String nombreCliente, float costo, int esCliente, 
+    public String actualizarOrden(String id, String nombreCliente,String idCliente, float costo, int esCliente, 
            String descripcionOrden, String telefonoCliente, String estado, String fechaEntrega, String idJefe){
         
         connect();
@@ -1093,7 +1093,7 @@ public class DBConnection {
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                sql = "UPDATE Orden_Trabajo SET nombre_Cliente = '"+nombreCliente+"', valor_Orden = '"+costo+"', es_Cliente = '"+esCliente+
+                sql = "UPDATE Orden_Trabajo SET nombre_Cliente = '"+nombreCliente+"', id_Cliente = '"+idCliente+"', valor_Orden = '"+costo+"', es_Cliente = '"+esCliente+
                         "', descripcion_Orden = '"+descripcionOrden+"', telefono_Cliente = '"+telefonoCliente+"', "
                         + "estado = '"+estado+ "fecha_Entrega = '"+fechaEntrega+ "id_Jefe = '"+idJefe+"' WHERE id_Orden = '"+id+"'";
                 
