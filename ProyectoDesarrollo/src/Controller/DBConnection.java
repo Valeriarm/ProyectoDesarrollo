@@ -95,11 +95,10 @@ public class DBConnection {
     }
     
     //Valida si existe un super usuario con usuario user y contraseña contra
-    public String[] validarSuper(String user, String contra){
+    public String validarSuper(String user, String contra){
         //Llamamos el metodo para poder conectarnos a la base de datos
         connect();
-        String[] respuesta = new String[2];
-        respuesta[0] = "falso";
+        String respuesta = null;
         sql = "SELECT * FROM Superusuario WHERE nombre_usuario = '"+user+"' AND contrasenia = '"+contra+"'";
         //try catch porque se puede arrojar un error de consulta (SQL)
         try {            
@@ -108,8 +107,7 @@ public class DBConnection {
             rs = st.executeQuery(sql);            
                        
             if(rs.next()){
-                respuesta[0] = "verdadero";
-                respuesta[1] = rs.getString("id_superusuario");
+                respuesta = rs.getString("id_superusuario");
             }
             
             //POR ULTIMO E IMPORTANTE: hay que cerrar siempre las conexiones
@@ -262,11 +260,10 @@ public class DBConnection {
     ////////////////////////////////////////////////////////////////////////////////////////
     
     //Valida si existe un gerente con usuario user y contraseña contra
-    public String[] validarGerente(String user, String contra){
+    public String validarGerente(String user, String contra){
         //Llamamos el metodo para poder conectarnos a la base de datos
         connect();
-        String[] respuesta = new String[2];
-        respuesta[0] = "falso";
+        String respuesta = null;
         sql = "SELECT * FROM Gerente WHERE nombre_usuario = '"+user+"' AND contrasenia = '"+contra+"'";
         //try catch porque se puede arrojar un error de consulta (SQL)
         try {
@@ -276,8 +273,7 @@ public class DBConnection {
             rs = st.executeQuery(sql);            
                        
             if(rs.next()){
-                respuesta[0] = "verdadero";
-                respuesta[1] = rs.getString("id_gerente");
+                respuesta = rs.getString("id_gerente");
             }
             
             //POR ULTIMO E IMPORTANTE: hay que cerrar siempre las conexiones
@@ -497,11 +493,10 @@ public class DBConnection {
     ////////////////////////////////////////////////////////////////////////////////////////
     
     //Valida si existe un jefe de taller con usuario user y contraseña contra
-    public String[] validarJefeTaller(String user, String contra){
+    public String validarJefeTaller(String user, String contra){
         //Llamamos el metodo para poder conectarnos a la base de datos
         connect();
-        String[] respuesta = new String[2];
-        respuesta[0] = "falso";
+        String respuesta = null;
         sql = "SELECT * FROM Jefe_Taller WHERE nombre_Usuario = '"+user+"' AND contrasenia = '"+contra+"'";
         //try catch porque se puede arrojar un error de consulta (SQL)
         try {
@@ -510,8 +505,7 @@ public class DBConnection {
             rs = st.executeQuery(sql);            
                        
             if(rs.next()){
-                respuesta[0] = "verdadero";
-                respuesta[1] = rs.getString("id_jefe");
+                respuesta = rs.getString("id_jefe");
             }
             
             //POR ULTIMO E IMPORTANTE: hay que cerrar siempre las conexiones
@@ -532,10 +526,17 @@ public class DBConnection {
         
         String respuesta = "Ocurrió un error";
         boolean cedulaValida = validarCedula(cedula);
+        boolean nombreUsuValido;
         
         if(!cedulaValida){ //// La cedula ya esta registrada en el sistema
             respuesta = "La cedula "+cedula+" ya esta registrada en el sistema";
             return respuesta;
+        }else{
+            nombreUsuValido = validarNombreUsu(nombreUsuario);
+            if(!nombreUsuValido){ //// El nombre de usuario ya esta registrado en el sistema
+                respuesta = "El nombre de usuario "+nombreUsuario+" ya esta registrado en el sistema";
+                return respuesta;
+            }   
         }
         
         String id = idSiguiente();
@@ -719,11 +720,10 @@ public class DBConnection {
     ////////////////////////////////////////////////////////////////////////////////////////
     
     //Valida si existe un vendedor con usuario user y contraseña contra
-    public String[] validarVendedor(String user, String contra){
+    public String validarVendedor(String user, String contra){
         //Llamamos el metodo para poder conectarnos a la base de datos
         connect();
-        String[] respuesta = new String[2];
-        respuesta[0] = "falso";
+        String respuesta = null;
         sql = "SELECT * FROM Vendedor WHERE nombre_usuario = '"+user+"' AND contrasenia = '"+contra+"'";
         //try catch porque se puede arrojar un error de consulta (SQL)
         try {
@@ -732,8 +732,7 @@ public class DBConnection {
             rs = st.executeQuery(sql);            
                        
             if(rs.next()){
-                respuesta[0] = "verdadero";
-                respuesta[1] = rs.getString("id_vendedor");
+                respuesta = rs.getString("id_vendedor");
             }
             
             //POR ULTIMO E IMPORTANTE: hay que cerrar siempre las conexiones
@@ -753,12 +752,20 @@ public class DBConnection {
             String fechaNacimiento, String correo, float salario, 
             String cuentaBancaria, String fechaRegistro, String nombreUsuario,
             String managerId){
+         
         String respuesta = "Ocurrió un error";
         boolean cedulaValida = validarCedula(cedula);
+        boolean nombreUsuValido;
         
         if(!cedulaValida){ //// La cedula ya esta registrada en el sistema
             respuesta = "La cedula "+cedula+" ya esta registrada en el sistema";
             return respuesta;
+        }else{
+            nombreUsuValido = validarNombreUsu(nombreUsuario);
+            if(!nombreUsuValido){ //// El nombre de usuario ya esta registrado en el sistema
+                respuesta = "El nombre de usuario "+nombreUsuario+" ya esta registrado en el sistema";
+                return respuesta;
+            }   
         }
         
         String id = idSiguiente();

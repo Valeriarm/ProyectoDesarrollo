@@ -148,9 +148,9 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        iconUsu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ICO menuSuper.png"))); // NOI18N
+        iconUsu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO userInfo.png"))); // NOI18N
 
-        labLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/logo.png"))); // NOI18N
+        labLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/logo.png"))); // NOI18N
         labLogo.setName(""); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -158,26 +158,25 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addContainerGap()
                 .addComponent(labLogo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 413, Short.MAX_VALUE)
+                .addGap(317, 317, 317)
                 .addComponent(iconUsu)
-                .addGap(23, 23, 23))
+                .addGap(2, 2, 2))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(labLogo, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(iconUsu)
-                    .addComponent(labLogo))
-                .addGap(18, 18, 18))
+                .addContainerGap()
+                .addComponent(iconUsu)
+                .addContainerGap())
         );
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
         bAgregar.setForeground(new java.awt.Color(51, 51, 51));
-        bAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ICO addUser.png"))); // NOI18N
+        bAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO add.png"))); // NOI18N
         bAgregar.setText("Agregar");
         bAgregar.setBorderPainted(false);
         bAgregar.setContentAreaFilled(false);
@@ -193,7 +192,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         });
 
         bModf.setForeground(new java.awt.Color(51, 51, 51));
-        bModf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ICO modifyUser.png"))); // NOI18N
+        bModf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO edit.png"))); // NOI18N
         bModf.setText("Modificar");
         bModf.setBorderPainted(false);
         bModf.setContentAreaFilled(false);
@@ -204,7 +203,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         });
 
         bConsul.setForeground(new java.awt.Color(51, 51, 51));
-        bConsul.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ICO searchUser.png"))); // NOI18N
+        bConsul.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO search.png"))); // NOI18N
         bConsul.setText("Consultar");
         bConsul.setBorderPainted(false);
         bConsul.setContentAreaFilled(false);
@@ -215,7 +214,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         });
 
         bAnular.setForeground(new java.awt.Color(51, 51, 51));
-        bAnular.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ICO fireUser.png"))); // NOI18N
+        bAnular.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO delete.png"))); // NOI18N
         bAnular.setText("Anular");
         bAnular.setBorderPainted(false);
         bAnular.setContentAreaFilled(false);
@@ -230,6 +229,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             }
         });
 
+        bReportes.setForeground(new java.awt.Color(51, 51, 51));
         bReportes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/growth.png"))); // NOI18N
         bReportes.setText("Reportes");
         bReportes.setBorderPainted(false);
@@ -262,7 +262,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 .addComponent(bAnular)
                 .addGap(18, 18, 18)
                 .addComponent(bReportes)
-                .addContainerGap(243, Short.MAX_VALUE))
+                .addContainerGap(94, Short.MAX_VALUE))
         );
 
         jSplitPane2.setLeftComponent(jPanel3);
@@ -360,7 +360,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(98, 98, 98)
                         .addComponent(bAceptar)))
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -407,9 +407,9 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labDescripcion)
                     .addComponent(tDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addComponent(bAceptar)
-                .addGap(20, 20, 20))
+                .addContainerGap())
         );
 
         jSplitPane2.setRightComponent(jPanel4);
@@ -429,7 +429,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 442, Short.MAX_VALUE)
+            .addGap(0, 515, Short.MAX_VALUE)
             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel5Layout.createSequentialGroup()
                     .addGap(78, 78, 78)
@@ -448,7 +448,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 23, Short.MAX_VALUE)
+            .addGap(0, 28, Short.MAX_VALUE)
             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                     .addGap(1, 1, 1)
@@ -472,20 +472,19 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(498, Short.MAX_VALUE)
+                .addContainerGap(488, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
