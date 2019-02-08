@@ -46,7 +46,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tiempo.start();
         
         cambiarVisibilidadCamposOrden(false);
-        cambiarVisibilidadCamposOrden(false);
+        cambiarVisibilidadCamposInventario(false);
         bAceptar.setVisible(false);
         
         //Elementos del popup menú para modf,agregar y consultar
@@ -92,22 +92,21 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labEstado = new javax.swing.JLabel();
         labFechaDeEntrega = new javax.swing.JLabel();
         labDescripcion = new javax.swing.JLabel();
-        labIDJefeDeTaller = new javax.swing.JLabel();
         tIDOrdenDeTrabajo = new javax.swing.JTextField();
         tTelefonoCliente = new javax.swing.JTextField();
         tCosto = new javax.swing.JTextField();
-        tFechaEntrega = new javax.swing.JTextField();
         labIDCliente = new javax.swing.JLabel();
         tIDCliente = new javax.swing.JTextField();
         tDescripcion = new javax.swing.JTextField();
-        tIDJefeDeTaller = new javax.swing.JTextField();
         bAceptar = new javax.swing.JButton();
         labNombreCliente = new javax.swing.JLabel();
         tNombreCliente = new javax.swing.JTextField();
         labCantidadLote = new javax.swing.JLabel();
         tCantidadLote = new javax.swing.JTextField();
         tEstado = new javax.swing.JComboBox<>();
-        tEsCliente = new javax.swing.JCheckBox();
+        cbDiaFechaEntrega = new javax.swing.JComboBox<>();
+        cbMesFechaEntrega = new javax.swing.JComboBox<>();
+        cbAnioFechaEntrega = new javax.swing.JComboBox<>();
         jPanel5 = new javax.swing.JPanel();
         fecha = new javax.swing.JLabel();
         fechaYhora = new javax.swing.JLabel();
@@ -168,7 +167,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(labLogo, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(iconUsu)
                 .addContainerGap())
         );
@@ -262,7 +260,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 .addComponent(bAnular)
                 .addGap(18, 18, 18)
                 .addComponent(bReportes)
-                .addContainerGap(94, Short.MAX_VALUE))
+                .addContainerGap(98, Short.MAX_VALUE))
         );
 
         jSplitPane2.setLeftComponent(jPanel3);
@@ -279,20 +277,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
         labDescripcion.setText("Descripción:");
 
-        labIDJefeDeTaller.setText("ID Jefe de taller:");
-
         tIDOrdenDeTrabajo.setToolTipText("");
 
         tTelefonoCliente.setToolTipText("");
 
         tCosto.setToolTipText("");
-
-        tFechaEntrega.setToolTipText("");
-        tFechaEntrega.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tFechaEntregaActionPerformed(evt);
-            }
-        });
 
         labIDCliente.setText("ID Cliente:");
         labIDCliente.setToolTipText("");
@@ -300,8 +289,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tIDCliente.setToolTipText("");
 
         tDescripcion.setToolTipText("");
-
-        tIDJefeDeTaller.setToolTipText("");
 
         bAceptar.setText("Agregar");
         bAceptar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -318,49 +305,58 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
         tEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Recibido", "En Desarrollo", "Terminado" }));
 
-        tEsCliente.setText("Es Cliente");
+        cbDiaFechaEntrega.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+
+        cbMesFechaEntrega.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
+        cbMesFechaEntrega.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbMesFechaEntregaActionPerformed(evt);
+            }
+        });
+
+        cbAnioFechaEntrega.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbAnioFechaEntregaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(29, 29, 29)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(bAceptar)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(29, 29, 29)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labFechaDeEntrega)
-                                    .addComponent(labIDOrdenDeTrabajo)
-                                    .addComponent(labTelefonoCliente)
-                                    .addComponent(labCosto)
-                                    .addComponent(labEstado)
-                                    .addComponent(labIDCliente)
-                                    .addComponent(labIDJefeDeTaller)
-                                    .addComponent(labNombreCliente)))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(27, 27, 27)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labCantidadLote)
-                                    .addComponent(labDescripcion))))
+                            .addComponent(labFechaDeEntrega)
+                            .addComponent(labIDOrdenDeTrabajo)
+                            .addComponent(labTelefonoCliente)
+                            .addComponent(labCosto)
+                            .addComponent(labEstado)
+                            .addComponent(labIDCliente)
+                            .addComponent(labNombreCliente)
+                            .addComponent(labCantidadLote)
+                            .addComponent(labDescripcion))
                         .addGap(41, 41, 41)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(tDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
-                            .addComponent(tIDOrdenDeTrabajo, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+                            .addComponent(tIDOrdenDeTrabajo)
                             .addComponent(tTelefonoCliente)
                             .addComponent(tCosto)
                             .addComponent(tNombreCliente)
                             .addComponent(tIDCliente)
-                            .addComponent(tFechaEntrega)
-                            .addComponent(tIDJefeDeTaller, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
                             .addComponent(tCantidadLote)
                             .addComponent(tEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tEsCliente)))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(98, 98, 98)
-                        .addComponent(bAceptar)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(tDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(cbDiaFechaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbMesFechaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbAnioFechaEntrega, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(11, 11, 11)))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -378,38 +374,34 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                     .addComponent(labIDCliente)
                     .addComponent(tIDCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tEsCliente)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labTelefonoCliente)
-                    .addComponent(tTelefonoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tTelefonoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labTelefonoCliente))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labCosto)
                     .addComponent(tCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labEstado)
-                    .addComponent(tEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tFechaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labFechaDeEntrega))
+                    .addComponent(tEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labEstado))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tIDJefeDeTaller, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labIDJefeDeTaller, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labFechaDeEntrega)
+                    .addComponent(cbDiaFechaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbMesFechaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbAnioFechaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tCantidadLote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labCantidadLote))
+                    .addComponent(labCantidadLote)
+                    .addComponent(tCantidadLote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labDescripcion)
-                    .addComponent(tDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                    .addComponent(tDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bAceptar)
-                .addContainerGap())
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         jSplitPane2.setRightComponent(jPanel4);
@@ -429,7 +421,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 515, Short.MAX_VALUE)
+            .addGap(0, 528, Short.MAX_VALUE)
             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel5Layout.createSequentialGroup()
                     .addGap(78, 78, 78)
@@ -474,17 +466,17 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(488, Short.MAX_VALUE)
+                .addContainerGap(529, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
@@ -639,10 +631,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_bAgregarActionPerformed
 
-    private void tFechaEntregaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tFechaEntregaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tFechaEntregaActionPerformed
-
     private void ordenesDeTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ordenesDeTrabajoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ordenesDeTrabajoActionPerformed
@@ -693,11 +681,15 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_bAceptarMouseClicked
 
+    private void cbMesFechaEntregaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMesFechaEntregaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbMesFechaEntregaActionPerformed
+
+    private void cbAnioFechaEntregaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbAnioFechaEntregaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbAnioFechaEntregaActionPerformed
+
     public void cambiarVisibilidadCamposOrden(boolean varControl){
-        
-        labIDOrdenDeTrabajo.setVisible(varControl);
-        labIDOrdenDeTrabajo.setText("ID Orden de trabajo: ");
-        tIDOrdenDeTrabajo.setVisible(varControl);
         
         labNombreCliente.setVisible(varControl);
         labNombreCliente.setText("Nombre de producto: ");
@@ -727,10 +719,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labFechaDeEntrega.setText("Fecha de entrega: ");
         labFechaDeEntrega.setVisible(varControl);
         
-        labIDJefeDeTaller.setVisible(varControl);
-        labIDJefeDeTaller.setText("ID Jefe de taller:");
-        tIDJefeDeTaller.setVisible(varControl);
-        
         labCantidadLote.setVisible(!varControl);
         tCantidadLote.setEnabled(!varControl);
     }
@@ -745,7 +733,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labTelefonoCliente.setVisible(varControl);
         labEstado.setVisible(varControl);
         labFechaDeEntrega.setVisible(varControl);
-        labIDJefeDeTaller.setVisible(varControl);
         labCantidadLote.setVisible(!varControl);
         
         tIDOrdenDeTrabajo.setVisible(varControl);
@@ -762,10 +749,12 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tTelefonoCliente.setEnabled(varControl);
         tEstado.setVisible(varControl);
         tEstado.setEnabled(varControl);
-        tFechaEntrega.setVisible(varControl);
-        tFechaEntrega.setEnabled(varControl);
-        tIDJefeDeTaller.setVisible(varControl);
-        tIDJefeDeTaller.setEnabled(varControl);
+        cbDiaFechaEntrega.setVisible(varControl);
+        cbDiaFechaEntrega.setEnabled(varControl);
+        cbMesFechaEntrega.setVisible(varControl);
+        cbMesFechaEntrega.setEnabled(varControl);
+        cbAnioFechaEntrega.setVisible(varControl);
+        cbAnioFechaEntrega.setEnabled(varControl);
         tCantidadLote.setVisible(!varControl);
         tCantidadLote.setEnabled(!varControl);
     }
@@ -780,7 +769,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labTelefonoCliente.setVisible(varControl);
         labEstado.setVisible(varControl);
         labFechaDeEntrega.setVisible(varControl);
-        labIDJefeDeTaller.setVisible(varControl);
         labCantidadLote.setVisible(!varControl);
         
         tIDOrdenDeTrabajo.setVisible(!varControl);
@@ -797,10 +785,12 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tTelefonoCliente.setEnabled(varControl);
         tEstado.setVisible(varControl);
         tEstado.setEnabled(varControl);
-        tFechaEntrega.setVisible(varControl);
-        tFechaEntrega.setEnabled(varControl);
-        tIDJefeDeTaller.setVisible(varControl);
-        tIDJefeDeTaller.setEnabled(!varControl);
+        cbDiaFechaEntrega.setVisible(varControl);
+        cbDiaFechaEntrega.setEnabled(varControl);
+        cbMesFechaEntrega.setVisible(varControl);
+        cbMesFechaEntrega.setEnabled(varControl);
+        cbAnioFechaEntrega.setVisible(varControl);
+        cbAnioFechaEntrega.setEnabled(varControl);
         tCantidadLote.setVisible(!varControl);
         tCantidadLote.setEnabled(!varControl);
     }
@@ -815,7 +805,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labTelefonoCliente.setVisible(!varControl);
         labEstado.setVisible(!varControl);
         labFechaDeEntrega.setVisible(!varControl);
-        labIDJefeDeTaller.setVisible(!varControl);
         labCantidadLote.setVisible(!varControl);
         
         tIDOrdenDeTrabajo.setVisible(varControl);
@@ -832,10 +821,12 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tTelefonoCliente.setEnabled(!varControl);
         tEstado.setVisible(!varControl);
         tEstado.setEnabled(!varControl);
-        tFechaEntrega.setVisible(!varControl);
-        tFechaEntrega.setEnabled(!varControl);
-        tIDJefeDeTaller.setVisible(!varControl);
-        tIDJefeDeTaller.setEnabled(!varControl);
+        cbDiaFechaEntrega.setVisible(varControl);
+        cbDiaFechaEntrega.setEnabled(varControl);
+        cbMesFechaEntrega.setVisible(varControl);
+        cbMesFechaEntrega.setEnabled(varControl);
+        cbAnioFechaEntrega.setVisible(varControl);
+        cbAnioFechaEntrega.setEnabled(varControl);
         tCantidadLote.setVisible(!varControl);
         tCantidadLote.setEnabled(!varControl);
     }
@@ -850,7 +841,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labTelefonoCliente.setVisible(!varControl);
         labEstado.setVisible(!varControl);
         labFechaDeEntrega.setVisible(!varControl);
-        labIDJefeDeTaller.setVisible(!varControl);
         labCantidadLote.setVisible(!varControl);
         
         tIDOrdenDeTrabajo.setVisible(varControl);
@@ -867,10 +857,12 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tTelefonoCliente.setEnabled(!varControl);
         tEstado.setVisible(!varControl);
         tEstado.setEnabled(!varControl);
-        tFechaEntrega.setVisible(!varControl);
-        tFechaEntrega.setEnabled(!varControl);
-        tIDJefeDeTaller.setVisible(!varControl);
-        tIDJefeDeTaller.setEnabled(!varControl);
+        cbDiaFechaEntrega.setVisible(varControl);
+        cbDiaFechaEntrega.setEnabled(varControl);
+        cbMesFechaEntrega.setVisible(varControl);
+        cbMesFechaEntrega.setEnabled(varControl);
+        cbAnioFechaEntrega.setVisible(varControl);
+        cbAnioFechaEntrega.setEnabled(varControl);
         tCantidadLote.setVisible(!varControl);
         tCantidadLote.setEnabled(!varControl);
     }
@@ -906,9 +898,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labFechaDeEntrega.setVisible(!varControl);
         labFechaDeEntrega.setVisible(!varControl);
         
-        labIDJefeDeTaller.setVisible(varControl);
-        tIDJefeDeTaller.setVisible(varControl);
-        
         labCantidadLote.setVisible(varControl);
         labCantidadLote.setText("Cantidad Lote");
         labCantidadLote.setEnabled(varControl);
@@ -921,7 +910,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labCosto.setVisible(varControl);
         labIDCliente.setVisible(varControl);
         labDescripcion.setVisible(varControl);
-        labIDJefeDeTaller.setVisible(varControl);
         labCantidadLote.setVisible(varControl);
         
         tIDOrdenDeTrabajo.setVisible(varControl);
@@ -934,8 +922,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tIDCliente.setEnabled(varControl);
         tDescripcion.setVisible(varControl);
         tDescripcion.setEnabled(varControl);
-        tIDJefeDeTaller.setVisible(varControl);
-        tIDJefeDeTaller.setEnabled(varControl);
         tCantidadLote.setVisible(varControl);
         tCantidadLote.setEnabled(varControl);
     }
@@ -947,7 +933,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labCosto.setVisible(varControl);
         labIDCliente.setVisible(varControl);
         labDescripcion.setVisible(varControl);
-        labIDJefeDeTaller.setVisible(varControl);
         
         tIDOrdenDeTrabajo.setVisible(varControl);
         tIDOrdenDeTrabajo.setEnabled(!varControl);
@@ -959,8 +944,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tIDCliente.setEnabled(!varControl);
         tDescripcion.setVisible(varControl);
         tDescripcion.setEnabled(varControl);
-        tIDJefeDeTaller.setVisible(varControl);
-        tIDJefeDeTaller.setEnabled(!varControl);
         tCantidadLote.setVisible(varControl);
         tCantidadLote.setEnabled(varControl);
     }
@@ -972,7 +955,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labCosto.setVisible(!varControl);
         labIDCliente.setVisible(!varControl);
         labDescripcion.setVisible(!varControl);
-        labIDJefeDeTaller.setVisible(!varControl);
         labCantidadLote.setVisible(!varControl);
         
         tIDOrdenDeTrabajo.setVisible(varControl);
@@ -985,8 +967,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tIDCliente.setEnabled(!varControl);
         tDescripcion.setVisible(!varControl);
         tDescripcion.setEnabled(!varControl);
-        tIDJefeDeTaller.setVisible(!varControl);
-        tIDJefeDeTaller.setEnabled(!varControl);
         tCantidadLote.setVisible(!varControl);
         tCantidadLote.setEnabled(!varControl);
     }
@@ -998,7 +978,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labCosto.setVisible(!varControl);
         labIDCliente.setVisible(!varControl);
         labDescripcion.setVisible(!varControl);
-        labIDJefeDeTaller.setVisible(!varControl);
         labCantidadLote.setVisible(!varControl);
         
         tIDOrdenDeTrabajo.setVisible(varControl);
@@ -1011,8 +990,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tIDCliente.setEnabled(!varControl);
         tDescripcion.setVisible(!varControl);
         tDescripcion.setEnabled(!varControl);
-        tIDJefeDeTaller.setVisible(!varControl);
-        tIDJefeDeTaller.setEnabled(!varControl);
         tCantidadLote.setVisible(!varControl);
         tCantidadLote.setEnabled(!varControl);
     }
@@ -1056,15 +1033,16 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             }
             return false;
         }
-        if(tFechaEntrega.getText().replaceAll(" ", "").length()==0){
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        int month = Calendar.getInstance().get(Calendar.MONTH);
+        if(parseInt(cbAnioFechaEntrega.getSelectedItem().toString()) < year){
             return false;
         }
-        if(tIDJefeDeTaller.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDJefeDeTaller.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+        if(parseInt(cbMesFechaEntrega.getSelectedItem().toString()) < month){
+            return false;
+        }
+        if(parseInt(cbDiaFechaEntrega.getSelectedItem().toString()) < day){
             return false;
         }
         return true;
@@ -1101,14 +1079,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         if(tDescripcion.getText().replaceAll(" ", "").length()==0){
             return false;
         }
-        if(tIDJefeDeTaller.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDJefeDeTaller.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
-            return false;
-        }
         if(tTelefonoCliente.getText().replaceAll(" ", "").length()==0){
             try{
                 parseInt(tTelefonoCliente.getText());
@@ -1117,7 +1087,16 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             }
             return false;
         }
-        if(tFechaEntrega.getText().replaceAll(" ", "").length()==0){
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        int month = Calendar.getInstance().get(Calendar.MONTH);
+        if(parseInt(cbAnioFechaEntrega.getSelectedItem().toString()) < year){
+            return false;
+        }
+        if(parseInt(cbMesFechaEntrega.getSelectedItem().toString()) < month){
+            return false;
+        }
+        if(parseInt(cbDiaFechaEntrega.getSelectedItem().toString()) < day){
             return false;
         }
         return true;
@@ -1178,14 +1157,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         if(tDescripcion.getText().replaceAll(" ", "").length()==0){
             return false;
         }
-        if(tIDJefeDeTaller.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDJefeDeTaller.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
-            return false;
-        }
         return true;
     }
     
@@ -1218,14 +1189,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             return false;
         }
         if(tDescripcion.getText().replaceAll(" ", "").length()==0){
-            return false;
-        }
-        if(tIDJefeDeTaller.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDJefeDeTaller.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
             return false;
         }
         return true;
@@ -1262,8 +1225,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tIDCliente.setText("");
         tDescripcion.setText("");
         tTelefonoCliente.setText("");
-        tFechaEntrega.setText("");
-        tIDJefeDeTaller.setText("");
     }
     
     private boolean agregarOrdenDeTrabajo(){
@@ -1277,11 +1238,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         float costo = 0;
         costo = Float.parseFloat(tCosto.getText());
         int esCliente = 0;
-        if(tEsCliente.isSelected()){
-            esCliente = 1;
-        }else{
-            esCliente = 0;
-        }
         String idCliente = "";
         idCliente = tIDCliente.getText();
         String descripcion = "";
@@ -1290,13 +1246,14 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         telefonoCliente = tTelefonoCliente.getText();
         String estado = "";
         estado = tEstado.getItemAt(tEstado.getSelectedIndex());
+        String anioFechaEntrega = cbAnioFechaEntrega.getSelectedItem().toString();
+        String mesFechaEntrega = cbMesFechaEntrega.getSelectedItem().toString();
+        String diaFechaEntrega = cbDiaFechaEntrega.getSelectedItem().toString();
         String fechaEntrega = "";
-        fechaEntrega = tFechaEntrega.getText();
-        String idJefeDeTaller = "";
-        idJefeDeTaller = tIDJefeDeTaller.getText();
+        fechaEntrega = diaFechaEntrega+"/"+mesFechaEntrega+"/"+anioFechaEntrega;
         
         String respuesta = bD.crearOrden(idOrdenDeTrabajo, nombreCliente, idCliente, costo, esCliente, 
-           descripcion, telefonoCliente, estado, fechaEntrega, idJefeDeTaller);
+           descripcion, telefonoCliente, estado, fechaEntrega, idJefe);
         JOptionPane.showMessageDialog(this, respuesta);
         
         return true;
@@ -1317,7 +1274,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         String descripcion = "";
         descripcion = tDescripcion.getText();
         String idJefeDeTaller = "";
-        idJefeDeTaller = tIDJefeDeTaller.getText();
         int cantidadLote = 0;
         cantidadLote = parseInt(tCantidadLote.getText());
         
@@ -1339,11 +1295,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         float costo = 0;
         costo = Float.parseFloat(tCosto.getText());
         int esCliente = 0;
-        if(tEsCliente.isSelected()){
-            esCliente = 1;
-        }else{
-            esCliente = 0;
-        }
         String idCliente = "";
         idCliente = tIDCliente.getText();
         String descripcion = "";
@@ -1352,13 +1303,14 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         telefonoCliente = tTelefonoCliente.getText();
         String estado = "";
         estado = tEstado.getItemAt(tEstado.getSelectedIndex());
+        String anioFechaEntrega = cbAnioFechaEntrega.getSelectedItem().toString();
+        String mesFechaEntrega = cbMesFechaEntrega.getSelectedItem().toString();
+        String diaFechaEntrega = cbDiaFechaEntrega.getSelectedItem().toString();
         String fechaEntrega = "";
-        fechaEntrega = tFechaEntrega.getText();
-        String idJefeDeTaller = "";
-        idJefeDeTaller = tIDJefeDeTaller.getText();
+        fechaEntrega = diaFechaEntrega+"/"+mesFechaEntrega+"/"+anioFechaEntrega;
         
         String respuesta = bD.actualizarOrden(idOrdenDeTrabajo, idCliente, nombreCliente, costo, esCliente, 
-           descripcion, telefonoCliente, estado, fechaEntrega, idJefeDeTaller);        
+           descripcion, telefonoCliente, estado, fechaEntrega, idJefe);        
         JOptionPane.showMessageDialog(this, respuesta);
         
         return true;
@@ -1381,8 +1333,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         lote = parseInt(tIDCliente.getText());
         int cantidadLote = 0;
         cantidadLote = parseInt(tCantidadLote.getText());
-        String respuesta = bD.actualizarInventario(idProducto, nombreProducto, valorUnitario, 
-             descripcion, lote, cantidadLote);       
+        String respuesta = bD.actualizarInventario(idProducto, nombreProducto, valorUnitario, descripcion, lote, cantidadLote);       
         JOptionPane.showMessageDialog(this, respuesta);
         return true;
     }
@@ -1395,11 +1346,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         idOrden = tIDOrdenDeTrabajo.getText();
         OrdenTrabajo orden = bD.leerOrdenPorId(idOrden);
         String esCliente = "";
-        if(tEsCliente.isSelected()){
-            esCliente = "Cliente de la empresa";
-        }else{
-            esCliente = "No es cliente de la empresa";
-        }
         String mensaje = "";
         
         mensaje = "ID Orden de trabajo: "+orden.getIdOrden()+"\n"
@@ -1515,6 +1461,9 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     private javax.swing.JButton bConsul;
     private javax.swing.JButton bModf;
     private javax.swing.JToggleButton bReportes;
+    private javax.swing.JComboBox<String> cbAnioFechaEntrega;
+    private javax.swing.JComboBox<String> cbDiaFechaEntrega;
+    private javax.swing.JComboBox<String> cbMesFechaEntrega;
     private javax.swing.JLabel fecha;
     private javax.swing.JLabel fechaYhora;
     private javax.swing.JLabel hora;
@@ -1533,7 +1482,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     private javax.swing.JLabel labEstado;
     private javax.swing.JLabel labFechaDeEntrega;
     private javax.swing.JLabel labIDCliente;
-    private javax.swing.JLabel labIDJefeDeTaller;
     private javax.swing.JLabel labIDOrdenDeTrabajo;
     private javax.swing.JLabel labLogo;
     private javax.swing.JLabel labNombreCliente;
@@ -1542,11 +1490,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     private javax.swing.JTextField tCantidadLote;
     private javax.swing.JTextField tCosto;
     private javax.swing.JTextField tDescripcion;
-    private javax.swing.JCheckBox tEsCliente;
     private javax.swing.JComboBox<String> tEstado;
-    private javax.swing.JTextField tFechaEntrega;
     private javax.swing.JTextField tIDCliente;
-    private javax.swing.JTextField tIDJefeDeTaller;
     private javax.swing.JTextField tIDOrdenDeTrabajo;
     private javax.swing.JTextField tNombreCliente;
     private javax.swing.JTextField tTelefonoCliente;
