@@ -33,17 +33,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     
     public prinJefeDeTaller(DBConnection baseDatos, String idJefe) {
         initComponents();
-        bD = baseDatos;
-        idJefe = idJefe;
-        
-        //Fecha
-        Date fechaSist = new Date(); 
-        SimpleDateFormat formato = new SimpleDateFormat("dd-MMM-yyyy");
-        fecha.setText(formato.format(fechaSist));
-        
-        //Hora
-        Timer tiempo = new Timer(100, new prinJefeDeTaller.hora());
-        tiempo.start();
+        this.bD = baseDatos;
+        this.idJefe = idJefe;
         
         cambiarVisibilidadCamposOrden(false);
         cambiarVisibilidadCamposInventario(false);
@@ -278,6 +269,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labDescripcion.setText("Descripción:");
 
         tIDOrdenDeTrabajo.setToolTipText("");
+        tIDOrdenDeTrabajo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tIDOrdenDeTrabajoActionPerformed(evt);
+            }
+        });
 
         tTelefonoCliente.setToolTipText("");
 
@@ -503,6 +499,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
               
         if(this.ordenesDeTrabajo.isSelected()){
             limpiarCampos();
+            cbAnioFechaEntrega.removeAllItems();
+            int year = Calendar.getInstance().get(Calendar.YEAR);
+            for (int i=year; i<=year+5; i++){
+                cbAnioFechaEntrega.addItem(Integer.toString(i));
+            }
             cambiarVisibilidadCamposInventario(false);
             cambiarVisibilidadCamposOrden(true);
             cambiarVisibilidadCamposOrdenAgregar(true);
@@ -535,6 +536,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         
         if(this.ordenesDeTrabajo.isSelected()){
             limpiarCampos();
+            cbAnioFechaEntrega.removeAllItems();
+            int year = Calendar.getInstance().get(Calendar.YEAR);
+            for (int i=year; i<=year+5; i++){
+                cbAnioFechaEntrega.addItem(Integer.toString(i));
+            }
             cambiarVisibilidadCamposInventario(false);
             cambiarVisibilidadCamposOrden(true);
             cambiarVisibilidadCamposOrdenModificar(true);
@@ -689,6 +695,10 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbAnioFechaEntregaActionPerformed
 
+    private void tIDOrdenDeTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tIDOrdenDeTrabajoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tIDOrdenDeTrabajoActionPerformed
+
     public void cambiarVisibilidadCamposOrden(boolean varControl){
         
         labNombreCliente.setVisible(varControl);
@@ -719,13 +729,17 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labFechaDeEntrega.setText("Fecha de entrega: ");
         labFechaDeEntrega.setVisible(varControl);
         
+        cbAnioFechaEntrega.setVisible(varControl);
+        cbMesFechaEntrega.setVisible(varControl);
+        cbDiaFechaEntrega.setVisible(varControl);
+        
         labCantidadLote.setVisible(!varControl);
         tCantidadLote.setEnabled(!varControl);
     }
     
     public void cambiarVisibilidadCamposOrdenAgregar(boolean varControl){
         
-        labIDOrdenDeTrabajo.setVisible(varControl);
+        labIDOrdenDeTrabajo.setVisible(!varControl);
         labNombreCliente.setVisible(varControl);
         labCosto.setVisible(varControl);
         labIDCliente.setVisible(varControl);
@@ -735,8 +749,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labFechaDeEntrega.setVisible(varControl);
         labCantidadLote.setVisible(!varControl);
         
-        tIDOrdenDeTrabajo.setVisible(varControl);
-        tIDOrdenDeTrabajo.setEnabled(varControl);
+        tIDOrdenDeTrabajo.setVisible(!varControl);
+        tIDOrdenDeTrabajo.setEnabled(!varControl);
         tNombreCliente.setVisible(varControl);
         tNombreCliente.setEnabled(varControl);
         tCosto.setVisible(varControl);
@@ -761,7 +775,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     
     public void cambiarVisibilidadCamposOrdenModificar(boolean varControl){
         
-        labIDOrdenDeTrabajo.setVisible(!varControl);
+        labIDOrdenDeTrabajo.setVisible(varControl);
         labNombreCliente.setVisible(varControl);
         labCosto.setVisible(varControl);
         labIDCliente.setVisible(varControl);
@@ -771,8 +785,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labFechaDeEntrega.setVisible(varControl);
         labCantidadLote.setVisible(!varControl);
         
-        tIDOrdenDeTrabajo.setVisible(!varControl);
-        tIDOrdenDeTrabajo.setEnabled(!varControl);
+        tIDOrdenDeTrabajo.setVisible(varControl);
+        tIDOrdenDeTrabajo.setEnabled(varControl);
         tNombreCliente.setVisible(varControl);
         tNombreCliente.setEnabled(varControl);
         tCosto.setVisible(varControl);
@@ -896,24 +910,26 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tEstado.setVisible(!varControl);
         
         labFechaDeEntrega.setVisible(!varControl);
-        labFechaDeEntrega.setVisible(!varControl);
+        cbAnioFechaEntrega.setVisible(!varControl);
+        cbMesFechaEntrega.setVisible(!varControl);
+        cbDiaFechaEntrega.setVisible(!varControl);
         
         labCantidadLote.setVisible(varControl);
-        labCantidadLote.setText("Cantidad Lote");
+        labCantidadLote.setText("Cantidad Lote:");
         labCantidadLote.setEnabled(varControl);
     }
     
     public void cambiarVisibilidadCamposInventarioAgregar(boolean varControl){
         
-        labIDOrdenDeTrabajo.setVisible(varControl);
+        labIDOrdenDeTrabajo.setVisible(!varControl);
         labNombreCliente.setVisible(varControl);
         labCosto.setVisible(varControl);
         labIDCliente.setVisible(varControl);
         labDescripcion.setVisible(varControl);
         labCantidadLote.setVisible(varControl);
         
-        tIDOrdenDeTrabajo.setVisible(varControl);
-        tIDOrdenDeTrabajo.setEnabled(varControl);
+        tIDOrdenDeTrabajo.setVisible(!varControl);
+        tIDOrdenDeTrabajo.setEnabled(!varControl);
         tNombreCliente.setVisible(varControl);
         tNombreCliente.setEnabled(varControl);
         tCosto.setVisible(varControl);
@@ -935,7 +951,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labDescripcion.setVisible(varControl);
         
         tIDOrdenDeTrabajo.setVisible(varControl);
-        tIDOrdenDeTrabajo.setEnabled(!varControl);
+        tIDOrdenDeTrabajo.setEnabled(varControl);
         tNombreCliente.setVisible(varControl);
         tNombreCliente.setEnabled(varControl);
         tCosto.setVisible(varControl);
@@ -1231,8 +1247,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         if(!validarCamposAgregarOrdenDeTrabajo()){
             return false;
         }
-        String idOrdenDeTrabajo = "";
-        idOrdenDeTrabajo = tIDOrdenDeTrabajo.getText();
         String nombreCliente = "";
         nombreCliente = tNombreCliente.getText();
         float costo = 0;
@@ -1252,7 +1266,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         String fechaEntrega = "";
         fechaEntrega = diaFechaEntrega+"/"+mesFechaEntrega+"/"+anioFechaEntrega;
         
-        String respuesta = bD.crearOrden(idOrdenDeTrabajo, nombreCliente, idCliente, costo, esCliente, 
+        String respuesta = bD.crearOrden(nombreCliente, idCliente, costo, esCliente, 
            descripcion, telefonoCliente, estado, fechaEntrega, idJefe);
         JOptionPane.showMessageDialog(this, respuesta);
         
@@ -1263,8 +1277,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         if(!validarCamposAgregarInventario()){
             return false;
         }
-        String idItemDeInventario = "";
-        idItemDeInventario = tIDOrdenDeTrabajo.getText();
         String nombreProducto = "";
         nombreProducto = tNombreCliente.getText();
         float valorUnitario = 0;
@@ -1277,7 +1289,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         int cantidadLote = 0;
         cantidadLote = parseInt(tCantidadLote.getText());
         
-        String respuesta =bD.crearInventario(idItemDeInventario, nombreProducto, valorUnitario, 
+        String respuesta =bD.crearInventario(nombreProducto, valorUnitario, 
                 descripcion, lote, cantidadLote, idJefeDeTaller);
         JOptionPane.showMessageDialog(this, respuesta);
         
@@ -1446,6 +1458,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             }
         return true;
     }
+    
     public static void main(String args[]) {            
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

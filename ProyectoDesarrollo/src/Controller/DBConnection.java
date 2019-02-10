@@ -185,6 +185,62 @@ public class DBConnection {
         return id;
     }
     
+    private String idSiguienteOrden(){
+        connect();
+        int idMayor = 0;
+        String id = "0";
+        
+        try {
+            //////////////////Orden de trabajo/////////////////////////////////
+            sql = "SELECT id_Orden FROM Orden_Trabajo";
+            rs = st.executeQuery(sql);
+
+            while(rs.next()){//En caso de que hayan ordenes de trabajo
+                id = rs.getString("id_Orden");
+                if(idMayor<Integer.parseInt(id)) idMayor = Integer.parseInt(id); 
+            }            
+            idMayor = idMayor;
+            ////////////////////////////////////////////////////////////            
+            id = String.valueOf(idMayor+1);
+            
+            rs.close();
+            st.close();
+            connection.close();
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return id;
+    }
+    
+    private String idSiguienteInventario(){
+        connect();
+        int idMayor = 0;
+        String id = "0";
+        
+        try {
+            //////////////////Orden de trabajo/////////////////////////////////
+            sql = "SELECT id_Producto FROM Inventario";
+            rs = st.executeQuery(sql);
+
+            while(rs.next()){//En caso de que hayan ordenes de trabajo
+                id = rs.getString("id_Producto");
+                if(idMayor<Integer.parseInt(id)) idMayor = Integer.parseInt(id); 
+            }            
+            idMayor = idMayor;
+            ////////////////////////////////////////////////////////////            
+            id = String.valueOf(idMayor+1);
+            
+            rs.close();
+            st.close();
+            connection.close();
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return id;
+    }
+    
     //Comprueba que la cedula no este registrada en la base de datos
     private boolean validarCedula(String cedula){
         connect();
@@ -1059,10 +1115,11 @@ public class DBConnection {
     
     
     
-    public String crearOrden(String id, String nombreCliente, String idCliente, float costo, int esCliente, 
+    public String crearOrden(String nombreCliente, String idCliente, float costo, int esCliente, 
            String descripcionOrden, String telefonoCliente, String estado, String fechaEntrega, String idJefe){
         
         connect();
+        String id = idSiguienteOrden();
         sql = "SELECT id_Orden FROM Orden_Trabajo WHERE id_Orden = '"+id+"'";
         try {
 
@@ -1173,9 +1230,10 @@ public class DBConnection {
     
     
     
-    public String crearInventario(String id, String nombreProducto, float valorUnitario, 
+    public String crearInventario(String nombreProducto, float valorUnitario, 
             String descripcion, int lote, int cantidadLote, String idJefe){
         connect();
+        String id = idSiguienteInventario();
         sql = "SELECT id_Producto FROM Inventario WHERE id_Producto = '"+id+"'";
         try {
             rs = st.executeQuery(sql);
