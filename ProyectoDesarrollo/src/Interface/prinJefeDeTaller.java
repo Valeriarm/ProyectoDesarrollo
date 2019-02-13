@@ -36,8 +36,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         this.bD = baseDatos;
         this.idJefe = idJefe;
         
-        cambiarVisibilidadCamposOrden(false);
-        cambiarVisibilidadCamposInventario(false);
+        desactivarCampos(false);
         bAceptar.setVisible(false);
         
         //Elementos del popup menú para modf,agregar y consultar
@@ -138,7 +137,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        iconUsu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO userInfo.png"))); // NOI18N
+        iconUsu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO workshop.png"))); // NOI18N
 
         labLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/logo.png"))); // NOI18N
         labLogo.setName(""); // NOI18N
@@ -219,10 +218,15 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         });
 
         bReportes.setForeground(new java.awt.Color(51, 51, 51));
-        bReportes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/growth.png"))); // NOI18N
+        bReportes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO report.png"))); // NOI18N
         bReportes.setText("Reportes");
         bReportes.setBorderPainted(false);
         bReportes.setContentAreaFilled(false);
+        bReportes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bReportesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -251,7 +255,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 .addComponent(bAnular)
                 .addGap(18, 18, 18)
                 .addComponent(bReportes)
-                .addContainerGap(98, Short.MAX_VALUE))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
 
         jSplitPane2.setLeftComponent(jPanel3);
@@ -698,6 +702,10 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     private void tIDOrdenDeTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tIDOrdenDeTrabajoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tIDOrdenDeTrabajoActionPerformed
+
+    private void bReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bReportesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bReportesActionPerformed
     public void desactivarCampos(boolean varControl){
         labIDOrdenDeTrabajo.setVisible(varControl);
         tIDOrdenDeTrabajo.setVisible(varControl);
