@@ -698,7 +698,36 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     private void tIDOrdenDeTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tIDOrdenDeTrabajoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tIDOrdenDeTrabajoActionPerformed
-
+    public void desactivarCampos(boolean varControl){
+        labIDOrdenDeTrabajo.setVisible(varControl);
+        tIDOrdenDeTrabajo.setVisible(varControl);
+        
+        labNombreCliente.setVisible(varControl);
+        tNombreCliente.setVisible(varControl);
+        
+        labCosto.setVisible(varControl);
+        tCosto.setVisible(varControl);
+        
+        labIDCliente.setVisible(varControl);
+        tIDCliente.setVisible(varControl);
+        
+        labDescripcion.setVisible(varControl);
+        tDescripcion.setVisible(varControl);
+        
+        labTelefonoCliente.setVisible(varControl);
+        tTelefonoCliente.setVisible(varControl);
+        
+        labEstado.setVisible(varControl);
+        tEstado.setVisible(varControl);
+        
+        labFechaDeEntrega.setVisible(varControl);
+        cbAnioFechaEntrega.setVisible(varControl);
+        cbMesFechaEntrega.setVisible(varControl);
+        cbDiaFechaEntrega.setVisible(varControl);
+        
+        labCantidadLote.setVisible(varControl);
+        tCantidadLote.setVisible(varControl);
+    }
     public void cambiarVisibilidadCamposOrden(boolean varControl){
         
         labNombreCliente.setVisible(varControl);
@@ -714,19 +743,15 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tIDCliente.setVisible(varControl);
         
         labDescripcion.setVisible(varControl);
-        labDescripcion.setText("Descripción: ");
         tDescripcion.setVisible(varControl);
         
         labTelefonoCliente.setVisible(varControl);
-        labTelefonoCliente.setText("Telefono Cliente: ");
         tTelefonoCliente.setVisible(varControl);
         
         labEstado.setVisible(varControl);
-        labEstado.setText("Estado: ");
         tEstado.setVisible(varControl);
         
         labFechaDeEntrega.setVisible(varControl);
-        labFechaDeEntrega.setText("Fecha de entrega: ");
         labFechaDeEntrega.setVisible(varControl);
         
         cbAnioFechaEntrega.setVisible(varControl);
@@ -1251,7 +1276,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         nombreCliente = tNombreCliente.getText();
         float costo = 0;
         costo = Float.parseFloat(tCosto.getText());
-        int esCliente = 0;
         String idCliente = "";
         idCliente = tIDCliente.getText();
         String descripcion = "";
@@ -1266,7 +1290,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         String fechaEntrega = "";
         fechaEntrega = diaFechaEntrega+"/"+mesFechaEntrega+"/"+anioFechaEntrega;
         
-        String respuesta = bD.crearOrden(nombreCliente, idCliente, costo, esCliente, 
+        String respuesta = bD.crearOrden(nombreCliente, idCliente, costo, 
            descripcion, telefonoCliente, estado, fechaEntrega, idJefe);
         JOptionPane.showMessageDialog(this, respuesta);
         

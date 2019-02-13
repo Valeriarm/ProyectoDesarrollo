@@ -1115,7 +1115,7 @@ public class DBConnection {
     
     
     
-    public String crearOrden(String nombreCliente, String idCliente, float costo, int esCliente, 
+    public String crearOrden(String nombreCliente, String idCliente, float costo,
            String descripcionOrden, String telefonoCliente, String estado, String fechaEntrega, String idJefe){
         
         connect();
@@ -1127,8 +1127,10 @@ public class DBConnection {
             if(rs.next()){
                 return "La orden de trabajo con el id "+id+" ya existe";
             }else{                
-                sql = "INSERT INTO Orden_Trabajo VALUES ('"+id+"','','"+nombreCliente+"', id_Cliente = '"+idCliente+"','"+costo+"','"+esCliente+"','"+descripcionOrden+"','"
-                        +telefonoCliente+"','"+estado+"','"+fechaEntrega+"','"+idJefe+"')";
+                sql = "INSERT INTO Orden_Trabajo VALUES (id_Orden = '"+id+"',' nombre_Cliente = "+nombreCliente
+                        +"', id_Cliente = '"+idCliente+"',valor_Orden = '"+costo+"',descripcion_Orden = '"+descripcionOrden+
+                        "', telefono_Cliente = '"+telefonoCliente+"', estado_Orden = '"+estado+"', fecha_Entrega = '"+fechaEntrega+
+                        "', id_Jefe = '"+idJefe+"')";
                 
                 st.executeUpdate(sql);
                 rs.close();
