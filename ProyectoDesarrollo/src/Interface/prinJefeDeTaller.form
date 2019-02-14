@@ -194,6 +194,7 @@
                       <Image iconType="3" name="/Images/ICO add.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Agregar"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Para activar los campos presionar de nuevo el boton"/>
                     <Property name="borderPainted" type="boolean" value="false"/>
                     <Property name="contentAreaFilled" type="boolean" value="false"/>
                   </Properties>
@@ -211,6 +212,7 @@
                       <Image iconType="3" name="/Images/ICO edit.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Modificar"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Para activar los campos presionar de nuevo el boton"/>
                     <Property name="borderPainted" type="boolean" value="false"/>
                     <Property name="contentAreaFilled" type="boolean" value="false"/>
                   </Properties>
@@ -227,6 +229,7 @@
                       <Image iconType="3" name="/Images/ICO search.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Consultar"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Para activar los campos presionar de nuevo el boton"/>
                     <Property name="borderPainted" type="boolean" value="false"/>
                     <Property name="contentAreaFilled" type="boolean" value="false"/>
                   </Properties>
@@ -243,6 +246,7 @@
                       <Image iconType="3" name="/Images/ICO delete.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Anular"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Para activar los campos presionar de nuevo el boton"/>
                     <Property name="borderPainted" type="boolean" value="false"/>
                     <Property name="contentAreaFilled" type="boolean" value="false"/>
                   </Properties>
@@ -260,6 +264,7 @@
                       <Image iconType="3" name="/Images/ICO report.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Reportes"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Para activar los campos presionar de nuevo el boton"/>
                     <Property name="borderPainted" type="boolean" value="false"/>
                     <Property name="contentAreaFilled" type="boolean" value="false"/>
                   </Properties>

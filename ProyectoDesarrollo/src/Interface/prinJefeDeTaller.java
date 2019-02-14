@@ -166,6 +166,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         bAgregar.setForeground(new java.awt.Color(51, 51, 51));
         bAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO add.png"))); // NOI18N
         bAgregar.setText("Agregar");
+        bAgregar.setToolTipText("Para activar los campos presionar de nuevo el boton");
         bAgregar.setBorderPainted(false);
         bAgregar.setContentAreaFilled(false);
         bAgregar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -182,6 +183,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         bModf.setForeground(new java.awt.Color(51, 51, 51));
         bModf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO edit.png"))); // NOI18N
         bModf.setText("Modificar");
+        bModf.setToolTipText("Para activar los campos presionar de nuevo el boton");
         bModf.setBorderPainted(false);
         bModf.setContentAreaFilled(false);
         bModf.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -193,6 +195,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         bConsul.setForeground(new java.awt.Color(51, 51, 51));
         bConsul.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO search.png"))); // NOI18N
         bConsul.setText("Consultar");
+        bConsul.setToolTipText("Para activar los campos presionar de nuevo el boton");
         bConsul.setBorderPainted(false);
         bConsul.setContentAreaFilled(false);
         bConsul.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -204,6 +207,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         bAnular.setForeground(new java.awt.Color(51, 51, 51));
         bAnular.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO delete.png"))); // NOI18N
         bAnular.setText("Anular");
+        bAnular.setToolTipText("Para activar los campos presionar de nuevo el boton");
         bAnular.setBorderPainted(false);
         bAnular.setContentAreaFilled(false);
         bAnular.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -220,6 +224,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         bReportes.setForeground(new java.awt.Color(51, 51, 51));
         bReportes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO report.png"))); // NOI18N
         bReportes.setText("Reportes");
+        bReportes.setToolTipText("Para activar los campos presionar de nuevo el boton");
         bReportes.setBorderPainted(false);
         bReportes.setContentAreaFilled(false);
         bReportes.addActionListener(new java.awt.event.ActionListener() {
