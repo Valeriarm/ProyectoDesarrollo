@@ -1127,10 +1127,9 @@ public class DBConnection {
             if(rs.next()){
                 return "La orden de trabajo con el id "+id+" ya existe";
             }else{                
-                sql = "INSERT INTO Orden_Trabajo VALUES (id_Orden = '"+id+"',' nombre_Cliente = "+nombreCliente
-                        +"', id_Cliente = '"+idCliente+"',valor_Orden = '"+costo+"',descripcion_Orden = '"+descripcionOrden+
-                        "', telefono_Cliente = '"+telefonoCliente+"', estado_Orden = '"+estado+"', fecha_Entrega = '"+fechaEntrega+
-                        "', id_Jefe = '"+idJefe+"')";
+                sql = "INSERT INTO Orden_Trabajo VALUES ('"+id+"','"+nombreCliente
+                        +"','"+idCliente+"','"+telefonoCliente+"','"+costo+
+                        "','"+descripcionOrden+"','"+estado+"','"+fechaEntrega+"','"+idJefe+"')";
                 
                 st.executeUpdate(sql);
                 rs.close();
@@ -1246,7 +1245,8 @@ public class DBConnection {
                 sql = "SELECT id_Producto FROM Inventario WHERE id_Producto = '"+id+"'";
                 rs = st.executeQuery(sql);
                 if(rs.next()){
-                    sql = "INSERT INTO Inventario VALUES ('"+id+"','"+nombreProducto+"','"+valorUnitario+"','"+descripcion+"','"+lote+"','"+cantidadLote+"','"+idJefe+"')";                
+                    sql = "INSERT INTO Inventario VALUES ('"+id+"','"+nombreProducto+"','"+valorUnitario+"','"+descripcion+
+                            "','"+lote+"','"+cantidadLote+"','"+idJefe+"')";                
                     st.executeUpdate(sql);
                     rs.close();
                     st.close();

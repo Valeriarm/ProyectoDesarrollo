@@ -273,6 +273,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labDescripcion.setText("Descripción:");
 
         tIDOrdenDeTrabajo.setToolTipText("");
+        tIDOrdenDeTrabajo.setPreferredSize(new java.awt.Dimension(152, 24));
         tIDOrdenDeTrabajo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tIDOrdenDeTrabajoActionPerformed(evt);
@@ -280,13 +281,16 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         });
 
         tTelefonoCliente.setToolTipText("");
+        tTelefonoCliente.setPreferredSize(new java.awt.Dimension(152, 24));
 
         tCosto.setToolTipText("");
+        tCosto.setPreferredSize(new java.awt.Dimension(152, 24));
 
         labIDCliente.setText("ID Cliente:");
         labIDCliente.setToolTipText("");
 
         tIDCliente.setToolTipText("");
+        tIDCliente.setPreferredSize(new java.awt.Dimension(152, 24));
 
         tDescripcion.setToolTipText("");
 
@@ -300,8 +304,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labNombreCliente.setText("Nombre de Cliente:");
 
         tNombreCliente.setToolTipText("");
+        tNombreCliente.setPreferredSize(new java.awt.Dimension(152, 24));
 
         labCantidadLote.setText("Cantidad Lote:");
+
+        tCantidadLote.setPreferredSize(new java.awt.Dimension(152, 24));
 
         tEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Recibido", "En Desarrollo", "Terminado" }));
 
@@ -325,10 +332,9 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(bAceptar)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(labFechaDeEntrega)
                             .addComponent(labIDOrdenDeTrabajo)
@@ -341,12 +347,12 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                             .addComponent(labDescripcion))
                         .addGap(41, 41, 41)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(tIDOrdenDeTrabajo)
-                            .addComponent(tTelefonoCliente)
-                            .addComponent(tCosto)
-                            .addComponent(tNombreCliente)
-                            .addComponent(tIDCliente)
-                            .addComponent(tCantidadLote)
+                            .addComponent(tIDOrdenDeTrabajo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tTelefonoCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tCosto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tNombreCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tIDCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tCantidadLote, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(tEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(tDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel4Layout.createSequentialGroup()
@@ -354,9 +360,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(cbMesFechaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cbAnioFechaEntrega, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(11, 11, 11)))
-                .addContainerGap(28, Short.MAX_VALUE))
+                                .addComponent(cbAnioFechaEntrega, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(131, 131, 131)
+                        .addComponent(bAceptar)))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -378,9 +386,9 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                     .addComponent(tTelefonoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labTelefonoCliente))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labCosto)
-                    .addComponent(tCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labCosto))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -399,9 +407,9 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labDescripcion)
                     .addComponent(tDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(bAceptar)
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         jSplitPane2.setRightComponent(jPanel4);
@@ -868,12 +876,12 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tTelefonoCliente.setEnabled(!varControl);
         tEstado.setVisible(!varControl);
         tEstado.setEnabled(!varControl);
-        cbDiaFechaEntrega.setVisible(varControl);
-        cbDiaFechaEntrega.setEnabled(varControl);
-        cbMesFechaEntrega.setVisible(varControl);
-        cbMesFechaEntrega.setEnabled(varControl);
-        cbAnioFechaEntrega.setVisible(varControl);
-        cbAnioFechaEntrega.setEnabled(varControl);
+        cbDiaFechaEntrega.setVisible(!varControl);
+        cbDiaFechaEntrega.setEnabled(!varControl);
+        cbMesFechaEntrega.setVisible(!varControl);
+        cbMesFechaEntrega.setEnabled(!varControl);
+        cbAnioFechaEntrega.setVisible(!varControl);
+        cbAnioFechaEntrega.setEnabled(!varControl);
         tCantidadLote.setVisible(!varControl);
         tCantidadLote.setEnabled(!varControl);
     }
@@ -904,12 +912,12 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tTelefonoCliente.setEnabled(!varControl);
         tEstado.setVisible(!varControl);
         tEstado.setEnabled(!varControl);
-        cbDiaFechaEntrega.setVisible(varControl);
-        cbDiaFechaEntrega.setEnabled(varControl);
-        cbMesFechaEntrega.setVisible(varControl);
-        cbMesFechaEntrega.setEnabled(varControl);
-        cbAnioFechaEntrega.setVisible(varControl);
-        cbAnioFechaEntrega.setEnabled(varControl);
+        cbDiaFechaEntrega.setVisible(!varControl);
+        cbDiaFechaEntrega.setEnabled(!varControl);
+        cbMesFechaEntrega.setVisible(!varControl);
+        cbMesFechaEntrega.setEnabled(!varControl);
+        cbAnioFechaEntrega.setVisible(!varControl);
+        cbAnioFechaEntrega.setEnabled(!varControl);
         tCantidadLote.setVisible(!varControl);
         tCantidadLote.setEnabled(!varControl);
     }
@@ -1044,15 +1052,10 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     }
     
     private boolean validarCamposAgregarOrdenDeTrabajo(){
-        if(tIDOrdenDeTrabajo.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDOrdenDeTrabajo.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+        if(tNombreCliente.getText().replaceAll(" ", "").length()==0){
             return false;
         }
-        if(tNombreCliente.getText().replaceAll(" ", "").length()==0){
+        if(!tNombreCliente.getText().matches("[^A-Za-z ]")){
             return false;
         }
         if(tCosto.getText().replaceAll(" ", "").length()==0){
@@ -1063,23 +1066,23 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             }
             return false;
         }
-        if(tIDCliente.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDCliente.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+        if(tIDCliente.getText().replaceAll(" ", "").length()==0){            
+            return false;
+        }
+        try{
+            parseInt(tIDCliente.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         if(tDescripcion.getText().replaceAll(" ", "").length()==0){
             return false;
         }
         if(tTelefonoCliente.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tTelefonoCliente.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            parseInt(tTelefonoCliente.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -1099,41 +1102,44 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     
     private boolean validarCamposModificarOrdenDeTrabajo(){
         if(tIDOrdenDeTrabajo.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDOrdenDeTrabajo.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            parseInt(tIDOrdenDeTrabajo.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         if(tNombreCliente.getText().replaceAll(" ", "").length()==0){
             return false;
         }
+        if(!tNombreCliente.getText().matches("[^A-Za-z ]")){
+            return false;
+        }
         if(tCosto.getText().replaceAll(" ", "").length()==0){
-            try{
-                Float.parseFloat(tCosto.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            Float.parseFloat(tCosto.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         if(tIDCliente.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDCliente.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            parseInt(tIDCliente.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         if(tDescripcion.getText().replaceAll(" ", "").length()==0){
             return false;
         }
         if(tTelefonoCliente.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tTelefonoCliente.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            parseInt(tTelefonoCliente.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -1153,11 +1159,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     
     private boolean validarCamposConsultarOrdenDeTrabajo(){
         if(tIDOrdenDeTrabajo.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDOrdenDeTrabajo.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            parseInt(tIDOrdenDeTrabajo.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         return true;
@@ -1165,11 +1171,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     
     private boolean validarCamposAnularOrdenDeTrabajo(){
         if(tIDOrdenDeTrabajo.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDOrdenDeTrabajo.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            parseInt(tIDOrdenDeTrabajo.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         return true;
@@ -1177,30 +1183,33 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     
     private boolean validarCamposAgregarInventario(){
         if(tIDOrdenDeTrabajo.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDOrdenDeTrabajo.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            parseInt(tIDOrdenDeTrabajo.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         if(tNombreCliente.getText().replaceAll(" ", "").length()==0){
             return false;
         }
+        if(!tNombreCliente.getText().matches("[^A-Za-z ]")){
+            return false;
+        }
         if(tCosto.getText().replaceAll(" ", "").length()==0){
-            try{
-                Float.parseFloat(tCosto.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            Float.parseFloat(tCosto.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         if(tIDCliente.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDCliente.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            parseInt(tIDCliente.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         if(tDescripcion.getText().replaceAll(" ", "").length()==0){
@@ -1211,30 +1220,33 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     
     private boolean validarCamposModificarInventario(){
         if(tIDOrdenDeTrabajo.getText().replaceAll(" ", "").length()==0){
-            try{
-                Float.parseFloat(tIDOrdenDeTrabajo.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            Float.parseFloat(tIDOrdenDeTrabajo.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         if(tNombreCliente.getText().replaceAll(" ", "").length()==0){
             return false;
         }
+        if(!tNombreCliente.getText().matches("[^A-Za-z ]")){
+            return false;
+        }
         if(tCosto.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tCosto.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            parseInt(tCosto.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         if(tIDCliente.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDCliente.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            parseInt(tIDCliente.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         if(tDescripcion.getText().replaceAll(" ", "").length()==0){
@@ -1245,23 +1257,23 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     
     private boolean validarCamposConsultarInventario(){
         if(tIDOrdenDeTrabajo.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDOrdenDeTrabajo.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            parseInt(tIDOrdenDeTrabajo.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         return true;
     }
     
     private boolean validarCamposEliminarInventario(){
-        try{
-                parseInt(tIDOrdenDeTrabajo.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
         if(tIDOrdenDeTrabajo.getText().replaceAll(" ", "").length()==0){
+            return false;
+        }
+        try{
+            parseInt(tIDOrdenDeTrabajo.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         return true;
@@ -1317,12 +1329,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         lote = parseInt(tIDCliente.getText());
         String descripcion = "";
         descripcion = tDescripcion.getText();
-        String idJefeDeTaller = "";
         int cantidadLote = 0;
         cantidadLote = parseInt(tCantidadLote.getText());
         
         String respuesta =bD.crearInventario(nombreProducto, valorUnitario, 
-                descripcion, lote, cantidadLote, idJefeDeTaller);
+                descripcion, lote, cantidadLote, idJefe);
         JOptionPane.showMessageDialog(this, respuesta);
         
         return true;
