@@ -21,8 +21,8 @@ public class DBConnection {
     //----------------------------------------------------------------------
     
     //Usuario de la base de datos en postgresql
-    private String dBUser = "postgres";
-    private String dBPassword = "1144211502";
+    private String dBUser = "desarrollo";
+    private String dBPassword = "desarrollo";
     //puerto
     private String port = "5433";
     //Nombre de la base de datos
@@ -578,7 +578,7 @@ public class DBConnection {
                 String fechaNa = rs.getString("fecha_nacimiento");
                 String email = rs.getString("e_mail");
                 float salario = rs.getFloat("salario");
-                String cuentaBanc = rs.getString("cuenta_bancario");
+                String cuentaBanc = rs.getString("cuenta_bancaria");
                 String fechaReg = rs.getString("fecha_registro");
                 String managerId = rs.getString("id_gerente");
                 boolean habilitado = rs.getBoolean("habilitado");
@@ -1506,6 +1506,40 @@ public class DBConnection {
         return "";
     }
     
+    
+    /*listar Vendedores y Jefes*/
+    
+    public String listarVendedoresYJefes(){
+        connect();
+        //hacemos una union entre todos lo vendedores y todos los jefes y retornamos los id, nombre, cedula
+        sql = "SELECT id_vendedor, nombre_Vendedor, cedula from Vendedor  "
+                + "WHERE Habilitado = '"+true+"' UNION SELECT id_jefe, nombre_jefe , cedula from jefe_taller  WHERE Habilitado = '"+true+"'";
+        try {
+            rs = st.executeQuery(sql);
+            
+            String id,nombre,cedula;
+            String empleados = "";
+            
+            while(rs.next()){
+                id = rs.getString("id_Vendedor");
+                nombre = rs.getString("nombre_Vendedor");
+                cedula = rs.getString("cedula");
+                
+                empleados = empleados+id+","+nombre+","+cedula+"$";;
+            }
+
+            rs.close();
+            st.close();
+            connection.close();
+            
+            return empleados;
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return "";
+    }
+           
     
     public static void main(String args[]) {    
         DBConnection prueba = new DBConnection();
