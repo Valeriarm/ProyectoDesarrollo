@@ -183,7 +183,6 @@ CREATE TABLE Orden_Trabajo (
   id_Cliente VARCHAR(100) NOT NULL,
   telefono_Cliente VARCHAR(100) NOT NULL ,
   valor_Orden float NOT NULL ,
-  es_Cliente int NOT NULL,
   descripcion_Orden VARCHAR(100) NOT NULL ,
   estado_Orden VARCHAR(100) NOT NULL ,
   fecha_Entrega VARCHAR(100) NOT NULL,

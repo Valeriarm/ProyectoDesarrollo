@@ -21,8 +21,8 @@ public class DBConnection {
     //----------------------------------------------------------------------
     
     //Usuario de la base de datos en postgresql
-    private String dBUser = "desarrollo";
-    private String dBPassword = "desarrollo";
+    private String dBUser = "postgres";
+    private String dBPassword = "1144211502";
     //puerto
     private String port = "5433";
     //Nombre de la base de datos
@@ -173,6 +173,62 @@ public class DBConnection {
                 }
             }
             
+            id = String.valueOf(idMayor+1);
+            
+            rs.close();
+            st.close();
+            connection.close();
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return id;
+    }
+    
+    private String idSiguienteOrden(){
+        connect();
+        int idMayor = 0;
+        String id = "0";
+        
+        try {
+            //////////////////Orden de trabajo/////////////////////////////////
+            sql = "SELECT id_Orden FROM Orden_Trabajo";
+            rs = st.executeQuery(sql);
+
+            while(rs.next()){//En caso de que hayan ordenes de trabajo
+                id = rs.getString("id_Orden");
+                if(idMayor<Integer.parseInt(id)) idMayor = Integer.parseInt(id); 
+            }            
+            idMayor = idMayor;
+            ////////////////////////////////////////////////////////////            
+            id = String.valueOf(idMayor+1);
+            
+            rs.close();
+            st.close();
+            connection.close();
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return id;
+    }
+    
+    private String idSiguienteInventario(){
+        connect();
+        int idMayor = 0;
+        String id = "0";
+        
+        try {
+            //////////////////Orden de trabajo/////////////////////////////////
+            sql = "SELECT id_Producto FROM Inventario";
+            rs = st.executeQuery(sql);
+
+            while(rs.next()){//En caso de que hayan ordenes de trabajo
+                id = rs.getString("id_Producto");
+                if(idMayor<Integer.parseInt(id)) idMayor = Integer.parseInt(id); 
+            }            
+            idMayor = idMayor;
+            ////////////////////////////////////////////////////////////            
             id = String.valueOf(idMayor+1);
             
             rs.close();
@@ -578,7 +634,7 @@ public class DBConnection {
                 String fechaNa = rs.getString("fecha_nacimiento");
                 String email = rs.getString("e_mail");
                 float salario = rs.getFloat("salario");
-                String cuentaBanc = rs.getString("cuenta_bancaria");
+                String cuentaBanc = rs.getString("cuenta_bancario");
                 String fechaReg = rs.getString("fecha_registro");
                 String managerId = rs.getString("id_gerente");
                 boolean habilitado = rs.getBoolean("habilitado");
@@ -1059,10 +1115,11 @@ public class DBConnection {
     
     
     
-    public String crearOrden(String id, String nombreCliente, String idCliente, float costo, int esCliente, 
+    public String crearOrden(String nombreCliente, String idCliente, float costo,
            String descripcionOrden, String telefonoCliente, String estado, String fechaEntrega, String idJefe){
         
         connect();
+        String id = idSiguienteOrden();
         sql = "SELECT id_Orden FROM Orden_Trabajo WHERE id_Orden = '"+id+"'";
         try {
 
@@ -1070,8 +1127,9 @@ public class DBConnection {
             if(rs.next()){
                 return "La orden de trabajo con el id "+id+" ya existe";
             }else{                
-                sql = "INSERT INTO Orden_Trabajo VALUES ('"+id+"','','"+nombreCliente+"', id_Cliente = '"+idCliente+"','"+costo+"','"+esCliente+"','"+descripcionOrden+"','"
-                        +telefonoCliente+"','"+estado+"','"+fechaEntrega+"','"+idJefe+"')";
+                sql = "INSERT INTO Orden_Trabajo VALUES ('"+id+"','"+nombreCliente
+                        +"','"+idCliente+"','"+telefonoCliente+"','"+costo+
+                        "','"+descripcionOrden+"','"+estado+"','"+fechaEntrega+"','"+idJefe+"')";
                 
                 st.executeUpdate(sql);
                 rs.close();
@@ -1173,9 +1231,10 @@ public class DBConnection {
     
     
     
-    public String crearInventario(String id, String nombreProducto, float valorUnitario, 
+    public String crearInventario(String nombreProducto, float valorUnitario, 
             String descripcion, int lote, int cantidadLote, String idJefe){
         connect();
+        String id = idSiguienteInventario();
         sql = "SELECT id_Producto FROM Inventario WHERE id_Producto = '"+id+"'";
         try {
             rs = st.executeQuery(sql);
@@ -1186,7 +1245,8 @@ public class DBConnection {
                 sql = "SELECT id_Producto FROM Inventario WHERE id_Producto = '"+id+"'";
                 rs = st.executeQuery(sql);
                 if(rs.next()){
-                    sql = "INSERT INTO Inventario VALUES ('"+id+"','"+nombreProducto+"','"+valorUnitario+"','"+descripcion+"','"+lote+"','"+cantidadLote+"','"+idJefe+"')";                
+                    sql = "INSERT INTO Inventario VALUES ('"+id+"','"+nombreProducto+"','"+valorUnitario+"','"+descripcion+
+                            "','"+lote+"','"+cantidadLote+"','"+idJefe+"')";                
                     st.executeUpdate(sql);
                     rs.close();
                     st.close();
@@ -1506,40 +1566,6 @@ public class DBConnection {
         return "";
     }
     
-    
-    /*listar Vendedores y Jefes*/
-    
-    public String listarVendedoresYJefes(){
-        connect();
-        //hacemos una union entre todos lo vendedores y todos los jefes y retornamos los id, nombre, cedula
-        sql = "SELECT id_vendedor, nombre_Vendedor, cedula from Vendedor  "
-                + "WHERE Habilitado = '"+true+"' UNION SELECT id_jefe, nombre_jefe , cedula from jefe_taller  WHERE Habilitado = '"+true+"'";
-        try {
-            rs = st.executeQuery(sql);
-            
-            String id,nombre,cedula;
-            String empleados = "";
-            
-            while(rs.next()){
-                id = rs.getString("id_Vendedor");
-                nombre = rs.getString("nombre_Vendedor");
-                cedula = rs.getString("cedula");
-                
-                empleados = empleados+id+","+nombre+","+cedula+"$";;
-            }
-
-            rs.close();
-            st.close();
-            connection.close();
-            
-            return empleados;
-            
-        } catch (Exception e) {
-            System.out.println("ERROR DE SQL " + e.getMessage());
-        }
-        return "";
-    }
-           
     
     public static void main(String args[]) {    
         DBConnection prueba = new DBConnection();

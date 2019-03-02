@@ -17,7 +17,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
-
 /**
  *
  * @author melissa
@@ -62,10 +61,9 @@ public class prinGerente extends javax.swing.JFrame {
         
        }
 
-    
     class hora implements ActionListener{
     
-    public void actionPerformed(ActionEvent e){
+        public void actionPerformed(ActionEvent e){
         
         Date fechaHora = new Date();
         String pmAm = "hh:mm:ss a";
@@ -75,7 +73,6 @@ public class prinGerente extends javax.swing.JFrame {
       
         }
     }
-    
     
     public static boolean validarFecha(String fecha) {
         try {
@@ -87,7 +84,6 @@ public class prinGerente extends javax.swing.JFrame {
         }
             return true;
     }    
-    
     
     private boolean validarCampos(String nombreUsu, String nombre, String cedula, String correo, String cuenta, String direccion, String telefono, String salario, String fechaNac) {
         boolean validacion = true, fechaValida; // validacion, en un principio, es solo para los campos vacios
@@ -120,7 +116,139 @@ public class prinGerente extends javax.swing.JFrame {
         return validacion;
     }
     
+    
+        //Retorna una lista con los Ids de los empleados en listaEmpleados el cual es una lista de strings del
+    //tipo {"id1,nombre1,cedula1",..."idN,nombreN,cedulaN"} donde N es la cantiadad de empleados
+    private String[] obtenerListaIds(String[] listaEmpleados){
+        String[] listaDeIds = new String[listaEmpleados.length];
+        String[] empleado;
         
+        for(int i=0; i<(listaDeIds.length); i++){
+            empleado = listaEmpleados[i].split(",");
+            listaDeIds[i] = empleado[0];
+        }
+        
+        return listaDeIds;
+    }
+    
+    //Retorna una lista con las opciones para combobox comboxEmple con el formato
+    //{"nombre1 cedula1",..."nombreN cedulaN"} obtenidas de listaEmpleado el cual es una lista de strings del
+    //tipo {"id1,nombre1,cedula1",..."idN,nombreN,cedulaN"} donde N es la cantiadad de empleados
+    private String[] obtenerOpciones(String[] listaEmpleados){
+        String[] opciones = new String[listaEmpleados.length+1];
+        String[] empleado;
+        opciones[0] = "No seleccionado";
+        
+        for(int i=0,j=1; i<(listaEmpleados.length); i++,j++){
+            empleado = listaEmpleados[i].split(",");
+            opciones[j] = empleado[1]+" "+empleado[2].replace("$","");
+        }
+        
+        return opciones;
+    }
+    
+    private void actualizarComboxEmpleVendedores(){
+        String empleados = bD.listarVendedores();        
+        
+        if(empleados.equals("")){ //No Hay empleados
+           String[] opciones = { "No seleccionado" };
+           comboxEmple.setModel(new DefaultComboBoxModel(opciones));
+        }else{ //Hay empleados
+            String[] listaEmpleados = empleados.split("\\$");
+            listaIds = obtenerListaIds(listaEmpleados);
+            String[] opciones = obtenerOpciones(listaEmpleados);
+            comboxEmple.setModel(new DefaultComboBoxModel(opciones));
+            
+        }
+    }
+    
+    
+    private void actualizarComboxEmpleJefes(){
+        String empleados = bD.listarJefesTaller();        
+        
+        if(empleados.equals("")){ //No Hay empleados
+           String[] opciones = { "No seleccionado" };
+           comboxEmple.setModel(new DefaultComboBoxModel(opciones));
+        }else{ //Hay empleados
+            String[] listaEmpleados = empleados.split("\\$");
+            listaIds = obtenerListaIds(listaEmpleados);
+            String[] opciones = obtenerOpciones(listaEmpleados);
+            comboxEmple.setModel(new DefaultComboBoxModel(opciones));
+            
+        }
+    }
+        
+        
+    //Limpia los campos(jTextfields) de la interfaz
+    private void limpiarCamposUsuarios(){
+        tNombreUsu.setText("");
+        tContra.setText("");
+        tNombre.setText("");
+        tCedula.setText("");
+        tCorreo.setText("");
+        tCuentaBan.setText("");
+        tDir.setText("");
+        tTel.setText("");
+        tSal.setText("");
+        tIdGerente.setText("");
+        comboxDia.setSelectedIndex(0);
+        comboxMes.setSelectedIndex(0);
+        comboxAno.setSelectedIndex(0);
+    }
+    
+    private void llenarCamposModfVendedor(){
+        String id = listaIds[comboxEmple.getSelectedIndex()-1];
+        Vendedor ven = bD.leerVendedorPorId(id);
+        
+        tNombreUsu.setText(ven.getNombreUsuario());
+        tContra.setText(ven.getContrasena());
+        tNombre.setText(ven.getNombre());
+        tCedula.setText(ven.getCedula());
+        tCorreo.setText(ven.getCorreo());
+        tCuentaBan.setText(ven.getCuentaBancaria());
+        comboxGenero.setSelectedIndex(ven.getGenero());
+        tDir.setText(ven.getDireccion());
+        tTel.setText(ven.getTelefono());
+        tSal.setText(Float.toString(ven.getSalario()));
+        tIdGerente.setText(ven.getManagerId());
+        
+        String[] fechaNac = ven.getFechaNacimiento().split("/");
+        int diaNac = Integer.parseInt(fechaNac[0]);
+        int mesNac = obtenerMesNum(fechaNac[1]);
+        int anoNac = Integer.parseInt(fechaNac[2]);
+        
+        comboxDia.setSelectedIndex(diaNac-1); //El Combobox empieza desde 0
+        comboxMes.setSelectedIndex(mesNac-1);
+        comboxAno.setSelectedIndex((anoNac-2000)*-1); //El año 2000 es la posición 0, *-1 porque puede dar negativo
+    }
+    
+    private void llenarCamposModfJefeTaller(){
+        String id = listaIds[comboxEmple.getSelectedIndex()-1];
+        JefeTaller jef = bD.leerJefeTallerPorId(id);
+        
+        tNombreUsu.setText(jef.getNombreUsuario());
+        tContra.setText(jef.getContrasena());
+        tNombre.setText(jef.getNombre());
+        tCedula.setText(jef.getCedula());
+        tCorreo.setText(jef.getCorreo());
+        tCuentaBan.setText(jef.getCuentaBancaria());
+        comboxGenero.setSelectedIndex(jef.getGenero());
+        tDir.setText(jef.getDireccion());
+        tTel.setText(jef.getTelefono());
+        tSal.setText(Float.toString(jef.getSalario()));
+        tIdGerente.setText(jef.getManagerId());
+        
+        String[] fechaNac = jef.getFechaNacimiento().split("/");
+        int diaNac = Integer.parseInt(fechaNac[0]);
+        int mesNac = obtenerMesNum(fechaNac[1]);
+        int anoNac = Integer.parseInt(fechaNac[2]);
+        
+        comboxDia.setSelectedIndex(diaNac-1); //El Combobox empieza desde 0
+        comboxMes.setSelectedIndex(mesNac-1);
+        comboxAno.setSelectedIndex((anoNac-2000)*-1); //El año 2000 es la posición 0, *-1 porque puede dar negativo
+    }
+    
+    //Retorna el valor numerico del mes, la variable mes tiene el formato puesto en el comboxMes
     private int obtenerMesNum(String mes){
         //ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic
         switch(mes){
@@ -152,7 +280,7 @@ public class prinGerente extends javax.swing.JFrame {
         return 0;
     }
     
- 
+    // Calcula la edad de nacimiento apartir de un string de fecha, ejemplo del string "01/jul/1985"
     private int calcularEdad(String nacimiento){
         int edad,anoN,anoHoy,mesN,mesHoy,diaN,diaHoy;
         Date fechaSist = new Date(); 
@@ -181,135 +309,6 @@ public class prinGerente extends javax.swing.JFrame {
         return edad;
     }
     
-    //Retorna una lista con los Ids de los empleados en listaEmpleados el cual es una lista de strings del
-    //tipo {"id1,nombre1,cedula1",..."idN,nombreN,cedulaN"} donde N es la cantiadad de empleados
-    private String[] obtenerListaIds(String[] listaEmpleados){
-        String[] listaDeIds = new String[listaEmpleados.length];
-        String[] empleado;
-        
-        for(int i=0; i<(listaDeIds.length); i++){
-            empleado = listaEmpleados[i].split(",");
-            listaDeIds[i] = empleado[0];
-        }
-        
-        return listaDeIds;
-    }
-    
-    
-    private String[] obtenerOpciones(String[] listaEmpleados){
-        String[] opciones = new String[listaEmpleados.length+1];
-        String[] empleado;
-        opciones[0] = "No seleccionado";
-        
-        for(int i=0,j=1; i<(listaEmpleados.length); i++,j++){
-            empleado = listaEmpleados[i].split(",");
-            opciones[j] = empleado[1]+" "+empleado[2].replace("$","");
-        }
-        
-        return opciones;
-    }
-    
-    
-    private void actualizarComboxEmpleVendedores(){
-        String empleados = bD.listarVendedores();        
-        
-        if(empleados.equals("")){ //No Hay empleados
-           String[] opciones = { "No seleccionado" };
-           comboxEmple.setModel(new DefaultComboBoxModel(opciones));
-        }else{ //Hay empleados
-            String[] listaEmpleados = empleados.split("\\$");
-            listaIds = obtenerListaIds(listaEmpleados);
-            String[] opciones = obtenerOpciones(listaEmpleados);
-            comboxEmple.setModel(new DefaultComboBoxModel(opciones));
-            
-        }
-    }
-    
-    
-    private void actualizarComboxEmpleJefes(){
-        String empleados = bD.listarJefesTaller();        
-        
-        if(empleados.equals("")){ //No Hay empleados
-           String[] opciones = { "No seleccionado" };
-           comboxEmple.setModel(new DefaultComboBoxModel(opciones));
-        }else{ //Hay empleados
-            String[] listaEmpleados = empleados.split("\\$");
-            listaIds = obtenerListaIds(listaEmpleados);
-            String[] opciones = obtenerOpciones(listaEmpleados);
-            comboxEmple.setModel(new DefaultComboBoxModel(opciones));
-            
-        }
-        
-    }
-    
-    
-    private void actualizarComboxVendedoresYJefes(){
-        String empleados = bD.listarVendedoresYJefes();        
-        
-        if(empleados.equals("")){ //No Hay empleados
-           String[] opciones = { "No seleccionado" };
-           comboxEmple.setModel(new DefaultComboBoxModel(opciones));
-        }else{ //Hay empleados
-            String[] listaEmpleados = empleados.split("\\$");
-            listaIds = obtenerListaIds(listaEmpleados);
-            String[] opciones = obtenerOpciones(listaEmpleados);
-            comboxEmple.setModel(new DefaultComboBoxModel(opciones));
-        }
-    }
-    
-    
-    private void llenarCamposModfVendedor(){
-        String id = listaIds[comboxEmple.getSelectedIndex()-1];
-        Vendedor ven = bD.leerVendedorPorId(id);
-        
-        tNombreUsu.setText(ven.getNombreUsuario());
-        tContra.setText(ven.getContrasena());
-        tNombre.setText(ven.getNombre());
-        tCedula.setText(ven.getCedula());
-        tCorreo.setText(ven.getCorreo());
-        tCuentaBan.setText(ven.getCuentaBancaria());
-        comboxGenero.setSelectedIndex(ven.getGenero());
-        tDir.setText(ven.getDireccion());
-        tTel.setText(ven.getTelefono());
-        tSal.setText(Float.toString(ven.getSalario()));
-        
-        String[] fechaNac = ven.getFechaNacimiento().split("/");
-        int diaNac = Integer.parseInt(fechaNac[0]);
-        int mesNac = obtenerMesNum(fechaNac[1]);
-        int anoNac = Integer.parseInt(fechaNac[2]);
-        
-        comboxDia.setSelectedIndex(diaNac-1); //El Combobox empieza desde 0
-        comboxMes.setSelectedIndex(mesNac-1);
-        comboxAno.setSelectedIndex((anoNac-2000)*-1); //El año 2000 es la posición 0, *-1 porque puede dar negativo
-    }
-    
-    
-    private void llenarCamposModfJefeTaller(){
-        String id = listaIds[comboxEmple.getSelectedIndex()-1];
-        JefeTaller jef = bD.leerJefeTallerPorId(id);
-        
-        tNombreUsu.setText(jef.getNombreUsuario());
-        tContra.setText(jef.getContrasena());
-        tNombre.setText(jef.getNombre());
-        tCedula.setText(jef.getCedula());
-        tCorreo.setText(jef.getCorreo());
-        tCuentaBan.setText(jef.getCuentaBancaria());
-        comboxGenero.setSelectedIndex(jef.getGenero());
-        tDir.setText(jef.getDireccion());
-        tTel.setText(jef.getTelefono());
-        tSal.setText(Float.toString(jef.getSalario()));
-        
-        String[] fechaNac = jef.getFechaNacimiento().split("/");
-        int diaNac = Integer.parseInt(fechaNac[0]);
-        int mesNac = obtenerMesNum(fechaNac[1]);
-        int anoNac = Integer.parseInt(fechaNac[2]);
-        
-        comboxDia.setSelectedIndex(diaNac-1); 
-        comboxMes.setSelectedIndex(mesNac-1);
-        comboxAno.setSelectedIndex((anoNac-2000)*-1); 
-    }
-
-    
     private void agregarVendedor(){
         String nombreUsu = tNombreUsu.getText();
         String nombre = tNombre.getText();
@@ -317,6 +316,7 @@ public class prinGerente extends javax.swing.JFrame {
         String cargo = comboxCargo.getSelectedItem().toString();
         String correo = tCorreo.getText();
         String cuenta = tCuentaBan.getText();
+        String idGerente = tIdGerente.getText();
         int genero = comboxGenero.getSelectedIndex();
         String direccion = tDir.getText();
         String telefono = tTel.getText();
@@ -344,7 +344,6 @@ public class prinGerente extends javax.swing.JFrame {
         }        
     }
     
-    
     private void agregarJefeTaller(){
     String nombreUsu = tNombreUsu.getText();
     String nombre = tNombre.getText();
@@ -355,6 +354,7 @@ public class prinGerente extends javax.swing.JFrame {
     int genero = comboxGenero.getSelectedIndex();
     String direccion = tDir.getText();
     String telefono = tTel.getText();
+    String idGerente = tIdGerente.getText();
     float salario;
     if(tSal.getText().equals("")){
         salario = 0;
@@ -379,10 +379,10 @@ public class prinGerente extends javax.swing.JFrame {
     }        
 }
     
-    
     private void modificarVendedor(){        
         String mensaje = "";
-
+        
+        //Datos Modf
         String nombreUsu = tNombreUsu.getText();
         String contrasena = tContra.getText();
         String nombre = tNombre.getText();
@@ -400,7 +400,13 @@ public class prinGerente extends javax.swing.JFrame {
         }else{
             salario = Float.valueOf(tSal.getText());
         }
-
+        
+        boolean estado;
+        if(comboxEstado.getSelectedItem().toString().equals("Activo")){
+            estado=true;
+        }else{
+            estado=false;
+        }
         String diaCumple = comboxDia.getItemAt(comboxDia.getSelectedIndex());
         String mesCumple = comboxMes.getItemAt(comboxMes.getSelectedIndex());
         String anoCumple = comboxAno.getItemAt(comboxAno.getSelectedIndex());
@@ -422,14 +428,14 @@ public class prinGerente extends javax.swing.JFrame {
         if(!telefono.equals(ven.getTelefono())) mensaje = mensaje+"Telefono\n";
         if(salario != ven.getSalario()) mensaje = mensaje+"Salario\n";
         if(!fechaNac.equals(ven.getFechaNacimiento())) mensaje = mensaje+"Fecha de nacimiento\n";
-        if(ven.isHabilitado()) mensaje = mensaje+"Estado\n";
+        if(estado != ven.isHabilitado()) mensaje = mensaje+"Estado\n";
         
         if(!mensaje.equals("")){
             mensaje = "Los siguientes campos se van a modificar:\n"+mensaje;
             int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
             
             if(opcion==0){ //Modificar
-                String respuesta = bD.actualizarVendedor(id, nombre,cedula, cargo,telefono,direccion,genero,fechaNac, correo, salario, cuenta, ven.getFechaRegistro(),nombreUsu, contrasena, ven.getManagerId(), true, ven.getFechaDespido());
+                String respuesta = bD.actualizarVendedor(id, nombre,cedula, cargo,telefono,direccion,genero,fechaNac, correo, salario, cuenta, ven.getFechaRegistro(),nombreUsu, contrasena, ven.getManagerId(), estado, ven.getFechaDespido());
                 JOptionPane.showMessageDialog(this, respuesta);
             }
         }else{
@@ -461,6 +467,12 @@ public class prinGerente extends javax.swing.JFrame {
             salario = Float.valueOf(tSal.getText());
         }
         
+        boolean estado;
+        if(comboxEstado.getSelectedItem().toString().equals("Activo")){
+            estado=true;
+        }else{
+            estado=false;
+        }
         String diaCumple = comboxDia.getItemAt(comboxDia.getSelectedIndex());
         String mesCumple = comboxMes.getItemAt(comboxMes.getSelectedIndex());
         String anoCumple = comboxAno.getItemAt(comboxAno.getSelectedIndex());
@@ -482,331 +494,20 @@ public class prinGerente extends javax.swing.JFrame {
         if(!telefono.equals(jef.getTelefono())) mensaje = mensaje+"Telefono\n";
         if(salario != jef.getSalario()) mensaje = mensaje+"Salario\n";
         if(!fechaNac.equals(jef.getFechaNacimiento())) mensaje = mensaje+"Fecha de nacimiento\n";
-        if(jef.isHabilitado()) mensaje = mensaje+"Estado\n";
+        if(estado != jef.isHabilitado()) mensaje = mensaje+"Estado\n";
         
         if(!mensaje.equals("")){
             mensaje = "Los siguientes campos se van a modificar:\n"+mensaje;
             int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
             
             if(opcion==0){ //Modificar
-                String respuesta = bD.actualizarJefe(id, contrasena,nombreUsu,nombre,cedula,cargo,telefono,direccion,genero, fechaNac,correo,salario,cuenta,jef.getFechaRegistro(),jef.getManagerId(),true,jef.getFechaDespido());
+                String respuesta = bD.actualizarJefe(id, contrasena,nombreUsu,nombre,cedula,cargo,telefono,direccion,genero, fechaNac,correo,salario,cuenta,jef.getFechaRegistro(),jef.getManagerId(),estado,jef.getFechaDespido());
                 JOptionPane.showMessageDialog(this, respuesta);
             }
         }else{
             mensaje = "Cambie un campo para modificar al Jefe de Taller";
             JOptionPane.showMessageDialog(this, mensaje);
         }
-    }
-    
-    
-    private void consultar(){
-        String id = listaIds[comboxEmple.getSelectedIndex()-1];
-        Vendedor vendedor = bD.leerVendedorPorId(id);
-        JefeTaller jefe = bD.leerJefeTallerPorId(id);
-        String genero;
-        
-        if(vendedor != null){
-            if(vendedor.getGenero()==0){
-                genero = "Masculino";
-            }else{
-                genero = "Femenino";
-            
-            int edad = calcularEdad(vendedor.getFechaNacimiento());
-        
-            String mensaje = "Nombre: "+vendedor.getNombre()+"\n"+
-                         "Cedula: "+vendedor.getCedula()+"\n"+
-                         "Cargo: "+vendedor.getCargo()+"\n"+
-                         "salario: "+vendedor.getSalario()+"\n"+
-                         "Cuenta Bancaria: "+vendedor.getCuentaBancaria()+"\n"+
-                         "Sede: "+"NO CODEADO"+"\n"+
-                         "Fecha Registro: "+vendedor.getFechaRegistro()+"\n"+
-                         "Edad: "+edad+"\n"+
-                         "Fecha Nacimiento: "+vendedor.getFechaNacimiento()+"\n"+
-                         "Correo: "+vendedor.getCorreo()+"\n"+
-                         "Genero: "+genero+"\n"+
-                         "Dirección: "+vendedor.getDireccion()+"\n"+
-                         "Teléfono: "+vendedor.getTelefono()+"\n";
-        
-            JOptionPane.showMessageDialog(this, mensaje);
-        }}else{
-           if(jefe.getGenero()==0){
-                genero = "Masculino";
-            }else{
-                genero = "Femenino";
-            }
-       
-            int edad = calcularEdad(jefe.getFechaNacimiento());
-        
-            String mensaje = "Nombre: "+jefe.getNombre()+"\n"+
-                         "Cedula: "+jefe.getCedula()+"\n"+
-                         "Cargo: "+jefe.getCargo()+"\n"+
-                         "salario: "+jefe.getSalario()+"\n"+
-                         "Cuenta Bancaria: "+jefe.getCuentaBancaria()+"\n"+
-                         "Sede: "+"NO CODEADO"+"\n"+
-                         "Fecha Registro: "+jefe.getFechaRegistro()+"\n"+
-                         "Edad: "+edad+"\n"+
-                         "Fecha Nacimiento: "+jefe.getFechaNacimiento()+"\n"+
-                         "Correo: "+jefe.getCorreo()+"\n"+
-                         "Genero: "+genero+"\n"+
-                         "Dirección: "+jefe.getDireccion()+"\n"+
-                         "Teléfono: "+jefe.getTelefono()+"\n";
-        
-            JOptionPane.showMessageDialog(this, mensaje);
-        }
-    }
-    
-    
-    private void despedir(){
-        String id = listaIds[comboxEmple.getSelectedIndex()-1];
-        Vendedor vendedor = bD.leerVendedorPorId(id);
-        JefeTaller jefe = bD.leerJefeTallerPorId(id);
-        
-        if(vendedor != null){
-            String mensaje = "Seguro que desea despedir al vendedor:\n"+"Nombre: "+vendedor.getNombre()+"\nCedula: "+vendedor.getCedula()+"\n"+
-                             "Cargo: "+vendedor.getCargo()+"\nsalario: "+vendedor.getSalario()+"\n"+
-                             "Sede: "+"NO CODEADO";
-            int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
-            if(opcion==0){ //Despedir
-                Date fechaSist = new Date(); 
-                SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-                String fechaDespido = formato.format(fechaSist); 
-
-                String respuesta = bD.despedirVendedor(id, fechaDespido);
-                JOptionPane.showMessageDialog(this, respuesta);
-            }
-        }else{
-            String mensaje = "Seguro que desea despedir al jefe de taller:\n"+"Nombre: "+jefe.getNombre()+"\nCedula: "+jefe.getCedula()+"\n"+
-                             "Cargo: "+jefe.getCargo()+"\nsalario: "+jefe.getSalario()+"\n"+
-                             "Sede: "+"NO CODEADO";
-            int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
-            if(opcion==0){ //Despedir
-                Date fechaSist = new Date(); 
-                SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-                String fechaDespido = formato.format(fechaSist); 
-
-                String respuesta = bD.despedirJefeTaller(id, fechaDespido);
-                JOptionPane.showMessageDialog(this, respuesta);
-            }
-        }
-    }
-      
-        
-    //Limpia los campos(jTextfields) de la interfaz
-    private void limpiarCamposUsuarios(){
-        tNombreUsu.setText("");
-        tContra.setText("");
-        tNombre.setText("");
-        tCedula.setText("");
-        tCorreo.setText("");
-        tCuentaBan.setText("");
-        tDir.setText("");
-        tTel.setText("");
-        tSal.setText("");
-        comboxDia.setSelectedIndex(0);
-        comboxMes.setSelectedIndex(0);
-        comboxAno.setSelectedIndex(0);
-    }
-    
-    
-    public void habilitarCamposmodf(boolean varControl){           
-        comboxCargo.setEnabled(varControl);
-        comboxGenero.setEnabled(varControl);
-        comboxSedes.setEnabled(varControl);
-        comboxDia.setEnabled(varControl);
-        comboxMes.setEnabled(varControl);
-        comboxAno.setEnabled(varControl);      
-        
-        tContra.setEnabled(varControl);
-        tNombreUsu.setEnabled(varControl);
-        tNombre.setEnabled(varControl);
-        tCedula.setEnabled(varControl);
-        tCorreo.setEnabled(varControl);
-        tCuentaBan.setEnabled(varControl);
-        tDir.setEnabled(varControl);
-        tTel.setEnabled(varControl);
-        tSal.setEnabled(varControl);
-    }
-    
-    //Quita los campos usados en la función agregar, consultar y despedir (ej:nombre,cedula,genero,cargo)
-    //varControl: true para indicar que sea visible los campos de agregar, false para los de consultar y despedir
-    public void cambiarVisibilidadCampos(boolean varControl){
-        labContra.setVisible(false);
-        tContra.setVisible(false);
-        
-        labEmple.setVisible(!varControl);
-        comboxEmple.setVisible(!varControl);
-        
-        labEmple.setText("Empleado:");
-        labNombreUsu.setVisible(varControl);
-        labNombre.setText("Nombre:");
-        labNombre.setVisible(varControl);
-        labCedula.setVisible(varControl);
-        labCargo.setVisible(varControl);
-        labCorreo.setVisible(varControl);
-        labCuentaBan.setVisible(varControl);
-        labGenero.setVisible(varControl);
-        labDir.setVisible(varControl);
-        labTel.setVisible(varControl);
-        labSal.setVisible(varControl);
-        labSede.setVisible(varControl);
-        labFechaNac.setText("Fecha de nacimiento:");
-        labFechaNac.setVisible(varControl);
-        
-        comboxCargo.setVisible(varControl);
-        comboxCargo.setSelectedIndex(0);
-        comboxGenero.setVisible(varControl);
-        comboxGenero.setSelectedIndex(0);
-        comboxSedes.setVisible(varControl);
-        comboxSedes.setSelectedIndex(0);
-        comboxDia.setVisible(varControl);
-        comboxDia.setSelectedIndex(0);
-        comboxMes.setVisible(varControl);
-        comboxMes.setSelectedIndex(0);
-        comboxAno.setVisible(varControl);
-        comboxAno.setSelectedIndex(0);
-        
-        tNombreUsu.setVisible(varControl);
-        tNombreUsu.setText("");
-        tNombre.setVisible(varControl);
-        tNombre.setText("");
-        tCedula.setVisible(varControl);
-        tCedula.setText("");
-        tCorreo.setVisible(varControl);
-        tCorreo.setText("");
-        tCuentaBan.setVisible(varControl);
-        tCuentaBan.setText("");
-        tDir.setVisible(varControl);
-        tDir.setText("");
-        tTel.setVisible(varControl);
-        tTel.setText("");
-        tSal.setVisible(varControl);
-        tSal.setText("");
-    }
-    
-    //Quita los campos usados en la función consultar y despedir (ej:empleado)
-    //varControl: true para indicar que sea visible, false para lo opuesto
-    public void cambiarVisibilidadCamposmodf(boolean varControl){           
-        labEmple.setVisible(varControl);
-        comboxEmple.setVisible(varControl);
-        
-        labEmple.setText("Empleado:");
-        comboxCargo.setEnabled(!varControl);
-        comboxGenero.setEnabled(!varControl);
-        comboxSedes.setEnabled(!varControl);
-        comboxDia.setEnabled(!varControl);
-        comboxMes.setEnabled(!varControl);
-        comboxAno.setEnabled(!varControl);      
-        
-        labContra.setVisible(varControl);
-        tContra.setVisible(varControl);
-        tContra.setEnabled(!varControl);
-        tContra.setText("");
-        
-        tNombreUsu.setEnabled(!varControl);
-        tNombreUsu.setText("");
-        tNombre.setEnabled(!varControl);
-        tNombre.setText("");
-        tCedula.setEnabled(!varControl);
-        tCedula.setText("");
-        tCorreo.setEnabled(!varControl);
-        tCorreo.setText("");
-        tCuentaBan.setEnabled(!varControl);
-        tCuentaBan.setText("");
-        tDir.setEnabled(!varControl);
-        tDir.setText("");
-        tTel.setEnabled(!varControl);
-        tTel.setText("");
-        tSal.setEnabled(!varControl);
-        tSal.setText("");
-    }
-    
-    
-    public void cambiarVisibilidadCamposSede(boolean varControl){
-        
-        labNombre.setText("Nombre de sede:");
-        labFechaNac.setText("Fecha de creación:");
-        
-        labContra.setVisible(false);
-        tContra.setVisible(false);
-        
-        labEmple.setVisible(varControl);
-        comboxEmple.setVisible(varControl);
-        
-        labNombreUsu.setVisible(varControl);
-        labCedula.setVisible(varControl);
-        labCargo.setVisible(varControl);
-        labCorreo.setVisible(varControl);
-        labCuentaBan.setVisible(varControl);
-        labGenero.setVisible(varControl);
-        labSal.setVisible(varControl);
-        labSede.setVisible(varControl);
-        
-        comboxCargo.setVisible(varControl);
-        comboxCargo.setSelectedIndex(0);
-        comboxGenero.setVisible(varControl);
-        comboxGenero.setSelectedIndex(0);
-        comboxSedes.setVisible(varControl);
-        comboxSedes.setSelectedIndex(0);
-        
-        tNombreUsu.setVisible(varControl);
-        tNombreUsu.setText("");
-        tCedula.setVisible(varControl);
-        tCedula.setText("");
-        tCorreo.setVisible(varControl);
-        tCorreo.setText("");
-        tCuentaBan.setVisible(varControl);
-        tCuentaBan.setText("");
-        tSal.setVisible(varControl);
-        tSal.setText("");
-  
-    }
-    
-    
-    public void cambiarVisibilidadCamposSedeModf(boolean varControl){
-        
-        labNombre.setText("Nombre de sede:");
-        labFechaNac.setText("Fecha de creación:");
-        labEmple.setText("Sede:");
-        labEmple.setVisible(!varControl);
-        comboxEmple.setVisible(!varControl);
-        
-        labContra.setVisible(false);
-        tContra.setVisible(false);
-        
-        labNombreUsu.setVisible(varControl);
-        labCedula.setVisible(varControl);
-        labCargo.setVisible(varControl);
-        labCorreo.setVisible(varControl);
-        labCuentaBan.setVisible(varControl);
-        labGenero.setVisible(varControl);
-        labSal.setVisible(varControl);
-        labSede.setVisible(varControl);
-        
-        comboxCargo.setVisible(varControl);
-        comboxCargo.setSelectedIndex(0);
-        comboxGenero.setVisible(varControl);
-        comboxGenero.setSelectedIndex(0);
-        comboxSedes.setVisible(varControl);
-        comboxSedes.setSelectedIndex(0);
-       
-        comboxDia.setEnabled(varControl);
-        comboxMes.setEnabled(varControl);
-        comboxAno.setEnabled(varControl);
-        tNombre.setEnabled(varControl);
-        tDir.setEnabled(varControl);
-        tTel.setEnabled(varControl);
-        
-        tNombreUsu.setVisible(varControl);
-        tNombreUsu.setText("");
-        tCedula.setVisible(varControl);
-        tCedula.setText("");
-        tCorreo.setVisible(varControl);
-        tCorreo.setText("");
-        tCuentaBan.setVisible(varControl);
-        tCuentaBan.setText("");
-        tSal.setVisible(varControl);
-        tSal.setText("");
-  
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -867,6 +568,10 @@ public class prinGerente extends javax.swing.JFrame {
         comboxEmple = new javax.swing.JComboBox<>();
         labContra = new javax.swing.JLabel();
         tContra = new javax.swing.JTextField();
+        labSede1 = new javax.swing.JLabel();
+        tIdGerente = new javax.swing.JTextField();
+        labSede2 = new javax.swing.JLabel();
+        comboxEstado = new javax.swing.JComboBox<>();
         jPanel5 = new javax.swing.JPanel();
         fechaYhora = new javax.swing.JLabel();
         fecha = new javax.swing.JLabel();
@@ -936,17 +641,18 @@ public class prinGerente extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(labLogo)
-                .addGap(356, 356, 356)
+                .addGap(310, 310, 310)
                 .addComponent(iconUsu)
-                .addGap(21, 21, 21))
+                .addGap(23, 23, 23))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(labLogo, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(iconUsu)
-                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(iconUsu)
+                    .addComponent(labLogo))
+                .addGap(0, 0, 0))
         );
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
@@ -977,11 +683,6 @@ public class prinGerente extends javax.swing.JFrame {
                 bModfMouseReleased(evt);
             }
         });
-        bModf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bModfActionPerformed(evt);
-            }
-        });
 
         bConsul.setForeground(new java.awt.Color(51, 51, 51));
         bConsul.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO searchUser.png"))); // NOI18N
@@ -993,11 +694,6 @@ public class prinGerente extends javax.swing.JFrame {
                 bConsulMouseReleased(evt);
             }
         });
-        bConsul.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bConsulActionPerformed(evt);
-            }
-        });
 
         bDespedir.setForeground(new java.awt.Color(51, 51, 51));
         bDespedir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO fireUser.png"))); // NOI18N
@@ -1007,11 +703,6 @@ public class prinGerente extends javax.swing.JFrame {
         bDespedir.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 bDespedirMouseReleased(evt);
-            }
-        });
-        bDespedir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bDespedirActionPerformed(evt);
             }
         });
 
@@ -1121,23 +812,30 @@ public class prinGerente extends javax.swing.JFrame {
         labEmple.setText("Empleado");
 
         comboxEmple.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No seleccionado" }));
-        comboxEmple.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                comboxEmpleItemStateChanged(evt);
-            }
-        });
 
         labContra.setText("Contraseña:");
 
         tContra.setToolTipText("");
+
+        labSede1.setText("Id Gerente:");
+
+        tIdGerente.setToolTipText("");
+
+        labSede2.setText("Estado:");
+
+        comboxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(77, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(77, 77, 77)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(labSede2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(comboxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(labDir)
@@ -1179,7 +877,11 @@ public class prinGerente extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(comboxMes, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(comboxAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(comboxAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
+                        .addComponent(labSede1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tIdGerente, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(87, 87, 87))
         );
         jPanel4Layout.setVerticalGroup(
@@ -1237,15 +939,23 @@ public class prinGerente extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labSede)
                     .addComponent(comboxSedes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
+                .addGap(3, 3, 3)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labSede1)
+                    .addComponent(tIdGerente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(2, 2, 2)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labSede2)
+                    .addComponent(comboxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labFechaNac)
                     .addComponent(comboxDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(comboxMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(comboxAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(bAceptar)
-                .addGap(0, 8, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jSplitPane2.setRightComponent(jPanel4);
@@ -1297,11 +1007,11 @@ public class prinGerente extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 494, Short.MAX_VALUE)
+                .addGap(0, 539, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
@@ -1469,73 +1179,194 @@ public class prinGerente extends javax.swing.JFrame {
 
     private void bAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAceptarActionPerformed
         // TODO add your handling code here:
-        // TODO add your handling code here:        
-        if(botonAceptar==1){
-            if (comboxCargo.getSelectedItem()== "Vendedor"){
-             this.agregarVendedor();
-            }else{
-                this.agregarJefeTaller();
-            }}else if(botonAceptar==2){
-                String id = listaIds[comboxEmple.getSelectedIndex()-1];
-                Vendedor vendedor = bD.leerVendedorPorId(id);
-                JefeTaller jefe = bD.leerJefeTallerPorId(id);
-                /**hay que seleccionar el tipo de usuario*/
-                if(vendedor != null){
-                    modificarVendedor();
-                }else if (jefe != null) {
-                    modificarJefeTaller();
-                }
-                
-            }else if(botonAceptar==3){
-                this.consultar();
-            }else if(botonAceptar==4){
-                this.despedir();
-                    }
     }//GEN-LAST:event_bAceptarActionPerformed
 
     private void bAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAceptarMouseClicked
         // TODO add your handling code here:
-        this.actualizarComboxVendedoresYJefes();
+
+        
     }//GEN-LAST:event_bAceptarMouseClicked
 
-    private void bModfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bModfActionPerformed
-        // TODO add your handling code here:
-        this.actualizarComboxVendedoresYJefes();
-    }//GEN-LAST:event_bModfActionPerformed
-
-    private void bConsulActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bConsulActionPerformed
-        // TODO add your handling code here:
-        this.actualizarComboxVendedoresYJefes();
-    }//GEN-LAST:event_bConsulActionPerformed
-
-    private void bDespedirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDespedirActionPerformed
-        // TODO add your handling code here:
-        this.actualizarComboxVendedoresYJefes();
-    }//GEN-LAST:event_bDespedirActionPerformed
-
-    private void comboxEmpleItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboxEmpleItemStateChanged
-        // TODO add your handling code here:
-        String id = listaIds[comboxEmple.getSelectedIndex()-1];
-        Vendedor vendedor = bD.leerVendedorPorId(id);
-        JefeTaller jefe = bD.leerJefeTallerPorId(id);
-        System.out.println(vendedor);
-        System.out.println(jefe);
-
-        if(comboxEmple.getSelectedIndex() == 0){
-            bAceptar.setEnabled(false);
-
-            if(botonAceptar==2){ limpiarCamposUsuarios(); habilitarCamposmodf(false);}
-        }else{
-            bAceptar.setEnabled(true);
-            if(vendedor != null){
-                llenarCamposModfVendedor();
-            }else if (jefe != null) {
-                llenarCamposModfJefeTaller();
-            }
-            habilitarCamposmodf(true);
-        }
-    }//GEN-LAST:event_comboxEmpleItemStateChanged
-
+    
+    //Quita los campos usados en la función agregar, consultar y despedir (ej:nombre,cedula,genero,cargo)
+    //varControl: true para indicar que sea visible los campos de agregar, false para los de consultar y despedir
+    public void cambiarVisibilidadCampos(boolean varControl){
+        labContra.setVisible(false);
+        tContra.setVisible(false);
+        
+        labEmple.setVisible(!varControl);
+        comboxEmple.setVisible(!varControl);
+        
+        labEmple.setText("Empleado:");
+        labNombreUsu.setVisible(varControl);
+        labNombre.setText("Nombre:");
+        labNombre.setVisible(varControl);
+        labCedula.setVisible(varControl);
+        labCargo.setVisible(varControl);
+        labCorreo.setVisible(varControl);
+        labCuentaBan.setVisible(varControl);
+        labGenero.setVisible(varControl);
+        labDir.setVisible(varControl);
+        labTel.setVisible(varControl);
+        labSal.setVisible(varControl);
+        labSede.setVisible(varControl);
+        labFechaNac.setText("Fecha de nacimiento:");
+        labFechaNac.setVisible(varControl);
+        
+        comboxCargo.setVisible(varControl);
+        comboxCargo.setSelectedIndex(0);
+        comboxGenero.setVisible(varControl);
+        comboxGenero.setSelectedIndex(0);
+        comboxSedes.setVisible(varControl);
+        comboxSedes.setSelectedIndex(0);
+        comboxDia.setVisible(varControl);
+        comboxDia.setSelectedIndex(0);
+        comboxMes.setVisible(varControl);
+        comboxMes.setSelectedIndex(0);
+        comboxAno.setVisible(varControl);
+        comboxAno.setSelectedIndex(0);
+        
+        tNombreUsu.setVisible(varControl);
+        tNombreUsu.setText("");
+        tNombre.setVisible(varControl);
+        tNombre.setText("");
+        tCedula.setVisible(varControl);
+        tCedula.setText("");
+        tCorreo.setVisible(varControl);
+        tCorreo.setText("");
+        tCuentaBan.setVisible(varControl);
+        tCuentaBan.setText("");
+        tDir.setVisible(varControl);
+        tDir.setText("");
+        tTel.setVisible(varControl);
+        tTel.setText("");
+        tSal.setVisible(varControl);
+        tSal.setText("");
+    }
+    
+    //Quita los campos usados en la función consultar y despedir (ej:empleado)
+    //varControl: true para indicar que sea visible, false para lo opuesto
+    public void cambiarVisibilidadCamposmodf(boolean varControl){           
+        labEmple.setVisible(varControl);
+        comboxEmple.setVisible(varControl);
+        
+        labEmple.setText("Empleado:");
+        comboxCargo.setEnabled(!varControl);
+        comboxGenero.setEnabled(!varControl);
+        comboxSedes.setEnabled(!varControl);
+        comboxDia.setEnabled(!varControl);
+        comboxMes.setEnabled(!varControl);
+        comboxAno.setEnabled(!varControl);      
+        
+        labContra.setVisible(varControl);
+        tContra.setVisible(varControl);
+        tContra.setEnabled(!varControl);
+        tContra.setText("");
+        
+        tNombreUsu.setEnabled(!varControl);
+        tNombreUsu.setText("");
+        tNombre.setEnabled(!varControl);
+        tNombre.setText("");
+        tCedula.setEnabled(!varControl);
+        tCedula.setText("");
+        tCorreo.setEnabled(!varControl);
+        tCorreo.setText("");
+        tCuentaBan.setEnabled(!varControl);
+        tCuentaBan.setText("");
+        tDir.setEnabled(!varControl);
+        tDir.setText("");
+        tTel.setEnabled(!varControl);
+        tTel.setText("");
+        tSal.setEnabled(!varControl);
+        tSal.setText("");
+    }
+    
+    public void cambiarVisibilidadCamposSede(boolean varControl){
+        
+        labNombre.setText("Nombre de sede:");
+        labFechaNac.setText("Fecha de creación:");
+        
+        labContra.setVisible(false);
+        tContra.setVisible(false);
+        
+        labEmple.setVisible(varControl);
+        comboxEmple.setVisible(varControl);
+        
+        labNombreUsu.setVisible(varControl);
+        labCedula.setVisible(varControl);
+        labCargo.setVisible(varControl);
+        labCorreo.setVisible(varControl);
+        labCuentaBan.setVisible(varControl);
+        labGenero.setVisible(varControl);
+        labSal.setVisible(varControl);
+        labSede.setVisible(varControl);
+        
+        comboxCargo.setVisible(varControl);
+        comboxCargo.setSelectedIndex(0);
+        comboxGenero.setVisible(varControl);
+        comboxGenero.setSelectedIndex(0);
+        comboxSedes.setVisible(varControl);
+        comboxSedes.setSelectedIndex(0);
+        
+        tNombreUsu.setVisible(varControl);
+        tNombreUsu.setText("");
+        tCedula.setVisible(varControl);
+        tCedula.setText("");
+        tCorreo.setVisible(varControl);
+        tCorreo.setText("");
+        tCuentaBan.setVisible(varControl);
+        tCuentaBan.setText("");
+        tSal.setVisible(varControl);
+        tSal.setText("");
+  
+    }
+    
+    public void cambiarVisibilidadCamposSedeModf(boolean varControl){
+        
+        labNombre.setText("Nombre de sede:");
+        labFechaNac.setText("Fecha de creación:");
+        labEmple.setText("Sede:");
+        labEmple.setVisible(!varControl);
+        comboxEmple.setVisible(!varControl);
+        
+        labContra.setVisible(false);
+        tContra.setVisible(false);
+        
+        labNombreUsu.setVisible(varControl);
+        labCedula.setVisible(varControl);
+        labCargo.setVisible(varControl);
+        labCorreo.setVisible(varControl);
+        labCuentaBan.setVisible(varControl);
+        labGenero.setVisible(varControl);
+        labSal.setVisible(varControl);
+        labSede.setVisible(varControl);
+        
+        comboxCargo.setVisible(varControl);
+        comboxCargo.setSelectedIndex(0);
+        comboxGenero.setVisible(varControl);
+        comboxGenero.setSelectedIndex(0);
+        comboxSedes.setVisible(varControl);
+        comboxSedes.setSelectedIndex(0);
+       
+        comboxDia.setEnabled(varControl);
+        comboxMes.setEnabled(varControl);
+        comboxAno.setEnabled(varControl);
+        tNombre.setEnabled(varControl);
+        tDir.setEnabled(varControl);
+        tTel.setEnabled(varControl);
+        
+        tNombreUsu.setVisible(varControl);
+        tNombreUsu.setText("");
+        tCedula.setVisible(varControl);
+        tCedula.setText("");
+        tCorreo.setVisible(varControl);
+        tCorreo.setText("");
+        tCuentaBan.setVisible(varControl);
+        tCuentaBan.setText("");
+        tSal.setVisible(varControl);
+        tSal.setText("");
+  
+    }
     
     public static void main(String args[]) {            
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -1556,6 +1387,7 @@ public class prinGerente extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboxCargo;
     private javax.swing.JComboBox<String> comboxDia;
     private javax.swing.JComboBox<String> comboxEmple;
+    private javax.swing.JComboBox<String> comboxEstado;
     private javax.swing.JComboBox<String> comboxGenero;
     private javax.swing.JComboBox<String> comboxMes;
     private javax.swing.JComboBox<String> comboxSedes;
@@ -1584,6 +1416,8 @@ public class prinGerente extends javax.swing.JFrame {
     private javax.swing.JLabel labNombreUsu;
     private javax.swing.JLabel labSal;
     private javax.swing.JLabel labSede;
+    private javax.swing.JLabel labSede1;
+    private javax.swing.JLabel labSede2;
     private javax.swing.JLabel labTel;
     private javax.swing.JPopupMenu opReporte;
     private javax.swing.JCheckBoxMenuItem sede;
@@ -1593,6 +1427,7 @@ public class prinGerente extends javax.swing.JFrame {
     private javax.swing.JTextField tCorreo;
     private javax.swing.JTextField tCuentaBan;
     private javax.swing.JTextField tDir;
+    private javax.swing.JTextField tIdGerente;
     private javax.swing.JTextField tNombre;
     private javax.swing.JTextField tNombreUsu;
     private javax.swing.JTextField tSal;
