@@ -61,6 +61,8 @@ public class Usuario {
     
     private String fechaDespido;
     
+    private String managerId;
+    
     //-------------------------------------------------------------------------
     // CONSTRUCTORES
     //-------------------------------------------------------------------------
@@ -157,6 +159,48 @@ public class Usuario {
         this.fechaNacimiento = fechaNacimiento;
         this.nombreUsuario = username;
         this.contrasena = password;
+    }
+    
+    /**
+     * Tercer constructor para la clase de super usuario
+     * @param id
+     * @param contrasenia
+     * @param nombreUsuario
+     * @param nombre
+     * @param cedula
+     * @param cargo
+     * @param telefono
+     * @param direccion
+     * @param genero
+     * @param correo
+     * @param fechaNacimiento 
+     * @param salario
+     * @param cuentaBancaria
+     * @param fechaRegistro
+     * @param managerId
+     * @param fechaDespido 
+     */    
+    
+    public Usuario (String id, String contrasenia, String nombreUsuario, String nombre, String cedula, 
+            String cargo, String telefono, String direccion, int genero,
+            String fechaNacimiento, String correo, float salario, 
+            String cuentaBancaria, String fechaRegistro, String managerId, String fechaDespido){
+        
+        this.id = id;
+        this.nombre = nombre;
+        this.nombreUsuario = nombreUsuario;
+        this.contrasena = contrasenia;
+        this.cedula = cedula;
+        this.cargo = cargo;
+        this.correo = correo;
+        this.genero = genero;
+        this.direccion = direccion;
+        this.telefono = telefono;
+        this.salario = salario;
+        this.fechaNacimiento = fechaNacimiento;
+        this.cuentaBancaria = cuentaBancaria;
+        this.fechaRegistro = fechaRegistro;
+        this.managerId = managerId;
     }
     
     //-------------------------------------------------------------------------

@@ -625,7 +625,9 @@ public class DBConnection {
             if(rs.next()){
                 String nombre = rs.getString("nombre_jefe");
                 String nombreUsuario = rs.getString("nombre_Usuario");
+                System.out.println(nombreUsuario);
                 String contrasenia = rs.getString("contrasenia");
+                System.out.println(contrasenia);
                 String cedula = rs.getString("cedula");
                 String cargo = rs.getString("cargo");
                 String telefono = rs.getString("telefono");
