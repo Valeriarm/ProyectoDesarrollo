@@ -289,6 +289,7 @@ public class prinGerente extends javax.swing.JFrame {
         JefeTaller jef = bD.leerJefeTallerPorId(id);
         
         tNombreUsu.setText(jef.getNombreUsuario());
+        System.out.println(jef.getNombreUsuario());
         tContra.setText(jef.getContrasena());
         tNombre.setText(jef.getNombre());
         tCedula.setText(jef.getCedula());
@@ -429,7 +430,7 @@ public class prinGerente extends javax.swing.JFrame {
             int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
             
             if(opcion==0){ //Modificar
-                String respuesta = bD.actualizarVendedor(id, nombre,cedula, cargo,telefono,direccion,genero,fechaNac, correo, salario, cuenta, ven.getFechaRegistro(),nombreUsu, contrasena, ven.getManagerId(), true, ven.getFechaDespido());
+                String respuesta = bD.actualizarVendedor(id, nombre,cedula, ven.getCargo(),telefono,direccion,genero,fechaNac, correo, salario, cuenta, ven.getFechaRegistro(),nombreUsu, contrasena, ven.getManagerId(), true, ven.getFechaDespido());
                 JOptionPane.showMessageDialog(this, respuesta);
             }
         }else{
@@ -449,7 +450,7 @@ public class prinGerente extends javax.swing.JFrame {
         String cedula = tCedula.getText();
         String correo = tCorreo.getText();
         String cuenta = tCuentaBan.getText();
-        String cargo = comboxCargo.getSelectedItem().toString();
+        //String cargo = comboxCargo.getSelectedItem().toString();
         int genero = comboxGenero.getSelectedIndex();
         String direccion = tDir.getText();
         String telefono = tTel.getText();
@@ -489,7 +490,7 @@ public class prinGerente extends javax.swing.JFrame {
             int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
             
             if(opcion==0){ //Modificar
-                String respuesta = bD.actualizarJefe(id, contrasena,nombreUsu,nombre,cedula,cargo,telefono,direccion,genero, fechaNac,correo,salario,cuenta,jef.getFechaRegistro(),jef.getManagerId(),true,jef.getFechaDespido());
+                String respuesta = bD.actualizarJefe(id, contrasena,nombreUsu,nombre,cedula,jef.getCargo(),telefono,direccion,genero, fechaNac,correo,salario,cuenta,jef.getFechaRegistro(),jef.getManagerId(),true,jef.getFechaDespido());
                 JOptionPane.showMessageDialog(this, respuesta);
             }
         }else{
@@ -589,7 +590,68 @@ public class prinGerente extends javax.swing.JFrame {
             }
         }
     }
-      
+    
+    
+    private void modificarGerente(){
+        String mensaje = "";
+        
+        //Datos Modf
+        String nombreUsu = tNombreUsu.getText();
+        String contrasena = tContra.getText();
+        String nombre = tNombre.getText();
+        String cedula = tCedula.getText();
+        String correo = tCorreo.getText();
+        String cuenta = tCuentaBan.getText();
+        //String cargo = comboxCargo.getSelectedItem().toString();
+        int genero = comboxGenero.getSelectedIndex();
+        String direccion = tDir.getText();
+        String telefono = tTel.getText();
+        float salario;
+        
+        if(tSal.getText().equals("")){
+            salario = 0;
+        }else{
+            salario = Float.valueOf(tSal.getText());
+        }
+        
+        String diaCumple = comboxDia.getItemAt(comboxDia.getSelectedIndex());
+        String mesCumple = comboxMes.getItemAt(comboxMes.getSelectedIndex());
+        String anoCumple = comboxAno.getItemAt(comboxAno.getSelectedIndex());
+        String fechaNac = diaCumple+"/"+mesCumple+"/"+anoCumple;
+        
+        //Datos Anteriores
+        String id = listaIds[comboxEmple.getSelectedIndex()-1];
+        JefeTaller jef = bD.leerJefeTallerPorId(id);
+        
+        //Comparación
+        if(!nombreUsu.equals(jef.getNombreUsuario())) mensaje = mensaje+"Nombre Usuario\n";
+        if(!contrasena.equals(jef.getContrasena())) mensaje = mensaje+"Contraseña\n";
+        if(!nombre.equals(jef.getNombre())) mensaje = mensaje+"Nombre\n";
+        if(!cedula.equals(jef.getCedula())) mensaje = mensaje+"Cedula\n";
+        if(!correo.equals(jef.getCorreo())) mensaje = mensaje+"Correo\n";
+        if(!cuenta.equals(jef.getCuentaBancaria())) mensaje = mensaje+"Cuenta Bancaria\n";
+        if(genero != jef.getGenero()) mensaje = mensaje+"Genero\n";
+        if(!direccion.equals(jef.getDireccion())) mensaje = mensaje+"Direccion\n";
+        if(!telefono.equals(jef.getTelefono())) mensaje = mensaje+"Telefono\n";
+        if(salario != jef.getSalario()) mensaje = mensaje+"Salario\n";
+        if(!fechaNac.equals(jef.getFechaNacimiento())) mensaje = mensaje+"Fecha de nacimiento\n";
+        if(jef.isHabilitado()) mensaje = mensaje+"Estado\n";
+        
+        if(!mensaje.equals("")){
+            mensaje = "Los siguientes campos se van a modificar:\n"+mensaje;
+            int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
+            
+            if(opcion==0){ //Modificar
+                String respuesta = bD.actualizarJefe(id, contrasena,nombreUsu,nombre,cedula,jef.getCargo(),telefono,direccion,genero, fechaNac,correo,salario,cuenta,jef.getFechaRegistro(),jef.getManagerId(),true,jef.getFechaDespido());
+                JOptionPane.showMessageDialog(this, respuesta);
+            }
+        }else{
+            mensaje = "Cambie un campo para modificar al Jefe de Taller";
+            JOptionPane.showMessageDialog(this, mensaje);
+        }
+    }
+    
+    
         
     //Limpia los campos(jTextfields) de la interfaz
     private void limpiarCamposUsuarios(){
@@ -609,7 +671,7 @@ public class prinGerente extends javax.swing.JFrame {
     
     
     public void habilitarCamposmodf(boolean varControl){           
-        comboxCargo.setEnabled(varControl);
+        comboxCargo.setEnabled(false);
         comboxGenero.setEnabled(varControl);
         comboxSedes.setEnabled(varControl);
         comboxDia.setEnabled(varControl);
@@ -1216,7 +1278,7 @@ public class prinGerente extends javax.swing.JFrame {
                     .addComponent(labEmple)
                     .addComponent(comboxEmple, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labNombreUsu)
                     .addComponent(tNombreUsu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1533,7 +1595,11 @@ public class prinGerente extends javax.swing.JFrame {
         if(comboxEmple.getSelectedIndex() == 0){
             bAceptar.setEnabled(false);
             
-            if(botonAceptar==2){ limpiarCamposUsuarios(); habilitarCamposmodf(false);}
+            if(botonAceptar==2){ 
+                //limpiarCamposUsuarios(); 
+                habilitarCamposmodf(false);
+                this.comboxCargo.setEnabled(false);
+            }
         }else{
             bAceptar.setEnabled(true);
             if(vendedor != null){
