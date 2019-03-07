@@ -33,20 +33,10 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     
     public prinJefeDeTaller(DBConnection baseDatos, String idJefe) {
         initComponents();
-        bD = baseDatos;
-        idJefe = idJefe;
+        this.bD = baseDatos;
+        this.idJefe = idJefe;
         
-        //Fecha
-        Date fechaSist = new Date(); 
-        SimpleDateFormat formato = new SimpleDateFormat("dd-MMM-yyyy");
-        fecha.setText(formato.format(fechaSist));
-        
-        //Hora
-        Timer tiempo = new Timer(100, new prinJefeDeTaller.hora());
-        tiempo.start();
-        
-        cambiarVisibilidadCamposOrden(false);
-        cambiarVisibilidadCamposOrden(false);
+        desactivarCampos(false);
         bAceptar.setVisible(false);
         
         //Elementos del popup menú para modf,agregar y consultar
@@ -92,22 +82,21 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labEstado = new javax.swing.JLabel();
         labFechaDeEntrega = new javax.swing.JLabel();
         labDescripcion = new javax.swing.JLabel();
-        labIDJefeDeTaller = new javax.swing.JLabel();
         tIDOrdenDeTrabajo = new javax.swing.JTextField();
         tTelefonoCliente = new javax.swing.JTextField();
         tCosto = new javax.swing.JTextField();
-        tFechaEntrega = new javax.swing.JTextField();
         labIDCliente = new javax.swing.JLabel();
         tIDCliente = new javax.swing.JTextField();
         tDescripcion = new javax.swing.JTextField();
-        tIDJefeDeTaller = new javax.swing.JTextField();
         bAceptar = new javax.swing.JButton();
         labNombreCliente = new javax.swing.JLabel();
         tNombreCliente = new javax.swing.JTextField();
         labCantidadLote = new javax.swing.JLabel();
         tCantidadLote = new javax.swing.JTextField();
         tEstado = new javax.swing.JComboBox<>();
-        tEsCliente = new javax.swing.JCheckBox();
+        cbDiaFechaEntrega = new javax.swing.JComboBox<>();
+        cbMesFechaEntrega = new javax.swing.JComboBox<>();
+        cbAnioFechaEntrega = new javax.swing.JComboBox<>();
         jPanel5 = new javax.swing.JPanel();
         fecha = new javax.swing.JLabel();
         fechaYhora = new javax.swing.JLabel();
@@ -148,7 +137,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        iconUsu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO userInfo.png"))); // NOI18N
+        iconUsu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO workshop.png"))); // NOI18N
 
         labLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/logo.png"))); // NOI18N
         labLogo.setName(""); // NOI18N
@@ -168,7 +157,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(labLogo, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(iconUsu)
                 .addContainerGap())
         );
@@ -178,6 +166,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         bAgregar.setForeground(new java.awt.Color(51, 51, 51));
         bAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO add.png"))); // NOI18N
         bAgregar.setText("Agregar");
+        bAgregar.setToolTipText("Para activar los campos presionar de nuevo el boton");
         bAgregar.setBorderPainted(false);
         bAgregar.setContentAreaFilled(false);
         bAgregar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -194,6 +183,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         bModf.setForeground(new java.awt.Color(51, 51, 51));
         bModf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO edit.png"))); // NOI18N
         bModf.setText("Modificar");
+        bModf.setToolTipText("Para activar los campos presionar de nuevo el boton");
         bModf.setBorderPainted(false);
         bModf.setContentAreaFilled(false);
         bModf.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -205,6 +195,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         bConsul.setForeground(new java.awt.Color(51, 51, 51));
         bConsul.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO search.png"))); // NOI18N
         bConsul.setText("Consultar");
+        bConsul.setToolTipText("Para activar los campos presionar de nuevo el boton");
         bConsul.setBorderPainted(false);
         bConsul.setContentAreaFilled(false);
         bConsul.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -216,6 +207,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         bAnular.setForeground(new java.awt.Color(51, 51, 51));
         bAnular.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO delete.png"))); // NOI18N
         bAnular.setText("Anular");
+        bAnular.setToolTipText("Para activar los campos presionar de nuevo el boton");
         bAnular.setBorderPainted(false);
         bAnular.setContentAreaFilled(false);
         bAnular.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -230,10 +222,16 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         });
 
         bReportes.setForeground(new java.awt.Color(51, 51, 51));
-        bReportes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/growth.png"))); // NOI18N
+        bReportes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO report.png"))); // NOI18N
         bReportes.setText("Reportes");
+        bReportes.setToolTipText("Para activar los campos presionar de nuevo el boton");
         bReportes.setBorderPainted(false);
         bReportes.setContentAreaFilled(false);
+        bReportes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bReportesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -262,7 +260,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 .addComponent(bAnular)
                 .addGap(18, 18, 18)
                 .addComponent(bReportes)
-                .addContainerGap(94, Short.MAX_VALUE))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
 
         jSplitPane2.setLeftComponent(jPanel3);
@@ -279,29 +277,27 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
         labDescripcion.setText("Descripción:");
 
-        labIDJefeDeTaller.setText("ID Jefe de taller:");
-
         tIDOrdenDeTrabajo.setToolTipText("");
-
-        tTelefonoCliente.setToolTipText("");
-
-        tCosto.setToolTipText("");
-
-        tFechaEntrega.setToolTipText("");
-        tFechaEntrega.addActionListener(new java.awt.event.ActionListener() {
+        tIDOrdenDeTrabajo.setPreferredSize(new java.awt.Dimension(152, 24));
+        tIDOrdenDeTrabajo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tFechaEntregaActionPerformed(evt);
+                tIDOrdenDeTrabajoActionPerformed(evt);
             }
         });
+
+        tTelefonoCliente.setToolTipText("");
+        tTelefonoCliente.setPreferredSize(new java.awt.Dimension(152, 24));
+
+        tCosto.setToolTipText("");
+        tCosto.setPreferredSize(new java.awt.Dimension(152, 24));
 
         labIDCliente.setText("ID Cliente:");
         labIDCliente.setToolTipText("");
 
         tIDCliente.setToolTipText("");
+        tIDCliente.setPreferredSize(new java.awt.Dimension(152, 24));
 
         tDescripcion.setToolTipText("");
-
-        tIDJefeDeTaller.setToolTipText("");
 
         bAceptar.setText("Agregar");
         bAceptar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -313,12 +309,28 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labNombreCliente.setText("Nombre de Cliente:");
 
         tNombreCliente.setToolTipText("");
+        tNombreCliente.setPreferredSize(new java.awt.Dimension(152, 24));
 
         labCantidadLote.setText("Cantidad Lote:");
 
+        tCantidadLote.setPreferredSize(new java.awt.Dimension(152, 24));
+
         tEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Recibido", "En Desarrollo", "Terminado" }));
 
-        tEsCliente.setText("Es Cliente");
+        cbDiaFechaEntrega.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+
+        cbMesFechaEntrega.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
+        cbMesFechaEntrega.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbMesFechaEntregaActionPerformed(evt);
+            }
+        });
+
+        cbAnioFechaEntrega.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbAnioFechaEntregaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -327,40 +339,37 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(29, 29, 29)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labFechaDeEntrega)
-                                    .addComponent(labIDOrdenDeTrabajo)
-                                    .addComponent(labTelefonoCliente)
-                                    .addComponent(labCosto)
-                                    .addComponent(labEstado)
-                                    .addComponent(labIDCliente)
-                                    .addComponent(labIDJefeDeTaller)
-                                    .addComponent(labNombreCliente)))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(27, 27, 27)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labCantidadLote)
-                                    .addComponent(labDescripcion))))
+                            .addComponent(labFechaDeEntrega)
+                            .addComponent(labIDOrdenDeTrabajo)
+                            .addComponent(labTelefonoCliente)
+                            .addComponent(labCosto)
+                            .addComponent(labEstado)
+                            .addComponent(labIDCliente)
+                            .addComponent(labNombreCliente)
+                            .addComponent(labCantidadLote)
+                            .addComponent(labDescripcion))
                         .addGap(41, 41, 41)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(tDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
-                            .addComponent(tIDOrdenDeTrabajo, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
-                            .addComponent(tTelefonoCliente)
-                            .addComponent(tCosto)
-                            .addComponent(tNombreCliente)
-                            .addComponent(tIDCliente)
-                            .addComponent(tFechaEntrega)
-                            .addComponent(tIDJefeDeTaller, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
-                            .addComponent(tCantidadLote)
+                            .addComponent(tIDOrdenDeTrabajo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tTelefonoCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tCosto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tNombreCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tIDCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tCantidadLote, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(tEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tEsCliente)))
+                            .addComponent(tDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(cbDiaFechaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbMesFechaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbAnioFechaEntrega, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(98, 98, 98)
+                        .addGap(131, 131, 131)
                         .addComponent(bAceptar)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -378,38 +387,34 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                     .addComponent(labIDCliente)
                     .addComponent(tIDCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tEsCliente)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tTelefonoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labTelefonoCliente))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labTelefonoCliente)
-                    .addComponent(tTelefonoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(labCosto)
-                    .addComponent(tCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labEstado)
-                    .addComponent(tEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labCosto))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tFechaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labFechaDeEntrega))
+                    .addComponent(tEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labEstado))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tIDJefeDeTaller, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labIDJefeDeTaller, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labFechaDeEntrega)
+                    .addComponent(cbDiaFechaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbMesFechaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbAnioFechaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tCantidadLote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labCantidadLote))
+                    .addComponent(labCantidadLote)
+                    .addComponent(tCantidadLote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labDescripcion)
-                    .addComponent(tDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                    .addComponent(tDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(bAceptar)
-                .addContainerGap())
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         jSplitPane2.setRightComponent(jPanel4);
@@ -429,7 +434,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 515, Short.MAX_VALUE)
+            .addGap(0, 528, Short.MAX_VALUE)
             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel5Layout.createSequentialGroup()
                     .addGap(78, 78, 78)
@@ -474,17 +479,17 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(488, Short.MAX_VALUE)
+                .addContainerGap(529, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
@@ -511,6 +516,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
               
         if(this.ordenesDeTrabajo.isSelected()){
             limpiarCampos();
+            cbAnioFechaEntrega.removeAllItems();
+            int year = Calendar.getInstance().get(Calendar.YEAR);
+            for (int i=year; i<=year+5; i++){
+                cbAnioFechaEntrega.addItem(Integer.toString(i));
+            }
             cambiarVisibilidadCamposInventario(false);
             cambiarVisibilidadCamposOrden(true);
             cambiarVisibilidadCamposOrdenAgregar(true);
@@ -543,6 +553,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         
         if(this.ordenesDeTrabajo.isSelected()){
             limpiarCampos();
+            cbAnioFechaEntrega.removeAllItems();
+            int year = Calendar.getInstance().get(Calendar.YEAR);
+            for (int i=year; i<=year+5; i++){
+                cbAnioFechaEntrega.addItem(Integer.toString(i));
+            }
             cambiarVisibilidadCamposInventario(false);
             cambiarVisibilidadCamposOrden(true);
             cambiarVisibilidadCamposOrdenModificar(true);
@@ -639,10 +654,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_bAgregarActionPerformed
 
-    private void tFechaEntregaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tFechaEntregaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tFechaEntregaActionPerformed
-
     private void ordenesDeTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ordenesDeTrabajoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ordenesDeTrabajoActionPerformed
@@ -693,11 +704,52 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_bAceptarMouseClicked
 
-    public void cambiarVisibilidadCamposOrden(boolean varControl){
-        
+    private void cbMesFechaEntregaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMesFechaEntregaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbMesFechaEntregaActionPerformed
+
+    private void cbAnioFechaEntregaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbAnioFechaEntregaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbAnioFechaEntregaActionPerformed
+
+    private void tIDOrdenDeTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tIDOrdenDeTrabajoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tIDOrdenDeTrabajoActionPerformed
+
+    private void bReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bReportesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bReportesActionPerformed
+    public void desactivarCampos(boolean varControl){
         labIDOrdenDeTrabajo.setVisible(varControl);
-        labIDOrdenDeTrabajo.setText("ID Orden de trabajo: ");
         tIDOrdenDeTrabajo.setVisible(varControl);
+        
+        labNombreCliente.setVisible(varControl);
+        tNombreCliente.setVisible(varControl);
+        
+        labCosto.setVisible(varControl);
+        tCosto.setVisible(varControl);
+        
+        labIDCliente.setVisible(varControl);
+        tIDCliente.setVisible(varControl);
+        
+        labDescripcion.setVisible(varControl);
+        tDescripcion.setVisible(varControl);
+        
+        labTelefonoCliente.setVisible(varControl);
+        tTelefonoCliente.setVisible(varControl);
+        
+        labEstado.setVisible(varControl);
+        tEstado.setVisible(varControl);
+        
+        labFechaDeEntrega.setVisible(varControl);
+        cbAnioFechaEntrega.setVisible(varControl);
+        cbMesFechaEntrega.setVisible(varControl);
+        cbDiaFechaEntrega.setVisible(varControl);
+        
+        labCantidadLote.setVisible(varControl);
+        tCantidadLote.setVisible(varControl);
+    }
+    public void cambiarVisibilidadCamposOrden(boolean varControl){
         
         labNombreCliente.setVisible(varControl);
         labNombreCliente.setText("Nombre de producto: ");
@@ -712,65 +764,26 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tIDCliente.setVisible(varControl);
         
         labDescripcion.setVisible(varControl);
-        labDescripcion.setText("Descripción: ");
         tDescripcion.setVisible(varControl);
         
         labTelefonoCliente.setVisible(varControl);
-        labTelefonoCliente.setText("Telefono Cliente: ");
         tTelefonoCliente.setVisible(varControl);
         
         labEstado.setVisible(varControl);
-        labEstado.setText("Estado: ");
         tEstado.setVisible(varControl);
         
         labFechaDeEntrega.setVisible(varControl);
-        labFechaDeEntrega.setText("Fecha de entrega: ");
         labFechaDeEntrega.setVisible(varControl);
         
-        labIDJefeDeTaller.setVisible(varControl);
-        labIDJefeDeTaller.setText("ID Jefe de taller:");
-        tIDJefeDeTaller.setVisible(varControl);
+        cbAnioFechaEntrega.setVisible(varControl);
+        cbMesFechaEntrega.setVisible(varControl);
+        cbDiaFechaEntrega.setVisible(varControl);
         
         labCantidadLote.setVisible(!varControl);
         tCantidadLote.setEnabled(!varControl);
     }
     
     public void cambiarVisibilidadCamposOrdenAgregar(boolean varControl){
-        
-        labIDOrdenDeTrabajo.setVisible(varControl);
-        labNombreCliente.setVisible(varControl);
-        labCosto.setVisible(varControl);
-        labIDCliente.setVisible(varControl);
-        labDescripcion.setVisible(varControl);
-        labTelefonoCliente.setVisible(varControl);
-        labEstado.setVisible(varControl);
-        labFechaDeEntrega.setVisible(varControl);
-        labIDJefeDeTaller.setVisible(varControl);
-        labCantidadLote.setVisible(!varControl);
-        
-        tIDOrdenDeTrabajo.setVisible(varControl);
-        tIDOrdenDeTrabajo.setEnabled(varControl);
-        tNombreCliente.setVisible(varControl);
-        tNombreCliente.setEnabled(varControl);
-        tCosto.setVisible(varControl);
-        tCosto.setEnabled(varControl);
-        tIDCliente.setVisible(varControl);
-        tIDCliente.setEnabled(varControl);
-        tDescripcion.setVisible(varControl);
-        tDescripcion.setEnabled(varControl);
-        tTelefonoCliente.setVisible(varControl);
-        tTelefonoCliente.setEnabled(varControl);
-        tEstado.setVisible(varControl);
-        tEstado.setEnabled(varControl);
-        tFechaEntrega.setVisible(varControl);
-        tFechaEntrega.setEnabled(varControl);
-        tIDJefeDeTaller.setVisible(varControl);
-        tIDJefeDeTaller.setEnabled(varControl);
-        tCantidadLote.setVisible(!varControl);
-        tCantidadLote.setEnabled(!varControl);
-    }
-    
-    public void cambiarVisibilidadCamposOrdenModificar(boolean varControl){
         
         labIDOrdenDeTrabajo.setVisible(!varControl);
         labNombreCliente.setVisible(varControl);
@@ -780,7 +793,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labTelefonoCliente.setVisible(varControl);
         labEstado.setVisible(varControl);
         labFechaDeEntrega.setVisible(varControl);
-        labIDJefeDeTaller.setVisible(varControl);
         labCantidadLote.setVisible(!varControl);
         
         tIDOrdenDeTrabajo.setVisible(!varControl);
@@ -797,10 +809,48 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tTelefonoCliente.setEnabled(varControl);
         tEstado.setVisible(varControl);
         tEstado.setEnabled(varControl);
-        tFechaEntrega.setVisible(varControl);
-        tFechaEntrega.setEnabled(varControl);
-        tIDJefeDeTaller.setVisible(varControl);
-        tIDJefeDeTaller.setEnabled(!varControl);
+        cbDiaFechaEntrega.setVisible(varControl);
+        cbDiaFechaEntrega.setEnabled(varControl);
+        cbMesFechaEntrega.setVisible(varControl);
+        cbMesFechaEntrega.setEnabled(varControl);
+        cbAnioFechaEntrega.setVisible(varControl);
+        cbAnioFechaEntrega.setEnabled(varControl);
+        tCantidadLote.setVisible(!varControl);
+        tCantidadLote.setEnabled(!varControl);
+    }
+    
+    public void cambiarVisibilidadCamposOrdenModificar(boolean varControl){
+        
+        labIDOrdenDeTrabajo.setVisible(varControl);
+        labNombreCliente.setVisible(varControl);
+        labCosto.setVisible(varControl);
+        labIDCliente.setVisible(varControl);
+        labDescripcion.setVisible(varControl);
+        labTelefonoCliente.setVisible(varControl);
+        labEstado.setVisible(varControl);
+        labFechaDeEntrega.setVisible(varControl);
+        labCantidadLote.setVisible(!varControl);
+        
+        tIDOrdenDeTrabajo.setVisible(varControl);
+        tIDOrdenDeTrabajo.setEnabled(varControl);
+        tNombreCliente.setVisible(varControl);
+        tNombreCliente.setEnabled(varControl);
+        tCosto.setVisible(varControl);
+        tCosto.setEnabled(varControl);
+        tIDCliente.setVisible(varControl);
+        tIDCliente.setEnabled(varControl);
+        tDescripcion.setVisible(varControl);
+        tDescripcion.setEnabled(varControl);
+        tTelefonoCliente.setVisible(varControl);
+        tTelefonoCliente.setEnabled(varControl);
+        tEstado.setVisible(varControl);
+        tEstado.setEnabled(varControl);
+        cbDiaFechaEntrega.setVisible(varControl);
+        cbDiaFechaEntrega.setEnabled(varControl);
+        cbMesFechaEntrega.setVisible(varControl);
+        cbMesFechaEntrega.setEnabled(varControl);
+        cbAnioFechaEntrega.setVisible(varControl);
+        cbAnioFechaEntrega.setEnabled(varControl);
         tCantidadLote.setVisible(!varControl);
         tCantidadLote.setEnabled(!varControl);
     }
@@ -815,7 +865,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labTelefonoCliente.setVisible(!varControl);
         labEstado.setVisible(!varControl);
         labFechaDeEntrega.setVisible(!varControl);
-        labIDJefeDeTaller.setVisible(!varControl);
         labCantidadLote.setVisible(!varControl);
         
         tIDOrdenDeTrabajo.setVisible(varControl);
@@ -832,10 +881,12 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tTelefonoCliente.setEnabled(!varControl);
         tEstado.setVisible(!varControl);
         tEstado.setEnabled(!varControl);
-        tFechaEntrega.setVisible(!varControl);
-        tFechaEntrega.setEnabled(!varControl);
-        tIDJefeDeTaller.setVisible(!varControl);
-        tIDJefeDeTaller.setEnabled(!varControl);
+        cbDiaFechaEntrega.setVisible(!varControl);
+        cbDiaFechaEntrega.setEnabled(!varControl);
+        cbMesFechaEntrega.setVisible(!varControl);
+        cbMesFechaEntrega.setEnabled(!varControl);
+        cbAnioFechaEntrega.setVisible(!varControl);
+        cbAnioFechaEntrega.setEnabled(!varControl);
         tCantidadLote.setVisible(!varControl);
         tCantidadLote.setEnabled(!varControl);
     }
@@ -850,7 +901,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labTelefonoCliente.setVisible(!varControl);
         labEstado.setVisible(!varControl);
         labFechaDeEntrega.setVisible(!varControl);
-        labIDJefeDeTaller.setVisible(!varControl);
         labCantidadLote.setVisible(!varControl);
         
         tIDOrdenDeTrabajo.setVisible(varControl);
@@ -867,10 +917,12 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tTelefonoCliente.setEnabled(!varControl);
         tEstado.setVisible(!varControl);
         tEstado.setEnabled(!varControl);
-        tFechaEntrega.setVisible(!varControl);
-        tFechaEntrega.setEnabled(!varControl);
-        tIDJefeDeTaller.setVisible(!varControl);
-        tIDJefeDeTaller.setEnabled(!varControl);
+        cbDiaFechaEntrega.setVisible(!varControl);
+        cbDiaFechaEntrega.setEnabled(!varControl);
+        cbMesFechaEntrega.setVisible(!varControl);
+        cbMesFechaEntrega.setEnabled(!varControl);
+        cbAnioFechaEntrega.setVisible(!varControl);
+        cbAnioFechaEntrega.setEnabled(!varControl);
         tCantidadLote.setVisible(!varControl);
         tCantidadLote.setEnabled(!varControl);
     }
@@ -904,28 +956,26 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tEstado.setVisible(!varControl);
         
         labFechaDeEntrega.setVisible(!varControl);
-        labFechaDeEntrega.setVisible(!varControl);
-        
-        labIDJefeDeTaller.setVisible(varControl);
-        tIDJefeDeTaller.setVisible(varControl);
+        cbAnioFechaEntrega.setVisible(!varControl);
+        cbMesFechaEntrega.setVisible(!varControl);
+        cbDiaFechaEntrega.setVisible(!varControl);
         
         labCantidadLote.setVisible(varControl);
-        labCantidadLote.setText("Cantidad Lote");
+        labCantidadLote.setText("Cantidad Lote:");
         labCantidadLote.setEnabled(varControl);
     }
     
     public void cambiarVisibilidadCamposInventarioAgregar(boolean varControl){
         
-        labIDOrdenDeTrabajo.setVisible(varControl);
+        labIDOrdenDeTrabajo.setVisible(!varControl);
         labNombreCliente.setVisible(varControl);
         labCosto.setVisible(varControl);
         labIDCliente.setVisible(varControl);
         labDescripcion.setVisible(varControl);
-        labIDJefeDeTaller.setVisible(varControl);
         labCantidadLote.setVisible(varControl);
         
-        tIDOrdenDeTrabajo.setVisible(varControl);
-        tIDOrdenDeTrabajo.setEnabled(varControl);
+        tIDOrdenDeTrabajo.setVisible(!varControl);
+        tIDOrdenDeTrabajo.setEnabled(!varControl);
         tNombreCliente.setVisible(varControl);
         tNombreCliente.setEnabled(varControl);
         tCosto.setVisible(varControl);
@@ -934,8 +984,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tIDCliente.setEnabled(varControl);
         tDescripcion.setVisible(varControl);
         tDescripcion.setEnabled(varControl);
-        tIDJefeDeTaller.setVisible(varControl);
-        tIDJefeDeTaller.setEnabled(varControl);
         tCantidadLote.setVisible(varControl);
         tCantidadLote.setEnabled(varControl);
     }
@@ -947,10 +995,9 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labCosto.setVisible(varControl);
         labIDCliente.setVisible(varControl);
         labDescripcion.setVisible(varControl);
-        labIDJefeDeTaller.setVisible(varControl);
         
         tIDOrdenDeTrabajo.setVisible(varControl);
-        tIDOrdenDeTrabajo.setEnabled(!varControl);
+        tIDOrdenDeTrabajo.setEnabled(varControl);
         tNombreCliente.setVisible(varControl);
         tNombreCliente.setEnabled(varControl);
         tCosto.setVisible(varControl);
@@ -959,8 +1006,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tIDCliente.setEnabled(!varControl);
         tDescripcion.setVisible(varControl);
         tDescripcion.setEnabled(varControl);
-        tIDJefeDeTaller.setVisible(varControl);
-        tIDJefeDeTaller.setEnabled(!varControl);
         tCantidadLote.setVisible(varControl);
         tCantidadLote.setEnabled(varControl);
     }
@@ -972,7 +1017,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labCosto.setVisible(!varControl);
         labIDCliente.setVisible(!varControl);
         labDescripcion.setVisible(!varControl);
-        labIDJefeDeTaller.setVisible(!varControl);
         labCantidadLote.setVisible(!varControl);
         
         tIDOrdenDeTrabajo.setVisible(varControl);
@@ -985,8 +1029,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tIDCliente.setEnabled(!varControl);
         tDescripcion.setVisible(!varControl);
         tDescripcion.setEnabled(!varControl);
-        tIDJefeDeTaller.setVisible(!varControl);
-        tIDJefeDeTaller.setEnabled(!varControl);
         tCantidadLote.setVisible(!varControl);
         tCantidadLote.setEnabled(!varControl);
     }
@@ -998,7 +1040,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labCosto.setVisible(!varControl);
         labIDCliente.setVisible(!varControl);
         labDescripcion.setVisible(!varControl);
-        labIDJefeDeTaller.setVisible(!varControl);
         labCantidadLote.setVisible(!varControl);
         
         tIDOrdenDeTrabajo.setVisible(varControl);
@@ -1011,22 +1052,15 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tIDCliente.setEnabled(!varControl);
         tDescripcion.setVisible(!varControl);
         tDescripcion.setEnabled(!varControl);
-        tIDJefeDeTaller.setVisible(!varControl);
-        tIDJefeDeTaller.setEnabled(!varControl);
         tCantidadLote.setVisible(!varControl);
         tCantidadLote.setEnabled(!varControl);
     }
     
     private boolean validarCamposAgregarOrdenDeTrabajo(){
-        if(tIDOrdenDeTrabajo.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDOrdenDeTrabajo.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+        if(tNombreCliente.getText().replaceAll(" ", "").length()==0){
             return false;
         }
-        if(tNombreCliente.getText().replaceAll(" ", "").length()==0){
+        if(!tNombreCliente.getText().matches("[^A-Za-z ]")){
             return false;
         }
         if(tCosto.getText().replaceAll(" ", "").length()==0){
@@ -1037,34 +1071,35 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             }
             return false;
         }
-        if(tIDCliente.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDCliente.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+        if(tIDCliente.getText().replaceAll(" ", "").length()==0){            
+            return false;
+        }
+        try{
+            parseInt(tIDCliente.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         if(tDescripcion.getText().replaceAll(" ", "").length()==0){
             return false;
         }
         if(tTelefonoCliente.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tTelefonoCliente.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
             return false;
         }
-        if(tFechaEntrega.getText().replaceAll(" ", "").length()==0){
+        try{
+            parseInt(tTelefonoCliente.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
-        if(tIDJefeDeTaller.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDJefeDeTaller.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        int month = Calendar.getInstance().get(Calendar.MONTH);
+        if(parseInt(cbAnioFechaEntrega.getSelectedItem().toString()) < year){
+            return false;
+        }
+        if(parseInt(cbMesFechaEntrega.getSelectedItem().toString()) < month){
+            return false;
+        }
+        if(parseInt(cbDiaFechaEntrega.getSelectedItem().toString()) < day){
             return false;
         }
         return true;
@@ -1072,52 +1107,56 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     
     private boolean validarCamposModificarOrdenDeTrabajo(){
         if(tIDOrdenDeTrabajo.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDOrdenDeTrabajo.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            parseInt(tIDOrdenDeTrabajo.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         if(tNombreCliente.getText().replaceAll(" ", "").length()==0){
             return false;
         }
+        if(!tNombreCliente.getText().matches("[^A-Za-z ]")){
+            return false;
+        }
         if(tCosto.getText().replaceAll(" ", "").length()==0){
-            try{
-                Float.parseFloat(tCosto.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            Float.parseFloat(tCosto.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         if(tIDCliente.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDCliente.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            parseInt(tIDCliente.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         if(tDescripcion.getText().replaceAll(" ", "").length()==0){
             return false;
         }
-        if(tIDJefeDeTaller.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDJefeDeTaller.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
-            return false;
-        }
         if(tTelefonoCliente.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tTelefonoCliente.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
             return false;
         }
-        if(tFechaEntrega.getText().replaceAll(" ", "").length()==0){
+        try{
+            parseInt(tTelefonoCliente.getText());
+        }catch(NumberFormatException nan){
+            return false;
+        }
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        int month = Calendar.getInstance().get(Calendar.MONTH);
+        if(parseInt(cbAnioFechaEntrega.getSelectedItem().toString()) < year){
+            return false;
+        }
+        if(parseInt(cbMesFechaEntrega.getSelectedItem().toString()) < month){
+            return false;
+        }
+        if(parseInt(cbDiaFechaEntrega.getSelectedItem().toString()) < day){
             return false;
         }
         return true;
@@ -1125,11 +1164,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     
     private boolean validarCamposConsultarOrdenDeTrabajo(){
         if(tIDOrdenDeTrabajo.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDOrdenDeTrabajo.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            parseInt(tIDOrdenDeTrabajo.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         return true;
@@ -1137,11 +1176,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     
     private boolean validarCamposAnularOrdenDeTrabajo(){
         if(tIDOrdenDeTrabajo.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDOrdenDeTrabajo.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            parseInt(tIDOrdenDeTrabajo.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         return true;
@@ -1149,41 +1188,36 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     
     private boolean validarCamposAgregarInventario(){
         if(tIDOrdenDeTrabajo.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDOrdenDeTrabajo.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            parseInt(tIDOrdenDeTrabajo.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         if(tNombreCliente.getText().replaceAll(" ", "").length()==0){
             return false;
         }
+        if(!tNombreCliente.getText().matches("[^A-Za-z ]")){
+            return false;
+        }
         if(tCosto.getText().replaceAll(" ", "").length()==0){
-            try{
-                Float.parseFloat(tCosto.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            Float.parseFloat(tCosto.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         if(tIDCliente.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDCliente.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            parseInt(tIDCliente.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         if(tDescripcion.getText().replaceAll(" ", "").length()==0){
-            return false;
-        }
-        if(tIDJefeDeTaller.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDJefeDeTaller.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
             return false;
         }
         return true;
@@ -1191,41 +1225,36 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     
     private boolean validarCamposModificarInventario(){
         if(tIDOrdenDeTrabajo.getText().replaceAll(" ", "").length()==0){
-            try{
-                Float.parseFloat(tIDOrdenDeTrabajo.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            Float.parseFloat(tIDOrdenDeTrabajo.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         if(tNombreCliente.getText().replaceAll(" ", "").length()==0){
             return false;
         }
+        if(!tNombreCliente.getText().matches("[^A-Za-z ]")){
+            return false;
+        }
         if(tCosto.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tCosto.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            parseInt(tCosto.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         if(tIDCliente.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDCliente.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            parseInt(tIDCliente.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         if(tDescripcion.getText().replaceAll(" ", "").length()==0){
-            return false;
-        }
-        if(tIDJefeDeTaller.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDJefeDeTaller.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
             return false;
         }
         return true;
@@ -1233,23 +1262,23 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     
     private boolean validarCamposConsultarInventario(){
         if(tIDOrdenDeTrabajo.getText().replaceAll(" ", "").length()==0){
-            try{
-                parseInt(tIDOrdenDeTrabajo.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
+            return false;
+        }
+        try{
+            parseInt(tIDOrdenDeTrabajo.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         return true;
     }
     
     private boolean validarCamposEliminarInventario(){
-        try{
-                parseInt(tIDOrdenDeTrabajo.getText());
-            }catch(NumberFormatException nan){
-                return false;
-            }
         if(tIDOrdenDeTrabajo.getText().replaceAll(" ", "").length()==0){
+            return false;
+        }
+        try{
+            parseInt(tIDOrdenDeTrabajo.getText());
+        }catch(NumberFormatException nan){
             return false;
         }
         return true;
@@ -1262,26 +1291,16 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tIDCliente.setText("");
         tDescripcion.setText("");
         tTelefonoCliente.setText("");
-        tFechaEntrega.setText("");
-        tIDJefeDeTaller.setText("");
     }
     
     private boolean agregarOrdenDeTrabajo(){
         if(!validarCamposAgregarOrdenDeTrabajo()){
             return false;
         }
-        String idOrdenDeTrabajo = "";
-        idOrdenDeTrabajo = tIDOrdenDeTrabajo.getText();
         String nombreCliente = "";
         nombreCliente = tNombreCliente.getText();
         float costo = 0;
         costo = Float.parseFloat(tCosto.getText());
-        int esCliente = 0;
-        if(tEsCliente.isSelected()){
-            esCliente = 1;
-        }else{
-            esCliente = 0;
-        }
         String idCliente = "";
         idCliente = tIDCliente.getText();
         String descripcion = "";
@@ -1290,13 +1309,14 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         telefonoCliente = tTelefonoCliente.getText();
         String estado = "";
         estado = tEstado.getItemAt(tEstado.getSelectedIndex());
+        String anioFechaEntrega = cbAnioFechaEntrega.getSelectedItem().toString();
+        String mesFechaEntrega = cbMesFechaEntrega.getSelectedItem().toString();
+        String diaFechaEntrega = cbDiaFechaEntrega.getSelectedItem().toString();
         String fechaEntrega = "";
-        fechaEntrega = tFechaEntrega.getText();
-        String idJefeDeTaller = "";
-        idJefeDeTaller = tIDJefeDeTaller.getText();
+        fechaEntrega = diaFechaEntrega+"/"+mesFechaEntrega+"/"+anioFechaEntrega;
         
-        String respuesta = bD.crearOrden(idOrdenDeTrabajo, nombreCliente, idCliente, costo, esCliente, 
-           descripcion, telefonoCliente, estado, fechaEntrega, idJefeDeTaller);
+        String respuesta = bD.crearOrden(nombreCliente, idCliente, costo, 
+           descripcion, telefonoCliente, estado, fechaEntrega, idJefe);
         JOptionPane.showMessageDialog(this, respuesta);
         
         return true;
@@ -1306,8 +1326,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         if(!validarCamposAgregarInventario()){
             return false;
         }
-        String idItemDeInventario = "";
-        idItemDeInventario = tIDOrdenDeTrabajo.getText();
         String nombreProducto = "";
         nombreProducto = tNombreCliente.getText();
         float valorUnitario = 0;
@@ -1316,13 +1334,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         lote = parseInt(tIDCliente.getText());
         String descripcion = "";
         descripcion = tDescripcion.getText();
-        String idJefeDeTaller = "";
-        idJefeDeTaller = tIDJefeDeTaller.getText();
         int cantidadLote = 0;
         cantidadLote = parseInt(tCantidadLote.getText());
         
-        String respuesta =bD.crearInventario(idItemDeInventario, nombreProducto, valorUnitario, 
-                descripcion, lote, cantidadLote, idJefeDeTaller);
+        String respuesta =bD.crearInventario(nombreProducto, valorUnitario, 
+                descripcion, lote, cantidadLote, idJefe);
         JOptionPane.showMessageDialog(this, respuesta);
         
         return true;
@@ -1339,11 +1355,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         float costo = 0;
         costo = Float.parseFloat(tCosto.getText());
         int esCliente = 0;
-        if(tEsCliente.isSelected()){
-            esCliente = 1;
-        }else{
-            esCliente = 0;
-        }
         String idCliente = "";
         idCliente = tIDCliente.getText();
         String descripcion = "";
@@ -1352,13 +1363,14 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         telefonoCliente = tTelefonoCliente.getText();
         String estado = "";
         estado = tEstado.getItemAt(tEstado.getSelectedIndex());
+        String anioFechaEntrega = cbAnioFechaEntrega.getSelectedItem().toString();
+        String mesFechaEntrega = cbMesFechaEntrega.getSelectedItem().toString();
+        String diaFechaEntrega = cbDiaFechaEntrega.getSelectedItem().toString();
         String fechaEntrega = "";
-        fechaEntrega = tFechaEntrega.getText();
-        String idJefeDeTaller = "";
-        idJefeDeTaller = tIDJefeDeTaller.getText();
+        fechaEntrega = diaFechaEntrega+"/"+mesFechaEntrega+"/"+anioFechaEntrega;
         
         String respuesta = bD.actualizarOrden(idOrdenDeTrabajo, idCliente, nombreCliente, costo, esCliente, 
-           descripcion, telefonoCliente, estado, fechaEntrega, idJefeDeTaller);        
+           descripcion, telefonoCliente, estado, fechaEntrega, idJefe);        
         JOptionPane.showMessageDialog(this, respuesta);
         
         return true;
@@ -1381,8 +1393,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         lote = parseInt(tIDCliente.getText());
         int cantidadLote = 0;
         cantidadLote = parseInt(tCantidadLote.getText());
-        String respuesta = bD.actualizarInventario(idProducto, nombreProducto, valorUnitario, 
-             descripcion, lote, cantidadLote);       
+        String respuesta = bD.actualizarInventario(idProducto, nombreProducto, valorUnitario, descripcion, lote, cantidadLote);       
         JOptionPane.showMessageDialog(this, respuesta);
         return true;
     }
@@ -1395,11 +1406,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         idOrden = tIDOrdenDeTrabajo.getText();
         OrdenTrabajo orden = bD.leerOrdenPorId(idOrden);
         String esCliente = "";
-        if(tEsCliente.isSelected()){
-            esCliente = "Cliente de la empresa";
-        }else{
-            esCliente = "No es cliente de la empresa";
-        }
         String mensaje = "";
         
         mensaje = "ID Orden de trabajo: "+orden.getIdOrden()+"\n"
@@ -1500,6 +1506,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             }
         return true;
     }
+    
     public static void main(String args[]) {            
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -1515,6 +1522,9 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     private javax.swing.JButton bConsul;
     private javax.swing.JButton bModf;
     private javax.swing.JToggleButton bReportes;
+    private javax.swing.JComboBox<String> cbAnioFechaEntrega;
+    private javax.swing.JComboBox<String> cbDiaFechaEntrega;
+    private javax.swing.JComboBox<String> cbMesFechaEntrega;
     private javax.swing.JLabel fecha;
     private javax.swing.JLabel fechaYhora;
     private javax.swing.JLabel hora;
@@ -1533,7 +1543,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     private javax.swing.JLabel labEstado;
     private javax.swing.JLabel labFechaDeEntrega;
     private javax.swing.JLabel labIDCliente;
-    private javax.swing.JLabel labIDJefeDeTaller;
     private javax.swing.JLabel labIDOrdenDeTrabajo;
     private javax.swing.JLabel labLogo;
     private javax.swing.JLabel labNombreCliente;
@@ -1542,11 +1551,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     private javax.swing.JTextField tCantidadLote;
     private javax.swing.JTextField tCosto;
     private javax.swing.JTextField tDescripcion;
-    private javax.swing.JCheckBox tEsCliente;
     private javax.swing.JComboBox<String> tEstado;
-    private javax.swing.JTextField tFechaEntrega;
     private javax.swing.JTextField tIDCliente;
-    private javax.swing.JTextField tIDJefeDeTaller;
     private javax.swing.JTextField tIDOrdenDeTrabajo;
     private javax.swing.JTextField tNombreCliente;
     private javax.swing.JTextField tTelefonoCliente;
