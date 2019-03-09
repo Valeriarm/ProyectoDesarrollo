@@ -9,6 +9,7 @@ import Controller.DBConnection;
 import java.security.Principal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -19,6 +20,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class Login extends javax.swing.JFrame {
     
     DBConnection bD;
+    private int intentosFallidos = 0;
+    private String nombreUsu = "";
 
     /**
      * Creates new form Login
@@ -172,6 +175,8 @@ public class Login extends javax.swing.JFrame {
         String contra = String.valueOf(tContra.getPassword());
         String validacion;
         
+        if(!nombreUsu.equals(user)) { nombreUsu = user; intentosFallidos = 0;}        
+        
         validacion = bD.validarSuper(user, contra);
         if(validacion != null){ //Es un superUruasio?
             this.dispose();
@@ -191,7 +196,13 @@ public class Login extends javax.swing.JFrame {
                         this.dispose();
                         new prinJefeDeTaller(bD,validacion).setVisible(true);
                     }else{ //Usuario o contraseña incorrectos
-                        labMensaje.setText("Usuario o contraseña incorrectos");
+                        if(intentosFallidos==4){
+                            JOptionPane.showMessageDialog(this, "Se acabaron los intentos de conección");
+                            this.dispose();
+                        }else{
+                            intentosFallidos++;
+                            labMensaje.setText("Usuario o contraseña incorrectos");
+                        }
                     }
                 }
             }            
