@@ -20,7 +20,7 @@ import javax.swing.Timer;
 
 /**
  *
- * @author melissa
+ * @author melissa, Valeria
  */
 public class prinGerente extends javax.swing.JFrame {
     
@@ -319,6 +319,7 @@ public class prinGerente extends javax.swing.JFrame {
         String correo = tCorreo.getText();
         String cuenta = tCuentaBan.getText();
         int genero = comboxGenero.getSelectedIndex();
+        int sedeGerente = bD.leerGerentePorId(idGerente).getIdSede();
         String direccion = tDir.getText();
         String telefono = tTel.getText();
         float salario;
@@ -339,7 +340,7 @@ public class prinGerente extends javax.swing.JFrame {
             SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
             String fechaReg = formato.format(fechaSist);           
             
-            String respuesta = bD.crearVendedor(nombre, cedula,cargo,telefono,direccion,genero,fechaNac,correo,salario, cuenta,fechaReg, nombreUsu,idGerente);
+            String respuesta = bD.crearVendedor(nombre, cedula,cargo,telefono,direccion,genero,fechaNac,correo,salario, cuenta,fechaReg, nombreUsu,idGerente, sedeGerente);
             if(respuesta.contains("La cedula")) limpiarCamposUsuarios();
             JOptionPane.showMessageDialog(this, respuesta);
         }        
@@ -354,6 +355,7 @@ public class prinGerente extends javax.swing.JFrame {
     String correo = tCorreo.getText();
     String cuenta = tCuentaBan.getText();
     int genero = comboxGenero.getSelectedIndex();
+    int sedeGerente = bD.leerGerentePorId(idGerente).getIdSede();
     String direccion = tDir.getText();
     String telefono = tTel.getText();
     float salario;
@@ -374,7 +376,7 @@ public class prinGerente extends javax.swing.JFrame {
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         String fechaReg = formato.format(fechaSist);           
 
-        String respuesta = bD.crearJefeTaller(nombreUsu,nombre,cedula,cargo, telefono,direccion,genero,fechaNac,correo,salario, cuenta, fechaReg, idGerente);
+        String respuesta = bD.crearJefeTaller(nombreUsu,nombre,cedula,cargo, telefono,direccion,genero,fechaNac,correo,salario, cuenta, fechaReg, idGerente, sedeGerente);
         if(respuesta.contains("La cedula")) limpiarCamposUsuarios();
         JOptionPane.showMessageDialog(this, respuesta);
     }        
@@ -519,7 +521,7 @@ public class prinGerente extends javax.swing.JFrame {
                          "Cargo: "+vendedor.getCargo()+"\n"+
                          "salario: "+vendedor.getSalario()+"\n"+
                          "Cuenta Bancaria: "+vendedor.getCuentaBancaria()+"\n"+
-                         "Sede: "+"NO CODEADO"+"\n"+
+                         "Sede: "+ vendedor.getSede()+"\n"+
                          "Fecha Registro: "+vendedor.getFechaRegistro()+"\n"+
                          "Edad: "+edad+"\n"+
                          "Fecha Nacimiento: "+vendedor.getFechaNacimiento()+"\n"+
@@ -527,6 +529,7 @@ public class prinGerente extends javax.swing.JFrame {
                          "Genero: "+genero+"\n"+
                          "Dirección: "+vendedor.getDireccion()+"\n"+
                          "Teléfono: "+vendedor.getTelefono()+"\n";
+            
         
             JOptionPane.showMessageDialog(this, mensaje);
         }}else{
@@ -543,7 +546,7 @@ public class prinGerente extends javax.swing.JFrame {
                          "Cargo: "+jefe.getCargo()+"\n"+
                          "salario: "+jefe.getSalario()+"\n"+
                          "Cuenta Bancaria: "+jefe.getCuentaBancaria()+"\n"+
-                         "Sede: "+"NO CODEADO"+"\n"+
+                         "Sede: "+jefe.getSede()+"\n"+
                          "Fecha Registro: "+jefe.getFechaRegistro()+"\n"+
                          "Edad: "+edad+"\n"+
                          "Fecha Nacimiento: "+jefe.getFechaNacimiento()+"\n"+
@@ -590,67 +593,7 @@ public class prinGerente extends javax.swing.JFrame {
             }
         }
     }
-    
-    
-    private void modificarGerente(){
-        String mensaje = "";
         
-        //Datos Modf
-        String nombreUsu = tNombreUsu.getText();
-        String contrasena = tContra.getText();
-        String nombre = tNombre.getText();
-        String cedula = tCedula.getText();
-        String correo = tCorreo.getText();
-        String cuenta = tCuentaBan.getText();
-        //String cargo = comboxCargo.getSelectedItem().toString();
-        int genero = comboxGenero.getSelectedIndex();
-        String direccion = tDir.getText();
-        String telefono = tTel.getText();
-        float salario;
-        
-        if(tSal.getText().equals("")){
-            salario = 0;
-        }else{
-            salario = Float.valueOf(tSal.getText());
-        }
-        
-        String diaCumple = comboxDia.getItemAt(comboxDia.getSelectedIndex());
-        String mesCumple = comboxMes.getItemAt(comboxMes.getSelectedIndex());
-        String anoCumple = comboxAno.getItemAt(comboxAno.getSelectedIndex());
-        String fechaNac = diaCumple+"/"+mesCumple+"/"+anoCumple;
-        
-        //Datos Anteriores
-        String id = listaIds[comboxEmple.getSelectedIndex()-1];
-        JefeTaller jef = bD.leerJefeTallerPorId(id);
-        
-        //Comparación
-        if(!nombreUsu.equals(jef.getNombreUsuario())) mensaje = mensaje+"Nombre Usuario\n";
-        if(!contrasena.equals(jef.getContrasena())) mensaje = mensaje+"Contraseña\n";
-        if(!nombre.equals(jef.getNombre())) mensaje = mensaje+"Nombre\n";
-        if(!cedula.equals(jef.getCedula())) mensaje = mensaje+"Cedula\n";
-        if(!correo.equals(jef.getCorreo())) mensaje = mensaje+"Correo\n";
-        if(!cuenta.equals(jef.getCuentaBancaria())) mensaje = mensaje+"Cuenta Bancaria\n";
-        if(genero != jef.getGenero()) mensaje = mensaje+"Genero\n";
-        if(!direccion.equals(jef.getDireccion())) mensaje = mensaje+"Direccion\n";
-        if(!telefono.equals(jef.getTelefono())) mensaje = mensaje+"Telefono\n";
-        if(salario != jef.getSalario()) mensaje = mensaje+"Salario\n";
-        if(!fechaNac.equals(jef.getFechaNacimiento())) mensaje = mensaje+"Fecha de nacimiento\n";
-        if(jef.isHabilitado()) mensaje = mensaje+"Estado\n";
-        
-        if(!mensaje.equals("")){
-            mensaje = "Los siguientes campos se van a modificar:\n"+mensaje;
-            int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
-            
-            if(opcion==0){ //Modificar
-                String respuesta = bD.actualizarJefe(id, contrasena,nombreUsu,nombre,cedula,jef.getCargo(),telefono,direccion,genero, fechaNac,correo,salario,cuenta,jef.getFechaRegistro(),jef.getManagerId(),true,jef.getFechaDespido());
-                JOptionPane.showMessageDialog(this, respuesta);
-            }
-        }else{
-            mensaje = "Cambie un campo para modificar al Jefe de Taller";
-            JOptionPane.showMessageDialog(this, mensaje);
-        }
-    }
-    
     
         
     //Limpia los campos(jTextfields) de la interfaz

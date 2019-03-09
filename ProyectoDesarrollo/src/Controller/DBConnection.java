@@ -372,10 +372,10 @@ public class DBConnection {
         try {                            
             sql = "INSERT INTO Gerente (id_gerente, nombre_gerente, cedula, cargo, e_mail, genero,"
                     + " direccion, telefono, salario, fecha_nacimiento, cuenta_bancaria,"
-                    + " fecha_registro, nombre_usuario, contrasenia, habilitado, id_sede)"
+                    + " fecha_registro, nombre_usuario, contrasenia, habilitado, fecha_Despido, id_sede)"
                     + " VALUES ('"+id+"','"+nombre+"','"+cedula+"','"+cargo+"','"+correo+"','"+genero+
                     "','"+direccion+"','"+telefono+"','"+salario+"','"+fechaNacimiento+"','"+cuentaBancaria+"','"
-                    +fechaRegistro+"','" +nombreUsuario+"','"+contrasenia+"','"+true+"','"+idSede+"')";
+                    +fechaRegistro+"','" +nombreUsuario+"','"+contrasenia+"','"+true+"','"+idSede+"','"+ null +"')";
                 
             st.executeUpdate(sql);
             rs.close();
@@ -643,7 +643,7 @@ public class DBConnection {
     
     public String crearJefeTaller(String nombreUsuario, String nombreJefe, String cedula, 
             String cargo, String telefono, String direccion, int genero, String fechaNacimiento, String correo, float salario,
-            String cuentaBancaria, String fechaRegistro, String idGerente){
+            String cuentaBancaria, String fechaRegistro, String idGerente, int idSede){
         
         String respuesta = "Ocurrió un error";
         boolean cedulaValida = validarCedula(cedula);
@@ -667,7 +667,7 @@ public class DBConnection {
         try {                            
             sql = "INSERT INTO Jefe_Taller VALUES ('"+id+"','"+contrasenia+"','"+nombreUsuario+"','"+nombreJefe+"','"+cedula+"','"+cargo+
                     "','"+telefono+"','"+direccion+"','"+genero+"','"+fechaNacimiento+"','"+correo+"','"
-                    +salario+"','" +cuentaBancaria+"','"+fechaRegistro+"','"+idGerente+"','"+true+"')";
+                    +salario+"','" +cuentaBancaria+"','"+fechaRegistro+"','"+idGerente+"','"+true+"','"+idSede+"')";
                 
             st.executeUpdate(sql);
             rs.close();
@@ -706,10 +706,11 @@ public class DBConnection {
                 String managerId = rs.getString("id_gerente");
                 boolean habilitado = rs.getBoolean("habilitado");
                 String fechaDespido = rs.getString("fecha_Despido");
+                int sede = rs.getInt("id_Sede");
                 
                 JefeTaller jefe = new JefeTaller(id, contrasenia, nombreUsuario, nombre, cedula, cargo, telefono, 
                 direccion, genero, fechaNa, email, salario, 
-                cuentaBanc, fechaReg, managerId, habilitado, fechaDespido);
+                cuentaBanc, fechaReg, managerId, habilitado, fechaDespido, sede);
                 
                 rs.close();
                 st.close();
@@ -875,7 +876,7 @@ public class DBConnection {
             String cargo, String telefono, String direccion, int genero, 
             String fechaNacimiento, String correo, float salario, 
             String cuentaBancaria, String fechaRegistro, String nombreUsuario,
-            String managerId){
+            String managerId, int sede){
          
         String respuesta = "Ocurrió un error";
         boolean cedulaValida = validarCedula(cedula);
@@ -899,7 +900,7 @@ public class DBConnection {
         try {                            
             sql = "INSERT INTO Vendedor VALUES ('"+id+"','"+nombre+"','"+cedula+"','"+cargo+"','"+telefono+"','"+direccion+
                     "','"+genero+"','"+fechaNacimiento+"','"+correo+"','"+salario+"','"+cuentaBancaria+"','"
-                    +fechaRegistro+"','" +nombreUsuario+"','"+contrasenia+"','"+managerId+"','"+true+"')";
+                    +fechaRegistro+"','" +nombreUsuario+"','"+contrasenia+"','"+managerId+"','"+true+"','"+sede+"')";
                 
             st.executeUpdate(sql);
             rs.close();
@@ -935,10 +936,11 @@ public class DBConnection {
                 String contrasenia = rs.getString("contrasenia");
                 boolean habilitado = rs.getBoolean("habilitado");
                 String fechaDespido = rs.getString("fecha_Despido");
+                int sedeV = rs.getInt("idSede");
                 
                 Vendedor vendedor = new Vendedor(id, nombre, cedula, cargo, telefono, 
                 direccion, genero, fechaNa, email, salario, cuentaBanc, fechaReg, 
-                nombreUsuario, contrasenia, managerId, habilitado, fechaDespido);
+                nombreUsuario, contrasenia, managerId, habilitado, fechaDespido,sedeV);
                 
                 rs.close();
                 st.close();

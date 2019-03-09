@@ -20,7 +20,7 @@ public class Gerente extends Usuario{
             String contrasena, boolean habilitado, String fechaDespido, int idSede) {        
         super(id, nombre, cedula, cargo, correo, 
                 genero, direccion, telefono, salario, fechaNacimiento, 
-                cuentaBancaria, fechaRegistro, nombreUsuario, contrasena, habilitado, fechaDespido);
+                cuentaBancaria, fechaRegistro, nombreUsuario, contrasena, habilitado, fechaDespido, idSede);
         
         this.idSede = idSede;
     }    
