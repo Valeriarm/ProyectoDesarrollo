@@ -27,6 +27,24 @@ CREATE TABLE SuperUsuario (
   PRIMARY KEY (id_SuperUsuario)
 );
 
+
+--
+-- TABLE: Sede
+-- 
+--  
+
+CREATE TABLE Sede (
+  id_Sede SERIAL,
+  nombre_Sede VARCHAR(100) NOT NULL ,
+  direccion VARCHAR(100) NOT NULL ,
+  fecha_Creacion date NOT NULL ,
+  fecha_Finalizacion date,
+  habilitada boolean NOT NULL,
+
+  PRIMARY KEY (id_Sede)
+);
+
+
 --
 -- TABLE: Gerente
 -- 
@@ -42,16 +60,17 @@ CREATE TABLE Gerente (
   direccion VARCHAR(100) NOT NULL ,
   telefono VARCHAR(100) NOT NULL ,
   salario float NOT NULL ,
-  fecha_Nacimiento VARCHAR(100) NOT NULL ,
+  fecha_Nacimiento date NOT NULL,
   cuenta_Bancaria VARCHAR(100) NOT NULL ,
-  fecha_Registro VARCHAR(100) NOT NULL,
+  fecha_Registro date NOT NULL,
   nombre_Usuario VARCHAR(100) NOT NULL,
   contrasenia VARCHAR(100) NOT NULL,  
   habilitado boolean NOT NULL,
-  fecha_Despido VARCHAR(100),
+  fecha_Despido date,
+  id_Sede SERIAL,
 
-
-  PRIMARY KEY (id_Gerente)
+  PRIMARY KEY (id_Gerente),
+  FOREIGN KEY (id_Sede) REFERENCES Sede(id_Sede)
 
 );
 
@@ -70,19 +89,19 @@ CREATE TABLE Vendedor (
   telefono VARCHAR(100) NOT NULL ,
   direccion VARCHAR(100) NOT NULL ,
   genero int NOT NULL ,
-  fecha_Nacimiento VARCHAR(100) NOT NULL ,
+  fecha_Nacimiento date NOT NULL ,
   e_mail VARCHAR(100) NOT NULL ,
   salario float NOT NULL ,
   cuenta_Bancaria VARCHAR(100) NOT NULL ,
-  fecha_Registro VARCHAR(100) NOT NULL,
+  fecha_Registro date NOT NULL,
   nombre_Usuario VARCHAR(100) NOT NULL,
   contrasenia VARCHAR(100) NOT NULL,
-  id_Gerente VARCHAR(100) NOT NULL, 
   habilitado boolean NOT NULL,
-  fecha_Despido VARCHAR(100),
+  fecha_Despido date,
+  id_Sede SERIAL, 
 
   PRIMARY KEY (id_Vendedor),
-  FOREIGN KEY (id_Gerente) REFERENCES Gerente(id_Gerente)
+  FOREIGN KEY (id_Sede) REFERENCES Sede(id_Sede)
 );
 
 
@@ -101,36 +120,19 @@ CREATE TABLE Jefe_Taller (
   telefono VARCHAR(100) NOT NULL ,
   direccion VARCHAR(100) NOT NULL ,
   genero int NOT NULL ,
-  fecha_Nacimiento VARCHAR(100) NOT NULL ,
+  fecha_Nacimiento date NOT NULL ,
   e_mail VARCHAR(100) NOT NULL ,
   salario float NOT NULL ,
   cuenta_Bancaria VARCHAR(100) NOT NULL ,
-  fecha_Registro VARCHAR(100) NOT NULL,
-  id_Gerente VARCHAR(100) NOT NULL,
+  fecha_Registro date NOT NULL,
   habilitado boolean NOT NULL,
-  fecha_Despido VARCHAR(100),  
+  fecha_Despido date,
+  id_Sede SERIAL,
 
   PRIMARY KEY (id_Jefe),
-  FOREIGN KEY (id_Gerente) REFERENCES Gerente(id_Gerente)
+  FOREIGN KEY (id_Sede) REFERENCES Sede(id_Sede)
 );
 
-
---
--- TABLE: Sede
--- 
---  
-
-CREATE TABLE Sede (
-  id_Sede VARCHAR(100) NOT NULL,
-  nombre_Sede VARCHAR(100) NOT NULL ,
-  direccion VARCHAR(100) NOT NULL ,
-  fecha_Creacion VARCHAR(100) NOT NULL ,
-  fecha_Finalizacion VARCHAR(100) NOT NULL,
-  id_Gerente VARCHAR(100),
-
-  PRIMARY KEY (id_Sede),
-  FOREIGN KEY (id_Gerente) REFERENCES Gerente(id_Gerente)
-);
 
 
 --

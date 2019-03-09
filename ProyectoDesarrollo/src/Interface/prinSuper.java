@@ -7,6 +7,7 @@ package Interface;
 
 import Controller.DBConnection;
 import Model.Gerente;
+import Model.Sede;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,7 +29,7 @@ public class prinSuper extends javax.swing.JFrame {
     //1:Agregar, 2:Modificar, 3:Consultar, 4:Despedir, 0:nada
     private int botonAceptar = 0;     
     private DBConnection bD;
-    private String[] listaIds;
+    private String[] listaIds,listaIdsSede;
     
     public prinSuper(DBConnection baseDatos) {
         initComponents();
@@ -63,7 +64,7 @@ public class prinSuper extends javax.swing.JFrame {
             return true;
     }    
     
-    private boolean validarCampos(String nombreUsu, String nombre, String cedula, String correo, String cuenta, String direccion, String telefono, String salario, String fechaNac) {
+    private boolean validarCampos(String nombreUsu, String nombre, String cedula, String correo, String cuenta, String direccion, String telefono, String salario, String fechaNac,int idSede) {
         boolean validacion = true, fechaValida; // validacion, en un principio, es solo para los campos vacios
         String mensaje = ""; //En caso de hayan campos invalidos
         
@@ -79,6 +80,7 @@ public class prinSuper extends javax.swing.JFrame {
         if(direccion.equals("")){ mensaje = mensaje+"- Direccion\n"; validacion = false; }
         if(telefono.equals("")){ mensaje = mensaje+"- Telefono\n"; validacion = false; }
         if(salario.equals("")){ mensaje = mensaje+"- Salario\n"; validacion = false; }
+        if(idSede==0){ mensaje = mensaje+"- Sede\n"; validacion = false; }
         fechaValida = validarFecha(fechaNac);
         
         System.out.println(mensaje);
@@ -144,6 +146,56 @@ public class prinSuper extends javax.swing.JFrame {
         }
     }
     
+    
+        //Retorna una lista con los Ids de las sedes en listaSedes el cual es una lista de strings del
+    //tipo {"id1,nombre1,direccion1",..."idN,nombreN,direccionN"} donde N es la cantiadad de direccion
+    private String[] obtenerListaIdsSedes(String[] listaSedes){
+        String[] listaDeIds = new String[listaSedes.length];
+        String[] sede;
+        
+        for(int i=0; i<(listaDeIds.length); i++){
+            sede = listaSedes[i].split(",");
+            listaDeIds[i] = sede[0];
+        }
+        //System.out.println(listaDeIds[1]);
+        
+        return listaDeIds;
+    }
+    
+    //Retorna una lista con las opciones para combobox comboxSedes con el formato
+    //{"nombre1 cedula1",..."nombreN cedulaN"} obtenidas de listaEmpleado el cual es una lista de strings del
+    //tipo {"id1,nombre1,direccion1",..."idN,nombreN,direccion"} donde N es la cantiadad de empleados
+    private String[] obtenerOpcionesSedes(String[] listaSedes){
+        String[] opciones = new String[listaSedes.length+1];
+        String[] sede;
+        opciones[0] = "No seleccionado";
+        
+        for(int i=0,j=1; i<(listaSedes.length); i++,j++){
+            sede = listaSedes[i].split(",");
+            opciones[j] = sede[1]+" "+sede[2].replace("$","");
+        }
+        
+        return opciones;
+    }
+    
+    private void actualizarComboxSedes(){
+        String sedes = "";
+        if(botonAceptar==1){ sedes = bD.listarSedes(true); }
+        else { sedes = bD.listarSedes(false); }
+        
+        if(sedes.equals("")){ //No Hay empleados
+           String[] opciones = { "No seleccionado" };
+           comboxSedes.setModel(new DefaultComboBoxModel(opciones));
+        }else{ //Hay empleados
+            String[] listaSedes = sedes.split("\\$");
+            listaIdsSede = obtenerListaIdsSedes(listaSedes);
+            String[] opciones = obtenerOpcionesSedes(listaSedes);
+            comboxSedes.setModel(new DefaultComboBoxModel(opciones));
+            
+        }
+    }
+    
+    
     //Limpia los campos(jTextfields) de la interfaz
     private void limpiarCampos(){
         tNombreUsu.setText("");
@@ -158,11 +210,12 @@ public class prinSuper extends javax.swing.JFrame {
         comboxDia.setSelectedIndex(0);
         comboxMes.setSelectedIndex(0);
         comboxAno.setSelectedIndex(0);
+        comboxSedes.setSelectedIndex(0);
     }
     
     private void llenarCamposModf(){
-        String id = listaIds[comboxEmple.getSelectedIndex()-1];
-        Gerente ger = bD.leerGerentePorId(id);
+        String id = listaIds[comboxEmple.getSelectedIndex()-1];        
+        Gerente ger = bD.leerGerentePorId(id);       
         
         tNombreUsu.setText(ger.getNombreUsuario());
         tContra.setText(ger.getContrasena());
@@ -175,14 +228,19 @@ public class prinSuper extends javax.swing.JFrame {
         tTel.setText(ger.getTelefono());
         tSal.setText(Float.toString(ger.getSalario()));
         
-        String[] fechaNac = ger.getFechaNacimiento().split("/");
-        int diaNac = Integer.parseInt(fechaNac[0]);
-        int mesNac = obtenerMesNum(fechaNac[1]);
-        int anoNac = Integer.parseInt(fechaNac[2]);
+        String[] fechaNac = ger.getFechaNacimiento().split("-");
+        int diaNac = Integer.parseInt(fechaNac[2]);
+        int mesNac = Integer.parseInt(fechaNac[1]);
+        //#System.out.println(fechaNac);
+        int anoNac = Integer.parseInt(fechaNac[0]);
         
         comboxDia.setSelectedIndex(diaNac-1); //El Combobox empieza desde 0
         comboxMes.setSelectedIndex(mesNac-1);
         comboxAno.setSelectedIndex((anoNac-2000)*-1); //El año 2000 es la posición 0, *-1 porque puede dar negativo
+        
+        //actualizarComboxSedes();
+        System.out.println(ger.getIdSede());
+        comboxSedes.setSelectedIndex(ger.getIdSede());
     }
     
     //Retorna el valor numerico del mes, la variable mes tiene el formato puesto en el comboxMes
@@ -221,11 +279,11 @@ public class prinSuper extends javax.swing.JFrame {
     private int calcularEdad(String nacimiento){
         int edad,anoN,anoHoy,mesN,mesHoy,diaN,diaHoy;
         Date fechaSist = new Date(); 
-        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         String fechaHoy = formato.format(fechaSist);
         
-        String[] fechaAct = fechaHoy.split("/");        
-        String[] fechaNac = nacimiento.split("/");
+        String[] fechaAct = fechaHoy.split("-");        
+        String[] fechaNac = nacimiento.split("-");
         
         anoN = Integer.parseInt(fechaNac[2]);
         anoHoy = Integer.parseInt(fechaAct[2]);
@@ -510,7 +568,7 @@ public class prinSuper extends javax.swing.JFrame {
             }
         });
 
-        labNombre.setText("Nombre:");
+        labNombre.setText("Nombres:");
         labNombre.setToolTipText("");
 
         tNombre.setToolTipText("");
@@ -542,7 +600,7 @@ public class prinSuper extends javax.swing.JFrame {
         });
 
         comboxSedes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No disponible" }));
-        comboxSedes.setToolTipText("El gerente que crea la sede es el encargado de asignarla a un gerente");
+        comboxSedes.setToolTipText("");
         comboxSedes.setEnabled(false);
         comboxSedes.setPreferredSize(new java.awt.Dimension(190, 22));
         comboxSedes.addItemListener(new java.awt.event.ItemListener() {
@@ -785,11 +843,14 @@ public class prinSuper extends javax.swing.JFrame {
         cambiarVisibilidadCampos(true);
         limpiarCampos();
         
+        comboxSedes.setEnabled(true);
+        
         botonAceptar = 1;
         bAceptar.setText("Agregar");
         bAceptar.setVisible(true);
         bAceptar.setEnabled(true);
         bAceptar.setForeground(Color.BLACK);
+        actualizarComboxSedes();
     }//GEN-LAST:event_bAgregarMouseClicked
 
     private void bModfMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bModfMouseClicked
@@ -799,6 +860,7 @@ public class prinSuper extends javax.swing.JFrame {
         tContra.setVisible(true);
         labEmple.setVisible(true);
         comboxEmple.setVisible(true);
+        comboxSedes.setEnabled(false);
         
         //cambiarVisibilidadCamposmodf(true);
         limpiarCampos();
@@ -812,6 +874,7 @@ public class prinSuper extends javax.swing.JFrame {
         comboxEmple.setSelectedIndex(0);
         
         actualizarComboxEmple();
+        actualizarComboxSedes();
     }//GEN-LAST:event_bModfMouseClicked
 
     private void bConsulMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bConsulMouseClicked
@@ -830,7 +893,7 @@ public class prinSuper extends javax.swing.JFrame {
 
     private void bDespedirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bDespedirMouseClicked
         habilitarCamposmodf(true);
-        cambiarVisibilidadCampos(false);
+        cambiarVisibilidadCampos(false);        
         
         botonAceptar = 4;
         bAceptar.setText("Despedir");
@@ -906,19 +969,23 @@ public class prinSuper extends javax.swing.JFrame {
         }else{
             salario = Float.valueOf(tSal.getText());
         }
+        int idSede = Integer.parseInt(listaIdsSede[comboxSedes.getSelectedIndex()-1]);
+        //System.out.println("Id Sede: "+idSede);
         String diaCumple = comboxDia.getItemAt(comboxDia.getSelectedIndex());
         String mesCumple = comboxMes.getItemAt(comboxMes.getSelectedIndex());
         String anoCumple = comboxAno.getItemAt(comboxAno.getSelectedIndex());
-        String fechaNac = diaCumple+"/"+mesCumple+"/"+anoCumple;
+        String fechaNac = anoCumple+"-"+obtenerMesNum(mesCumple)+"-"+diaCumple;
+        System.out.println("Fecha Nac: "+fechaNac);
                        
-        boolean validacion = validarCampos(nombreUsu,nombre,cedula,correo,cuenta,direccion,telefono,tSal.getText(),fechaNac);
+        boolean validacion = validarCampos(nombreUsu,nombre,cedula,correo,cuenta,direccion,telefono,tSal.getText(),fechaNac,idSede);
         if(validacion){
             //Fecha de reg
             Date fechaSist = new Date(); 
-            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-            String fechaReg = formato.format(fechaSist);           
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+            String fechaReg = formato.format(fechaSist);
+            System.out.println("Fecha reg: "+fechaReg);
             
-            String respuesta = bD.crearGerente(nombre, cedula, cargo, correo, genero, direccion, telefono, salario, fechaNac, cuenta, fechaReg, nombreUsu);
+            String respuesta = bD.crearGerente(nombre, cedula, cargo, correo, genero, direccion, telefono, salario, fechaNac, cuenta, fechaReg, nombreUsu,idSede);
             if((!respuesta.contains("La cedula")) && (!respuesta.contains("El nombre de usuario"))) limpiarCampos();
             JOptionPane.showMessageDialog(this, respuesta);
         }        
@@ -948,7 +1015,7 @@ public class prinSuper extends javax.swing.JFrame {
         String diaCumple = comboxDia.getItemAt(comboxDia.getSelectedIndex());
         String mesCumple = comboxMes.getItemAt(comboxMes.getSelectedIndex());
         String anoCumple = comboxAno.getItemAt(comboxAno.getSelectedIndex());
-        String fechaNac = diaCumple+"/"+mesCumple+"/"+anoCumple;
+        String fechaNac = anoCumple+"-"+obtenerMesNum(mesCumple)+"-"+diaCumple;
         
         //Datos Anteriores
         String id = listaIds[comboxEmple.getSelectedIndex()-1];
@@ -1017,14 +1084,15 @@ public class prinSuper extends javax.swing.JFrame {
         
         if(ger==null){
           JOptionPane.showMessageDialog(this, "El gerente no se encunetra registrado en el sistema"); ///CAMBIAR EL MENSAJE? 
-        }else{        
+        }else{
+            Sede sedeGer = bD.leerSedePorId(String.valueOf(ger.getIdSede()));
             String mensaje = "Seguro que desea despedir al gerente:\n"+"Nombre: "+ger.getNombre()+"\nCedula: "+ger.getCedula()+"\n"+
                              "Cargo: "+ger.getCargo()+"\nsalario: "+ger.getSalario()+"\n"+
-                             "Sede: "+"NO CODEADO";
+                             "Sede: "+sedeGer.getNombreSede();
             int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
             if(opcion==0){ //Despedir
                 Date fechaSist = new Date(); 
-                SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaDespido = formato.format(fechaSist); 
 
                 String respuesta = bD.despedirGerente(id, fechaDespido);
@@ -1060,8 +1128,7 @@ public class prinSuper extends javax.swing.JFrame {
             
             if(botonAceptar==2){ limpiarCampos(); habilitarCamposmodf(false);}
         }else{
-            bAceptar.setEnabled(true);
-            
+            bAceptar.setEnabled(true);            
             if(botonAceptar==2){ llenarCamposModf(); habilitarCamposmodf(true);}
         }
     }//GEN-LAST:event_comboxEmpleItemStateChanged
@@ -1168,7 +1235,7 @@ public class prinSuper extends javax.swing.JFrame {
     public void habilitarCamposmodf(boolean varControl){           
         comboxCargo.setEnabled(varControl);
         comboxGenero.setEnabled(varControl);
-        comboxSedes.setEnabled(varControl);
+        //comboxSedes.setEnabled(varControl);
         comboxDia.setEnabled(varControl);
         comboxMes.setEnabled(varControl);
         comboxAno.setEnabled(varControl);      
