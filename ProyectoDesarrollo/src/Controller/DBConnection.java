@@ -22,8 +22,8 @@ public class DBConnection {
     //----------------------------------------------------------------------
     
     //Usuario de la base de datos en postgresql
-    private final String dBUser = "postgres";
-    private final String dBPassword = "1144211502";
+    private final String dBUser = "desarrollo";
+    private final String dBPassword = "desarrollo";
     //puerto
     private final String port = "5433";
     //Nombre de la base de datos
@@ -840,7 +840,7 @@ public class DBConnection {
     
     ////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////CRUD VENTA///////////////////////////////////////
+    //////////////////////////////////CRUD VENDEDOR/////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////
     
@@ -1186,21 +1186,20 @@ public class DBConnection {
     
     
     
-    public String crearOrden(String nombreCliente, String idCliente, float costo,
-           String descripcionOrden, String telefonoCliente, String estado, String fechaEntrega, String idJefe){
+    public String crearOrden(String descripcionOrden, String estado, String fechaCreacion ,String idJefe, String ref){
         
         connect();
         String id = idSiguienteOrden();
-        sql = "SELECT id_Orden FROM Orden_Trabajo WHERE id_Orden = '"+id+"'";
+        sql = "SELECT id_Orden, id_Producto FROM Orden_Trabajo"
+                + "INNER JOIN Actualiza ON  id_Orden = '"+id+"' and id_Producto = '"+ref+"' WHERE estado_Orden = 'En Proceso'";
         try {
 
             rs = st.executeQuery(sql);
             if(rs.next()){
                 return "La orden de trabajo con el id "+id+" ya existe";
             }else{                
-                sql = "INSERT INTO Orden_Trabajo VALUES ('"+id+"','"+nombreCliente
-                        +"','"+idCliente+"','"+telefonoCliente+"','"+costo+
-                        "','"+descripcionOrden+"','"+estado+"','"+fechaEntrega+"','"+idJefe+"')";
+                sql = "INSERT INTO Orden_Trabajo VALUES ('"+id+"','"+descripcionOrden+"','"+estado+"','"
+                                                        +fechaCreacion+"', null ,'"+idJefe+"')";
                 
                 st.executeUpdate(sql);
                 rs.close();
@@ -1221,18 +1220,13 @@ public class DBConnection {
             rs = st.executeQuery(sql);
             if(rs.next()){
                 String idOrden = rs.getString("id_Orden");
-                String nombreCliente = rs.getString("nombre_Cliente");
-                String idCliente = rs.getString("id_Cliente");
-                String telefonoCliente = rs.getString("telefono_Cliente");
-                float valorOrden = Integer.parseInt(rs.getString("valor_Orden"));
-                int esCliente = Integer.parseInt(rs.getString("es_Cliente"));                
-                String descripcionOrden = rs.getString("descripcion_Orden");
+                String descripcionOrden = rs.getString("especificaciones");
                 String estadoOrden = rs.getString("estado_Orden");
+                String fechaCreacion = rs.getString("fecha_Creacion");
                 String fechaEntrega = rs.getString("fecha_Entrega");
                 String idJefe = rs.getString("id_Jefe");
                 
-                OrdenTrabajo orden = new OrdenTrabajo(idOrden, nombreCliente, idCliente, telefonoCliente,
-                                    valorOrden, esCliente, descripcionOrden, estadoOrden, fechaEntrega, idJefe);
+                OrdenTrabajo orden = new OrdenTrabajo(idOrden, descripcionOrden, estadoOrden, fechaCreacion ,fechaEntrega, idJefe);
                 
                 rs.close();
                 st.close();
@@ -1246,23 +1240,21 @@ public class DBConnection {
         return null;
     }
     
-    public String actualizarOrden(String id, String nombreCliente,String idCliente, float costo, int esCliente, 
-           String descripcionOrden, String telefonoCliente, String estado, String fechaEntrega, String idJefe){
-        
+    
+    public String actualizarOrden(String id, String descripcionOrden, String estado,int cantidad, String referencia,String idJefe){
         connect();
-        sql = "SELECT id_Orden FROM Orden_Trabajo WHERE id_Orden = '"+id+"'";
+        sql = "SELECT id_Orden FROM Orden_Trabajo WHERE id_Orden = '"+id+"' and estado_Orden = 'En Proceso'";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                sql = "UPDATE Orden_Trabajo SET nombre_Cliente = '"+nombreCliente+"', id_Cliente = '"+idCliente+"', valor_Orden = '"+costo+"', es_Cliente = '"+esCliente+
-                        "', descripcion_Orden = '"+descripcionOrden+"', telefono_Cliente = '"+telefonoCliente+"', "
-                        + "estado = '"+estado+ "fecha_Entrega = '"+fechaEntrega+ "id_Jefe = '"+idJefe+"' WHERE id_Orden = '"+id+"'";
+                sql = "UPDATE Orden_Trabajo SET especificaciones = '"+descripcionOrden+"', estado = '"+estado+"' WHERE id_Orden = '"+id+"' and estado_Orden = 'En Proceso';";
                 
                 rs.close();
                 st.close();
                 connection.close();
+            
             }else{        
-                return "La orden con el id "+id+" no existe";
+                return "La orden con el id "+id+" no existe o ya esta terminada o anulada";
             }
             
         } catch (Exception e) {
@@ -1270,6 +1262,8 @@ public class DBConnection {
         }
        return "Orden actualizada con éxito";           
     }
+    
+    
     
     public String eliminarOrden(String id){
         connect();
