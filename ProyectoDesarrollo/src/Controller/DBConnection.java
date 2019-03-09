@@ -8,6 +8,7 @@ import Model.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
@@ -21,16 +22,16 @@ public class DBConnection {
     //----------------------------------------------------------------------
     
     //Usuario de la base de datos en postgresql
-    private String dBUser = "desarrollo";
-    private String dBPassword = "desarrollo";
+    private final String dBUser = "postgres";
+    private final String dBPassword = "1144211502";
     //puerto
-    private String port = "5433";
+    private final String port = "5433";
     //Nombre de la base de datos
-    private String dBName = "muebles_XYZ";
+    private final String dBName = "muebles_XYZ";
     //Dirección del host de la base de datos
-    private String host = "localhost";
+    private final String host = "localhost";
     //URL para la conexion en postgresql
-    private String url = "jdbc:postgresql://"+host+":"+port+"/"+dBName;
+    private final String url = "jdbc:postgresql://"+host+":"+port+"/"+dBName;
     
     //Se usa para lograr la conexión
     private Connection connection;
@@ -58,7 +59,7 @@ public class DBConnection {
             connection = DriverManager.getConnection(url, dBUser, dBPassword);
             //A partir de la conexion se pueden crear las sentencias
             st = connection.createStatement();
-        }catch(Exception e){
+        }catch(ClassNotFoundException | SQLException e){
             //Esto en caso de error imprime el mensaje, luego se puede pasar a través de una ventana informativa
             System.out.println("ERROR DE CONEXION " + e.getMessage());
         }
@@ -89,7 +90,7 @@ public class DBConnection {
             st.close();
             connection.close();
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
     }
@@ -116,7 +117,7 @@ public class DBConnection {
             connection.close();
             return respuesta;
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return respuesta;
@@ -179,7 +180,7 @@ public class DBConnection {
             st.close();
             connection.close();
             
-        } catch (Exception e) {
+        } catch (NumberFormatException | SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return id;
@@ -199,7 +200,7 @@ public class DBConnection {
                 id = rs.getString("id_Orden");
                 if(idMayor<Integer.parseInt(id)) idMayor = Integer.parseInt(id); 
             }            
-            idMayor = idMayor;
+            //idMayor = idMayor;
             ////////////////////////////////////////////////////////////            
             id = String.valueOf(idMayor+1);
             
@@ -207,7 +208,7 @@ public class DBConnection {
             st.close();
             connection.close();
             
-        } catch (Exception e) {
+        } catch (NumberFormatException | SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return id;
@@ -227,7 +228,7 @@ public class DBConnection {
                 id = rs.getString("id_Producto");
                 if(idMayor<Integer.parseInt(id)) idMayor = Integer.parseInt(id); 
             }            
-            idMayor = idMayor;
+            //idMayor = idMayor;
             ////////////////////////////////////////////////////////////            
             id = String.valueOf(idMayor+1);
             
@@ -235,7 +236,7 @@ public class DBConnection {
             st.close();
             connection.close();
             
-        } catch (Exception e) {
+        } catch (NumberFormatException | SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return id;
@@ -268,7 +269,7 @@ public class DBConnection {
             st.close();
             connection.close();
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         
@@ -302,7 +303,7 @@ public class DBConnection {
             st.close();
             connection.close();
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         
@@ -338,7 +339,7 @@ public class DBConnection {
             connection.close();
             return respuesta;
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return respuesta;
@@ -347,7 +348,7 @@ public class DBConnection {
     public String crearGerente(String nombre, String cedula, 
             String cargo, String correo, int genero, String direccion, 
             String telefono, float salario, String fechaNacimiento, 
-            String cuentaBancaria, String fechaRegistro, String nombreUsuario){
+            String cuentaBancaria, String fechaRegistro, String nombreUsuario, int idSede){
         
         String respuesta = "Ocurrió un error";
         boolean cedulaValida = validarCedula(cedula);
@@ -369,9 +370,12 @@ public class DBConnection {
         connect();
         
         try {                            
-            sql = "INSERT INTO Gerente VALUES ('"+id+"','"+nombre+"','"+cedula+"','"+cargo+"','"+correo+"','"+genero+
+            sql = "INSERT INTO Gerente (id_gerente, nombre_gerente, cedula, cargo, e_mail, genero,"
+                    + " direccion, telefono, salario, fecha_nacimiento, cuenta_bancaria,"
+                    + " fecha_registro, nombre_usuario, contrasenia, habilitado, id_sede)"
+                    + " VALUES ('"+id+"','"+nombre+"','"+cedula+"','"+cargo+"','"+correo+"','"+genero+
                     "','"+direccion+"','"+telefono+"','"+salario+"','"+fechaNacimiento+"','"+cuentaBancaria+"','"
-                    +fechaRegistro+"','" +nombreUsuario+"','"+contrasenia+"','"+true+"')";
+                    +fechaRegistro+"','" +nombreUsuario+"','"+contrasenia+"','"+true+"','"+idSede+"')";
                 
             st.executeUpdate(sql);
             rs.close();
@@ -379,7 +383,7 @@ public class DBConnection {
             connection.close();
             
             respuesta = "Gerente agregado con éxito\n\nId: "+id+"\nNombre Usuario: "+nombreUsuario+"\nContraseña: "+contrasenia;                        
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }        
        return respuesta;
@@ -405,17 +409,19 @@ public class DBConnection {
                 String telefono = rs.getString("telefono");
                 float salario = rs.getFloat("salario");
                 String fechaNa = rs.getString("fecha_Nacimiento");
+                //System.out.println(fechaNa);
                 String cuentaBanc = rs.getString("cuenta_bancaria");
                 String fechaReg = rs.getString("fecha_registro");
                 String nombreUsuario = rs.getString("nombre_Usuario");
                 String contrasenia = rs.getString("contrasenia");
                 boolean habilitado = rs.getBoolean("habilitado");
                 String fechaDespido = rs.getString("fecha_Despido");
+                int idSede = Integer.parseInt(rs.getString("id_sede"));
                 
                 
                 Gerente gerente = new Gerente(id, nombre, cedula, cargo, correo, 
                 genero, direccion, telefono, salario, fechaNa, 
-                cuentaBanc, fechaReg, nombreUsuario, contrasenia, habilitado, fechaDespido);
+                cuentaBanc, fechaReg, nombreUsuario, contrasenia, habilitado, fechaDespido,idSede);
                 
                 rs.close();
                 st.close();
@@ -423,7 +429,7 @@ public class DBConnection {
                 
                 return gerente;
             }
-        } catch (Exception e) {
+        } catch (NumberFormatException | SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return null;
@@ -431,6 +437,7 @@ public class DBConnection {
     
     /**
      * Lista a todos los gerentes presentes en la base de datos
+     * @return Lista de gerentes
      */
     public String listarGerentes(){
         //Llamamos el metodo que cree arriba para poder conectarnos a la base de datos
@@ -452,7 +459,7 @@ public class DBConnection {
                 nombre = rs.getString("nombre_Gerente");
                 cedula = rs.getString("cedula");
                 
-                empleados = empleados+id+","+nombre+","+cedula+"$";;
+                empleados = empleados+id+","+nombre+","+cedula+"$";
             }
             //POR ULTIMO E IMPORTANTE: hay que cerrar siempre las conexiones
             rs.close();
@@ -461,7 +468,7 @@ public class DBConnection {
             
             return empleados;
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return "";
@@ -478,11 +485,19 @@ public class DBConnection {
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                sql = "UPDATE Gerente SET nombre_Gerente = '"+nombre+"', cedula = '"+cedula+"', cargo = '"+cargo+"', e_mail = '"+correo+"',"
-                        +" genero = '"+genero+"', direccion = '"+direccion+"', telefono = '"+telefono+"', salario = "+salario+", fecha_Nacimiento = '"+fechaNacimiento+
-                        "', cuenta_Bancaria = '"+cuentaBancaria+"', nombre_Usuario = '"+nombreUsuario+"', contrasenia = '"+contrasenia+
-                        "', fecha_Registro = '"+fechaRegistro+"', fecha_Despido = '"+fechaDespido+"', habilitado = '"+habilitado+
-                        "' WHERE id_gerente = '"+id+"'";
+                if(fechaDespido!=null){
+                    sql = "UPDATE Gerente SET nombre_Gerente = '"+nombre+"', cedula = '"+cedula+"', cargo = '"+cargo+"', e_mail = '"+correo+"',"
+                            +" genero = '"+genero+"', direccion = '"+direccion+"', telefono = '"+telefono+"', salario = "+salario+", fecha_Nacimiento = '"+fechaNacimiento+
+                            "', cuenta_Bancaria = '"+cuentaBancaria+"', nombre_Usuario = '"+nombreUsuario+"', contrasenia = '"+contrasenia+
+                            "', fecha_Registro = '"+fechaRegistro+"', fecha_Despido = '"+fechaDespido+"', habilitado = '"+habilitado+
+                            "' WHERE id_gerente = '"+id+"'";
+                }else{ //En caso de que no se esté despidiendo no se modf la fecha en la base de datos
+                    sql = "UPDATE Gerente SET nombre_Gerente = '"+nombre+"', cedula = '"+cedula+"', cargo = '"+cargo+"', e_mail = '"+correo+"',"
+                            +" genero = '"+genero+"', direccion = '"+direccion+"', telefono = '"+telefono+"', salario = "+salario+", fecha_Nacimiento = '"+fechaNacimiento+
+                            "', cuenta_Bancaria = '"+cuentaBancaria+"', nombre_Usuario = '"+nombreUsuario+"', contrasenia = '"+contrasenia+
+                            "', fecha_Registro = '"+fechaRegistro+"', habilitado = '"+habilitado+
+                            "' WHERE id_gerente = '"+id+"'";
+                }
                 st.executeUpdate(sql);
                 rs.close();
                 st.close();
@@ -491,7 +506,7 @@ public class DBConnection {
                 return "El gerente no esta registrado en la base de datos";
             }
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
        return "Gerente actualizado con éxito";
@@ -513,7 +528,7 @@ public class DBConnection {
                 return "El gerente con el id "+id+" no existe";
             }
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return "";
@@ -536,7 +551,57 @@ public class DBConnection {
                 return "El gerente ya había sido despedido";
             }
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return "";
+    }
+    
+    
+    /**
+     * Lista a todas las sedes presentes en la base de datos     
+     * @param agregar true si la función que lo llama es agregar, false para modificar
+     * @return lista de sedes
+     */
+    public String listarSedes(boolean agregar){
+        //Llamamos el metodo que cree arriba para poder conectarnos a la base de datos
+        connect();
+        //Creo la sentencia sql de lo que quiero hacer, en este caso, quiero todas las columnas de la tabla
+        if(agregar){
+            sql = "WITH sedesGerente AS (SELECT id_sede FROM gerente WHERE habilitado = '"+true+"'),"+
+                        "idsSedes AS (SELECT id_sede FROM sede where habilitada = '"+true+"'),"+
+                        "idsSedesNoG AS (SELECT * FROM idsSedes EXCEPT SELECT * FROM sedesGerente)"+
+            "SELECT * FROM sede NATURAL JOIN IdsSedesNoG";
+            //sql = "WITH sedesGerente AS (SELECT id_sede FROM gerente) "+
+            //"SELECT * FROM sede INNER JOIN sedesGerente ON sede.id_sede!=sedesGerente.id_sede WHERE habilitada = '"+true+"'";
+        }else{
+            sql = "SELECT * FROM Sede WHERE habilitada = '"+true+"'";
+        }
+        //Necesito un try catch porque esto me puede arrojar un error de consulta (SQL)
+        try {            
+            //Aquí usamos el metodo de Statment executeQuery y le pasamos la sentencia sql, esto lo guardamos en el 
+            //Resultset y usamos next() para saltar entre filas, cada fila es un ingreso de la base de datos
+            rs = st.executeQuery(sql);
+            
+            String id,nombre,direccion;
+            String sedes = "";
+            
+            while(rs.next()){
+                //Usando getString podemos obtener el resultado de nuestra consulta pasandole el nombre de la columna
+                id = rs.getString("id_sede");
+                nombre = rs.getString("nombre_sede");
+                direccion = rs.getString("direccion");
+                
+                sedes = sedes+id+","+nombre+","+direccion+"$";
+            }
+            //POR ULTIMO E IMPORTANTE: hay que cerrar siempre las conexiones
+            rs.close();
+            st.close();
+            connection.close();
+            
+            return sedes;
+            
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return "";
@@ -570,7 +635,7 @@ public class DBConnection {
             connection.close();
             return respuesta;
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return respuesta;
@@ -610,7 +675,7 @@ public class DBConnection {
             connection.close();
             
             respuesta = "Jefe de Taller agregado con éxito\n\nId: "+id+"\nNombre Usuario: "+nombreUsuario+"\nContraseña: "+contrasenia;                        
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }        
        return respuesta;
@@ -681,7 +746,7 @@ public class DBConnection {
                 return "El jefe de taller con el id "+id+" no existe";
             }
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
        return "Jefe de taller actualizado con éxito";
@@ -703,7 +768,7 @@ public class DBConnection {
                 return "El jefe de taller con el id "+id+" no existe";
             }
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return "";
@@ -712,6 +777,7 @@ public class DBConnection {
     
      /**
      * Lista a todos los Jefes de taller presentes en la base de datos
+     * @return Lista de los jefes de taller
      */
     public String listarJefesTaller(){
         //Llamamos el metodo que cree arriba para poder conectarnos a la base de datos
@@ -733,7 +799,7 @@ public class DBConnection {
                 nombre = rs.getString("nombre_Jefe");
                 cedula = rs.getString("cedula");
                 
-                empleados = empleados+id+","+nombre+","+cedula+"$";;
+                empleados = empleados+id+","+nombre+","+cedula+"$";
             }
             //POR ULTIMO E IMPORTANTE: hay que cerrar siempre las conexiones
             rs.close();
@@ -742,7 +808,7 @@ public class DBConnection {
             
             return empleados;
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return "";
@@ -765,7 +831,7 @@ public class DBConnection {
                 return "El Jefe de taller ya había sido despedido";
             }
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return "";
@@ -799,7 +865,7 @@ public class DBConnection {
             connection.close();
             return respuesta;
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return respuesta;
@@ -841,7 +907,7 @@ public class DBConnection {
             connection.close();
             
             respuesta = "Vendedor agregado con éxito\n\nId: "+id+"\nNombre Usuario: "+nombreUsuario+"\nContraseña: "+contrasenia;                        
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }        
        return respuesta;
@@ -908,7 +974,7 @@ public class DBConnection {
                 return "El vendedor con el id "+id+" no existe";
             }
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
        return "Vendedor actualizado con éxito";
@@ -930,7 +996,7 @@ public class DBConnection {
                 return "El Vendedor con el id "+id+" no existe";
             }
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return "";        
@@ -938,6 +1004,7 @@ public class DBConnection {
     
       /**
      * Lista a todos los Jefes de taller presentes en la base de datos
+     * @return Lista de todos los vendedores
      */
     public String listarVendedores(){
         //Llamamos el metodo que cree arriba para poder conectarnos a la base de datos
@@ -959,7 +1026,7 @@ public class DBConnection {
                 nombre = rs.getString("nombre_Vendedor");
                 cedula = rs.getString("cedula");
                 
-                empleados = empleados+id+","+nombre+","+cedula+"$";;
+                empleados = empleados+id+","+nombre+","+cedula+"$";
             }
             //POR ULTIMO E IMPORTANTE: hay que cerrar siempre las conexiones
             rs.close();
@@ -968,7 +1035,7 @@ public class DBConnection {
             
             return empleados;
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return "";
@@ -991,7 +1058,7 @@ public class DBConnection {
                 return "El vendedor ya había sido despedido";
             }
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return "";
@@ -1027,7 +1094,7 @@ public class DBConnection {
                 connection.close();
             }
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
        return "Venta agregada con éxito";
@@ -1057,7 +1124,7 @@ public class DBConnection {
                 
                 return venta;
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return null;
@@ -1429,7 +1496,7 @@ public class DBConnection {
                 return "La Cotizacion con el id "+id+" no existe";
             }
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
        return "Cotizacion actualizada con éxito";
@@ -1451,7 +1518,7 @@ public class DBConnection {
                 return "La Cotizacion con el id "+id+" no existe";
             }
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return "";
@@ -1489,7 +1556,7 @@ public class DBConnection {
                 
             }
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
        return "Sede agregada con éxito";
@@ -1506,10 +1573,8 @@ public class DBConnection {
                 String direccion = rs.getString("direccion");
                 String fechaCreacion = rs.getString("fecha_Creacion");
                 String fechaFinalizacion = rs.getString("fecha_Finalizacion");
-                String idGerente = rs.getString("id_Gerente");
                 
-                Sede sede = new Sede(idSede, nombreSede, direccion, 
-                         fechaCreacion, fechaFinalizacion, idGerente);
+                Sede sede = new Sede(idSede, nombreSede, direccion,fechaCreacion, fechaFinalizacion);
                 
                 rs.close();
                 st.close();
@@ -1517,7 +1582,7 @@ public class DBConnection {
                 
                 return sede;
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return null;
@@ -1540,7 +1605,7 @@ public class DBConnection {
                 return "La Sede con el id "+id+" no existe";
             }
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
        return "Sede actualizada con éxito";
@@ -1562,7 +1627,7 @@ public class DBConnection {
                 return "La Sede con el id "+id+" no existe";
             }
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return "";
@@ -1589,7 +1654,7 @@ public class DBConnection {
                 nombre = rs.getString("nombre_Vendedor");
                 cedula = rs.getString("cedula");
                 
-                empleados = empleados+id+","+nombre+","+cedula+"$";;
+                empleados = empleados+id+","+nombre+","+cedula+"$";
             }
 
             rs.close();
@@ -1598,7 +1663,7 @@ public class DBConnection {
             
             return empleados;
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return "";
