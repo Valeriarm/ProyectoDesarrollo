@@ -17,9 +17,9 @@ public class Vendedor extends Usuario{
             String cargo, String telefono, String direccion, int genero,
             String fechaNacimiento, String correo, float salario, 
             String cuentaBancaria, String fechaRegistro, String nombreUsuario,
-            String contrasenia, String managerId, boolean habilitado, String fechaDespido) {
+            String contrasenia, String managerId, boolean habilitado, String fechaDespido, int sede) {
         super(id, contrasenia, nombreUsuario, nombre, cedula, cargo, telefono, direccion, genero,
-             fechaNacimiento,  correo,  salario, cuentaBancaria,  fechaRegistro,  managerId,  fechaDespido);
+             fechaNacimiento,  correo,  salario, cuentaBancaria,  fechaRegistro,  managerId,  fechaDespido,sede);
         
         this.managerId = managerId;
     }
