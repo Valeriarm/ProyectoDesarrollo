@@ -69,7 +69,7 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="789" max="32767" attributes="0"/>
+              <EmptySpace pref="608" max="32767" attributes="0"/>
               <Component id="jPanel5" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -289,21 +289,25 @@
                               <Group type="102" attributes="0">
                                   <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="labRefProducto" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="labEspecificaciones" min="-2" max="-2" attributes="0"/>
                                       <Component id="labCantidad" min="-2" max="-2" attributes="0"/>
                                       <Component id="labNombreProducto" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="labValorUnitario" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="labDescripcion" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="labValorUnitario" min="-2" max="-2" attributes="0"/>
+                                      <Component id="labRefProductoCB" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="labEstado" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="labIdOrden" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="tRefProducto" min="-2" max="-2" attributes="0"/>
-                                      <Component id="tCantidad" min="-2" max="-2" attributes="0"/>
-                                      <Component id="tEspecificaciones" alignment="0" min="-2" pref="152" max="-2" attributes="0"/>
-                                      <Component id="tNombreProducto" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="tDescripcion" alignment="0" min="-2" pref="152" max="-2" attributes="0"/>
-                                      <Component id="tValorUnitario" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="tCantidad" max="32767" attributes="0"/>
+                                      <Component id="tEspecificaciones" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="tNombreProducto" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="tDescripcion" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="tValorUnitario" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="cbRefProducto" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="cbEstado" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="cbIdOrden" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
@@ -311,22 +315,17 @@
                                   <Component id="bAceptar" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace pref="38" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="labRefProducto" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="tRefProducto" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="labCantidad" min="-2" max="-2" attributes="0"/>
-                              <Component id="tCantidad" min="-2" max="-2" attributes="0"/>
+                              <Component id="labCantidad" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="tCantidad" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -348,7 +347,22 @@
                               <Component id="tDescripcion" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
                               <Component id="labDescripcion" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="422" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="cbRefProducto" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="labRefProductoCB" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="cbEstado" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="labEstado" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="cbIdOrden" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="labIdOrden" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="136" max="-2" attributes="0"/>
                           <Component id="bAceptar" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                       </Group>
@@ -356,11 +370,6 @@
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JLabel" name="labRefProducto">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Ref Producto:"/>
-                  </Properties>
-                </Component>
                 <Component class="javax.swing.JLabel" name="labCantidad">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Cantidad:"/>
@@ -370,17 +379,6 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Especificaciones:"/>
                   </Properties>
-                </Component>
-                <Component class="javax.swing.JTextField" name="tRefProducto">
-                  <Properties>
-                    <Property name="toolTipText" type="java.lang.String" value=""/>
-                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[152, 24]"/>
-                    </Property>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tRefProductoActionPerformed"/>
-                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="tEspecificaciones">
                   <Properties>
@@ -451,6 +449,63 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tDescripcionActionPerformed"/>
                   </Events>
                 </Component>
+                <Component class="javax.swing.JLabel" name="labRefProductoCB">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Ref Producto:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JComboBox" name="cbRefProducto">
+                  <Properties>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                      <StringArray count="1">
+                        <StringItem index="0" value="Seleccione una referencia"/>
+                      </StringArray>
+                    </Property>
+                  </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                  </AuxValues>
+                </Component>
+                <Component class="javax.swing.JLabel" name="labEstado">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Estado:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JComboBox" name="cbEstado">
+                  <Properties>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                      <StringArray count="1">
+                        <StringItem index="0" value="Seleccione un estado"/>
+                      </StringArray>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbEstadoActionPerformed"/>
+                  </Events>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                  </AuxValues>
+                </Component>
+                <Component class="javax.swing.JLabel" name="labIdOrden">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Id Orden de Trabajo:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JComboBox" name="cbIdOrden">
+                  <Properties>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                      <StringArray count="1">
+                        <StringItem index="0" value="Seleccione una  orden"/>
+                      </StringArray>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbIdOrdenActionPerformed"/>
+                  </Events>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                  </AuxValues>
+                </Component>
               </SubComponents>
             </Container>
           </SubComponents>
@@ -462,7 +517,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="550" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="598" max="32767" attributes="0"/>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>
