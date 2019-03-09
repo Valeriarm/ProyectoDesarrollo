@@ -7,13 +7,16 @@ DROP TABLE IF EXISTS Venta CASCADE;
 DROP TABLE IF EXISTS Orden_Trabajo CASCADE;
 DROP TABLE IF EXISTS Sede CASCADE;
 DROP TABLE IF EXISTS SuperUsuario CASCADE;
+DROP TABLE IF EXISTS Actuliza CASCADE;
+DROP TABLE IF EXISTS Modifica CASCADE;
+DROP TABLE IF EXISTS Consulta CASCADE;
+
 
 
 --
 -- TABLE: SuperUsuario
 -- 
 --  
-
 CREATE TABLE SuperUsuario (
   id_SuperUsuario VARCHAR(100) NOT NULL,
   nombre_SuperUsuario VARCHAR (100) NOT NULL,
@@ -32,7 +35,6 @@ CREATE TABLE SuperUsuario (
 -- TABLE: Sede
 -- 
 --  
-
 CREATE TABLE Sede (
   id_Sede SERIAL,
   nombre_Sede VARCHAR(100) NOT NULL ,
@@ -49,7 +51,6 @@ CREATE TABLE Sede (
 -- TABLE: Gerente
 -- 
 --  
-
 CREATE TABLE Gerente (
   id_Gerente VARCHAR(100) NOT NULL,
   nombre_Gerente VARCHAR(100) NOT NULL ,
@@ -75,12 +76,10 @@ CREATE TABLE Gerente (
 );
 
 
-
 --
 -- TABLE: Vendedor
 -- 
 --  
-
 CREATE TABLE Vendedor (
   id_Vendedor  VARCHAR(100) NOT NULL,
   nombre_Vendedor VARCHAR(100) NOT NULL ,
@@ -109,7 +108,6 @@ CREATE TABLE Vendedor (
 -- TABLE: Jefe_Taller
 -- 
 --  
-
 CREATE TABLE Jefe_Taller (
   id_Jefe  VARCHAR(100) NOT NULL,
   contrasenia VARCHAR(100) NOT NULL,
@@ -134,19 +132,15 @@ CREATE TABLE Jefe_Taller (
 );
 
 
-
 --
 -- TABLE: Inventario
 -- 
 --  
-
 CREATE TABLE Inventario (
   id_Producto VARCHAR(100) NOT NULL,
   nombre_Producto VARCHAR(100) NOT NULL ,
   valor_Unitario float NOT NULL ,
   descripcion_Producto VARCHAR(100) NOT NULL ,
-  lote int NOT NULL ,
-  catidad_Lote int NOT NULL,
   id_Jefe VARCHAR(100) NOT NULL, 
 
   PRIMARY KEY (id_Producto),
@@ -155,17 +149,47 @@ CREATE TABLE Inventario (
 
 
 --
+-- TABLE: Orden_Trabajo
+-- 
+--  
+CREATE TABLE Orden_Trabajo (
+    id_Orden VARCHAR(100) NOT NULL,
+    especificaciones VARCHAR(100),
+    estado_Orden VARCHAR(100) NOT NULL ,
+    fecha_Creacion DATE NOT NULL,
+    fecha_Entrega DATE,
+    id_Jefe VARCHAR(100) NOT NULL,
+
+    PRIMARY KEY (id_Orden),
+    FOREIGN KEY (id_Jefe) REFERENCES Jefe_Taller(id_Jefe) 
+);
+
+
+--
+-- TABLE: Actualiza
+-- Relacion entre inventario y orden
+--  
+CREATE TABLE Actualiza (
+    cantidad INTEGER,
+    id_Orden VARCHAR (100) NOT NULL,
+    id_Producto VARCHAR(100) NOT NULL,
+
+    FOREIGN KEY (id_Producto) REFERENCES Inventario(id_Producto),
+    FOREIGN KEY (id_Orden) REFERENCES Orden_Trabajo(id_Orden)
+);
+
+
+--
 -- TABLE: Venta
 -- 
 --  
-
 CREATE TABLE Venta (
   id_Factura VARCHAR(100) NOT NULL,
   nombre_Cliente VARCHAR(100) NOT NULL ,
   telefono_Cliente VARCHAR(100) NOT NULL ,
   cedula_Cliente int NOT NULL ,
   valor_Venta float NOT NULL ,
-  descripcion_Venta VARCHAR(100) NOT NULL,
+  descripcion_Venta VARCHAR(100),
   id_Vendedor VARCHAR(100) NOT NULL,
 
   PRIMARY KEY (id_Factura),
@@ -173,25 +197,17 @@ CREATE TABLE Venta (
 );
 
 
-
 --
--- TABLE: Orden_Trabajo
--- 
---  
+--TABLE: Modifica  
+--Relacion entre inventario y venta
+--
+CREATE TABLE Modifica (
+    cantidad INTEGER,
+    id_Factura VARCHAR(100) NOT NULL,
+    id_Producto VARCHAR(100) NOT NULL,
 
-CREATE TABLE Orden_Trabajo (
-  id_Orden VARCHAR(100) NOT NULL,
-  nombre_Cliente VARCHAR(100) NOT NULL ,
-  id_Cliente VARCHAR(100) NOT NULL,
-  telefono_Cliente VARCHAR(100) NOT NULL ,
-  valor_Orden float NOT NULL ,
-  descripcion_Orden VARCHAR(100) NOT NULL ,
-  estado_Orden VARCHAR(100) NOT NULL ,
-  fecha_Entrega VARCHAR(100) NOT NULL,
-  id_Jefe VARCHAR(100) NOT NULL,
-
-  PRIMARY KEY (id_Orden),
-  FOREIGN KEY (id_Jefe) REFERENCES Jefe_Taller(id_Jefe) 
+    FOREIGN KEY (id_Producto) REFERENCES Inventario(id_Producto),
+    FOREIGN KEY (id_Factura) REFERENCES Venta(id_Factura)
 );
 
 
@@ -199,18 +215,30 @@ CREATE TABLE Orden_Trabajo (
 -- TABLE: Cotizacion
 -- 
 --  
-
 CREATE TABLE Cotizacion (
   id_Cotizacion VARCHAR(100) NOT NULL,
-  nombre_Producto VARCHAR(100) NOT NULL ,
-  valor_Unitario float NOT NULL ,
-  cantidad int NOT NULL ,
-  descripcion_Producto VARCHAR(100) NOT NULL ,
-  nombre_Empresa VARCHAR(100) NOT NULL ,
-  telefono_Empresa VARCHAR(100) NOT NULL ,
-  direccion_Empresa VARCHAR(100) NOT NULL,
+  nombre_Cliente VARCHAR(100) NOT NULL ,
+  telefono_Cliente VARCHAR(100) NOT NULL ,
+  email VARCHAR(100) NOT NULL ,
+  valor_Cotizacion FLOAT NOT NULL,
+  fecha_Cotizacion VARCHAR (100) NOT NULL,
   id_Vendedor VARCHAR(100) NOT NULL,
 
   PRIMARY KEY (id_Cotizacion),
   FOREIGN KEY (id_Vendedor) REFERENCES Vendedor(id_Vendedor) 
 );
+
+
+--
+--TABLE: Consulta
+--Relacion entre cotizacion e inventario
+--
+CREATE TABLE Consulta (
+    cantidad INTEGER,
+    id_Cotizacion VARCHAR(100) NOT NULL,
+    id_Producto VARCHAR(100) NOT NULL,
+
+    FOREIGN KEY (id_Producto) REFERENCES Inventario(id_Producto),
+    FOREIGN KEY (id_Cotizacion) REFERENCES Cotizacion(id_Cotizacion)
+);
+
