@@ -27,6 +27,54 @@ public class OrdenTrabajo {
         this.fechaCreacion = fechaCreacion;
         this.idJefe = idJefe;
     }
+
+    public String getIdOrden() {
+        return idOrden;
+    }
+
+    public void setIdOrden(String idOrden) {
+        this.idOrden = idOrden;
+    }
+
+    public String getEspecficaciones() {
+        return especficaciones;
+    }
+
+    public void setEspecficaciones(String especficaciones) {
+        this.especficaciones = especficaciones;
+    }
+
+    public String getEstadoOrden() {
+        return estadoOrden;
+    }
+
+    public void setEstadoOrden(String estadoOrden) {
+        this.estadoOrden = estadoOrden;
+    }
+
+    public String getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(String fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public String getFechaEntrega() {
+        return fechaEntrega;
+    }
+
+    public void setFechaEntrega(String fechaEntrega) {
+        this.fechaEntrega = fechaEntrega;
+    }
+
+    public String getIdJefe() {
+        return idJefe;
+    }
+
+    public void setIdJefe(String idJefe) {
+        this.idJefe = idJefe;
+    }
     
     
 }

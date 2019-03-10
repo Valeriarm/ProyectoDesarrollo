@@ -142,7 +142,8 @@ CREATE TABLE Inventario (
   valor_Unitario float NOT NULL ,
   descripcion_Producto VARCHAR(100) NOT NULL ,
   cantidad INTEGER,
-  id_Jefe VARCHAR(100) NOT NULL, 
+  estado_Producto VARCHAR(100) NOT NULL,
+  id_Jefe VARCHAR(100) NOT NULL,
 
   PRIMARY KEY (id_Producto),
   FOREIGN KEY (id_Jefe) REFERENCES Jefe_Taller(id_Jefe)

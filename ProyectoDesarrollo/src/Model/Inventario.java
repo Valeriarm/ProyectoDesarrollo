@@ -14,8 +14,7 @@ public class Inventario {
     private String nombreProducto;
     private float valorUnitario;
     private String descripcion;
-    private int lote;
-    private int cantidadLote;
+    private int cantidad;
     private String idJefe;
 
     public Inventario(String idProducto, String nombreProducto, float valorUnitario, String descripcion, int lote, int cantidadLote, String idJefe) {
@@ -23,8 +22,7 @@ public class Inventario {
         this.nombreProducto = nombreProducto;
         this.valorUnitario = valorUnitario;
         this.descripcion = descripcion;
-        this.lote = lote;
-        this.cantidadLote = cantidadLote;
+        this.cantidad = cantidadLote;
         this.idJefe = idJefe;
     }
 
@@ -62,20 +60,12 @@ public class Inventario {
         this.descripcion = descripcion;
     }
 
-    public int getLote() {
-        return lote;
+    public int getCantidad() {
+        return cantidad;
     }
 
-    public void setLote(int lote) {
-        this.lote = lote;
-    }
-
-    public int getCantidadLote() {
-        return cantidadLote;
-    }
-
-    public void setCantidadLote(int cantidadLote) {
-        this.cantidadLote = cantidadLote;
+    public void setCantidad(int cantidadLote) {
+        this.cantidad = cantidadLote;
     }
 
     public String getIdJefe() {
@@ -85,7 +75,4 @@ public class Inventario {
     public void setIdJefe(String idJefe) {
         this.idJefe = idJefe;
     }
-
-    
-   
 }
