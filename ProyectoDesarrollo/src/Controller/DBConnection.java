@@ -1186,12 +1186,12 @@ public class DBConnection {
     
     
     
-    public String crearOrden(String descripcionOrden, String estado, String fechaCreacion ,String idJefe, String ref){
+    public String crearOrden(String descripcionOrden, String estado, String fechaCreacion ,String idJefe, String[] referencias, int[] cantidades){
         
         connect();
         String id = idSiguienteOrden();
         sql = "SELECT id_Orden, id_Producto FROM Orden_Trabajo"
-                + "INNER JOIN Actualiza ON  id_Orden = '"+id+"' and id_Producto = '"+ref+"' WHERE estado_Orden = 'En Proceso'";
+                + "INNER JOIN Actualiza ON  id_Orden = '"+id+"' WHERE estado_Orden = 'En Proceso'";
         try {
 
             rs = st.executeQuery(sql);
@@ -1200,7 +1200,11 @@ public class DBConnection {
             }else{                
                 sql = "INSERT INTO Orden_Trabajo VALUES ('"+id+"','"+descripcionOrden+"','"+estado+"','"
                                                         +fechaCreacion+"', null ,'"+idJefe+"')";
-                
+                for(int i=0; i<cantidades.length; i++){
+                    sql += "INSERT INTO Actualiza VALUES ('"+cantidades[i]+"','"+id+"','"+referencias[i]+"','"
+                                                        +fechaCreacion+"', null ,'"+idJefe+"')";
+                }
+                sql += ";";
                 st.executeUpdate(sql);
                 rs.close();
                 st.close();
@@ -1241,14 +1245,17 @@ public class DBConnection {
     }
     
     
-    public String actualizarOrden(String id, String descripcionOrden, String estado,int cantidad, String referencia,String idJefe){
+    public String actualizarOrden(String id, String descripcionOrden, String estado,int[] cantidad, String[] referencia,String idJefe){
         connect();
         sql = "SELECT id_Orden FROM Orden_Trabajo WHERE id_Orden = '"+id+"' and estado_Orden = 'En Proceso'";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                sql = "UPDATE Orden_Trabajo SET especificaciones = '"+descripcionOrden+"', estado = '"+estado+"' WHERE id_Orden = '"+id+"' and estado_Orden = 'En Proceso';";
-                
+                sql = "UPDATE Orden_Trabajo SET especificaciones = '"+descripcionOrden+"', estado = '"+estado+"' WHERE id_Orden = '"+id+"' and estado_Orden = 'En Proceso'";
+                for(int i=0; i<cantidad.length;i++){
+                    sql += "UPDATE Actualiza SET cantidad = "+cantidad[i]+"WHERE id_Orden = '"+id+"' and id_Producto = '"+referencia[i]+"'";
+                }
+                sql += ";";
                 rs.close();
                 st.close();
                 connection.close();
@@ -1285,11 +1292,11 @@ public class DBConnection {
         return "";        
     }
     
-    public String listarOrden(){
+    public String listarOrden(String idJefe){
         //Llamamos el metodo que cree arriba para poder conectarnos a la base de datos
         connect();
         //Creo la sentencia sql de lo que quiero hacer, en este caso, quiero todas las columnas de la tabla
-        sql = "SELECT * FROM Orden_Trabajo WHERE estado_Orden = '"+"'En proceso'"+"'";
+        sql = "SELECT * FROM Orden_Trabajo WHERE estado_Orden = '"+"'En proceso'"+"' AND  id_Jefe ="+idJefe;
         //Necesito un try catch porque esto me puede arrojar un error de consulta (SQL)
         try {            
             //Aquí usamos el metodo de Statment executeQuery y le pasamos la sentencia sql, esto lo guardamos en el 

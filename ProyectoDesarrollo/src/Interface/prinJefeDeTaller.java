@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import static java.lang.Integer.parseInt;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -30,6 +31,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     private int botonAceptar = 0;  
     private DBConnection bD;
     private String idJefe;
+    ArrayList<String> referencias;
+    ArrayList<Integer> cantidades;
     
     public prinJefeDeTaller(DBConnection baseDatos, String idJefe) {
         initComponents();
@@ -93,6 +96,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         cbEstadoOrden = new javax.swing.JComboBox<>();
         labIdOrden = new javax.swing.JLabel();
         cbIdOrden = new javax.swing.JComboBox<>();
+        bConfirmar = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         fecha = new javax.swing.JLabel();
         fechaYhora = new javax.swing.JLabel();
@@ -145,16 +149,19 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labLogo)
-                .addGap(317, 317, 317)
+                .addGap(377, 377, 377)
                 .addComponent(iconUsu)
-                .addGap(2, 2, 2))
+                .addGap(22, 22, 22))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(labLogo, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addComponent(iconUsu)
-                .addContainerGap())
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labLogo, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(iconUsu)
+                        .addContainerGap())))
         );
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
@@ -333,6 +340,13 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             }
         });
 
+        bConfirmar.setText("Confirmar");
+        bConfirmar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bConfirmarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -361,8 +375,10 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                             .addComponent(cbEstadoOrden, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cbIdOrden, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(130, 130, 130)
-                        .addComponent(bAceptar)))
+                        .addGap(189, 189, 189)
+                        .addComponent(bAceptar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(bConfirmar)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -400,9 +416,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbIdOrden, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labIdOrden))
-                .addGap(202, 202, 202)
-                .addComponent(bAceptar)
-                .addGap(20, 20, 20))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 158, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bAceptar)
+                    .addComponent(bConfirmar))
+                .addGap(64, 64, 64))
         );
 
         jSplitPane2.setRightComponent(jPanel4);
@@ -472,7 +490,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(674, Short.MAX_VALUE)
+                .addContainerGap(686, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -538,6 +556,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             desactivarCampos();
             cambiarVisibilidadCamposOrdenModificar(true);
             llenarComboboxOrden();
+            llenarComboboxInventario();
         
             botonAceptar = 2;
             bAceptar.setText("Modificar");
@@ -649,7 +668,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             //Agregar
             case 1:
             if(this.ordenesDeTrabajo.isSelected()){
-                agregarOrdenDeTrabajo();
+                agregarUnaOrdenDeTrabajo();
             }
             if(this.itemDeInventario.isSelected()){
                 agregarReferencia();
@@ -658,7 +677,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             //Modificar
             case 2:
             if(this.ordenesDeTrabajo.isSelected()){
-                modificarOrdenDeTrabajo();
+                agregarReferenciaOrden();
             }
             if(this.itemDeInventario.isSelected()){
                 modificarItemDeInventario();
@@ -708,18 +727,35 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     private void cbIdOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbIdOrdenActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbIdOrdenActionPerformed
+
+    private void bConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bConfirmarActionPerformed
+        switch(botonAceptar){
+            //Agregar
+            case 1:
+            if(this.ordenesDeTrabajo.isSelected()){
+                agregarOrdenDeTrabajo();
+            }
+            break;
+            //Modificar
+            case 2:
+            if(this.ordenesDeTrabajo.isSelected()){
+                modificarOrdenDeTrabajo();
+            }
+            break;
+        }
+    }//GEN-LAST:event_bConfirmarActionPerformed
     
     public void llenarComboboxOrden(){
-        String [] ordenes = bD.listarOrden().split("$");
+        String [] ordenes = bD.listarOrden(this.idJefe).split("$");
         for (int i=0; i==ordenes.length; i++){
             cbIdOrden.addItem(ordenes[i]);
         }
     }
     
     public void llenarComboboxInventario(){
-        String [] inventario = bD.listarOrden().split("$");
+        String [] inventario = bD.listarInventario().split("$");
         for (int i=0; i==inventario.length; i++){
-            cbIdOrden.addItem(inventario[i]);
+            cbRefProducto.addItem(inventario[i]);
         }
     }
     
@@ -748,6 +784,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labIdOrden.setVisible(false);
         cbIdOrden.setVisible(false);
         cbIdOrden.setEnabled(false);
+        bConfirmar.setVisible(false);
+        bConfirmar.setEnabled(false);
     }
     
     public void cambiarVisibilidadCamposOrdenAgregar(boolean varControl){
@@ -760,6 +798,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labCantidad.setVisible(varControl);
         tCantidad.setVisible(varControl);
         tCantidad.setEnabled(varControl);
+        bConfirmar.setVisible(varControl);
+        bConfirmar.setEnabled(varControl);
     }
     
     public void cambiarVisibilidadCamposOrdenModificar(boolean varControl){
@@ -778,6 +818,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labCantidad.setVisible(varControl);
         tCantidad.setVisible(varControl);
         tCantidad.setEnabled(varControl);
+        bConfirmar.setVisible(varControl);
+        bConfirmar.setEnabled(varControl);
     }
     
     public void cambiarVisibilidadCamposOrdenConsultar(boolean varControl){
@@ -995,13 +1037,26 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         cbRefProducto.removeAllItems();
     }
     
+    private boolean agregarUnaOrdenDeTrabajo(){
+        if(!validarCamposAgregarOrdenDeTrabajo()){
+            return false;
+        }
+        cantidades.add(Integer.valueOf(tCantidad.getText()));
+        referencias.add(cbRefProducto.getSelectedItem().toString());
+        return true;
+    }
+    
     private boolean agregarOrdenDeTrabajo(){
         if(!validarCamposAgregarOrdenDeTrabajo()){
             return false;
         }
         /*id_orden se genera automaticamente*/
-        String ref_producto = String.valueOf(cbRefProducto.getSelectedItem());
-        int cantidad = Integer.valueOf(tCantidad.getText());
+        int[] cant = new int[cantidades.size()];
+        String[] refs = new String[referencias.size()];
+        for (int i=0; i<cant.length;i++){
+            cant[i]=cantidades.get(i).intValue();
+            refs[i]=referencias.get(i).toString();
+        }
         String especificaciones = tEspecificaciones.getText();
         String estado = "En Proceso";
         int anio = Calendar.getInstance().get(Calendar.YEAR);
@@ -1040,12 +1095,29 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         if(!validarCamposModificarOrdenDeTrabajo()){
             return false;
         }
-        String idOrdenDeTrabajo = String.valueOf(cbRefProducto.getSelectedItem());
+        int[] cant = new int[cantidades.size()];
+        String[] refs = new String[referencias.size()];
+        for (int i=0; i<cant.length;i++){
+            cant[i]=cantidades.get(i).intValue();
+            refs[i]=referencias.get(i).toString();
+        }
+        String idOrdenDeTrabajo = String.valueOf(cbIdOrden.getSelectedItem());
         String descripcion = tEspecificaciones.getText();
         String estado = cbEstadoOrden.getItemAt(cbEstadoOrden.getSelectedIndex());
-        
+        String respuesta = bD.actualizarOrden(idOrdenDeTrabajo, descripcion, estado,
+                cant,refs, idJefe);
+        JOptionPane.showMessageDialog(this, respuesta);
         return true;
     }
+    
+    private boolean agregarReferenciaOrden(){
+        if(!validarCamposModificarOrdenDeTrabajo()){
+            return false;
+        }
+        cantidades.add(Integer.valueOf(tCantidad.getText()));
+        referencias.add(cbRefProducto.getSelectedItem().toString());
+        return true;  
+    };
     
     private boolean modificarItemDeInventario(){
         if(!validarCamposModificarInventario()){
@@ -1082,8 +1154,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         if(!validarCamposConsultarInventario()){
             return false;            
         }
-        String idInventario = "";
-        idInventario = String.valueOf(cbRefProducto.getSelectedItem());
+        String idInventario = String.valueOf(cbRefProducto.getSelectedItem());
         Inventario inventario = bD.leerInventarioPorId(idInventario);
         String mensaje = "ID producto: "+inventario.getIdProducto()+"\n"
                 +"Nombre producto: "+inventario.getNombreProducto()+"\n"
@@ -1148,6 +1219,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     private javax.swing.JButton bAceptar;
     private javax.swing.JButton bAgregar;
     private javax.swing.JButton bAnular;
+    private javax.swing.JButton bConfirmar;
     private javax.swing.JButton bConsul;
     private javax.swing.JButton bModf;
     private javax.swing.JToggleButton bReportes;
