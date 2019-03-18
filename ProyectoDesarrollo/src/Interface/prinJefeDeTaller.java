@@ -31,6 +31,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     private int botonAceptar = 0;  
     private DBConnection bD;
     private String idJefe;
+    private String consulta;
+    private String consultaInv;
     ArrayList<String> referencias;
     ArrayList<Integer> cantidades;
     
@@ -194,6 +196,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 bModfMouseReleased(evt);
             }
         });
+        bModf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bModfActionPerformed(evt);
+            }
+        });
 
         bConsul.setForeground(new java.awt.Color(51, 51, 51));
         bConsul.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO search.png"))); // NOI18N
@@ -324,7 +331,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
         labEstadoOrden.setText("Estado:");
 
-        cbEstadoOrden.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione un estado", "En proceso", "Terminada", "Anulada" }));
+        cbEstadoOrden.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione un estado", "En proceso", "Terminada" }));
         cbEstadoOrden.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbEstadoOrdenActionPerformed(evt);
@@ -521,6 +528,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         } 
               
         if(this.ordenesDeTrabajo.isSelected()){
+            consultaInv="disponible";
             limpiarCampos();
             desactivarCampos();
             cambiarVisibilidadCamposOrdenAgregar(true);
@@ -552,6 +560,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         } 
         
         if(this.ordenesDeTrabajo.isSelected()){
+            consulta = "modificar";
             limpiarCampos();
             desactivarCampos();
             cambiarVisibilidadCamposOrdenModificar(true);
@@ -565,6 +574,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         }
         
         if(this.itemDeInventario.isSelected()){
+            consultaInv = "disponible";
             limpiarCampos();
             desactivarCampos();
             cambiarVisibilidadCamposInventarioModf(true);
@@ -585,6 +595,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         }
         
         if(this.ordenesDeTrabajo.isSelected()){
+            consulta="consultar";
             limpiarCampos();
             desactivarCampos();
             cambiarVisibilidadCamposOrdenConsultar(true);
@@ -597,6 +608,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         }
         
         if(this.itemDeInventario.isSelected()){
+            consultaInv = "disponible";
             limpiarCampos();
             desactivarCampos();
             cambiarVisibilidadCamposInventarioConsultar(true);
@@ -617,6 +629,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         }
 
         if(this.ordenesDeTrabajo.isSelected()){
+            consulta="modificar";
             limpiarCampos();
             desactivarCampos();
             cambiarVisibilidadCamposOrdenAnular(true);
@@ -630,6 +643,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         }
 
         if(this.itemDeInventario.isSelected()){
+            consultaInv="disponible";
             limpiarCampos();
             desactivarCampos();
             cambiarVisibilidadCamposInventarioEliminar(true);
@@ -744,16 +758,20 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             break;
         }
     }//GEN-LAST:event_bConfirmarActionPerformed
+
+    private void bModfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bModfActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bModfActionPerformed
     
     public void llenarComboboxOrden(){
-        String [] ordenes = bD.listarOrden(this.idJefe).split("$");
+        String [] ordenes = bD.listarOrden(this.idJefe, consulta).split("$");
         for (int i=0; i==ordenes.length; i++){
             cbIdOrden.addItem(ordenes[i]);
         }
     }
     
     public void llenarComboboxInventario(){
-        String [] inventario = bD.listarInventario().split("$");
+        String [] inventario = bD.listarInventario(consultaInv).split("$");
         for (int i=0; i==inventario.length; i++){
             cbRefProducto.addItem(inventario[i]);
         }
@@ -1077,12 +1095,10 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         }
         /*id_producto se genera automaticamente*/
         String nombreProducto = tNombreProducto.getText();
-        int cantidad = Integer.valueOf(tCantidad.getText());
         float valorUnitario = Float.parseFloat(tValorUnitario.getText());
         String descripcion = tDescripcion.getText();
         
-        
-        String respuesta = bD.crearInventario(nombreProducto, cantidad, valorUnitario, 
+        String respuesta = bD.crearInventario(nombreProducto, valorUnitario, 
             descripcion, idJefe);
         JOptionPane.showMessageDialog(this, respuesta);
         return true;
@@ -1120,13 +1136,14 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         if(!validarCamposModificarInventario()){
             return false;
         }
-        String referencia = String.valueOf(cbRefProducto.getSelectedItem());
+        String id = String.valueOf(cbRefProducto.getSelectedItem());
+        String nombreProducto = String.valueOf(tNombreProducto);
         float valorUnitario = Float.parseFloat(tValorUnitario.getText());
-        String especificaciones = tEspecificaciones.getText();
-        /*
-        String respuesta = bD.actualizarInventario(idProducto, nombreProducto, valorUnitario, descripcion, lote, cantidadLote);       
-        JOptionPane.showMessageDialog(this, respuesta);
-        */
+        String descripcion = tEspecificaciones.getText();
+        
+        String respuesta = bD.actualizarInventario(id, nombreProducto, valorUnitario, 
+            descripcion);
+        
         return true;
     }
     
@@ -1135,7 +1152,10 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             return false;
         }
         String idOrden = String.valueOf(cbRefProducto.getSelectedItem());
-        OrdenTrabajo orden = bD.leerOrdenPorId(idOrden);
+        Object[] nuevo = bD.leerOrdenPorId(idOrden);
+        OrdenTrabajo orden = (OrdenTrabajo) nuevo[0];
+        String refs = (String) nuevo[1];
+        String[] splitedrefs = refs.split("$");
         
         String mensaje = "ID Orden de trabajo: "+orden.getIdOrden()+"\n"
                 + "Especificaciones: "+orden.getEspecficaciones()+"\n"
@@ -1143,6 +1163,9 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 +"Fecha de creacion: "+orden.getFechaCreacion()+"\n"
                 +"Fecha de entrega: "+orden.getFechaEntrega()+"\n"
                 +"ID Jefe de taller: "+ orden.getIdJefe()+ "\n";
+        for (int i=0; i<refs.length();i++){
+            mensaje=mensaje+splitedrefs[i]+"\n";
+        }
         JOptionPane.showMessageDialog(this, mensaje);        
         return true;
     }
@@ -1169,7 +1192,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             return false;
         }
         String idOrden = String.valueOf(cbRefProducto.getSelectedItem());
-        OrdenTrabajo orden = bD.leerOrdenPorId(idOrden);
+        Object[] nuevo = bD.leerOrdenPorId(idOrden);
+        OrdenTrabajo orden = (OrdenTrabajo) nuevo[0];
         String mensaje = "ID Orden de trabajo: "+orden.getIdOrden()+"\n"
                 + "Especificaciones: "+orden.getEspecficaciones()+"\n"
                 +"Estado de la orden: "+orden.getEstadoOrden()+"\n"

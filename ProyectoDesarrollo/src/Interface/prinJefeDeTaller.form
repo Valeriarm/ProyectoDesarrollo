@@ -223,6 +223,7 @@
                   </Properties>
                   <Events>
                     <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="bModfMouseReleased"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bModfActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="bConsul">
@@ -484,11 +485,10 @@
                 <Component class="javax.swing.JComboBox" name="cbEstadoOrden">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="4">
+                      <StringArray count="3">
                         <StringItem index="0" value="Seleccione un estado"/>
                         <StringItem index="1" value="En proceso"/>
                         <StringItem index="2" value="Terminada"/>
-                        <StringItem index="3" value="Anulada"/>
                       </StringArray>
                     </Property>
                   </Properties>
