@@ -1065,11 +1065,9 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         String fecha_creacion = String.valueOf(anio)+"-"+String.valueOf(mes)
                 +"-"+String.valueOf(dia);
         
-        /*En espera de ser actualizada DBConnection
-        String respuesta = bD.crearOrden(ref_producto, cantidad, especificaciones, 
-                estado, fecha_creacion, null, this.idJefe);
+        String respuesta = bD.crearOrden(especificaciones, estado, fecha_creacion ,idJefe, refs, cant);
         JOptionPane.showMessageDialog(this, respuesta);
-        */
+        
         return true;
     }
     
@@ -1081,13 +1079,12 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         String nombreProducto = tNombreProducto.getText();
         int cantidad = Integer.valueOf(tCantidad.getText());
         float valorUnitario = Float.parseFloat(tValorUnitario.getText());
-        String Descripcion = tDescripcion.getText();
+        String descripcion = tDescripcion.getText();
         
-        /*En espera de ser actualizada en DBConnection
-        String respuesta = bD.crearInventario(nombreProducto, valorUnitario,
-                Descripcion, this.idJefe);
+        
+        String respuesta = bD.crearInventario(nombreProducto, cantidad, valorUnitario, 
+            descripcion, idJefe);
         JOptionPane.showMessageDialog(this, respuesta);
-        */
         return true;
     }
     
