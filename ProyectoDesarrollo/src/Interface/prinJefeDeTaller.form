@@ -311,9 +311,9 @@
                                       <Component id="tNombreProducto" alignment="0" max="32767" attributes="0"/>
                                       <Component id="tDescripcion" alignment="0" max="32767" attributes="0"/>
                                       <Component id="tValorUnitario" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="cbRefProducto" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="cbEstadoOrden" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="cbIdOrden" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="cbEstadoOrden" alignment="0" max="-2" attributes="0"/>
+                                      <Component id="cbIdOrden" alignment="0" max="-2" attributes="0"/>
+                                      <Component id="cbRefProducto" alignment="0" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
@@ -323,7 +323,7 @@
                                   <Component id="bConfirmar" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="101" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -370,7 +370,7 @@
                               <Component id="cbIdOrden" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="labIdOrden" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="158" max="32767" attributes="0"/>
+                          <EmptySpace pref="196" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="bAceptar" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="bConfirmar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -472,6 +472,9 @@
                         <StringItem index="0" value="Seleccione una referencia"/>
                       </StringArray>
                     </Property>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[152, 20]"/>
+                    </Property>
                   </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -490,6 +493,9 @@
                         <StringItem index="1" value="En proceso"/>
                         <StringItem index="2" value="Terminada"/>
                       </StringArray>
+                    </Property>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[152, 20]"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -510,6 +516,9 @@
                       <StringArray count="1">
                         <StringItem index="0" value="Seleccione una  orden"/>
                       </StringArray>
+                    </Property>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[152, 20]"/>
                     </Property>
                   </Properties>
                   <Events>

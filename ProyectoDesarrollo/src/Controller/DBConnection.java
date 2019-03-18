@@ -23,8 +23,8 @@ public class DBConnection {
     //----------------------------------------------------------------------
     
     //Usuario de la base de datos en postgresql
-    private final String dBUser = "desarrollo";
-    private final String dBPassword = "desarrollo";
+    private final String dBUser = "postgres";
+    private final String dBPassword = "1144211502";
     //puerto
     private final String port = "5433";
     //Nombre de la base de datos
@@ -1318,13 +1318,13 @@ public class DBConnection {
         connect();
         //Creo la sentencia sql de lo que quiero hacer, en este caso, quiero todas las columnas de la tabla
         if(consulta.equals("modificar")){
-            sql = "SELECT * FROM Orden_Trabajo WHERE estado_Orden = 'En Proceso'"+" AND  id_Jefe ="+idJefe; 
+            sql = "SELECT * FROM Orden_Trabajo WHERE estado_Orden = 'En Proceso'"+" AND  id_Jefe ='"+idJefe+"'"; 
         }
         if(consulta.equals("consultar")){
-            sql = "SELECT * FROM Orden_Trabajo WHERE estado_Orden IN('En proceso', 'Terminada')"+" AND  id_Jefe ="+idJefe; 
+            sql = "SELECT * FROM Orden_Trabajo WHERE estado_Orden IN('En proceso', 'Terminada')"+" AND  id_Jefe ='"+idJefe+"'"; 
         }
         if(consulta.equals("todas")){
-            sql = "SELECT * FROM Orden_Trabajo WHERE id_Jefe ="+idJefe; 
+            sql = "SELECT * FROM Orden_Trabajo WHERE id_Jefe ='"+idJefe+"'"; 
 
         }
         //Necesito un try catch porque esto me puede arrojar un error de consulta (SQL)
@@ -1392,28 +1392,36 @@ public class DBConnection {
     
     
     public String crearInventario(String nombreProducto, float valorUnitario, 
-            String descripcion, String idJefe){
-        connect();
+            String descripcion, String idJefe){        
+        System.out.println(idJefe);
         String id = idSiguienteInventario();
+        System.out.println(id);
+        connect();
         sql = "SELECT id_Producto FROM Inventario WHERE id_Producto = '"+id+"'";
         try {
+            System.out.println(sql);
             rs = st.executeQuery(sql);
+            System.out.println("jaime dice");
             if(rs.next()){
                 return "El Producto con el id "+id+" ya existe";
                 
-            }else{ 
-                sql = "SELECT id_Producto FROM Inventario WHERE id_Producto = '"+id+"'";
-                rs = st.executeQuery(sql);
-                if(rs.next()){
-                    sql = "INSERT INTO Inventario VALUES ('"+id+"','"+nombreProducto+"','"
-                            +valorUnitario+"','"+descripcion+"', 0,'Disponible' ,'"+idJefe+"')";                
+            }else{
+                
+                
+                System.out.println(idJefe);
+                System.out.println(id);
+               // sql = "SELECT id_Producto FROM Inventario WHERE id_Producto = '"+id+"'";
+                //rs = st.executeQuery(sql);
+                //if(rs.next()){
+                    sql = "INSERT INTO Inventario VALUES ('"+id+"','"+nombreProducto+"',"
+                            +valorUnitario+",'"+descripcion+"', 0,'disponible' ,'"+idJefe+"')";                
                     st.executeUpdate(sql);
                     rs.close();
                     st.close();
                     connection.close();
-                }else{
-                    return "El producto con el id "+id+" no existe";
-                }
+               // }else{
+                //    return "El producto con el id "+id+" no existe";
+               //}
                 
             }
             
@@ -1523,11 +1531,11 @@ public class DBConnection {
         connect();
         //Creo la sentencia sql de lo que quiero hacer, en este caso, quiero todas las columnas de la tabla
         if(consulta.equals("disponible")){
-            sql = "SELECT * FROM Inventario WHERE estado_Producto = '"+"'Disponible'"+"'";
-        };
+            sql = "SELECT * FROM Inventario WHERE estado_Producto = 'disponible'";
+        }
         if(consulta.equals("no disponible")){
             sql = "SELECT * FROM Inventario";
-        };
+        }
         //Necesito un try catch porque esto me puede arrojar un error de consulta (SQL)
         try {            
             //Aquí usamos el metodo de Statment executeQuery y le pasamos la sentencia sql, esto lo guardamos en el 
