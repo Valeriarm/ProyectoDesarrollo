@@ -872,7 +872,7 @@ public class DBConnection {
         return respuesta;
     }
     
-     public String crearVendedor(String nombre, String cedula, 
+    public String crearVendedor(String nombre, String cedula, 
             String cargo, String telefono, String direccion, int genero, 
             String fechaNacimiento, String correo, float salario, 
             String cuentaBancaria, String fechaRegistro, String nombreUsuario,
@@ -1263,8 +1263,6 @@ public class DBConnection {
        return "Orden actualizada con éxito";           
     }
     
-    
-    
     public String eliminarOrden(String id){
         connect();
         sql = "SELECT id_Orden FROM Orden_Trabajo WHERE id_Orden = '"+id+"'";
@@ -1285,6 +1283,34 @@ public class DBConnection {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return "";        
+    }
+    
+    public String listarOrden(){
+        //Llamamos el metodo que cree arriba para poder conectarnos a la base de datos
+        connect();
+        //Creo la sentencia sql de lo que quiero hacer, en este caso, quiero todas las columnas de la tabla
+        sql = "SELECT * FROM Orden_Trabajo WHERE estado_Orden = '"+"'En proceso'"+"'";
+        //Necesito un try catch porque esto me puede arrojar un error de consulta (SQL)
+        try {            
+            //Aquí usamos el metodo de Statment executeQuery y le pasamos la sentencia sql, esto lo guardamos en el 
+            //Resultset y usamos next() para saltar entre filas, cada fila es un ingreso de la base de datos
+            rs = st.executeQuery(sql);
+            String id;
+            String ordenes = "";
+            while(rs.next()){
+                //Usando getString podemos obtener el resultado de nuestra consulta pasandole el nombre de la columna
+                id = rs.getString("id_Orden");
+                ordenes = ordenes+id+"$";
+            }
+            //POR ULTIMO E IMPORTANTE: hay que cerrar siempre las conexiones
+            rs.close();
+            st.close();
+            connection.close();
+            return ordenes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return "";
     }
     
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -1358,14 +1384,15 @@ public class DBConnection {
     }
 
     public String actualizarInventario(String id, String nombreProducto, float valorUnitario, 
-            String descripcion, int lote, int cantidadLote){
+            String descripcion, int lote, int cantidad, String estado){
         connect();
         sql = "SELECT id_Producto FROM Inventario WHERE id_Producto = '"+id+"'";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
                 sql = "UPDATE Inventario SET nombre_Producto = '"+nombreProducto+"', valor_Unitario = '"+valorUnitario+
-                        "', descripcion_Producto = '"+descripcion+"', lote = '"+lote+"',"+" cantidad_Lote = '"+cantidadLote+"'";
+                        "', descripcion_Producto = '"+descripcion+"', cantidad = '"+cantidad+"', estado_Producto = '"
+                        + estado;
                 st.executeUpdate(sql);
                 rs.close();
                 st.close();
@@ -1378,6 +1405,27 @@ public class DBConnection {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
        return "Inventario actualizado con éxito";
+    }
+    
+    public String deshabilitarInventario(String id){
+        connect();
+        sql = "SELECT id_Producto FROM Inventario WHERE id_Producto = '"+id+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                sql = "UPDATE Inventario SET estado_Orden = '"+"'No disponible'";
+                st.executeUpdate(sql);
+                rs.close();
+                st.close();
+                connection.close();
+            }else{        
+                return "El producto con el id "+id+" no existe";
+            }
+            
+        } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+       return "Referencia deshabilitada con éxito";
     }
     
     public String eliminarInventario(String id){
@@ -1397,6 +1445,35 @@ public class DBConnection {
             }
             
         } catch (Exception e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return "";
+    }
+    
+    public String listarInventario(){
+        //Llamamos el metodo que cree arriba para poder conectarnos a la base de datos
+        connect();
+        //Creo la sentencia sql de lo que quiero hacer, en este caso, quiero todas las columnas de la tabla
+        sql = "SELECT * FROM Inventario WHERE estado_Producto = '"+"'Disponible'"+"'";
+        //Necesito un try catch porque esto me puede arrojar un error de consulta (SQL)
+        try {            
+            //Aquí usamos el metodo de Statment executeQuery y le pasamos la sentencia sql, esto lo guardamos en el 
+            //Resultset y usamos next() para saltar entre filas, cada fila es un ingreso de la base de datos
+            rs = st.executeQuery(sql);
+            String id, nombre;
+            String ordenes = "";
+            while(rs.next()){
+                //Usando getString podemos obtener el resultado de nuestra consulta pasandole el nombre de la columna
+                id = rs.getString("id_Producto");
+                nombre = rs.getString("nombre_Producto");
+                ordenes = ordenes+id+","+nombre+"$";
+            }
+            //POR ULTIMO E IMPORTANTE: hay que cerrar siempre las conexiones
+            rs.close();
+            st.close();
+            connection.close();
+            return ordenes;
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return "";
