@@ -10,14 +10,11 @@ import Model.OrdenTrabajo;
 import Model.Inventario;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import static java.lang.Integer.parseInt;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import javax.swing.JOptionPane;
-import javax.swing.Timer;
 
 /**
  *
@@ -30,7 +27,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     //1:Agregar, 2:Modificar, 3:Consultar, 4:Anular 0 Eliminar, 0:nada
     private int botonAceptar = 0;  
     private DBConnection bD;
-    private String idJefe;
+    private final String idJefe;
     private String consulta;
     private String consultaInv;
     ArrayList<String> referencias;
@@ -40,6 +37,9 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         initComponents();
         this.bD = baseDatos;
         this.idJefe = idJefe;
+        
+        this.referencias = new ArrayList<>();
+        this.cantidades = new ArrayList<>();
         
         desactivarCampos();
         bAceptar.setVisible(false);
@@ -344,6 +344,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
         cbIdOrden.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione una  orden" }));
         cbIdOrden.setPreferredSize(new java.awt.Dimension(152, 20));
+        cbIdOrden.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbIdOrdenItemStateChanged(evt);
+            }
+        });
         cbIdOrden.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbIdOrdenActionPerformed(evt);
@@ -569,7 +574,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             desactivarCampos();
             cambiarVisibilidadCamposOrdenModificar(true);
             llenarComboboxOrden();
-            llenarComboboxInventario();
+            llenarComboboxInventarioOrden();
         
             botonAceptar = 2;
             bAceptar.setText("Modificar");
@@ -766,17 +771,31 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     private void bModfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bModfActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_bModfActionPerformed
+
+    private void cbIdOrdenItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbIdOrdenItemStateChanged
+        // TODO add your handling code here:
+        consultaInv = "disponible";
+        cbRefProducto.removeAllItems();
+        llenarComboboxInventarioOrden();
+    }//GEN-LAST:event_cbIdOrdenItemStateChanged
     
     public void llenarComboboxOrden(){
-        String [] ordenes = bD.listarOrden(this.idJefe, consulta).split("$");
-        for (int i=0; i==ordenes.length; i++){
+        String [] ordenes = bD.listarOrden(this.idJefe, consulta).split("\\$");
+        for(int i=0; i<ordenes.length; i++){
             cbIdOrden.addItem(ordenes[i]);
         }
     }
     
     public void llenarComboboxInventario(){
-        String [] inventario = bD.listarInventario(consultaInv).split("$");
-        for (int i=0; i==inventario.length; i++){
+        String [] inventario = bD.listarInventario(consultaInv).split("\\$");
+        for(int i=0; i<inventario.length; i++){
+            cbRefProducto.addItem(inventario[i]);
+        }
+    }
+    
+    public void llenarComboboxInventarioOrden(){
+        String [] inventario = bD.listarInventarioOrden(String.valueOf(cbIdOrden.getSelectedItem())).split("\\$");
+        for(int i=0; i<inventario.length; i++){
             cbRefProducto.addItem(inventario[i]);
         }
     }
@@ -859,10 +878,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     public void cambiarVisibilidadCamposInventarioAgregar(boolean varControl){
         labNombreProducto.setVisible(varControl);
         tNombreProducto.setVisible(varControl);
-        tNombreProducto.setEnabled(varControl);
-        labCantidad.setVisible(varControl);
-        tCantidad.setVisible(varControl);
-        tCantidad.setEnabled(varControl);
+        tNombreProducto.setEnabled(varControl);      
         labValorUnitario.setVisible(varControl);
         tValorUnitario.setVisible(varControl);
         tValorUnitario.setEnabled(varControl);
@@ -878,9 +894,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labNombreProducto.setVisible(varControl);
         tNombreProducto.setVisible(varControl);
         tNombreProducto.setEnabled(varControl);
-        labCantidad.setVisible(varControl);
-        tCantidad.setVisible(varControl);
-        tCantidad.setEnabled(varControl);
         labValorUnitario.setVisible(varControl);
         tValorUnitario.setVisible(varControl);
         tValorUnitario.setEnabled(varControl);
@@ -933,13 +946,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                     "Por favor seleccione una referencia");
             return false;
         }
-        try{
-            Integer.valueOf(tCantidad.getText());
-        }catch(NumberFormatException nan){
-            JOptionPane.showMessageDialog(this, 
-                    "Por favor ingrese un valor valido para la cantidad");
-            return false;
-        }
         if(tEspecificaciones.getText().replace(" ", "").length()==0){
             JOptionPane.showMessageDialog(this,
                     "Por favor ingrese las especificaciones");
@@ -977,13 +983,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                     "Por favor ingrese el nombre del producto");
             return false;
         }
-        try{
-            Integer.valueOf(tCantidad.getText());
-        }catch(NumberFormatException nan){
-            JOptionPane.showMessageDialog(this,
-                    "Por favor ingrese una cantidad Valida");
-            return false;
-        }
         try {
             Float.valueOf(tValorUnitario.getText());
         }catch(NumberFormatException nan){
@@ -1008,13 +1007,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         if(tNombreProducto.getText().replace(" ", "").length()==0){
             JOptionPane.showMessageDialog(this,
                     "Por favor ingrese el nombre del producto");
-        }
-        try{
-            Integer.valueOf(tCantidad.getText());
-        }catch(NumberFormatException nan){
-            JOptionPane.showMessageDialog(this,
-                    "Por favor ingrese una cantidad valida");
-            return false;
         }
         try{
             Float.valueOf(tValorUnitario.getText());
@@ -1076,8 +1068,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         int[] cant = new int[cantidades.size()];
         String[] refs = new String[referencias.size()];
         for (int i=0; i<cant.length;i++){
-            cant[i]=cantidades.get(i).intValue();
-            refs[i]=referencias.get(i).toString();
+            cant[i]=cantidades.get(i);
+            refs[i]=referencias.get(i).split(",")[0];
         }
         String especificaciones = tEspecificaciones.getText();
         String estado = "En Proceso";
@@ -1115,12 +1107,12 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         int[] cant = new int[cantidades.size()];
         String[] refs = new String[referencias.size()];
         for (int i=0; i<cant.length;i++){
-            cant[i]=cantidades.get(i).intValue();
-            refs[i]=referencias.get(i).toString();
+            cant[i]=cantidades.get(i);
+            refs[i]=referencias.get(i);
         }
         String idOrdenDeTrabajo = String.valueOf(cbIdOrden.getSelectedItem());
         String descripcion = tEspecificaciones.getText();
-        String estado = cbEstadoOrden.getItemAt(cbEstadoOrden.getSelectedIndex());
+        String estado = String.valueOf(cbEstadoOrden.getItemAt(cbEstadoOrden.getSelectedIndex()));
         String respuesta = bD.actualizarOrden(idOrdenDeTrabajo, descripcion, estado,
                 cant,refs, idJefe);
         JOptionPane.showMessageDialog(this, respuesta);
@@ -1140,8 +1132,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         if(!validarCamposModificarInventario()){
             return false;
         }
-        String id = String.valueOf(cbRefProducto.getSelectedItem());
-        String nombreProducto = String.valueOf(tNombreProducto);
+        String id = String.valueOf(cbRefProducto.getSelectedItem()).split(",")[0];
+        String nombreProducto = String.valueOf(tNombreProducto.getText());
         float valorUnitario = Float.parseFloat(tValorUnitario.getText());
         String descripcion = tEspecificaciones.getText();
         
@@ -1155,11 +1147,13 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         if(!validarCamposConsultarOrdenDeTrabajo()){
             return false;
         }
-        String idOrden = String.valueOf(cbRefProducto.getSelectedItem());
+        String idOrden = String.valueOf(cbIdOrden.getSelectedItem());
+
         Object[] nuevo = bD.leerOrdenPorId(idOrden);
         OrdenTrabajo orden = (OrdenTrabajo) nuevo[0];
         String refs = (String) nuevo[1];
-        String[] splitedrefs = refs.split("$");
+        System.out.println("HOLA "+refs);
+        String[] splitedrefs = refs.split("\\$");
         
         String mensaje = "ID Orden de trabajo: "+orden.getIdOrden()+"\n"
                 + "Especificaciones: "+orden.getEspecficaciones()+"\n"
@@ -1167,7 +1161,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 +"Fecha de creacion: "+orden.getFechaCreacion()+"\n"
                 +"Fecha de entrega: "+orden.getFechaEntrega()+"\n"
                 +"ID Jefe de taller: "+ orden.getIdJefe()+ "\n";
-        for (int i=0; i<refs.length();i++){
+        for (int i=0; i<splitedrefs.length;i++){
             mensaje=mensaje+splitedrefs[i]+"\n";
         }
         JOptionPane.showMessageDialog(this, mensaje);        
@@ -1178,13 +1172,14 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         if(!validarCamposConsultarInventario()){
             return false;            
         }
-        String idInventario = String.valueOf(cbRefProducto.getSelectedItem());
+        String idInventario = String.valueOf(cbRefProducto.getSelectedItem()).split(",")[0];
+        //System.out.println(idInventario);
         Inventario inventario = bD.leerInventarioPorId(idInventario);
         String mensaje = "ID producto: "+inventario.getIdProducto()+"\n"
                 +"Nombre producto: "+inventario.getNombreProducto()+"\n"
                 +"Valor unitario: "+inventario.getValorUnitario()+"\n"
                 +"Descripcion: "+inventario.getDescripcion()+"\n"
-                +"Cantidad lote: "+ inventario.getCantidad()+"\n"
+                +"Cantidad: "+ inventario.getCantidad()+"\n"
                 +"ID Jefe de taller: "+ inventario.getIdJefe()+"\n";
         JOptionPane.showMessageDialog(this, mensaje);   
         
@@ -1195,7 +1190,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         if(!validarCamposAnularOrdenDeTrabajo()){
             return false;
         }
-        String idOrden = String.valueOf(cbRefProducto.getSelectedItem());
+        String idOrden = String.valueOf(cbIdOrden.getSelectedItem());
         Object[] nuevo = bD.leerOrdenPorId(idOrden);
         OrdenTrabajo orden = (OrdenTrabajo) nuevo[0];
         String mensaje = "ID Orden de trabajo: "+orden.getIdOrden()+"\n"
@@ -1216,7 +1211,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         if(!validarCamposEliminarInventario()){
             return false;
         }
-        String idInventario = String.valueOf(cbRefProducto.getSelectedItem());
+        String idInventario = String.valueOf(cbRefProducto.getSelectedItem()).split(",")[0];
+        System.out.println(idInventario);
         Inventario inventario = bD.leerInventarioPorId(idInventario);
         String mensaje = "ID producto: "+inventario.getIdProducto()+"\n"
                 +"Nombre producto: "+inventario.getNombreProducto()+"\n"

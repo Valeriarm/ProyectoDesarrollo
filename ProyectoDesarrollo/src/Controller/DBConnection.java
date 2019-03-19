@@ -373,10 +373,10 @@ public class DBConnection {
         try {                            
             sql = "INSERT INTO Gerente (id_gerente, nombre_gerente, cedula, cargo, e_mail, genero,"
                     + " direccion, telefono, salario, fecha_nacimiento, cuenta_bancaria,"
-                    + " fecha_registro, nombre_usuario, contrasenia, habilitado, fecha_Despido, id_sede)"
+                    + " fecha_registro, nombre_usuario, contrasenia, habilitado, id_sede)"
                     + " VALUES ('"+id+"','"+nombre+"','"+cedula+"','"+cargo+"','"+correo+"','"+genero+
                     "','"+direccion+"','"+telefono+"','"+salario+"','"+fechaNacimiento+"','"+cuentaBancaria+"','"
-                    +fechaRegistro+"','" +nombreUsuario+"','"+contrasenia+"','"+true+"','"+idSede+"','"+ null +"')";
+                    +fechaRegistro+"','" +nombreUsuario+"','"+contrasenia+"','"+true+"','"+idSede+"')";
                 
             st.executeUpdate(sql);
             rs.close();
@@ -1187,12 +1187,11 @@ public class DBConnection {
     
     
     
-    public String crearOrden(String especificaciones, String estado, String fechaCreacion ,String idJefe, String[] referencias, int[] cantidades){
-        
-        connect();
+    public String crearOrden(String especificaciones, String estado, String fechaCreacion ,String idJefe, String[] referencias, int[] cantidades){                
         String id = idSiguienteOrden();
-        sql = "SELECT id_Orden, id_Producto FROM Orden_Trabajo"
-                + "INNER JOIN Actualiza ON  id_Orden = '"+id+"' WHERE estado_Orden = 'En Proceso'";
+        connect();
+        sql = "SELECT Orden_Trabajo.id_Orden, Actualiza.id_Producto FROM Orden_Trabajo "
+                + "INNER JOIN Actualiza ON  Actualiza.id_Orden = '"+id+"' WHERE estado_Orden = 'En Proceso'";
         try {
 
             rs = st.executeQuery(sql);
@@ -1252,7 +1251,8 @@ public class DBConnection {
         sql = "SELECT id_Orden FROM Orden_Trabajo WHERE id_Orden = '"+id+"' and estado_Orden = 'En Proceso'";
         try {
             rs = st.executeQuery(sql);
-            if(rs.next() && estado.equals("Terminada")){
+            boolean hayOrden = rs.next();
+            if(hayOrden && estado.equals("Terminada")){
                 int anio = Calendar.getInstance().get(Calendar.YEAR);
                 int mes = Calendar.getInstance().get(Calendar.MONTH);
                 int dia = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
@@ -1260,23 +1260,25 @@ public class DBConnection {
                 +"-"+String.valueOf(dia);
                 sql = "BEGIN ISOLATION LEVEL SERIALIZABLE;";
                 sql += "UPDATE Orden_Trabajo SET id_Orden = '"+id+"', especificaciones='"+especificaciones+
-                        "' ,estado_Orden='"+estado+"', fecha_Entrega='"+fecha_entrega+"', id_Jefe='"+idJefe+"');";
+                        "' ,estado_Orden='"+estado+"', fecha_Entrega='"+fecha_entrega+"', id_Jefe='"+idJefe+"';";
                 for(int i=0; i<cantidades.length; i++){
-                    sql += "UPDATE Actualiza SET cantidad=cantidad"+cantidades[i]+",SET id_Orden'"+id+"',SET id_Producto'"+referencias[i]+"');";
+                    sql += "UPDATE Actualiza SET cantidad="+cantidades[i]+" WHERE id_Producto'"+referencias[i]+"' AND id_Orden='"+id+"';";
                 }
                 sql += "COMMIT;";
+                rs = st.executeQuery(sql);
                 rs.close();
                 st.close();
                 connection.close();
             
-            }else if(rs.next()){
-                sql = "BEGIN ISOLATION LEVEL SERIALIZABLE;";
-                sql += "UPDATE Orden_Trabajo SET id_Orden = '"+id+"', especificaciones='"+especificaciones+
-                        "' ,estado_Orden='"+estado+"',"+"', id_Jefe='"+idJefe+"');";
+            }else if(hayOrden){
+                System.out.println("esto aqui");
+                sql = "UPDATE Orden_Trabajo SET especificaciones='"+especificaciones+
+                        "',estado_Orden='En Proceso'"+" WHERE id_orden='"+id+"';";
                 for(int i=0; i<cantidades.length; i++){
-                    sql += "UPDATE Actualiza SET cantidad=cantidad"+cantidades[i]+",SET id_Orden'"+id+"',SET id_Producto'"+referencias[i]+"');";
+                    sql += "UPDATE Actualiza SET cantidad="+cantidades[i]+" WHERE id_orden='"+id+"';";
                 }
-                sql += "COMMIT;";
+                //sql += ";";
+                rs = st.executeQuery(sql);
                 rs.close();
                 st.close();
                 connection.close();
@@ -1321,7 +1323,7 @@ public class DBConnection {
             sql = "SELECT * FROM Orden_Trabajo WHERE estado_Orden = 'En Proceso'"+" AND  id_Jefe ='"+idJefe+"'"; 
         }
         if(consulta.equals("consultar")){
-            sql = "SELECT * FROM Orden_Trabajo WHERE estado_Orden IN('En proceso', 'Terminada')"+" AND  id_Jefe ='"+idJefe+"'"; 
+            sql = "SELECT * FROM Orden_Trabajo WHERE estado_Orden IN('En Proceso', 'Terminada')"+" AND  id_Jefe ='"+idJefe+"'"; 
         }
         if(consulta.equals("todas")){
             sql = "SELECT * FROM Orden_Trabajo WHERE id_Jefe ='"+idJefe+"'"; 
@@ -1354,8 +1356,9 @@ public class DBConnection {
         //Llamamos el metodo que cree arriba para poder conectarnos a la base de datos
         connect();
         //Creo la sentencia sql de lo que quiero hacer, en este caso, quiero todas las columnas de la tabla
-        sql = "SELECT Actualiza.id_Producto, inventario.nombre_Producto, actualiza.cantidad FROM "
-                + "Actualiza NATURAL JOIN inventario WHERE id_orden = '"+id_orden+"';";
+        sql = "SELECT actualiza.id_Producto, nombre_Producto, actualiza.cantidad FROM "+
+                "Actualiza INNER JOIN inventario on actualiza.id_producto=inventario.id_producto "+
+                "WHERE actualiza.id_orden= '"+id_orden+"';";                
         //Necesito un try catch porque esto me puede arrojar un error de consulta (SQL)
         try {            
             //Aquí usamos el metodo de Statment executeQuery y le pasamos la sentencia sql, esto lo guardamos en el 
@@ -1442,7 +1445,7 @@ public class DBConnection {
                 float valorUnitario = rs.getFloat("valor_Unitario");
                 String descripcion = rs.getString("descripcion_Producto");
                 int cantidad = rs.getInt("cantidad");
-                String estado = rs.getString("estado");
+                String estado = rs.getString("estado_producto");
                 String idJefe = rs.getString("id_Jefe");
                 
                 Inventario inventario = new Inventario(idProducto, 
@@ -1467,8 +1470,8 @@ public class DBConnection {
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                sql = "UPDATE Inventario SET nombre_Producto = '"+nombreProducto+"', valor_Unitario = '"+valorUnitario+
-                        "', descripcion_Producto = '"+descripcion+"';";
+                sql = "UPDATE Inventario SET nombre_Producto = '"+nombreProducto+"', valor_Unitario = "+valorUnitario+
+                        ", descripcion_Producto = '"+descripcion+"' WHERE id_Producto = '"+id+"';";
                 st.executeUpdate(sql);
                 rs.close();
                 st.close();
@@ -1549,6 +1552,7 @@ public class DBConnection {
                 nombre = rs.getString("nombre_Producto");
                 ordenes = ordenes+id+","+nombre+"$";
             }
+            System.out.println("1552 - "+ordenes);
             //POR ULTIMO E IMPORTANTE: hay que cerrar siempre las conexiones
             rs.close();
             st.close();
