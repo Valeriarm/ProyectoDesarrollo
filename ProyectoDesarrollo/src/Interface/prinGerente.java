@@ -88,6 +88,14 @@ public class prinGerente extends javax.swing.JFrame {
             return true;
     }    
     
+    public boolean isNumeric(String cadena){
+	try {
+		Integer.parseInt(cadena);
+		return true;
+	} catch (NumberFormatException nfe){
+		return false;
+	}
+}
     
     private boolean validarCampos(String nombreUsu, String nombre, String cedula, String correo, String cuenta, String direccion, String telefono, String salario, String fechaNac) {
         boolean validacion = true, fechaValida; // validacion, en un principio, es solo para los campos vacios
@@ -95,12 +103,13 @@ public class prinGerente extends javax.swing.JFrame {
         
         if(nombreUsu.equals("")){ mensaje = mensaje+"- Nombre de Usuario\n"; validacion = false; }       
         if(nombre.equals("")){ mensaje = mensaje+"- Nombre\n"; validacion = false; }
-        if(cedula.equals("")){ mensaje = mensaje+"- Cedula\n"; validacion = false; }
+        if(cedula.equals("") || (this.isNumeric(salario))){ mensaje = mensaje+"- Cedula\n"; validacion = false; }
         if(correo.equals("")){ mensaje = mensaje+"- Correo\n"; validacion = false; }
         if(cuenta.equals("")){ mensaje = mensaje+"- Cuenta\n"; validacion = false; }
         if(direccion.equals("")){ mensaje = mensaje+"- Direccion\n"; validacion = false; }
-        if(telefono.equals("")){ mensaje = mensaje+"- Telefono\n"; validacion = false; }
-        if(salario.equals("")){ mensaje = mensaje+"- Salario\n"; validacion = false; }
+        if((telefono.equals("")) || (this.isNumeric(telefono))){ mensaje = mensaje+"- Telefono\n"; validacion = false; }
+        if((salario.equals("")) || (this.isNumeric(salario))){ mensaje = mensaje+"- Salario\n"; validacion = false; }
+        
         fechaValida = validarFecha(fechaNac);
         
         System.out.println(mensaje);
@@ -1498,6 +1507,9 @@ public class prinGerente extends javax.swing.JFrame {
 
     private void bAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAceptarActionPerformed
         // TODO add your handling code here:
+        //validaciones
+        
+        
         if(botonAceptar==1){
             if (comboxCargo.getSelectedItem()== "Vendedor"){
              this.agregarVendedor();
