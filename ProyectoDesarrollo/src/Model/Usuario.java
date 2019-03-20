@@ -187,7 +187,7 @@ public class Usuario {
     public Usuario (String id, String contrasenia, String nombreUsuario, String nombre, String cedula, 
             String cargo, String telefono, String direccion, int genero,
             String fechaNacimiento, String correo, float salario, 
-            String cuentaBancaria, String fechaRegistro, String managerId, String fechaDespido, int sede){
+            String cuentaBancaria, String fechaRegistro, String fechaDespido, int sede){
         
         this.id = id;
         this.nombre = nombre;
@@ -203,7 +203,6 @@ public class Usuario {
         this.fechaNacimiento = fechaNacimiento;
         this.cuentaBancaria = cuentaBancaria;
         this.fechaRegistro = fechaRegistro;
-        this.managerId = managerId;
         this.sede = sede;
     }
     
