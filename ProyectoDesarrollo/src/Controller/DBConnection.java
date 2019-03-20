@@ -28,7 +28,7 @@ public class DBConnection {
   
 
     //puerto
-    private final String port = "5432";
+    private final String port = "5433";
     //Nombre de la base de datos
     private final String dBName = "muebles_XYZ";
     //Dirección del host de la base de datos
