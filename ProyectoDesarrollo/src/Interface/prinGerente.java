@@ -127,7 +127,7 @@ public class prinGerente extends javax.swing.JFrame {
         return validacion;
     }
     
-        
+    
     private int obtenerMesNum(String mes){
         //ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic
         switch(mes){
@@ -157,6 +157,40 @@ public class prinGerente extends javax.swing.JFrame {
                 return 12;
         }
         return 0;
+    }
+    
+        
+    private String obtenerNumMes(int mes){
+        //ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic
+        switch(mes){
+            case 1:
+                return "ene";
+            case 2:
+                return "feb";
+            case 3:
+                return "may";
+            case 4:
+                return "abr";
+            case 5:
+                return "may";
+            case 6:
+                return "jun";
+            case 7:
+                return "jul";
+            case 8:
+                return "ago";
+            case 9:
+                return "sep";
+            case 10:
+                return "oct";    
+            case 11:
+                return "nov";
+            case 12:
+                return "dic";
+                
+        }
+        
+        return "";
     }
     
  
@@ -313,6 +347,7 @@ public class prinGerente extends javax.swing.JFrame {
         
 
     private void llenarCamposModfVendedor(){
+        System.out.println(comboxEmple.getSelectedIndex()-1);
         String id = listaIds[comboxEmple.getSelectedIndex()-1];
         Vendedor ven = bD.leerVendedorPorId(id);
         
@@ -331,11 +366,11 @@ public class prinGerente extends javax.swing.JFrame {
         System.out.println(fechaNac[1]);
         System.out.println(fechaNac[2]);
         int diaNac = Integer.parseInt(fechaNac[2]);
-        int mesNac = obtenerMesNum(fechaNac[1]);
+        String mesNac = obtenerNumMes(Integer.valueOf(fechaNac[1]));
         int anoNac = Integer.parseInt(fechaNac[0]);
         
         comboxDia.setSelectedIndex(diaNac-1); //El Combobox empieza desde 0
-        comboxMes.setSelectedIndex(mesNac-1);
+        comboxMes.setSelectedItem(mesNac);
         comboxAno.setSelectedIndex((anoNac-2000)*-1); //El año 2000 es la posición 0, *-1 porque puede dar negativo
         
         System.out.println(ven.getIdSede());
@@ -344,6 +379,7 @@ public class prinGerente extends javax.swing.JFrame {
     
     
     private void llenarCamposModfJefeTaller(){
+        System.out.println(comboxEmple.getSelectedIndex()-1);
         String id = listaIds[comboxEmple.getSelectedIndex()-1];
         JefeTaller jef = bD.leerJefeTallerPorId(id);
         
@@ -359,9 +395,9 @@ public class prinGerente extends javax.swing.JFrame {
         tSal.setText(Float.toString(jef.getSalario()));
         
         String[] fechaNac = jef.getFechaNacimiento().split("-");
-        int diaNac = Integer.parseInt(fechaNac[0]);
+        int diaNac = Integer.parseInt(fechaNac[2]);
         int mesNac = obtenerMesNum(fechaNac[1]);
-        int anoNac = Integer.parseInt(fechaNac[2]);
+        int anoNac = Integer.parseInt(fechaNac[0]);
         
         comboxDia.setSelectedIndex(diaNac-1); 
         comboxMes.setSelectedIndex(mesNac);
@@ -818,7 +854,7 @@ public class prinGerente extends javax.swing.JFrame {
         comboxAno.setEnabled(!varControl);      
         
         labContra.setVisible(varControl);
-        labCedula.setVisible(varControl);
+        labCedula.setVisible(!varControl);
         tContra.setVisible(varControl);
         tContra.setEnabled(!varControl);
         tContra.setText("");
@@ -828,7 +864,7 @@ public class prinGerente extends javax.swing.JFrame {
         tNombreUsu.setText("");
         tNombre.setEnabled(!varControl);
         tNombre.setText("");
-        tCedula.setVisible(varControl);
+        tCedula.setVisible(!varControl);
         tCedula.setText("");
         tCorreo.setEnabled(!varControl);
         tCorreo.setText("");
@@ -1197,7 +1233,6 @@ public class prinGerente extends javax.swing.JFrame {
         comboxDia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
 
         comboxMes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic" }));
-        comboxMes.setSelectedIndex(1);
 
         comboxAno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2000", "1999", "1998", "1997", "1996", "1995", "1994", "1993", "1992", "1991", "1990", "1989", "1988", "1987", "1986", "1985", "1984", "1983", "1982", "1981", "1980", "1979", "1978", "1977", "1976", "1975", "1974", "1973", "1972", "1971", "1970", "1969", "1968", "1967", "1966", "1965", "1964", "1963", "1962", "1961", "1960", "1959", "1958", "1957", "1956", "1955", "1954", "1953", "1952", "1951", "1950", "1949", "1948", "1947", "1946", "1945", "1944" }));
 
@@ -1727,31 +1762,6 @@ public class prinGerente extends javax.swing.JFrame {
         // TODO add your handling code here:
         actualizarComboxVendedoresYJefes();
         actualizarComboxSedes();
-        
-        if(botonAceptar==1){
-            if (comboxCargo.getSelectedItem()== "Vendedor"){
-             this.agregarVendedor();
-            }else{
-                this.agregarJefeTaller();
-            }}else if(botonAceptar==2){
-                String id = listaIds[comboxEmple.getSelectedIndex()-1];
-                Vendedor vendedor = bD.leerVendedorPorId(id);
-                JefeTaller jefe = bD.leerJefeTallerPorId(id);
-                /**hay que seleccionar el tipo de usuario*/
-                if(vendedor != null){
-                    modificarVendedor();
-                }else if (jefe != null) {
-                    modificarJefeTaller();
-                }
-                
-            }else if(botonAceptar==3){
-                this.consultar();
-            }else if(botonAceptar==4){
-                this.despedir();
-            }
-        
-        
-        
     }//GEN-LAST:event_bAceptarMouseClicked
 
     private void comboxEmpleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboxEmpleActionPerformed
@@ -1762,6 +1772,7 @@ public class prinGerente extends javax.swing.JFrame {
 
         cambiarVisibilidadCamposmodf(false);
         cambiarVisibilidadCampos(true);
+        tCedula.setEnabled(true);
         
         botonAceptar = 1;
         bAceptar.setText("Agregar");
