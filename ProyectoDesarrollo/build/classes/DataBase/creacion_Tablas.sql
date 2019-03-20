@@ -141,7 +141,7 @@ CREATE TABLE Inventario (
   nombre_Producto VARCHAR(100) NOT NULL ,
   valor_Unitario float NOT NULL ,
   descripcion_Producto VARCHAR(100) NOT NULL ,
-  cantidad INTEGER,
+  cantidad INTEGER NOT NULL,
   estado_Producto VARCHAR(100) NOT NULL,
   id_Jefe VARCHAR(100) NOT NULL,
 
