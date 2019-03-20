@@ -45,7 +45,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         bAceptar.setVisible(false);
         
         //Elementos del popup menú para modf,agregar y consultar
-        this.ordenesDeTrabajo.setSelected(true);
+        this.ordenesDeTrabajo.setSelected(false);
         this.itemDeInventario.setSelected(false);
         
        }
@@ -80,6 +80,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         bConsul = new javax.swing.JButton();
         bAnular = new javax.swing.JButton();
         bReportes = new javax.swing.JToggleButton();
+        CheckOrden = new javax.swing.JCheckBox();
+        CheckReferencia = new javax.swing.JCheckBox();
         jPanel4 = new javax.swing.JPanel();
         labCantidad = new javax.swing.JLabel();
         labEspecificaciones = new javax.swing.JLabel();
@@ -243,6 +245,20 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             }
         });
 
+        CheckOrden.setText("Orden Trabajo");
+        CheckOrden.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CheckOrdenActionPerformed(evt);
+            }
+        });
+
+        CheckReferencia.setText("Referencia");
+        CheckReferencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CheckReferenciaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -254,7 +270,12 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                     .addComponent(bAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(bModf, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(bConsul, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(bAnular, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(bAnular, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(CheckOrden)
+                            .addComponent(CheckReferencia))))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -270,7 +291,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 .addComponent(bAnular)
                 .addGap(18, 18, 18)
                 .addComponent(bReportes)
-                .addGap(50, 50, 50))
+                .addGap(35, 35, 35)
+                .addComponent(CheckOrden)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(CheckReferencia)
+                .addContainerGap())
         );
 
         jSplitPane2.setLeftComponent(jPanel3);
@@ -285,6 +310,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         bAceptar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bAceptarMouseClicked(evt);
+            }
+        });
+        bAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bAceptarActionPerformed(evt);
             }
         });
 
@@ -455,7 +485,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 598, Short.MAX_VALUE)
+            .addGap(0, 629, Short.MAX_VALUE)
             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel5Layout.createSequentialGroup()
                     .addGap(78, 78, 78)
@@ -500,12 +530,12 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(686, Short.MAX_VALUE)
+                .addContainerGap(694, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -518,15 +548,17 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ordenesDeTrabajoMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ordenesDeTrabajoMouseReleased
-        if(this.ordenesDeTrabajo.isSelected()){
-            this.itemDeInventario.setSelected(false);
-        }
+        this.CheckOrden.setSelected(true);
+        this.CheckReferencia.setSelected(false);
+        this.ordenesDeTrabajo.setSelected(true);
+        this.itemDeInventario.setSelected(false);
     }//GEN-LAST:event_ordenesDeTrabajoMouseReleased
 
     private void itemDeInventarioMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemDeInventarioMouseReleased
-        if(this.itemDeInventario.isSelected()){
-            this.ordenesDeTrabajo.setSelected(false);
-        }
+        this.CheckOrden.setSelected(false);
+        this.CheckReferencia.setSelected(true);
+        this.ordenesDeTrabajo.setSelected(false);
+        this.itemDeInventario.setSelected(true);
     }//GEN-LAST:event_itemDeInventarioMouseReleased
 
     private void bAgregarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAgregarMouseReleased
@@ -535,7 +567,9 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
          jefeDeTaller.show(evt.getComponent(),evt.getX(),evt.getY());
         } 
               
-        if(this.ordenesDeTrabajo.isSelected()){
+        if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
+            this.referencias = new ArrayList<>();
+            this.cantidades = new ArrayList<>();
             consultaInv="disponible";
             limpiarCampos();
             desactivarCampos();
@@ -548,7 +582,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             bAceptar.setEnabled(true);
         }
         
-        if(this.itemDeInventario.isSelected()){
+        if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
             limpiarCampos();
             desactivarCampos();
             cambiarVisibilidadCamposInventarioAgregar(true);
@@ -567,13 +601,16 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
          jefeDeTaller.show(evt.getComponent(),evt.getX(),evt.getY());
         } 
         
-        if(this.ordenesDeTrabajo.isSelected()){
+        if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
+            this.referencias = new ArrayList<>();
+            this.cantidades = new ArrayList<>();
             consultaInv = "disponible";
             consulta  = "modificar";
             limpiarCampos();
             desactivarCampos();
             cambiarVisibilidadCamposOrdenModificar(true);
             llenarComboboxOrden();
+            this.cbRefProducto.removeAllItems();
             llenarComboboxInventarioOrden();
         
             botonAceptar = 2;
@@ -582,7 +619,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             bAceptar.setEnabled(true);
         }
         
-        if(this.itemDeInventario.isSelected()){
+        if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
             consultaInv = "disponible";
             limpiarCampos();
             desactivarCampos();
@@ -603,7 +640,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
          jefeDeTaller.show(evt.getComponent(),evt.getX(),evt.getY());
         }
         
-        if(this.ordenesDeTrabajo.isSelected()){
+        if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
             consulta="consultar";
             limpiarCampos();
             desactivarCampos();
@@ -616,7 +653,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             bAceptar.setEnabled(true);
         }
         
-        if(this.itemDeInventario.isSelected()){
+        if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
             consultaInv = "disponible";
             limpiarCampos();
             desactivarCampos();
@@ -637,7 +674,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             jefeDeTaller.show(evt.getComponent(),evt.getX(),evt.getY());
         }
 
-        if(this.ordenesDeTrabajo.isSelected()){
+        if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
             consulta="modificar";
             limpiarCampos();
             desactivarCampos();
@@ -651,7 +688,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
         }
 
-        if(this.itemDeInventario.isSelected()){
+        if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
             consultaInv="disponible";
             limpiarCampos();
             desactivarCampos();
@@ -690,37 +727,37 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         switch(botonAceptar){
             //Agregar
             case 1:
-            if(this.ordenesDeTrabajo.isSelected()){
+            if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
                 agregarUnaOrdenDeTrabajo();
             }
-            if(this.itemDeInventario.isSelected()){
+            if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
                 agregarReferencia();
             }
             break;
             //Modificar
             case 2:
-            if(this.ordenesDeTrabajo.isSelected()){
+            if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
                 agregarReferenciaOrden();
             }
-            if(this.itemDeInventario.isSelected()){
+            if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
                 modificarItemDeInventario();
             }
             break;
             //Consultar
             case 3:
-            if(this.ordenesDeTrabajo.isSelected()){
+            if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
                 consultarOrdenDeTrabajo();
             }
-            if(this.itemDeInventario.isSelected()){
+            if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
                 consultarItemDeInventario();
             }
             break;
             //Despedir
             case 4:
-            if(this.ordenesDeTrabajo.isSelected()){
+            if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
                 anularOrdenDeTrabajo();
             }
-            if(this.itemDeInventario.isSelected()){
+            if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
                 eliminarItemDeInventario();
             }
             break;
@@ -775,9 +812,235 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     private void cbIdOrdenItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbIdOrdenItemStateChanged
         // TODO add your handling code here:
         consultaInv = "disponible";
-        cbRefProducto.removeAllItems();
+        this.cbRefProducto.removeAllItems();
         llenarComboboxInventarioOrden();
     }//GEN-LAST:event_cbIdOrdenItemStateChanged
+
+    private void CheckReferenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckReferenciaActionPerformed
+        // TODO add your handling code here:
+        this.CheckOrden.setSelected(false);
+        this.CheckReferencia.setSelected(true);
+        this.ordenesDeTrabajo.setSelected(false);
+        this.itemDeInventario.setSelected(true);
+        switch(botonAceptar){
+            //Agregar
+            case 1:
+            if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
+            consultaInv="disponible";
+            limpiarCampos();
+            desactivarCampos();
+            cambiarVisibilidadCamposOrdenAgregar(true);
+            llenarComboboxInventario();
+            botonAceptar = 1;
+            bAceptar.setText("Agregar");
+            bAceptar.setVisible(true);
+            bAceptar.setEnabled(true);
+            }
+            if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
+                limpiarCampos();
+                desactivarCampos();
+                cambiarVisibilidadCamposInventarioAgregar(true);
+                botonAceptar = 1;
+                bAceptar.setText("Agregar");
+                bAceptar.setVisible(true);
+                bAceptar.setEnabled(true);
+            }
+            break;
+            //Modificar
+            case 2:
+            if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
+            consultaInv = "disponible";
+            consulta  = "modificar";
+            limpiarCampos();
+            desactivarCampos();
+            cambiarVisibilidadCamposOrdenModificar(true);
+            llenarComboboxOrden();
+            this.cbRefProducto.removeAllItems();
+            llenarComboboxInventarioOrden();
+            botonAceptar = 2;
+            bAceptar.setText("Modificar");
+            bAceptar.setVisible(true);              
+            bAceptar.setEnabled(true);
+            }
+            if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
+                consultaInv = "disponible";
+                limpiarCampos();
+                desactivarCampos();
+                cambiarVisibilidadCamposInventarioModf(true);
+                llenarComboboxInventario();
+                botonAceptar = 2;
+                bAceptar.setText("Modificar");
+                bAceptar.setVisible(true);
+                bAceptar.setEnabled(true);
+            }
+            break;
+            //Consultar
+            case 3:
+            if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
+            consulta="consultar";
+            limpiarCampos();
+            desactivarCampos();
+            cambiarVisibilidadCamposOrdenConsultar(true);
+            llenarComboboxOrden();
+            botonAceptar = 3;
+            bAceptar.setText("Consultar");
+            bAceptar.setVisible(true);
+            bAceptar.setEnabled(true);
+            }
+            if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
+                consultaInv = "disponible";
+                limpiarCampos();
+                desactivarCampos();
+                cambiarVisibilidadCamposInventarioConsultar(true);
+                llenarComboboxInventario();
+                botonAceptar = 3;
+                bAceptar.setText("Consultar");
+                bAceptar.setVisible(true);
+                bAceptar.setEnabled(true);
+            }
+            break;
+            //Despedir
+            case 4:
+            if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
+            consulta="modificar";
+            limpiarCampos();
+            desactivarCampos();
+            cambiarVisibilidadCamposOrdenAnular(true);
+            llenarComboboxOrden();
+            botonAceptar = 4;
+            bAceptar.setText("Anular");
+            bAceptar.setVisible(true);
+            bAceptar.setEnabled(true);
+            }
+            if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
+                consultaInv="disponible";
+                limpiarCampos();
+                desactivarCampos();
+                cambiarVisibilidadCamposInventarioEliminar(true);
+                llenarComboboxInventario();
+                botonAceptar = 4;
+                bAceptar.setText("Eliminar");
+                bAceptar.setVisible(true);
+                bAceptar.setEnabled(true);
+            }
+            break;
+        }
+    }//GEN-LAST:event_CheckReferenciaActionPerformed
+
+    private void CheckOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckOrdenActionPerformed
+        // TODO add your handling code here:
+        this.CheckOrden.setSelected(true);
+        this.CheckReferencia.setSelected(false);
+        this.ordenesDeTrabajo.setSelected(true);
+        this.itemDeInventario.setSelected(false);
+        switch(botonAceptar){
+            //Agregar
+            case 1:
+            if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
+            consultaInv="disponible";
+            limpiarCampos();
+            desactivarCampos();
+            cambiarVisibilidadCamposOrdenAgregar(true);
+            llenarComboboxInventario();
+            botonAceptar = 1;
+            bAceptar.setText("Agregar");
+            bAceptar.setVisible(true);
+            bAceptar.setEnabled(true);
+            }
+            if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
+                limpiarCampos();
+                desactivarCampos();
+                cambiarVisibilidadCamposInventarioAgregar(true);
+                botonAceptar = 1;
+                bAceptar.setText("Agregar");
+                bAceptar.setVisible(true);
+                bAceptar.setEnabled(true);
+            }
+            break;
+            //Modificar
+            case 2:
+            if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
+            consultaInv = "disponible";
+            consulta  = "modificar";
+            limpiarCampos();
+            desactivarCampos();
+            cambiarVisibilidadCamposOrdenModificar(true);
+            llenarComboboxOrden();
+            this.cbRefProducto.removeAllItems();
+            llenarComboboxInventarioOrden();
+            botonAceptar = 2;
+            bAceptar.setText("Modificar");
+            bAceptar.setVisible(true);              
+            bAceptar.setEnabled(true);
+            }
+            if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
+                consultaInv = "disponible";
+                limpiarCampos();
+                desactivarCampos();
+                cambiarVisibilidadCamposInventarioModf(true);
+                llenarComboboxInventario();
+                botonAceptar = 2;
+                bAceptar.setText("Modificar");
+                bAceptar.setVisible(true);
+                bAceptar.setEnabled(true);
+            }
+            break;
+            //Consultar
+            case 3:
+            if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
+            consulta="consultar";
+            limpiarCampos();
+            desactivarCampos();
+            cambiarVisibilidadCamposOrdenConsultar(true);
+            llenarComboboxOrden();
+            botonAceptar = 3;
+            bAceptar.setText("Consultar");
+            bAceptar.setVisible(true);
+            bAceptar.setEnabled(true);
+            }
+            if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
+                consultaInv = "disponible";
+                limpiarCampos();
+                desactivarCampos();
+                cambiarVisibilidadCamposInventarioConsultar(true);
+                llenarComboboxInventario();
+                botonAceptar = 3;
+                bAceptar.setText("Consultar");
+                bAceptar.setVisible(true);
+                bAceptar.setEnabled(true);
+            }
+            break;
+            //Despedir
+            case 4:
+            if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
+            consulta="modificar";
+            limpiarCampos();
+            desactivarCampos();
+            cambiarVisibilidadCamposOrdenAnular(true);
+            llenarComboboxOrden();
+            botonAceptar = 4;
+            bAceptar.setText("Anular");
+            bAceptar.setVisible(true);
+            bAceptar.setEnabled(true);
+            }
+            if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
+                consultaInv="disponible";
+                limpiarCampos();
+                desactivarCampos();
+                cambiarVisibilidadCamposInventarioEliminar(true);
+                llenarComboboxInventario();
+                botonAceptar = 4;
+                bAceptar.setText("Eliminar");
+                bAceptar.setVisible(true);
+                bAceptar.setEnabled(true);
+            }
+            break;
+        }
+    }//GEN-LAST:event_CheckOrdenActionPerformed
+
+    private void bAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAceptarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bAceptarActionPerformed
     
     public void llenarComboboxOrden(){
         String [] ordenes = bD.listarOrden(this.idJefe, consulta).split("\\$");
@@ -936,6 +1199,13 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     }
     
     private boolean validarCamposModificarOrdenDeTrabajo(){
+        try{
+            Integer.valueOf(tCantidad.getText());
+        }catch(NumberFormatException nan){
+            JOptionPane.showMessageDialog(this,
+                    "Por favor ingrese una cantidad valida");
+            return false;
+        }
         if(cbIdOrden.getSelectedItem().equals("Seleccione una orden")){
             JOptionPane.showMessageDialog(this,
                     "Por favor selecciona una orden");
@@ -1007,6 +1277,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         if(tNombreProducto.getText().replace(" ", "").length()==0){
             JOptionPane.showMessageDialog(this,
                     "Por favor ingrese el nombre del producto");
+            return false;
         }
         try{
             Float.valueOf(tValorUnitario.getText());
@@ -1055,8 +1326,16 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         if(!validarCamposAgregarOrdenDeTrabajo()){
             return false;
         }
-        cantidades.add(Integer.valueOf(tCantidad.getText()));
-        referencias.add(cbRefProducto.getSelectedItem().toString());
+        if(referencias.contains(cbRefProducto.getSelectedItem().toString())){
+            referencias.set(this.cbRefProducto.getSelectedIndex(), 
+                    String.valueOf(this.cbRefProducto.getSelectedItem()));
+            cantidades.set(this.cbRefProducto.getSelectedIndex(), 
+                    Integer.valueOf(tCantidad.getText()));
+        }else{
+            referencias.add(cbRefProducto.getSelectedItem().toString());
+            cantidades.add(Integer.valueOf(tCantidad.getText()));
+        }
+        JOptionPane.showMessageDialog(this, "Producto "+cbRefProducto.getSelectedItem().toString()+" Agregado");
         return true;
     }
     
@@ -1081,7 +1360,12 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         
         String respuesta = bD.crearOrden(especificaciones, estado, fecha_creacion ,idJefe, refs, cant);
         JOptionPane.showMessageDialog(this, respuesta);
-        
+        this.referencias = new ArrayList<>();
+            this.cantidades = new ArrayList<>();
+            limpiarCampos();
+            desactivarCampos();
+            cambiarVisibilidadCamposOrdenAgregar(true);
+            llenarComboboxInventario();
         return true;
     }
     
@@ -1097,6 +1381,9 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         String respuesta = bD.crearInventario(nombreProducto, valorUnitario, 
             descripcion, idJefe);
         JOptionPane.showMessageDialog(this, respuesta);
+        limpiarCampos();
+        desactivarCampos();
+        cambiarVisibilidadCamposInventarioAgregar(true);
         return true;
     }
     
@@ -1108,7 +1395,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         String[] refs = new String[referencias.size()];
         for (int i=0; i<cant.length;i++){
             cant[i]=cantidades.get(i);
-            refs[i]=referencias.get(i);
+            refs[i]=referencias.get(i).split(",")[0];
         }
         String idOrdenDeTrabajo = String.valueOf(cbIdOrden.getSelectedItem());
         String descripcion = tEspecificaciones.getText();
@@ -1116,6 +1403,12 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         String respuesta = bD.actualizarOrden(idOrdenDeTrabajo, descripcion, estado,
                 cant,refs, idJefe);
         JOptionPane.showMessageDialog(this, respuesta);
+        limpiarCampos();
+        desactivarCampos();
+        cambiarVisibilidadCamposOrdenModificar(true);
+        llenarComboboxOrden();
+        this.cbRefProducto.removeAllItems();
+        llenarComboboxInventarioOrden();
         return true;
     }
     
@@ -1123,8 +1416,16 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         if(!validarCamposModificarOrdenDeTrabajo()){
             return false;
         }
-        cantidades.add(Integer.valueOf(tCantidad.getText()));
-        referencias.add(cbRefProducto.getSelectedItem().toString());
+        if(referencias.contains(cbRefProducto.getSelectedItem().toString())){
+            referencias.set(this.cbRefProducto.getSelectedIndex(), 
+                    String.valueOf(this.cbRefProducto.getSelectedItem()));
+            cantidades.set(this.cbRefProducto.getSelectedIndex(), 
+                    Integer.valueOf(tCantidad.getText()));
+        }else{
+            referencias.add(cbRefProducto.getSelectedItem().toString());
+            cantidades.add(Integer.valueOf(tCantidad.getText()));
+        }
+        JOptionPane.showMessageDialog(this ,  "Producto "+cbRefProducto.getSelectedItem().toString()+" Agregado");
         return true;  
     };
     
@@ -1135,11 +1436,16 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         String id = String.valueOf(cbRefProducto.getSelectedItem()).split(",")[0];
         String nombreProducto = String.valueOf(tNombreProducto.getText());
         float valorUnitario = Float.parseFloat(tValorUnitario.getText());
-        String descripcion = tEspecificaciones.getText();
+        String descripcion = String.valueOf(tDescripcion.getText());
+        System.out.println(descripcion);
         
         String respuesta = bD.actualizarInventario(id, nombreProducto, valorUnitario, 
             descripcion);
-        
+        limpiarCampos();
+        desactivarCampos();
+        cambiarVisibilidadCamposInventarioModf(true);
+        JOptionPane.showMessageDialog(this, "El producto ha sido modificado");
+        llenarComboboxInventario();
         return true;
     }
     
@@ -1164,7 +1470,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         for (int i=0; i<splitedrefs.length;i++){
             mensaje=mensaje+splitedrefs[i]+"\n";
         }
-        JOptionPane.showMessageDialog(this, mensaje);        
+        JOptionPane.showMessageDialog(this, mensaje);      
+        limpiarCampos();
+        desactivarCampos();
+        cambiarVisibilidadCamposOrdenConsultar(true);
+        llenarComboboxOrden();
         return true;
     }
     
@@ -1182,7 +1492,10 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 +"Cantidad: "+ inventario.getCantidad()+"\n"
                 +"ID Jefe de taller: "+ inventario.getIdJefe()+"\n";
         JOptionPane.showMessageDialog(this, mensaje);   
-        
+        limpiarCampos();
+        desactivarCampos();
+        cambiarVisibilidadCamposInventarioConsultar(true);
+        llenarComboboxInventario();
         return true;
     }
     
@@ -1204,6 +1517,10 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 String respuesta = bD.eliminarOrden(idOrden);
                 JOptionPane.showMessageDialog(this, respuesta);
             }
+        limpiarCampos();
+        desactivarCampos();
+        cambiarVisibilidadCamposOrdenAnular(true);
+        llenarComboboxOrden();
         return true;
     }
     
@@ -1225,6 +1542,10 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 String respuesta = bD.eliminarInventario(idInventario);
                 JOptionPane.showMessageDialog(this, respuesta);
             }
+        limpiarCampos();
+        desactivarCampos();
+        cambiarVisibilidadCamposInventarioEliminar(true);
+        llenarComboboxInventario();
         return true;
     }
     
@@ -1237,6 +1558,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox CheckOrden;
+    private javax.swing.JCheckBox CheckReferencia;
     private javax.swing.JButton bAceptar;
     private javax.swing.JButton bAgregar;
     private javax.swing.JButton bAnular;
