@@ -285,16 +285,16 @@ public class prinSuper extends javax.swing.JFrame {
         String[] fechaAct = fechaHoy.split("-");        
         String[] fechaNac = nacimiento.split("-");
         
-        anoN = Integer.parseInt(fechaNac[2]);
-        anoHoy = Integer.parseInt(fechaAct[2]);
+        anoN = Integer.parseInt(fechaNac[0]);
+        anoHoy = Integer.parseInt(fechaAct[0]);
         mesN = obtenerMesNum(fechaNac[1]);
         mesHoy = Integer.parseInt(fechaAct[1]);
-        diaN = Integer.parseInt(fechaNac[0]);
-        diaHoy = Integer.parseInt(fechaAct[0]);
+        diaN = Integer.parseInt(fechaNac[2]);
+        diaHoy = Integer.parseInt(fechaAct[2]);
         
         edad = anoHoy-anoN;
         
-        if(mesHoy<mesN) edad--;
+        if(mesHoy<mesN) {edad--;}
         if(mesHoy==mesN){
             if(diaHoy<diaN){
                 edad--;
@@ -610,13 +610,13 @@ public class prinSuper extends javax.swing.JFrame {
         });
 
         comboxDia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
-        comboxDia.setPreferredSize(new java.awt.Dimension(37, 22));
+        comboxDia.setPreferredSize(new java.awt.Dimension(45, 22));
 
         comboxMes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic" }));
-        comboxMes.setPreferredSize(new java.awt.Dimension(45, 22));
+        comboxMes.setPreferredSize(new java.awt.Dimension(64, 22));
 
         comboxAno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2000", "1999", "1998", "1997", "1996", "1995", "1994", "1993", "1992", "1991", "1990", "1989", "1988", "1987", "1986", "1985", "1984", "1983", "1982", "1981", "1980", "1979", "1978", "1977", "1976", "1975", "1974", "1973", "1972", "1971", "1970", "1969", "1968", "1967", "1966", "1965", "1964", "1963", "1962", "1961", "1960", "1959", "1958", "1957", "1956", "1955", "1954", "1953", "1952", "1951", "1950", "1949", "1948", "1947", "1946", "1945", "1944" }));
-        comboxAno.setPreferredSize(new java.awt.Dimension(49, 22));
+        comboxAno.setPreferredSize(new java.awt.Dimension(81, 22));
 
         comboxCargo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gerente" }));
         comboxCargo.setEnabled(false);
@@ -661,50 +661,48 @@ public class prinSuper extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labFechaNac)
+                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(labEmple, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(labNombreUsu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(labCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(labCedula, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(labCargo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(labContra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(labNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel4Layout.createSequentialGroup()
+                                    .addComponent(labCuentaBan)
+                                    .addGap(0, 0, Short.MAX_VALUE))
+                                .addComponent(labGenero, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(labDir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(labTel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(labSal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(labSede, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(labFechaNac)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(comboxDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(comboxMes, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(comboxAno, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(labEmple, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(labNombreUsu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(labCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(labCedula, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(labCargo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(labContra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(labNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addComponent(labCuentaBan)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addComponent(labGenero, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(labDir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(labTel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(labSal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(labSede, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(comboxSedes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(tContra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(tNombreUsu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(comboxCargo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(comboxGenero, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(tCedula, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(tCuentaBan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(tDir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(tTel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(tSal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(tNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(comboxEmple, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(tCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(comboxMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(comboxAno, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(comboxSedes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tContra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tNombreUsu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboxCargo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboxGenero, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tCedula, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tCuentaBan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tDir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tTel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tSal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboxEmple, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(163, 163, 163)
                         .addComponent(bAceptar)))
-                .addContainerGap(89, Short.MAX_VALUE))
+                .addContainerGap(81, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -992,7 +990,10 @@ public class prinSuper extends javax.swing.JFrame {
             System.out.println("Fecha reg: "+fechaReg);
             
             String respuesta = bD.crearGerente(nombre, cedula, cargo, correo, genero, direccion, telefono, salario, fechaNac, cuenta, fechaReg, nombreUsu,idSede);
-            if((!respuesta.contains("La cedula")) && (!respuesta.contains("El nombre de usuario"))) limpiarCampos();
+            if((!respuesta.contains("La cedula")) && (!respuesta.contains("El nombre de usuario"))){
+                limpiarCampos();
+                actualizarComboxSedes();
+            }
             JOptionPane.showMessageDialog(this, respuesta);
         }        
     }
@@ -1057,6 +1058,7 @@ public class prinSuper extends javax.swing.JFrame {
     private void consultar(){
         String id = listaIds[comboxEmple.getSelectedIndex()-1];
         Gerente ger = bD.leerGerentePorId(id);
+        Sede sede = bD.leerSedePorId(String.valueOf(ger.getIdSede()));
         
         String genero;
         if(ger.getGenero()==0){
@@ -1070,9 +1072,9 @@ public class prinSuper extends javax.swing.JFrame {
         String mensaje = "Nombre: "+ger.getNombre()+"\n"+
                          "Cedula: "+ger.getCedula()+"\n"+
                          "Cargo: "+ger.getCargo()+"\n"+
-                         "salario: "+ger.getSalario()+"\n"+
+                         "salario: "+String.format( "%.2f", ger.getSalario())+"\n"+
                          "Cuenta Bancaria: "+ger.getCuentaBancaria()+"\n"+
-                         "Sede: "+"NO CODEADO"+"\n"+
+                         "Sede: "+sede.getNombreSede()+"\n"+
                          "Fecha Registro: "+ger.getFechaRegistro()+"\n"+
                          "Edad: "+edad+"\n"+
                          "Fecha Nacimiento: "+ger.getFechaNacimiento()+"\n"+
@@ -1093,7 +1095,7 @@ public class prinSuper extends javax.swing.JFrame {
         }else{
             Sede sedeGer = bD.leerSedePorId(String.valueOf(ger.getIdSede()));
             String mensaje = "Seguro que desea despedir al gerente:\n"+"Nombre: "+ger.getNombre()+"\nCedula: "+ger.getCedula()+"\n"+
-                             "Cargo: "+ger.getCargo()+"\nsalario: "+ger.getSalario()+"\n"+
+                             "Cargo: "+ger.getCargo()+"\nsalario: "+String.format( "%.2f", ger.getSalario())+"\n"+
                              "Sede: "+sedeGer.getNombreSede();
             int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
             if(opcion==0){ //Despedir
@@ -1103,6 +1105,7 @@ public class prinSuper extends javax.swing.JFrame {
 
                 String respuesta = bD.despedirGerente(id, fechaDespido);
                 JOptionPane.showMessageDialog(this, respuesta);
+                actualizarComboxEmple();
             }
         }
     }
@@ -1132,10 +1135,17 @@ public class prinSuper extends javax.swing.JFrame {
         if(comboxEmple.getSelectedIndex() == 0){
             bAceptar.setEnabled(false);
             
-            if(botonAceptar==2){ limpiarCampos(); habilitarCamposmodf(false);}
+            if(botonAceptar==2){ 
+                limpiarCampos();
+                habilitarCamposmodf(false);
+            }
         }else{
             bAceptar.setEnabled(true);            
-            if(botonAceptar==2){ llenarCamposModf(); habilitarCamposmodf(true);}
+            if(botonAceptar==2){
+                llenarCamposModf();
+                habilitarCamposmodf(true);
+                tCedula.setEnabled(false);
+            }
         }
     }//GEN-LAST:event_comboxEmpleItemStateChanged
 
