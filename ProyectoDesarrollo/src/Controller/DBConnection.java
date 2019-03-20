@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Calendar;
 
 /**
  * Clase tentativa para el manejo y conexión a la base de datos
@@ -22,8 +23,8 @@ public class DBConnection {
     //----------------------------------------------------------------------
     
     //Usuario de la base de datos en postgresql
-    private final String dBUser = "desarrollo";
-    private final String dBPassword = "desarrollo";
+    private final String dBUser = "postgres";
+    private final String dBPassword = "1144211502";
     //puerto
     private final String port = "5433";
     //Nombre de la base de datos
@@ -199,7 +200,7 @@ public class DBConnection {
             while(rs.next()){//En caso de que hayan ordenes de trabajo
                 id = rs.getString("id_Orden");
                 if(idMayor<Integer.parseInt(id)) idMayor = Integer.parseInt(id); 
-            }            
+            }
             //idMayor = idMayor;
             ////////////////////////////////////////////////////////////            
             id = String.valueOf(idMayor+1);
@@ -372,10 +373,10 @@ public class DBConnection {
         try {                            
             sql = "INSERT INTO Gerente (id_gerente, nombre_gerente, cedula, cargo, e_mail, genero,"
                     + " direccion, telefono, salario, fecha_nacimiento, cuenta_bancaria,"
-                    + " fecha_registro, nombre_usuario, contrasenia, habilitado, fecha_Despido, id_sede)"
+                    + " fecha_registro, nombre_usuario, contrasenia, habilitado, id_sede)"
                     + " VALUES ('"+id+"','"+nombre+"','"+cedula+"','"+cargo+"','"+correo+"','"+genero+
                     "','"+direccion+"','"+telefono+"','"+salario+"','"+fechaNacimiento+"','"+cuentaBancaria+"','"
-                    +fechaRegistro+"','" +nombreUsuario+"','"+contrasenia+"','"+true+"','"+idSede+"','"+ null +"')";
+                    +fechaRegistro+"','" +nombreUsuario+"','"+contrasenia+"','"+true+"','"+idSede+"')";
                 
             st.executeUpdate(sql);
             rs.close();
@@ -1186,21 +1187,24 @@ public class DBConnection {
     
     
     
-    public String crearOrden(String descripcionOrden, String estado, String fechaCreacion ,String idJefe, String ref){
-        
-        connect();
+    public String crearOrden(String especificaciones, String estado, String fechaCreacion ,String idJefe, String[] referencias, int[] cantidades){                
         String id = idSiguienteOrden();
-        sql = "SELECT id_Orden, id_Producto FROM Orden_Trabajo"
-                + "INNER JOIN Actualiza ON  id_Orden = '"+id+"' and id_Producto = '"+ref+"' WHERE estado_Orden = 'En Proceso'";
+        connect();
+        sql = "SELECT Orden_Trabajo.id_Orden, Actualiza.id_Producto FROM Orden_Trabajo "
+                + "INNER JOIN Actualiza ON  Actualiza.id_Orden = '"+id+"' WHERE estado_Orden = 'En Proceso'";
         try {
 
             rs = st.executeQuery(sql);
             if(rs.next()){
                 return "La orden de trabajo con el id "+id+" ya existe";
-            }else{                
-                sql = "INSERT INTO Orden_Trabajo VALUES ('"+id+"','"+descripcionOrden+"','"+estado+"','"
-                                                        +fechaCreacion+"', null ,'"+idJefe+"')";
-                
+            }else{   
+                sql = "BEGIN ISOLATION LEVEL SERIALIZABLE;";
+                sql += "INSERT INTO Orden_Trabajo VALUES ('"+id+"','"+especificaciones+"','"+estado+"','"
+                                                        +fechaCreacion+"', null ,'"+idJefe+"');";
+                for(int i=0; i<cantidades.length; i++){
+                    sql += "INSERT INTO Actualiza VALUES ("+cantidades[i]+",'"+id+"','"+referencias[i]+"');";
+                }
+                sql += "COMMIT;";
                 st.executeUpdate(sql);
                 rs.close();
                 st.close();
@@ -1213,8 +1217,9 @@ public class DBConnection {
        return "Orden de Trabajo agregada con éxito";
     }
     
-    public OrdenTrabajo leerOrdenPorId(String id){
+    public Object[] leerOrdenPorId(String id){
         connect();
+        Object[] refs=new Object[2];
         sql = "SELECT * FROM Orden_Trabajo WHERE id_Orden = '"+id+"'";
         try {
             rs = st.executeQuery(sql);
@@ -1227,12 +1232,12 @@ public class DBConnection {
                 String idJefe = rs.getString("id_Jefe");
                 
                 OrdenTrabajo orden = new OrdenTrabajo(idOrden, descripcionOrden, estadoOrden, fechaCreacion ,fechaEntrega, idJefe);
-                
                 rs.close();
                 st.close();
                 connection.close();
-                
-                return orden;
+                refs[0]=orden;
+                refs[1]=listarInventarioOrden(idOrden);
+                return refs;
             }
         } catch (Exception e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
@@ -1241,14 +1246,39 @@ public class DBConnection {
     }
     
     
-    public String actualizarOrden(String id, String descripcionOrden, String estado,int cantidad, String referencia,String idJefe){
+    public String actualizarOrden(String id, String especificaciones, String estado,int[] cantidades, String[] referencias,String idJefe){
         connect();
         sql = "SELECT id_Orden FROM Orden_Trabajo WHERE id_Orden = '"+id+"' and estado_Orden = 'En Proceso'";
         try {
             rs = st.executeQuery(sql);
-            if(rs.next()){
-                sql = "UPDATE Orden_Trabajo SET especificaciones = '"+descripcionOrden+"', estado = '"+estado+"' WHERE id_Orden = '"+id+"' and estado_Orden = 'En Proceso';";
-                
+            boolean hayOrden = rs.next();
+            if(hayOrden && estado.equals("Terminada")){
+                int anio = Calendar.getInstance().get(Calendar.YEAR);
+                int mes = Calendar.getInstance().get(Calendar.MONTH);
+                int dia = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+                String fecha_entrega = String.valueOf(anio)+"-"+String.valueOf(mes)
+                +"-"+String.valueOf(dia);
+                sql = "BEGIN ISOLATION LEVEL SERIALIZABLE;";
+                sql += "UPDATE Orden_Trabajo SET id_Orden = '"+id+"', especificaciones='"+especificaciones+
+                        "' ,estado_Orden='"+estado+"', fecha_Entrega='"+fecha_entrega+"', id_Jefe='"+idJefe+"';";
+                for(int i=0; i<cantidades.length; i++){
+                    sql += "UPDATE Actualiza SET cantidad="+cantidades[i]+" WHERE id_Producto'"+referencias[i]+"' AND id_Orden='"+id+"';";
+                }
+                sql += "COMMIT;";
+                rs = st.executeQuery(sql);
+                rs.close();
+                st.close();
+                connection.close();
+            
+            }else if(hayOrden){
+                System.out.println("esto aqui");
+                sql = "UPDATE Orden_Trabajo SET especificaciones='"+especificaciones+
+                        "',estado_Orden='En Proceso'"+" WHERE id_orden='"+id+"';";
+                for(int i=0; i<cantidades.length; i++){
+                    sql += "UPDATE Actualiza SET cantidad="+cantidades[i]+" WHERE id_orden='"+id+"';";
+                }
+                //sql += ";";
+                rs = st.executeQuery(sql);
                 rs.close();
                 st.close();
                 connection.close();
@@ -1269,7 +1299,7 @@ public class DBConnection {
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                sql = "DELETE FROM Orden_Trabajo WHERE id_Orden = '"+id+"'";
+                sql = "UPDATE Orden_Trabajo SET estado = 'Anulada' WHERE id_Orden = '"+id+"'";
                 st.executeUpdate(sql);
                 rs.close();
                 st.close();
@@ -1285,11 +1315,20 @@ public class DBConnection {
         return "";        
     }
     
-    public String listarOrden(){
+    public String listarOrden(String idJefe, String consulta){
         //Llamamos el metodo que cree arriba para poder conectarnos a la base de datos
         connect();
         //Creo la sentencia sql de lo que quiero hacer, en este caso, quiero todas las columnas de la tabla
-        sql = "SELECT * FROM Orden_Trabajo WHERE estado_Orden = '"+"'En proceso'"+"'";
+        if(consulta.equals("modificar")){
+            sql = "SELECT * FROM Orden_Trabajo WHERE estado_Orden = 'En Proceso'"+" AND  id_Jefe ='"+idJefe+"'"; 
+        }
+        if(consulta.equals("consultar")){
+            sql = "SELECT * FROM Orden_Trabajo WHERE estado_Orden IN('En Proceso', 'Terminada')"+" AND  id_Jefe ='"+idJefe+"'"; 
+        }
+        if(consulta.equals("todas")){
+            sql = "SELECT * FROM Orden_Trabajo WHERE id_Jefe ='"+idJefe+"'"; 
+
+        }
         //Necesito un try catch porque esto me puede arrojar un error de consulta (SQL)
         try {            
             //Aquí usamos el metodo de Statment executeQuery y le pasamos la sentencia sql, esto lo guardamos en el 
@@ -1313,6 +1352,39 @@ public class DBConnection {
         return "";
     }
     
+    public String listarInventarioOrden(String id_orden){
+        //Llamamos el metodo que cree arriba para poder conectarnos a la base de datos
+        connect();
+        //Creo la sentencia sql de lo que quiero hacer, en este caso, quiero todas las columnas de la tabla
+        sql = "SELECT actualiza.id_Producto, nombre_Producto, actualiza.cantidad FROM "+
+                "Actualiza INNER JOIN inventario on actualiza.id_producto=inventario.id_producto "+
+                "WHERE actualiza.id_orden= '"+id_orden+"';";                
+        //Necesito un try catch porque esto me puede arrojar un error de consulta (SQL)
+        try {            
+            //Aquí usamos el metodo de Statment executeQuery y le pasamos la sentencia sql, esto lo guardamos en el 
+            //Resultset y usamos next() para saltar entre filas, cada fila es un ingreso de la base de datos
+            rs = st.executeQuery(sql);
+            String id, nombre;
+            int cantidad;
+            String ordenes = "";
+            while(rs.next()){
+                //Usando getString podemos obtener el resultado de nuestra consulta pasandole el nombre de la columna
+                id = rs.getString("id_Producto");
+                nombre = rs.getString("nombre_Producto");
+                cantidad = rs.getInt("cantidad");
+                ordenes = ordenes+id+","+nombre+","+cantidad+"$";
+            }
+            //POR ULTIMO E IMPORTANTE: hay que cerrar siempre las conexiones
+            rs.close();
+            st.close();
+            connection.close();
+            return ordenes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return "";
+    }
+    
     ////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////CRUD INVENTARIO///////////////////////////////////////
@@ -1323,28 +1395,36 @@ public class DBConnection {
     
     
     public String crearInventario(String nombreProducto, float valorUnitario, 
-            String descripcion, int lote, int cantidadLote, String idJefe){
-        connect();
+            String descripcion, String idJefe){        
+        System.out.println(idJefe);
         String id = idSiguienteInventario();
+        System.out.println(id);
+        connect();
         sql = "SELECT id_Producto FROM Inventario WHERE id_Producto = '"+id+"'";
         try {
+            System.out.println(sql);
             rs = st.executeQuery(sql);
+            System.out.println("jaime dice");
             if(rs.next()){
                 return "El Producto con el id "+id+" ya existe";
                 
-            }else{ 
-                sql = "SELECT id_Producto FROM Inventario WHERE id_Producto = '"+id+"'";
-                rs = st.executeQuery(sql);
-                if(rs.next()){
-                    sql = "INSERT INTO Inventario VALUES ('"+id+"','"+nombreProducto+"','"+valorUnitario+"','"+descripcion+
-                            "','"+lote+"','"+cantidadLote+"','"+idJefe+"')";                
+            }else{
+                
+                
+                System.out.println(idJefe);
+                System.out.println(id);
+               // sql = "SELECT id_Producto FROM Inventario WHERE id_Producto = '"+id+"'";
+                //rs = st.executeQuery(sql);
+                //if(rs.next()){
+                    sql = "INSERT INTO Inventario VALUES ('"+id+"','"+nombreProducto+"',"
+                            +valorUnitario+",'"+descripcion+"', 0,'disponible' ,'"+idJefe+"')";                
                     st.executeUpdate(sql);
                     rs.close();
                     st.close();
                     connection.close();
-                }else{
-                    return "El producto con el id "+id+" no existe";
-                }
+               // }else{
+                //    return "El producto con el id "+id+" no existe";
+               //}
                 
             }
             
@@ -1364,12 +1444,12 @@ public class DBConnection {
                 String nombreProducto = rs.getString("nombre_Producto");
                 float valorUnitario = rs.getFloat("valor_Unitario");
                 String descripcion = rs.getString("descripcion_Producto");
-                int lote = rs.getInt("lote");
-                int cantidadLote = rs.getInt("cantidad_Lote");
+                int cantidad = rs.getInt("cantidad");
+                String estado = rs.getString("estado_producto");
                 String idJefe = rs.getString("id_Jefe");
                 
-                Inventario inventario = new Inventario(idProducto, nombreProducto, valorUnitario, 
-                        descripcion, lote, cantidadLote, idJefe);
+                Inventario inventario = new Inventario(idProducto, 
+                        nombreProducto, valorUnitario, descripcion, cantidad, estado, idJefe);
                 
                 rs.close();
                 st.close();
@@ -1384,15 +1464,14 @@ public class DBConnection {
     }
 
     public String actualizarInventario(String id, String nombreProducto, float valorUnitario, 
-            String descripcion, int lote, int cantidad, String estado){
+            String descripcion){
         connect();
         sql = "SELECT id_Producto FROM Inventario WHERE id_Producto = '"+id+"'";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                sql = "UPDATE Inventario SET nombre_Producto = '"+nombreProducto+"', valor_Unitario = '"+valorUnitario+
-                        "', descripcion_Producto = '"+descripcion+"', cantidad = '"+cantidad+"', estado_Producto = '"
-                        + estado;
+                sql = "UPDATE Inventario SET nombre_Producto = '"+nombreProducto+"', valor_Unitario = "+valorUnitario+
+                        ", descripcion_Producto = '"+descripcion+"' WHERE id_Producto = '"+id+"';";
                 st.executeUpdate(sql);
                 rs.close();
                 st.close();
@@ -1450,11 +1529,16 @@ public class DBConnection {
         return "";
     }
     
-    public String listarInventario(){
+    public String listarInventario(String consulta){
         //Llamamos el metodo que cree arriba para poder conectarnos a la base de datos
         connect();
         //Creo la sentencia sql de lo que quiero hacer, en este caso, quiero todas las columnas de la tabla
-        sql = "SELECT * FROM Inventario WHERE estado_Producto = '"+"'Disponible'"+"'";
+        if(consulta.equals("disponible")){
+            sql = "SELECT * FROM Inventario WHERE estado_Producto = 'disponible'";
+        }
+        if(consulta.equals("no disponible")){
+            sql = "SELECT * FROM Inventario";
+        }
         //Necesito un try catch porque esto me puede arrojar un error de consulta (SQL)
         try {            
             //Aquí usamos el metodo de Statment executeQuery y le pasamos la sentencia sql, esto lo guardamos en el 
@@ -1468,6 +1552,7 @@ public class DBConnection {
                 nombre = rs.getString("nombre_Producto");
                 ordenes = ordenes+id+","+nombre+"$";
             }
+            System.out.println("1552 - "+ordenes);
             //POR ULTIMO E IMPORTANTE: hay que cerrar siempre las conexiones
             rs.close();
             st.close();
