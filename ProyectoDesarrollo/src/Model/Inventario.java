@@ -15,19 +15,27 @@ public class Inventario {
     private float valorUnitario;
     private String descripcion;
     private int cantidad;
+    private String estado;
     private String idJefe;
 
-    public Inventario(String idProducto, String nombreProducto, float valorUnitario, String descripcion, int lote, int cantidadLote, String idJefe) {
-        this.idProducto = idProducto;
-        this.nombreProducto = nombreProducto;
-        this.valorUnitario = valorUnitario;
-        this.descripcion = descripcion;
-        this.cantidad = cantidadLote;
-        this.idJefe = idJefe;
+public Inventario(String idProducto, String nombreProducto, float valorUnitario, String descripcion, int cantidad, String estado, String idJefe) {
+    this.idProducto = idProducto;
+    this.nombreProducto = nombreProducto;
+    this.valorUnitario = valorUnitario;
+    this.descripcion = descripcion;
+    this.cantidad = cantidad;
+    this.estado = estado;
+    this.idJefe = idJefe;
+}
+
+    public String getEstado() {
+        return estado;
     }
 
-    
-    
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     public String getIdProducto() {
         return idProducto;
     }

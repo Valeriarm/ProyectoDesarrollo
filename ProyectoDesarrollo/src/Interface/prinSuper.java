@@ -55,7 +55,7 @@ public class prinSuper extends javax.swing.JFrame {
 
     public static boolean validarFecha(String fecha) {
         try {
-            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
             formatoFecha.setLenient(false);
             formatoFecha.parse(fecha);
         } catch (ParseException e) {
@@ -80,7 +80,7 @@ public class prinSuper extends javax.swing.JFrame {
         if(direccion.equals("")){ mensaje = mensaje+"- Direccion\n"; validacion = false; }
         if(telefono.equals("")){ mensaje = mensaje+"- Telefono\n"; validacion = false; }
         if(salario.equals("")){ mensaje = mensaje+"- Salario\n"; validacion = false; }
-        if(idSede==0){ mensaje = mensaje+"- Sede\n"; validacion = false; }
+        if(idSede<0){ mensaje = mensaje+"- Sede\n"; validacion = false; }
         fechaValida = validarFecha(fechaNac);
         
         System.out.println(mensaje);
@@ -88,9 +88,9 @@ public class prinSuper extends javax.swing.JFrame {
         if(!validacion){ //Hay campos vacios            
             mensaje = "Los siguientes campos están vacios:\n"+mensaje;
             if((!nombre.equals("")) && (nombre.charAt(0) == ' ')) mensaje = "Nombre de Usuario Invalido\n"+mensaje;
-            if(fechaValida) mensaje = "La fecha de nacimiento es invalida\n\n"+mensaje;
+            if(!fechaValida) mensaje = "La fecha de nacimiento es invalida\n\n"+mensaje;
         }else{
-            if(fechaValida){ //No hay campos vacios, pero la fecha es invalida
+            if(!fechaValida){ //No hay campos vacios, pero la fecha es invalida
                 mensaje = "La fecha de nacimiento es invalida";
                 validacion = false; //Se cambia ya que la fecha no es valida
             }
@@ -861,6 +861,7 @@ public class prinSuper extends javax.swing.JFrame {
         labEmple.setVisible(true);
         comboxEmple.setVisible(true);
         comboxSedes.setEnabled(false);
+        tCedula.setEnabled(false);
         
         //cambiarVisibilidadCamposmodf(true);
         limpiarCampos();
@@ -969,7 +970,12 @@ public class prinSuper extends javax.swing.JFrame {
         }else{
             salario = Float.valueOf(tSal.getText());
         }
-        int idSede = Integer.parseInt(listaIdsSede[comboxSedes.getSelectedIndex()-1]);
+        int idSede;
+        if((comboxSedes.getSelectedIndex()-1)<0){
+            idSede = -1;
+        }else{
+            idSede = Integer.parseInt(listaIdsSede[comboxSedes.getSelectedIndex()-1]);
+        }
         //System.out.println("Id Sede: "+idSede);
         String diaCumple = comboxDia.getItemAt(comboxDia.getSelectedIndex());
         String mesCumple = comboxMes.getItemAt(comboxMes.getSelectedIndex());
