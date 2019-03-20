@@ -14,22 +14,28 @@ public class Inventario {
     private String nombreProducto;
     private float valorUnitario;
     private String descripcion;
-    private int lote;
-    private int cantidadLote;
+    private int cantidad;
+    private String estado;
     private String idJefe;
 
-    public Inventario(String idProducto, String nombreProducto, float valorUnitario, String descripcion, int lote, int cantidadLote, String idJefe) {
-        this.idProducto = idProducto;
-        this.nombreProducto = nombreProducto;
-        this.valorUnitario = valorUnitario;
-        this.descripcion = descripcion;
-        this.lote = lote;
-        this.cantidadLote = cantidadLote;
-        this.idJefe = idJefe;
+public Inventario(String idProducto, String nombreProducto, float valorUnitario, String descripcion, int cantidad, String estado, String idJefe) {
+    this.idProducto = idProducto;
+    this.nombreProducto = nombreProducto;
+    this.valorUnitario = valorUnitario;
+    this.descripcion = descripcion;
+    this.cantidad = cantidad;
+    this.estado = estado;
+    this.idJefe = idJefe;
+}
+
+    public String getEstado() {
+        return estado;
     }
 
-    
-    
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     public String getIdProducto() {
         return idProducto;
     }
@@ -62,20 +68,12 @@ public class Inventario {
         this.descripcion = descripcion;
     }
 
-    public int getLote() {
-        return lote;
+    public int getCantidad() {
+        return cantidad;
     }
 
-    public void setLote(int lote) {
-        this.lote = lote;
-    }
-
-    public int getCantidadLote() {
-        return cantidadLote;
-    }
-
-    public void setCantidadLote(int cantidadLote) {
-        this.cantidadLote = cantidadLote;
+    public void setCantidad(int cantidadLote) {
+        this.cantidad = cantidadLote;
     }
 
     public String getIdJefe() {
@@ -85,7 +83,4 @@ public class Inventario {
     public void setIdJefe(String idJefe) {
         this.idJefe = idJefe;
     }
-
-    
-   
 }

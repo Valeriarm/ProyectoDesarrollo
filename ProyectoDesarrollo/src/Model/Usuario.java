@@ -63,6 +63,8 @@ public class Usuario {
     
     private String managerId;
     
+    private int sede;
+    
     //-------------------------------------------------------------------------
     // CONSTRUCTORES
     //-------------------------------------------------------------------------
@@ -89,7 +91,7 @@ public class Usuario {
             String cargo, String correo, int genero, String direccion, 
             String telefono, float salario, String fechaNacimiento, 
             String cuentaBancaria, String fechaRegistro, String nombreUsuario,
-            String contrasena, boolean habilitado, String fechaDespido) {
+            String contrasena, boolean habilitado, String fechaDespido, int sede) {
         this.id = id;
         this.nombre = nombre;
         this.nombreUsuario = nombreUsuario;
@@ -106,6 +108,7 @@ public class Usuario {
         this.contrasena = contrasena;
         this.habilitado = habilitado;
         this.fechaDespido = fechaDespido;
+        this.sede = sede;
     }
     
     /**
@@ -184,7 +187,7 @@ public class Usuario {
     public Usuario (String id, String contrasenia, String nombreUsuario, String nombre, String cedula, 
             String cargo, String telefono, String direccion, int genero,
             String fechaNacimiento, String correo, float salario, 
-            String cuentaBancaria, String fechaRegistro, String managerId, String fechaDespido){
+            String cuentaBancaria, String fechaRegistro, String managerId, String fechaDespido, int sede){
         
         this.id = id;
         this.nombre = nombre;
@@ -201,6 +204,7 @@ public class Usuario {
         this.cuentaBancaria = cuentaBancaria;
         this.fechaRegistro = fechaRegistro;
         this.managerId = managerId;
+        this.sede = sede;
     }
     
     //-------------------------------------------------------------------------
@@ -341,6 +345,14 @@ public class Usuario {
 
     public void setFechaDespido(String fechaDespido) {
         this.fechaDespido = fechaDespido;
+    }
+
+    public int getSede() {
+        return sede;
+    }
+
+    public void setSede(int sede) {
+        this.sede = sede;
     }
     
     
