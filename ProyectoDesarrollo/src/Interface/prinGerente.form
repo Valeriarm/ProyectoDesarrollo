@@ -445,26 +445,41 @@
               <Properties>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tNombreUsuKeyTyped"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="tCedula">
               <Properties>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tCedulaKeyTyped"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="tCorreo">
               <Properties>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tCorreoKeyTyped"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="tCuentaBan">
               <Properties>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tCuentaBanKeyTyped"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="tDir">
               <Properties>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tDirKeyTyped"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="labNombre">
               <Properties>
@@ -482,6 +497,9 @@
               <Properties>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tNombreKeyTyped"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JComboBox" name="comboxGenero">
               <Properties>
@@ -500,11 +518,17 @@
               <Properties>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tTelKeyTyped"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="tSal">
               <Properties>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tSalKeyTyped"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JComboBox" name="comboxSedes">
               <Properties>
@@ -578,6 +602,7 @@
                     <StringItem index="11" value="dic"/>
                   </StringArray>
                 </Property>
+                <Property name="selectedIndex" type="int" value="1"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -927,6 +952,7 @@
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="bAgregarSedeMouseClicked"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bAgregarSedeActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel2">

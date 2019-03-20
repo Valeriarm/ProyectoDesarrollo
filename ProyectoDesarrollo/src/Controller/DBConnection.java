@@ -23,8 +23,8 @@ public class DBConnection {
     //----------------------------------------------------------------------
     
     //Usuario de la base de datos en postgresql
-    private final String dBUser = "postgres";
-    private final String dBPassword = "1144211502";
+    private final String dBUser = "desarrollo";
+    private final String dBPassword = "desarrollo";
     //puerto
     private final String port = "5433";
     //Nombre de la base de datos
@@ -249,10 +249,12 @@ public class DBConnection {
         boolean cedulaValida = true;
         
         try {
+            /*
             //////////////////SUPER///////////////////////////////////
             sql = "SELECT cedula FROM Superusuario WHERE cedula = '"+cedula+"'";
             rs = st.executeQuery(sql);            
             if(cedulaValida && rs.next()) cedulaValida = false;
+            */
             //////////////////GERENTE/////////////////////////////////
             sql = "SELECT cedula FROM Gerente WHERE cedula = '"+cedula+"' AND habilitado = '"+true+"'";
             rs = st.executeQuery(sql);            
@@ -666,9 +668,12 @@ public class DBConnection {
         connect();
         
         try {                            
-            sql = "INSERT INTO Jefe_Taller VALUES ('"+id+"','"+contrasenia+"','"+nombreUsuario+"','"+nombreJefe+"','"+cedula+"','"+cargo+
+            sql = "INSERT INTO Jefe_Taller (id_jefe, contrasenia, nombre_usuario, nombre_jefe, cedula, cargo,"
+                    + " telefono, direccion, genero, fecha_nacimiento, e_mail,"
+                    + " salario, cuenta_bancaria, fecha_registro, habilitado, id_sede)"
+                    + "VALUES ('"+id+"','"+contrasenia+"','"+nombreUsuario+"','"+nombreJefe+"','"+cedula+"','"+cargo+
                     "','"+telefono+"','"+direccion+"','"+genero+"','"+fechaNacimiento+"','"+correo+"','"
-                    +salario+"','" +cuentaBancaria+"','"+fechaRegistro+"','"+idGerente+"','"+true+"','"+idSede+"')";
+                    +salario+"','" +cuentaBancaria+"','"+fechaRegistro+"','"+true+"','"+idSede+"')";
                 
             st.executeUpdate(sql);
             rs.close();
@@ -704,14 +709,12 @@ public class DBConnection {
                 float salario = rs.getFloat("salario");
                 String cuentaBanc = rs.getString("cuenta_bancaria");
                 String fechaReg = rs.getString("fecha_registro");
-                String managerId = rs.getString("id_gerente");
                 boolean habilitado = rs.getBoolean("habilitado");
                 String fechaDespido = rs.getString("fecha_Despido");
                 int sede = rs.getInt("id_Sede");
                 
                 JefeTaller jefe = new JefeTaller(id, contrasenia, nombreUsuario, nombre, cedula, cargo, telefono, 
-                direccion, genero, fechaNa, email, salario, 
-                cuentaBanc, fechaReg, managerId, habilitado, fechaDespido, sede);
+                direccion, genero, fechaNa, email, salario, cuentaBanc, fechaReg, habilitado, fechaDespido, sede);
                 
                 rs.close();
                 st.close();
@@ -726,26 +729,33 @@ public class DBConnection {
     }
 
     
-    public String actualizarJefe(String id, String contrasenia, String nombreUsuario, String nombreJefe, String cedula, 
-            String cargo, String telefono, String direccion, int genero, String fechaNacimiento, String correo, float salario,
-            String cuentaBancaria, String fechaRegistro, String idGerente, boolean habilitado, String fechaDespido){
+    public String actualizarJefe(String id, String contrasenia, String nombreUsuario, String nombreJefe, 
+            String telefono, String direccion, int genero, String fechaNacimiento, String correo, float salario,
+            String cuentaBancaria, String fechaRegistro, boolean habilitado, String fechaDespido){
         connect();
         sql = "SELECT id_Jefe FROM Jefe_Taller WHERE id_jefe = '"+id+"'";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                sql = "UPDATE Jefe_Taller SET nombre_Jefe = '"+nombreJefe+"', cedula = '"+cedula+"', cargo = '"+cargo+"', "
-                        + "telefono = '"+telefono+"'," +" genero = '"+genero+"', fecha_Nacimiento = '"+fechaNacimiento+"', "
-                        + "e_mail = '"+correo+"', salario = "+salario+", cuenta_Bancaria = '"+cuentaBancaria+
-                        "', direccion = '"+direccion+"', id_Gerente = '"+idGerente+"', contarasenia = '"+contrasenia+
-                        "', nombre_Usuario = '"+nombreUsuario+"', fecha_Registro = '"+fechaRegistro+ "', habilitado = '"+habilitado+
-                        "', fecha_Despido = '"+fechaDespido+"' WHERE id_jefe = '"+id+"'";
+                if(fechaDespido!=null){
+                    sql = "UPDATE Jefe_taller SET contrasenia = '"+contrasenia+"', nombre_usuario = '"+nombreUsuario+"', nombre_Jefe = '"+nombreJefe+"',"
+                            +"  telefono = '"+telefono+"', direccion = '"+direccion+"', genero = "+genero+", fecha_Nacimiento = '"+fechaNacimiento+
+                            "', cuenta_Bancaria = '"+cuentaBancaria+"', e_mail = '"+correo+"', salario = '"+salario+
+                            "', fecha_Registro = '"+fechaRegistro+"', fecha_Despido = '"+fechaDespido+"', habilitado = '"+habilitado+
+                            "' WHERE id_jefe = '"+id+"'";
+                }else{ //En caso de que no se esté despidiendo no se modf la fecha en la base de datos
+                    sql = "UPDATE Jefe_taller SET contrasenia = '"+contrasenia+"', nombre_usuario = '"+nombreUsuario+"', nombre_Jefe = '"+nombreJefe+"',"
+                            +" telefono = '"+telefono+"', direccion = '"+direccion+"', genero = "+genero+", fecha_Nacimiento = '"+fechaNacimiento+
+                            "', cuenta_Bancaria = '"+cuentaBancaria+"', e_mail = '"+correo+"', salario = '"+salario+
+                            "', fecha_Registro = '"+fechaRegistro+"', habilitado = '"+habilitado+
+                            "' WHERE id_jefe = '"+id+"'";
+                }
                 st.executeUpdate(sql);
                 rs.close();
                 st.close();
                 connection.close();
             }else{        
-                return "El jefe de taller con el id "+id+" no existe";
+                return "El jefe no esta registrado en la base de datos";
             }
             
         } catch (SQLException e) {
@@ -877,7 +887,7 @@ public class DBConnection {
             String cargo, String telefono, String direccion, int genero, 
             String fechaNacimiento, String correo, float salario, 
             String cuentaBancaria, String fechaRegistro, String nombreUsuario,
-            String managerId, int sede){
+            int sede){
          
         String respuesta = "Ocurrió un error";
         boolean cedulaValida = validarCedula(cedula);
@@ -899,9 +909,12 @@ public class DBConnection {
         connect();
         
         try {                            
-            sql = "INSERT INTO Vendedor VALUES ('"+id+"','"+nombre+"','"+cedula+"','"+cargo+"','"+telefono+"','"+direccion+
+            sql = "INSERT INTO vendedor (id_vendedor, nombre_vendedor, cedula, cargo, telefono, direccion,"
+                    + " genero, fecha_Nacimiento, e_mail, salario, cuenta_Bancaria,"
+                    + " fecha_Registro, nombre_Usuario, contrasenia, habilitado, id_sede)"
+                    + "VALUES ('"+id+"','"+nombre+"','"+cedula+"','"+cargo+"','"+telefono+"','"+direccion+
                     "','"+genero+"','"+fechaNacimiento+"','"+correo+"','"+salario+"','"+cuentaBancaria+"','"
-                    +fechaRegistro+"','" +nombreUsuario+"','"+contrasenia+"','"+managerId+"','"+true+"','"+sede+"')";
+                    +fechaRegistro+"','" +nombreUsuario+"','"+contrasenia+"','"+true+"','"+sede+"')";
                 
             st.executeUpdate(sql);
             rs.close();
@@ -932,16 +945,15 @@ public class DBConnection {
                 float salario = rs.getFloat("salario");
                 String cuentaBanc = rs.getString("cuenta_Bancaria");
                 String fechaReg = rs.getString("fecha_Registro");
-                String managerId = rs.getString("id_Gerente");
                 String nombreUsuario = rs.getString("nombre_Usuario");
                 String contrasenia = rs.getString("contrasenia");
                 boolean habilitado = rs.getBoolean("habilitado");
                 String fechaDespido = rs.getString("fecha_Despido");
-                int sedeV = rs.getInt("idSede");
+                int sedeV = rs.getInt("id_Sede");
                 
                 Vendedor vendedor = new Vendedor(id, nombre, cedula, cargo, telefono, 
                 direccion, genero, fechaNa, email, salario, cuentaBanc, fechaReg, 
-                nombreUsuario, contrasenia, managerId, habilitado, fechaDespido,sedeV);
+                nombreUsuario, contrasenia, habilitado, fechaDespido,sedeV);
                 
                 rs.close();
                 st.close();
@@ -955,26 +967,35 @@ public class DBConnection {
         return null;
     }
      
-    public String actualizarVendedor(String id, String nombre, String cedula, 
-            String cargo, String telefono, String direccion, int genero, 
+    public String actualizarVendedor(String id, String nombre, 
+             String telefono, String direccion, int genero, 
             String fechaNacimiento, String correo, float salario, 
             String cuentaBancaria, String fechaRegistro, String nombreUsuario,
-            String contrasenia, String managerId, boolean habilitado, String fechaDespido){
+            String contrasenia, boolean habilitado, String fechaDespido){
         connect();
         sql = "SELECT id_Vendedor FROM Vendedor WHERE id_Vendedor = '"+id+"'";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                sql = "UPDATE Vendedor SET nombre_Vendedor = '"+nombre+"', cedula = '"+cedula+"', cargo = '"+cargo+"', telefono = '"+telefono+"',genero = '"+genero+
-                        "', fecha_Nacimiento = '"+fechaNacimiento+"', e_mail = '"+correo+"', salario = '"+salario+"', cuenta_Bancaria = '"+cuentaBancaria+
-                        "', direccion = '"+direccion+"', id_Gerente = '"+managerId+"', fecha_Registro = '"+fechaRegistro+"', nombre_Usuario = '"+nombreUsuario+
-                        "', contrasenia = '"+contrasenia+"', habilitado = '"+habilitado+"', fecha_Despido = '"+fechaDespido+"' WHERE id_vendedor = '"+id+"'";
+                if(fechaDespido!=null){
+                    sql = "UPDATE vendedor SET nombre_vendedor = '"+nombre+"', fecha_despido = '"+fechaDespido+"',"
+                            +" telefono = '"+telefono+"', direccion = '"+direccion+"', genero = '"+genero+"', fecha_nacimiento = "+fechaNacimiento+", e_mail = '"+correo+
+                            "', salario = '"+salario+"', cuenta_Bancaria = '"+cuentaBancaria+"', fecha_registro = '"+fechaRegistro+
+                            "', nombre_Usuario = '"+nombreUsuario+"', contrasenia = '"+contrasenia+"', habilitado = '"+habilitado+
+                            "' WHERE id_vendedor = '"+id+"'";
+                }else{ //En caso de que no se esté despidiendo no se modf la fecha en la base de datos
+                    sql = "UPDATE vendedor SET nombre_vendedor = '"+nombre+"',"
+                            +" telefono = '"+telefono+"', direccion = '"+direccion+"', genero = '"+genero+"', fecha_nacimiento = "+fechaNacimiento+", e_mail = '"+correo+
+                            "', salario = '"+salario+"', cuenta_Bancaria = '"+cuentaBancaria+"', fecha_registro = '"+fechaRegistro+
+                            "', nombre_Usuario = '"+nombreUsuario+"', contrasenia = '"+contrasenia+"', habilitado = '"+habilitado+
+                            "' WHERE id_vendedor = '"+id+"'";
+                }
                 st.executeUpdate(sql);
                 rs.close();
                 st.close();
                 connection.close();
             }else{        
-                return "El vendedor con el id "+id+" no existe";
+                return "El vendedor no esta registrado en la base de datos";
             }
             
         } catch (SQLException e) {
@@ -1690,29 +1711,19 @@ public class DBConnection {
     
     
         
-    public String crearSede(String id, String nombreSede, String direccion, String fechaCreacion,
-                             String fechaFinalizacion){
+    public String crearSede(String nombreSede, String direccion, String fechaCreacion){
         connect();
-        sql = "SELECT id_Sede FROM Sede WHERE id_Sede = '"+id+"'";
+        sql = "SELECT * FROM Sede ";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                return "La Sede con el id "+id+" ya existe";
-                
-            }else{ 
-                sql = "SELECT id_Sede FROM Sede WHERE id_Sede = '"+id+"'";
-                rs = st.executeQuery(sql);
-                if(rs.next()){
-                    sql = "INSERT INTO Sede VALUES ('"+id+"','"+nombreSede+"','"+direccion+"','"+fechaCreacion+"','"+fechaFinalizacion+"')";                
+                 sql = "INSERT INTO Sede VALUES (nombre_Sede, direccion, fecha_creacion, habilitada)"
+                      + "('"+nombreSede+"','"+direccion+"','"+fechaCreacion+"','"+true+"')";                
                     st.executeUpdate(sql);
                     rs.close();
                     st.close();
                     connection.close();
-                }else{
-                    return "La Sede con el id "+id+" no existe";
                 }
-                
-            }
             
         } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
@@ -1796,11 +1807,11 @@ public class DBConnection {
 
         /*listar Vendedores y Jefes*/
     
-    public String listarVendedoresYJefes(){
+    public String listarVendedoresYJefes(int sedeGerente){
         connect();
         //hacemos una union entre todos lo vendedores y todos los jefes y retornamos los id, nombre, cedula
         sql = "SELECT id_vendedor, nombre_Vendedor, cedula from Vendedor  "
-                + "WHERE Habilitado = '"+true+"' UNION SELECT id_jefe, nombre_jefe , cedula from jefe_taller  WHERE Habilitado = '"+true+"'";
+                + "WHERE Habilitado = '"+true+"' and id_Sede = '"+sedeGerente+"' UNION SELECT id_jefe, nombre_jefe , cedula from jefe_taller  WHERE Habilitado = '"+true+"' and id_Sede = '"+sedeGerente+"'";
         try {
             rs = st.executeQuery(sql);
             
