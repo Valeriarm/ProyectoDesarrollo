@@ -23,10 +23,10 @@ public class DBConnection {
     //----------------------------------------------------------------------
     
     //Usuario de la base de datos en postgresql
-    private final String dBUser = "postgres";
-    private final String dBPassword = "1144211502";
+    private final String dBUser = "Marthox";
+    private final String dBPassword = "Marthox2299";
     //puerto
-    private final String port = "5433";
+    private final String port = "5432";
     //Nombre de la base de datos
     private final String dBName = "muebles_XYZ";
     //Dirección del host de la base de datos
@@ -1198,7 +1198,7 @@ public class DBConnection {
             if(rs.next()){
                 return "La orden de trabajo con el id "+id+" ya existe";
             }else{   
-                sql += "INSERT INTO Orden_Trabajo VALUES ('"+id+"','"+especificaciones+"','"+estado+"','"
+                sql = "INSERT INTO Orden_Trabajo VALUES ('"+id+"','"+especificaciones+"','"+estado+"','"
                                                         +fechaCreacion+"', null ,'"+idJefe+"');";
                 for(int i=0; i<cantidades.length; i++){
                     sql += "INSERT INTO Actualiza VALUES ("+cantidades[i]+",'"+id+"','"+referencias[i]+"');";
@@ -1262,6 +1262,8 @@ public class DBConnection {
                         "' ,estado_Orden='Terminada', fecha_Entrega='"+fecha_entrega+"' WHERE id_jefe ='"+idJefe+"' AND id_Orden = '"+id+"';";
                 for(int i=0; i<cantidades.length; i++){
                     sql += "UPDATE Actualiza SET cantidad="+cantidades[i]+" WHERE id_Producto = '"+referencias[i]+"' AND id_Orden = '"+id+"';";
+                    sql += "UPDATE Inventario SET cantidad="+cantidades[i]+" WHERE id_Producto = '"+referencias[i]+"' ;";
+                    System.out.println(cantidades[i]+" - "+referencias[i]);
                 }
                 rs = st.executeQuery(sql);
                 rs.close();
@@ -1269,11 +1271,11 @@ public class DBConnection {
                 connection.close();
             
             }else if(hayOrden){
-                System.out.println("esto aqui");
                 sql = "UPDATE Orden_Trabajo SET especificaciones='"+especificaciones+
                         "',estado_Orden='En Proceso'"+" WHERE id_orden='"+id+"' AND id_jefe = '"+idJefe+"';";
                 for(int i=0; i<cantidades.length; i++){
-                    sql += "UPDATE Actualiza SET cantidad="+cantidades[i]+" WHERE id_orden='"+id+"';";
+                    sql += "UPDATE Actualiza SET cantidad="+cantidades[i]+" WHERE id_Producto = '"+referencias[i]+"' AND id_orden='"+id+"';";
+                    System.out.println(cantidades[i]+" - "+referencias[i]);
                 }
                 //sql += ";";
                 rs = st.executeQuery(sql);
@@ -1297,7 +1299,7 @@ public class DBConnection {
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                sql = "UPDATE Orden_Trabajo SET estado = 'Anulada' WHERE id_Orden = '"+id+"'";
+                sql = "UPDATE Orden_Trabajo SET estado_Orden = 'Anulada' WHERE id_Orden = '"+id+"'";
                 st.executeUpdate(sql);
                 rs.close();
                 st.close();
@@ -1469,7 +1471,7 @@ public class DBConnection {
             rs = st.executeQuery(sql);
             if(rs.next()){
                 sql = "UPDATE Inventario SET nombre_Producto = '"+nombreProducto+"', valor_Unitario = "+valorUnitario+
-                        ", descripcion_Producto = '"+descripcion+"' WHERE id_Producto = '"+id+"';";
+                        ", descripcion_producto = '"+descripcion+"' WHERE id_Producto = '"+id+"';";
                 st.executeUpdate(sql);
                 rs.close();
                 st.close();
