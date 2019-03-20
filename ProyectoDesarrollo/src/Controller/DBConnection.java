@@ -1198,13 +1198,11 @@ public class DBConnection {
             if(rs.next()){
                 return "La orden de trabajo con el id "+id+" ya existe";
             }else{   
-                sql = "BEGIN ISOLATION LEVEL SERIALIZABLE;";
                 sql += "INSERT INTO Orden_Trabajo VALUES ('"+id+"','"+especificaciones+"','"+estado+"','"
                                                         +fechaCreacion+"', null ,'"+idJefe+"');";
                 for(int i=0; i<cantidades.length; i++){
                     sql += "INSERT INTO Actualiza VALUES ("+cantidades[i]+",'"+id+"','"+referencias[i]+"');";
                 }
-                sql += "COMMIT;";
                 st.executeUpdate(sql);
                 rs.close();
                 st.close();
@@ -1248,23 +1246,23 @@ public class DBConnection {
     
     public String actualizarOrden(String id, String especificaciones, String estado,int[] cantidades, String[] referencias,String idJefe){
         connect();
-        sql = "SELECT id_Orden FROM Orden_Trabajo WHERE id_Orden = '"+id+"' and estado_Orden = 'En Proceso'";
+        System.out.println(estado.equals("Terminada"));
+        sql = "SELECT id_Orden FROM Orden_Trabajo WHERE id_Orden = '"+id+"' and estado_Orden = 'En Proceso';";
         try {
             rs = st.executeQuery(sql);
             boolean hayOrden = rs.next();
             if(hayOrden && estado.equals("Terminada")){
+                System.out.println("Orden terminada");
                 int anio = Calendar.getInstance().get(Calendar.YEAR);
                 int mes = Calendar.getInstance().get(Calendar.MONTH);
                 int dia = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
                 String fecha_entrega = String.valueOf(anio)+"-"+String.valueOf(mes)
                 +"-"+String.valueOf(dia);
-                sql = "BEGIN ISOLATION LEVEL SERIALIZABLE;";
-                sql += "UPDATE Orden_Trabajo SET id_Orden = '"+id+"', especificaciones='"+especificaciones+
-                        "' ,estado_Orden='"+estado+"', fecha_Entrega='"+fecha_entrega+"', id_Jefe='"+idJefe+"';";
+                sql = "UPDATE Orden_Trabajo SET especificaciones='"+especificaciones+
+                        "' ,estado_Orden='Terminada', fecha_Entrega='"+fecha_entrega+"' WHERE id_jefe ='"+idJefe+"' AND id_Orden = '"+id+"';";
                 for(int i=0; i<cantidades.length; i++){
-                    sql += "UPDATE Actualiza SET cantidad="+cantidades[i]+" WHERE id_Producto'"+referencias[i]+"' AND id_Orden='"+id+"';";
+                    sql += "UPDATE Actualiza SET cantidad="+cantidades[i]+" WHERE id_Producto = '"+referencias[i]+"' AND id_Orden = '"+id+"';";
                 }
-                sql += "COMMIT;";
                 rs = st.executeQuery(sql);
                 rs.close();
                 st.close();
@@ -1273,7 +1271,7 @@ public class DBConnection {
             }else if(hayOrden){
                 System.out.println("esto aqui");
                 sql = "UPDATE Orden_Trabajo SET especificaciones='"+especificaciones+
-                        "',estado_Orden='En Proceso'"+" WHERE id_orden='"+id+"';";
+                        "',estado_Orden='En Proceso'"+" WHERE id_orden='"+id+"' AND id_jefe = '"+idJefe+"';";
                 for(int i=0; i<cantidades.length; i++){
                     sql += "UPDATE Actualiza SET cantidad="+cantidades[i]+" WHERE id_orden='"+id+"';";
                 }
