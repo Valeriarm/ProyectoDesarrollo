@@ -258,51 +258,48 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="labFechaNac" min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="labEmple" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="labNombreUsu" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="labCorreo" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="labCedula" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="labCargo" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="labContra" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="labNombre" alignment="0" max="32767" attributes="0"/>
+                                          <Group type="102" attributes="0">
+                                              <Component id="labCuentaBan" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                          </Group>
+                                          <Component id="labGenero" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="labDir" max="32767" attributes="0"/>
+                                          <Component id="labTel" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="labSal" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="labSede" max="32767" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Group type="102" attributes="0">
-                                          <Component id="labFechaNac" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                           <Component id="comboxDia" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                                          <Component id="comboxMes" min="-2" pref="64" max="-2" attributes="0"/>
                                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="comboxAno" min="-2" pref="77" max="-2" attributes="0"/>
+                                          <Component id="comboxMes" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Component id="comboxAno" max="-2" attributes="0"/>
                                       </Group>
-                                      <Group type="102" attributes="0">
-                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="labEmple" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="labNombreUsu" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="labCorreo" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="labCedula" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="labCargo" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="labContra" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="labNombre" alignment="0" max="32767" attributes="0"/>
-                                              <Group type="102" attributes="0">
-                                                  <Component id="labCuentaBan" min="-2" max="-2" attributes="0"/>
-                                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                              </Group>
-                                              <Component id="labGenero" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="labDir" max="32767" attributes="0"/>
-                                              <Component id="labTel" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="labSal" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="labSede" max="32767" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="comboxSedes" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="tContra" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="tNombreUsu" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="comboxCargo" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="comboxGenero" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="tCedula" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="tCuentaBan" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="tDir" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="tTel" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="tSal" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="tNombre" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="comboxEmple" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="tCorreo" alignment="0" min="-2" pref="210" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
+                                      <Component id="comboxSedes" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="tContra" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="tNombreUsu" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="comboxCargo" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="comboxGenero" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="tCedula" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="tCuentaBan" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="tDir" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="tTel" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="tSal" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="tNombre" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="comboxEmple" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="tCorreo" alignment="0" min="-2" pref="210" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
@@ -310,7 +307,7 @@
                                   <Component id="bAceptar" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace pref="89" max="32767" attributes="0"/>
+                          <EmptySpace pref="81" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -632,7 +629,7 @@
                       </StringArray>
                     </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[37, 22]"/>
+                      <Dimension value="[45, 22]"/>
                     </Property>
                   </Properties>
                   <AuxValues>
@@ -658,7 +655,7 @@
                       </StringArray>
                     </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[45, 22]"/>
+                      <Dimension value="[64, 22]"/>
                     </Property>
                   </Properties>
                   <AuxValues>
@@ -729,7 +726,7 @@
                       </StringArray>
                     </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[49, 22]"/>
+                      <Dimension value="[81, 22]"/>
                     </Property>
                   </Properties>
                   <AuxValues>
