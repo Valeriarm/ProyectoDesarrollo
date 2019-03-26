@@ -40,13 +40,21 @@ public class Cotizacion {
         this.fecha = fecha;
         this.producto = producto;
     }
+
+    public Cotizacion(String idCotizacion, String nombreProducto, float valorUnitario, int cantidad, String descripcion, String nombreEmpresa, String telefonoEmpresa, String direccionEmpresa, String idVendedor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Cotizacion(float valor, String nombreCliente, String telefonoCliente, String email, String fecha) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
     //-------------------------------------------------------------------------
     // GETS AND SETS
     //-------------------------------------------------------------------------
 
-        public String getNombreCliente() {
+    public String getNombreCliente() {
         return nombreCliente;
     }
 

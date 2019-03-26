@@ -35,11 +35,8 @@ public class prinVendedor extends javax.swing.JFrame {
     private DBConnection bD;
     private String idJefe;
     private String[] listaIds;
-        //botones para venta        
-    private int botonConsulVenta = 0;
-        
-    //botones para cotizacion        
-    private int botonConsulCot = 0;
+        //botones auxiliar       
+    private int botonAux = 0;
     
 
     public prinVendedor(DBConnection baseDatos, String idVen) {
@@ -71,10 +68,10 @@ public class prinVendedor extends javax.swing.JFrame {
             return false;
         }
             return true;
-    } 
+    }
     
-    private boolean validarCamposVentas(String nombreCliente, String cedCliente, String telCliente, String valor, String descripcion, String fecha, String producto){
-    boolean validacion = true, fechaValida;
+    private boolean validarCamposVentas(String nombreCliente, String cedCliente, String telCliente, String valor, String descripcion,String producto){
+    boolean validacion = true;
     String mensaje ="";
     
     if(nombreCliente.equals("")){mensaje = mensaje+"-Nombre de Cliente\n"; validacion = false;}
@@ -82,6 +79,21 @@ public class prinVendedor extends javax.swing.JFrame {
     if(telCliente.equals("")){mensaje = mensaje+"-Telefono de Cliente\n"; validacion = false;}
     if(valor.equals("")){mensaje = mensaje+"-Valor\n"; validacion = false;}
     if(descripcion.equals("")){mensaje = mensaje+"-Descripción\n"; validacion = false;}
+    
+    if(!mensaje.equals("")) JOptionPane.showMessageDialog(this, mensaje);
+         
+    return validacion;
+    }
+       
+    private boolean validarCamposCotizaciones(String nombreCliente,String telCliente, String valor, String email, String fecha, String producto){
+    boolean validacion = true,fechaValida;
+    String mensaje ="";
+    
+    if(nombreCliente.equals("")){mensaje = mensaje+"-Nombre de Cliente\n"; validacion = false;}
+    if(telCliente.equals("")){mensaje = mensaje+"-Telefono de Cliente\n"; validacion = false;}
+    if(valor.equals("")){mensaje = mensaje+"-Valor\n"; validacion = false;}
+    if(email.equals("")){mensaje = mensaje+"-email\n"; validacion = false;}
+    if(producto.equals("")){mensaje = mensaje+"-Producto\n"; validacion = false;}
     fechaValida = validarFecha(fecha);
     if(producto.equals("")){mensaje = mensaje+"-Producto\n"; validacion = false;}
     
@@ -98,21 +110,6 @@ public class prinVendedor extends javax.swing.JFrame {
         }
     }
     
-    if(!mensaje.equals("")) JOptionPane.showMessageDialog(this, mensaje);
-         
-    return validacion;
-    }
-    
-    private boolean validarCamposCotizaciones(String nombreCliente,String telCliente, String valor, String email, String producto){
-    boolean validacion = true;
-    String mensaje ="";
-    
-    if(nombreCliente.equals("")){mensaje = mensaje+"-Nombre de Cliente\n"; validacion = false;}
-    if(telCliente.equals("")){mensaje = mensaje+"-Telefono de Cliente\n"; validacion = false;}
-    if(valor.equals("")){mensaje = mensaje+"-Valor\n"; validacion = false;}
-    if(email.equals("")){mensaje = mensaje+"-email\n"; validacion = false;}
-    if(producto.equals("")){mensaje = mensaje+"-Producto\n"; validacion = false;}
-    
     System.out.println(mensaje);
     
     if(!validacion){
@@ -124,7 +121,7 @@ public class prinVendedor extends javax.swing.JFrame {
     return validacion;
     }
     
-    private int obtenerMesNum(String mes){
+     private int obtenerMesNum(String mes){
         //ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic
         switch(mes){
             case "ene":
@@ -154,8 +151,8 @@ public class prinVendedor extends javax.swing.JFrame {
         }
         return 0;
     }
-    
-    
+     
+     
     
     class hora implements ActionListener{
     
@@ -174,6 +171,7 @@ public class prinVendedor extends javax.swing.JFrame {
       //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     //}
     
+  
     
      //Retorna una lista con los Ids de las ventas en listaVentas la cual es una lista de strings,
     //donde N es la cantiadad de ventas
@@ -204,9 +202,10 @@ public class prinVendedor extends javax.swing.JFrame {
         return listaDeIds;
     }
     
-    //Retorna una lista con las opciones para combobox comboxCotizacion con el formato
+    //Retorna una lista con las opciones para combobox comboxEmple con el formato
     //{"nombre1 cedula1",..."nombreN cedulaN"} obtenidas de listaEmpleado el cual es una lista de strings del
-       private String[] obtenerOpcionesVentas(String[] listaVentas){
+    //tipo {"id1,nombre1,cedula1",..."idN,nombreN,cedulaN"} donde N es la cantiadad de empleados
+    private String[] obtenerOpcionesVentas(String[] listaVentas){
         String[] opcionesVentas = new String[listaVentas.length+1];
         String[] venta;
         opcionesVentas[0] = "No seleccionado";
@@ -231,22 +230,37 @@ public class prinVendedor extends javax.swing.JFrame {
         
         return opcionesCotizacion;
     }
- /*   
-    private void actualizarComboxCot(){
+
     private void actualizarComboxCot(){
     
-            String cotizaciones = bD.listarCotizaciones();
+        String cotizaciones = bD.listarCotizaciones();
         
-        if(cotizaciones.equals("")){ //No Hay empleados
+        if(cotizaciones.equals("")){//No hay cotizaciones
            String[] opciones = { "No seleccionado" };
-    }
-            String cotizaciones = bD.listarCotizaciones();
-        
-        if(cotizaciones.equals("")){ //No Hay empleados
-           String[] opciones = { "No seleccionado" };
-    }
+           comboxCotizacion.setModel(new DefaultComboBoxModel (opciones));
+    }else{//hay cotizaciones
     
-*/
+    String[] listaCotizaciones = cotizaciones.split("\\$");
+    listaIds = obtenerListaIdsCotizacion (listaCotizaciones);
+    String[] opciones = obtenerOpcionesCotizacion(listaCotizaciones);
+    comboxCotizacion.setModel(new DefaultComboBoxModel (opciones));
+    }
+    }
+
+    private void actualizarComboxVenta(){
+    
+        String ventas = bD.listarVentas();
+        
+        if(ventas.equals("")){ //No hay ventas
+           String[] opciones = { "No seleccionado" };
+           comboxCotizacion.setModel(new DefaultComboBoxModel (opciones));
+    }else{
+        String[] listaVentas = ventas.split("\\$");
+        listaIds = obtenerListaIdsVentas(listaVentas);
+        String[] opciones = obtenerOpcionesVentas(listaVentas);
+        comboxCotizacion.setModel(new DefaultComboBoxModel (opciones));
+        }
+    }      
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -357,6 +371,11 @@ public class prinVendedor extends javax.swing.JFrame {
         bConsulVenta.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bConsulVentaMouseClicked(evt);
+            }
+        });
+        bConsulVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bConsulVentaActionPerformed(evt);
             }
         });
 
@@ -779,6 +798,11 @@ public class prinVendedor extends javax.swing.JFrame {
 
         bAceptar.setFont(new java.awt.Font("Segoe UI Light", 0, 16)); // NOI18N
         bAceptar.setText("Agregar");
+        bAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bAceptarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -868,29 +892,49 @@ public class prinVendedor extends javax.swing.JFrame {
 
     private void comboxCotizacionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboxCotizacionItemStateChanged
         if(this.labIDcotizacion.getText() == "ID factura"){
-
+            String id = listaIds[comboxCotizacion.getSelectedIndex()-1];
+            Venta vent = bD.leerVentaPorId(id);
+            System.out.println(vent);
+            
             if(comboxCotizacion.getSelectedIndex() == 0){
                 bAceptar.setEnabled(false);
 
-                if(botonAceptar==2){ limpiarCampos(); habilitarCamposModfVenta(false);}
+                if(botonAceptar==2){ 
+                    //limpiarCampos(); 
+                    habilitarCamposModfVenta(false);
+                    this.comboxCotizacion.setEnabled(false);}
             }else{
                 bAceptar.setEnabled(true);
-
-                if(botonAceptar==2){ llenarCamposModfVenta(); habilitarCamposModfVenta(true);}
+                
+                if(vent != null){
+                llenarCamposModfVenta();
+            }
+                habilitarCamposModfVenta(true);
             }
 
         }
 
         if(this.labIDcotizacion.getText() == "ID cotizacion"){
-
+            String id = listaIds[comboxCotizacion.getSelectedIndex()-1];
+            Cotizacion cot = bD.leerCotizacionPorId(id);
+            System.out.println(cot);
+            
             if(comboxCotizacion.getSelectedIndex() == 0){
                 bAceptar.setEnabled(false);
 
-                if(botonAceptar==2){ limpiarCampos(); habilitarCamposModfCotizacion(false);}
+                if(botonAceptar==2){ 
+                    //limpiarCampos(); 
+                    habilitarCamposModfCotizacion(false);
+                    this.comboxCotizacion.setEnabled(false);
+                }
             }else{
                 bAceptar.setEnabled(true);
 
-                if(botonAceptar==2){ llenarCamposModfCotizacion(); habilitarCamposModfCotizacion(true);}
+               if (cot != null) {
+                llenarCamposModfCotizacion();
+                }
+               
+                habilitarCamposModfCotizacion(true);
             }
 
         }
@@ -899,7 +943,8 @@ public class prinVendedor extends javax.swing.JFrame {
     private void bAgregarVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAgregarVentaMouseClicked
         cambiarVisibilidadCampos(false);
         cambiarVisibilidadCamposVentas(true);
-
+        botonAux = 1;
+        
         botonAceptar = 1;
         bAceptar.setText("Agregar");
         bAceptar.setVisible(true);
@@ -910,7 +955,8 @@ public class prinVendedor extends javax.swing.JFrame {
            
         cambiarVisibilidadCampos(false);
         cambiarVisibilidadCamposCot(true);
-
+        botonAux = 2;
+        
         botonAceptar = 1;
         bAceptar.setText("Agregar");
         bAceptar.setVisible(true);
@@ -921,6 +967,8 @@ public class prinVendedor extends javax.swing.JFrame {
         
         cambiarVisibilidadCampos(false);
         CambiarVisibilidadModCamposVenta(true);
+        botonAux = 3;
+        
         botonAceptar = 2;
         bAceptar.setText("Modificar");
         bAceptar.setVisible(true);
@@ -933,6 +981,8 @@ public class prinVendedor extends javax.swing.JFrame {
         
         cambiarVisibilidadCampos(false);
         CambiarVisibilidadModCamposCot(true);
+        botonAux = 4;
+        
         botonAceptar = 2;
         bAceptar.setText("Modificar");
         bAceptar.setVisible(true);
@@ -942,10 +992,11 @@ public class prinVendedor extends javax.swing.JFrame {
     }//GEN-LAST:event_bModfCotMouseClicked
 
     private void bConsulVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bConsulVentaMouseClicked
-        botonConsulVenta = 1;
+        botonAux = 5;
         
         cambiarVisibilidadCampos(false);
         camposVentasConsulta(true);
+        
         
         botonAceptar = 3;
         bAceptar.setText("Consultar");
@@ -956,7 +1007,7 @@ public class prinVendedor extends javax.swing.JFrame {
     }//GEN-LAST:event_bConsulVentaMouseClicked
 
     private void bConsultarCotMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bConsultarCotMouseClicked
-        botonConsulCot = 1;
+        botonAux = 6;
         
         cambiarVisibilidadCampos(false);
         camposCotConsulta(true);
@@ -972,7 +1023,8 @@ public class prinVendedor extends javax.swing.JFrame {
     private void bAnularVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAnularVentaMouseClicked
         cambiarVisibilidadCampos(false);
         camposVentasConsulta(true);
-
+        botonAux = 7;
+        
         botonAceptar = 4;
         bAceptar.setText("Despedir");
         bAceptar.setVisible(true);
@@ -984,6 +1036,7 @@ public class prinVendedor extends javax.swing.JFrame {
     private void bAnularCotMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAnularCotMouseClicked
         cambiarVisibilidadCampos(false);
         camposCotConsulta(true);
+        botonAux = 8;
 
         botonAceptar = 4;
         bAceptar.setText("Despedir");
@@ -998,7 +1051,7 @@ public class prinVendedor extends javax.swing.JFrame {
     }//GEN-LAST:event_tVlrActionPerformed
 
     private void bModfVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bModfVentaActionPerformed
-        // TODO add your handling code here:
+       this.actualizarComboxVenta();
     }//GEN-LAST:event_bModfVentaActionPerformed
 
     private void bAgregarCotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAgregarCotActionPerformed
@@ -1007,20 +1060,75 @@ public class prinVendedor extends javax.swing.JFrame {
 
     private void bAnularVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAnularVentaActionPerformed
         // TODO add your handling code here:
+        this.actualizarComboxVenta();
     }//GEN-LAST:event_bAnularVentaActionPerformed
 
     private void bModfCotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bModfCotActionPerformed
         // TODO add your handling code here:
+        this.actualizarComboxCot();
     }//GEN-LAST:event_bModfCotActionPerformed
 
     private void bConsultarCotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bConsultarCotActionPerformed
         // TODO add your handling code here:
+        this.actualizarComboxCot();
     }//GEN-LAST:event_bConsultarCotActionPerformed
 
     private void bAnularCotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAnularCotActionPerformed
         // TODO add your handling code here:
+        this.actualizarComboxCot();
     }//GEN-LAST:event_bAnularCotActionPerformed
 
+    private void bConsulVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bConsulVentaActionPerformed
+        // TODO add your handling code here:
+        this.actualizarComboxVenta();
+    }//GEN-LAST:event_bConsulVentaActionPerformed
+
+    private void bAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAceptarActionPerformed
+        // TODO add your handling code here:
+        
+        if(botonAceptar==1){
+           if(botonAux == 1){
+           this.agregarVenta();}
+         
+           else{
+           if(botonAux == 2){
+           this.agregarCotizacion();}
+           }
+           }
+        else if(botonAceptar == 2){
+            if(botonAux == 3){
+                String id = listaIds[comboxCotizacion.getSelectedIndex()-1];
+                Venta vent = bD.leerVentaPorId(id);
+                
+                 /**hay que seleccionar el tipo de usuario*/
+                if(vent != null){
+                    modificarVenta();
+                }
+                
+                this.modificarVenta();
+            }
+            else{
+                if(botonAux == 4){
+                    String id = listaIds[comboxCotizacion.getSelectedIndex()-1];
+                    Cotizacion cot = bD.leerCotizacionPorId(id);
+                    
+                     /**hay que seleccionar el tipo de usuario*/
+                if (cot != null) {
+                    modificarCotizacion();
+                }
+                    
+                    this.modificarCotizacion();
+                }
+              }
+            } else if(botonAceptar == 3){
+                this.consultar();
+            }else if(botonAceptar == 4){
+                this.deshabilitar();
+            }
+            
+    }//GEN-LAST:event_bAceptarActionPerformed
+
+    
      public void cambiarVisibilidadCampos(boolean varControl){
         labIDcotizacion.setVisible(false);
         comboxCotizacion.setVisible(false);
@@ -1312,7 +1420,7 @@ public class prinVendedor extends javax.swing.JFrame {
     
     private void llenarCamposModfVenta(){
     
-        String id = listaIds[comboxCotizacion.getSelectedIndex()-1];
+       String id = listaIds[comboxCotizacion.getSelectedIndex()-1];
        Venta vent = bD.leerVentaPorId(id);
        
        tDescrip.setText(vent.getDescripcionVenta());
@@ -1321,7 +1429,6 @@ public class prinVendedor extends javax.swing.JFrame {
        tVlr.setText(Float.toString(vent.getValorVenta()));
        tNombreCliente.setText(vent.getNombreCliente());
        comboxProduc.setSelectedItem(vent.getNombreProducto());
-       
     }
     
     
@@ -1344,6 +1451,7 @@ public class prinVendedor extends javax.swing.JFrame {
        comboxMes.setSelectedIndex(mes-1);
        comboxAno.setSelectedIndex((ano-2000)*-1); //El año 2000 es la posición 0, *-1 porque puede dar negativo
    
+        
     }
     
     public void habilitarCamposModfVenta(boolean varControl){
@@ -1379,19 +1487,15 @@ public class prinVendedor extends javax.swing.JFrame {
             valor = Float.valueOf(tVlr.getText());
         }
         
-        String dia = comboxDia.getItemAt(comboxDia.getSelectedIndex());
-        String mes = comboxMes.getItemAt(comboxMes.getSelectedIndex());
-        String ano = comboxAno.getItemAt(comboxAno.getSelectedIndex());
-        String fecha = dia+"/"+mes+"/"+ano;
         
-        boolean validacion = validarCamposVentas( nombreCliente, cedulaCliente, telefonoCliente, tVlr.getText(), descripcion,  fecha,  producto);
+        boolean validacion = validarCamposVentas( nombreCliente, cedulaCliente, telefonoCliente, tVlr.getText(), descripcion, producto);
         
         if(validacion){
            /* String respuesta = bD.crearVenta( nombreCliente, cedulaCliente, telefonoCliente, valor, descripcion,fecha, producto);
            if(respuesta.contains("La cedula")) limpiarCamposUsuarios();
             JOptionPane.showMessageDialog(this, respuesta);*/
         }
-     }   
+     } 
     
      private void agregarCotizacion(){
         String nombreCliente = tNombreCliente.getText();
@@ -1404,19 +1508,19 @@ public class prinVendedor extends javax.swing.JFrame {
         }else{
             valor = Float.valueOf(tVlr.getText());
         }
-        boolean validacion = validarCamposCotizaciones( nombreCliente, telefonoCliente, tVlr.getText(), email, producto);
+        
+        String dia = comboxDia.getItemAt(comboxDia.getSelectedIndex());
+        String mes = comboxMes.getItemAt(comboxMes.getSelectedIndex());
+        String ano = comboxAno.getItemAt(comboxAno.getSelectedIndex());
+        String fecha = dia+"/"+mes+"/"+ano;
+        
+        boolean validacion = validarCamposCotizaciones( nombreCliente, telefonoCliente, tVlr.getText(), email, fecha,producto);
         
         if(validacion){
            /* String respuesta = bD.crearCotizacion( nombreCliente, cedulaCliente, telefonoCliente, valor, descripcion,fecha, producto);
            if(respuesta.contains("La cedula")) limpiarCamposUsuarios();
             JOptionPane.showMessageDialog(this, respuesta);*/
         }
-     }
-     
-     private void modificarVenta(){
-     String mensaje = "";
-     
-     //producto (tener en cuenta)
      }
      
      private void modificarCotizacion(){
@@ -1449,6 +1553,12 @@ public class prinVendedor extends javax.swing.JFrame {
          }
      }
  }
+    
+    private void modificarVenta(){
+     String mensaje = "";
+     
+     //producto (tener en cuenta)
+     }
      
      private void consultar(){
          String id = listaIds[comboxCotizacion.getSelectedIndex()-1];
@@ -1493,6 +1603,34 @@ public class prinVendedor extends javax.swing.JFrame {
          
      }
      
+     private void limpiarCamposCotizaciones(){
+     
+     tNombreCliente.setText("");
+     tTel.setText("");
+     tEmail.setText("");
+     tVlr.setText("");
+     comboxDia.setSelectedIndex(0);
+     comboxMes.setSelectedIndex(0);
+     comboxAno.setSelectedIndex(0);
+     }
+    
+     private void limpiarCamposVentas(){
+     
+     tNombreCliente.setText("");
+     tTel.setText("");
+     tCCcliente.setText("");
+     tVlr.setText("");
+     tDescrip.setText("");
+     comboxDia.setSelectedIndex(0);
+     comboxMes.setSelectedIndex(0);
+     comboxAno.setSelectedIndex(0);
+     }
+    
+     public void habilitarCamposCot(boolean varControl){
+     
+     comboxProduc.setEnabled(false);
+     
+     }
      
     public static void main(String args[]) {            
         java.awt.EventQueue.invokeLater(new Runnable() {

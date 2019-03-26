@@ -62,14 +62,14 @@
               <Component id="jPanel5" max="32767" attributes="0"/>
           </Group>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-              <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
+              <Component id="jPanel1" alignment="0" pref="641" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="686" max="32767" attributes="0"/>
+              <EmptySpace pref="694" max="32767" attributes="0"/>
               <Component id="jPanel5" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -166,6 +166,13 @@
                               <Component id="bModf" alignment="0" max="32767" attributes="0"/>
                               <Component id="bConsul" alignment="0" max="32767" attributes="0"/>
                               <Component id="bAnular" alignment="0" max="32767" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <EmptySpace min="12" max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="CheckOrden" min="-2" max="-2" attributes="0"/>
+                                      <Component id="CheckReferencia" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -184,7 +191,11 @@
                           <Component id="bAnular" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="bReportes" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                          <Component id="CheckOrden" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="CheckReferencia" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -276,6 +287,22 @@
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bReportesActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="CheckOrden">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Orden Trabajo"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CheckOrdenActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="CheckReferencia">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Referencia"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CheckReferenciaActionPerformed"/>
                   </Events>
                 </Component>
               </SubComponents>
@@ -402,6 +429,7 @@
                   </Properties>
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="bAceptarMouseClicked"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bAceptarActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="tCantidad">
@@ -548,7 +576,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="598" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="629" max="32767" attributes="0"/>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>

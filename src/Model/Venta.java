@@ -50,6 +50,10 @@ public class Venta {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    public Venta(String id, String nombreCliente, String telefonoCliente, String cedulaCliente, int valorVenta, String descripcionVenta) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public String getNombreCliente() {
         return nombreCliente;
     }
