@@ -651,7 +651,41 @@ public class prinGerente extends javax.swing.JFrame {
         }
     }
     
-    
+  /*  
+    private void modificarSede(){
+        String mensaje = "";
+        
+        //Datos Modf
+        String nombre = tNombre.getText();
+        String direccion = tDir.getText();
+        String telefono = tTel.getText();
+        
+        //Datos Anteriores
+        String id = listaIds[comboxEmple.getSelectedIndex()-1];
+        JefeTaller jef = bD.leerJefeTallerPorId(id);
+        
+        //Comparación
+        
+        if(!nombre.equals(jef.getNombre())) mensaje = mensaje+"Nombre\n";
+        
+        if(!direccion.equals(jef.getDireccion())) mensaje = mensaje+"Direccion\n";
+        if(!telefono.equals(jef.getTelefono())) mensaje = mensaje+"Telefono\n";
+        if(jef.isHabilitado()) mensaje = mensaje+"Estado\n";
+        
+        if(!mensaje.equals("")){
+            mensaje = "Los siguientes campos se van a modificar:\n"+mensaje;
+            int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
+            
+            if(opcion==0){ //Modificar
+                String respuesta = bD.actualizarJefe(id, contrasena,nombreUsu,nombre,telefono,direccion,genero, fechaNac,correo,salario,cuenta,jef.getFechaRegistro(),true,jef.getFechaDespido());
+                JOptionPane.showMessageDialog(this, respuesta);
+            }
+        }else{
+            mensaje = "Cambie un campo para modificar al Jefe de Taller";
+            JOptionPane.showMessageDialog(this, mensaje);
+        }
+    }
+    */
     private void consultar(){
         String id = listaIds[comboxEmple.getSelectedIndex()-1];
         Vendedor vendedor = bD.leerVendedorPorId(id);
@@ -898,6 +932,7 @@ public class prinGerente extends javax.swing.JFrame {
         labGenero.setVisible(varControl);
         labSal.setVisible(varControl);
         labSede.setVisible(varControl);
+        labTel.setVisible(varControl);
         
         comboxCargo.setVisible(varControl);
         comboxCargo.setSelectedIndex(0);
@@ -922,6 +957,8 @@ public class prinGerente extends javax.swing.JFrame {
         tCuentaBan.setText("");
         tSal.setVisible(varControl);
         tSal.setText("");
+        tTel.setVisible(varControl);
+        tTel.setText("");
   
     }
     

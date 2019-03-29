@@ -1716,6 +1716,7 @@ public class DBConnection {
     public String crearSede(String nombreSede, String direccion, String fechaCreacion){
         connect();
         sql = "SELECT * FROM Sede ";
+        String error = "";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
@@ -1729,8 +1730,15 @@ public class DBConnection {
             
         } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
+            error = e.getMessage();
         }
-       return "Sede agregada con éxito";
+        
+        if ("".equals(error)){
+            return "Sede agregada con éxito";
+        }else{
+            return "Hubo un problema";
+        }
+       
     }
     
     
