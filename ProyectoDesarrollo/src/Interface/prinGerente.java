@@ -723,7 +723,7 @@ public class prinGerente extends javax.swing.JFrame {
             int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
             if(opcion==0){ //Despedir
                 Date fechaSist = new Date(); 
-                SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaDespido = formato.format(fechaSist); 
 
                 String respuesta = bD.despedirVendedor(id, fechaDespido);
@@ -736,7 +736,7 @@ public class prinGerente extends javax.swing.JFrame {
             int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
             if(opcion==0){ //Despedir
                 Date fechaSist = new Date(); 
-                SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaDespido = formato.format(fechaSist); 
 
                 String respuesta = bD.despedirJefeTaller(id, fechaDespido);
