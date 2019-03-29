@@ -1719,7 +1719,7 @@ public class DBConnection {
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                 sql = "INSERT INTO Sede VALUES (nombre_Sede, direccion, fecha_creacion, habilitada)"
+                 sql = "INSERT INTO Sede (nombre_Sede, direccion, fecha_creacion, habilitada) VALUES "
                       + "('"+nombreSede+"','"+direccion+"','"+fechaCreacion+"','"+true+"')";                
                     st.executeUpdate(sql);
                     rs.close();
@@ -1732,6 +1732,7 @@ public class DBConnection {
         }
        return "Sede agregada con éxito";
     }
+    
     
     public Sede leerSedePorId(String id){
         connect();

@@ -329,7 +329,7 @@ public class prinGerente extends javax.swing.JFrame {
     
     private void actualizarComboxSedes(){
         String sedes = "";
-        if(botonAceptar==1){ sedes = bD.listarSedes(true); }
+        if(botonAceptar==7 || botonAceptar==6 || botonAceptar==8){ sedes = bD.listarSedes(true); }
         else { sedes = bD.listarSedes(false); }
         
         if(sedes.equals("")){ //No Hay empleados
@@ -486,8 +486,8 @@ public class prinGerente extends javax.swing.JFrame {
 }
     
     private boolean validarCamposSedes(String nombre, String direccion){
-        boolean validacion = true; // validacion, en un principio, es solo para los campos vacios
-        String mensaje = ""; //En caso de hayan campos invalidos
+        boolean validacion = true; 
+        String mensaje = ""; //
         
         if(nombre.equals("")){
             mensaje = mensaje+"- Nombre\n"; validacion = false;
@@ -502,23 +502,22 @@ public class prinGerente extends javax.swing.JFrame {
             mensaje = "Los siguientes campos están vacios:\n"+mensaje;
             if((!nombre.equals("")) && (nombre.charAt(0) == ' ')) mensaje = "Nombre de Sede Invalido\n"+mensaje;
         }
-        
-        if(!mensaje.equals("")) JOptionPane.showMessageDialog(this, mensaje);
-        
+       
         return validacion;   
     }
     
     private void agregarSede(){
     String nombreSede = tNombre.getText();
-    String direccion = tDir.getText();  
+    String direccion = tDir.getText();
 
     boolean validacion = validarCamposSedes(nombreSede, direccion);
+    System.out.print(validacion);
+    
     if(validacion){
-        //Fecha de reg
         Date fechaSist = new Date(); 
-            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-            String fechaReg = formato.format(fechaSist);
-            System.out.println("Fecha reg: "+fechaReg);          
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaReg = formato.format(fechaSist);
+        System.out.println("Fecha reg: "+fechaReg);          
 
         String respuesta = bD.crearSede( nombreSede,direccion, fechaReg);
         JOptionPane.showMessageDialog(this, respuesta);
@@ -1697,6 +1696,8 @@ public class prinGerente extends javax.swing.JFrame {
 
     private void bAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAceptarActionPerformed
         // TODO add your handling code here:
+        
+        actualizarComboxSedes();
         System.out.println(botonAceptar);
         if(botonAceptar==1){
             if (comboxCargo.getSelectedItem()== "Vendedor"){
@@ -1704,6 +1705,7 @@ public class prinGerente extends javax.swing.JFrame {
             }else{
                 this.agregarJefeTaller();
             }}else if(botonAceptar==2){
+                actualizarComboxVendedoresYJefes();
                 String id = listaIds[comboxEmple.getSelectedIndex()-1];
                 Vendedor vendedor = bD.leerVendedorPorId(id);
                 JefeTaller jefe = bD.leerJefeTallerPorId(id);
@@ -1715,12 +1717,14 @@ public class prinGerente extends javax.swing.JFrame {
                 }
                 
             }else if(botonAceptar==3){
+                actualizarComboxVendedoresYJefes();
                 this.consultar();
             }else if(botonAceptar==4){
+                actualizarComboxVendedoresYJefes();
                 this.despedir();
-            }//else if (botonAceptar == 5){
-              //  this.agregarSede();
-            //}else if (botonAceptar == 6){
+            }else if (botonAceptar == 5){
+                this.agregarSede();
+            }//else if (botonAceptar == 6){
                 
             //}else if (botonAceptar == 7){
                 
@@ -1760,8 +1764,7 @@ public class prinGerente extends javax.swing.JFrame {
 
     private void bAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAceptarMouseClicked
         // TODO add your handling code here:
-        actualizarComboxVendedoresYJefes();
-        actualizarComboxSedes();
+        
     }//GEN-LAST:event_bAceptarMouseClicked
 
     private void comboxEmpleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboxEmpleActionPerformed
@@ -1813,7 +1816,7 @@ public class prinGerente extends javax.swing.JFrame {
             cambiarVisibilidadCampos(true);
             cambiarVisibilidadCamposSede(false);
             cambiarVisibilidadCamposSedeModf(false);
-            actualizarComboxSedes();
+            this.actualizarComboxSedes();
         
             botonAceptar = 6;
             bAceptar.setText("Modificar");
@@ -1824,7 +1827,7 @@ public class prinGerente extends javax.swing.JFrame {
     private void bConsulMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bConsulMouseClicked
             cambiarVisibilidadCamposmodf(false);
             cambiarVisibilidadCampos(false);
-            actualizarComboxVendedoresYJefes();
+            this.actualizarComboxVendedoresYJefes();
         
             botonAceptar = 3;
             bAceptar.setText("Consultar");
