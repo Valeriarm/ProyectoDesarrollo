@@ -651,7 +651,7 @@ public class prinGerente extends javax.swing.JFrame {
         }
     }
     
-  /*  
+    
     private void modificarSede(){
         String mensaje = "";
         
@@ -662,22 +662,24 @@ public class prinGerente extends javax.swing.JFrame {
         
         //Datos Anteriores
         String id = listaIds[comboxEmple.getSelectedIndex()-1];
-        JefeTaller jef = bD.leerJefeTallerPorId(id);
-        
+        Sede sede = bD.leerSedePorId(id);
+        String fechaCreacion = sede.getFechaCreacion();
+        String fechaFinalizacion = null;
         //Comparación
         
-        if(!nombre.equals(jef.getNombre())) mensaje = mensaje+"Nombre\n";
+        if(!nombre.equals(sede.getNombreSede())) mensaje = mensaje+"Nombre\n";
         
-        if(!direccion.equals(jef.getDireccion())) mensaje = mensaje+"Direccion\n";
-        if(!telefono.equals(jef.getTelefono())) mensaje = mensaje+"Telefono\n";
-        if(jef.isHabilitado()) mensaje = mensaje+"Estado\n";
+        if(!direccion.equals(sede.getDireccion())) mensaje = mensaje+"Direccion\n";
+        if(!direccion.equals(sede.getDireccion())) mensaje = mensaje+"Direccion\n";
         
         if(!mensaje.equals("")){
             mensaje = "Los siguientes campos se van a modificar:\n"+mensaje;
             int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
             
+        
+            
             if(opcion==0){ //Modificar
-                String respuesta = bD.actualizarJefe(id, contrasena,nombreUsu,nombre,telefono,direccion,genero, fechaNac,correo,salario,cuenta,jef.getFechaRegistro(),true,jef.getFechaDespido());
+                String respuesta = bD.actualizarSede(id, nombre, direccion, fechaCreacion, fechaFinalizacion, idGerente);
                 JOptionPane.showMessageDialog(this, respuesta);
             }
         }else{
@@ -685,7 +687,7 @@ public class prinGerente extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, mensaje);
         }
     }
-    */
+    
     private void consultar(){
         String id = listaIds[comboxEmple.getSelectedIndex()-1];
         Vendedor vendedor = bD.leerVendedorPorId(id);

@@ -10,7 +10,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Clase tentativa para el manejo y conexión a la base de datos
@@ -1790,6 +1792,8 @@ public class DBConnection {
         }
        return "Sede actualizada con éxito";
     }
+    
+    
     
     public String eliminarSede(String id){
         connect();
