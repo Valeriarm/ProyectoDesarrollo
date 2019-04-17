@@ -25,8 +25,8 @@ public class DBConnection {
     //----------------------------------------------------------------------
     
     //Usuario de la base de datos en postgresql
-    private final String dBUser = "desarrollo";
-    private final String dBPassword = "desarrollo";
+    private final String dBUser = "postgres";
+    private final String dBPassword = "1144211502";
   
 
     //puerto
@@ -328,7 +328,7 @@ public class DBConnection {
         //Llamamos el metodo para poder conectarnos a la base de datos
         connect();
         String respuesta = null;
-        sql = "SELECT * FROM Gerente WHERE nombre_usuario = '"+user+"' AND contrasenia = '"+contra+"'";
+        sql = "SELECT * FROM Gerente WHERE nombre_usuario = '"+user+"' AND contrasenia = '"+contra+"' AND habilitado = '"+true+"'";
         //try catch porque se puede arrojar un error de consulta (SQL)
         try {
             
@@ -625,7 +625,7 @@ public class DBConnection {
         //Llamamos el metodo para poder conectarnos a la base de datos
         connect();
         String respuesta = null;
-        sql = "SELECT * FROM Jefe_Taller WHERE nombre_Usuario = '"+user+"' AND contrasenia = '"+contra+"'";
+        sql = "SELECT * FROM Jefe_Taller WHERE nombre_Usuario = '"+user+"' AND contrasenia = '"+contra+"' AND  habilitado = '"+true+"'";
         //try catch porque se puede arrojar un error de consulta (SQL)
         try {
             //Aquí usamos el metodo de Statment executeQuery y le pasamos la sentencia sql, esto lo guardamos en el 
@@ -864,7 +864,7 @@ public class DBConnection {
         //Llamamos el metodo para poder conectarnos a la base de datos
         connect();
         String respuesta = null;
-        sql = "SELECT * FROM Vendedor WHERE nombre_usuario = '"+user+"' AND contrasenia = '"+contra+"'";
+        sql = "SELECT * FROM Vendedor WHERE nombre_usuario = '"+user+"' AND contrasenia = '"+contra+"' AND habilitado = '"+true+"'";
         //try catch porque se puede arrojar un error de consulta (SQL)
         try {
             //Aquí usamos el metodo de Statment executeQuery y le pasamos la sentencia sql, esto lo guardamos en el 
