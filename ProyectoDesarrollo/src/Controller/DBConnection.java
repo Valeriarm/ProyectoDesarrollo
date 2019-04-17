@@ -10,7 +10,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Clase tentativa para el manejo y conexión a la base de datos
@@ -1716,10 +1718,11 @@ public class DBConnection {
     public String crearSede(String nombreSede, String direccion, String fechaCreacion){
         connect();
         sql = "SELECT * FROM Sede ";
+        String error = "";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                 sql = "INSERT INTO Sede VALUES (nombre_Sede, direccion, fecha_creacion, habilitada)"
+                 sql = "INSERT INTO Sede (nombre_Sede, direccion, fecha_creacion, habilitada) VALUES "
                       + "('"+nombreSede+"','"+direccion+"','"+fechaCreacion+"','"+true+"')";                
                     st.executeUpdate(sql);
                     rs.close();
@@ -1729,9 +1732,17 @@ public class DBConnection {
             
         } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
+            error = e.getMessage();
         }
-       return "Sede agregada con éxito";
+        
+        if ("".equals(error)){
+            return "Sede agregada con éxito";
+        }else{
+            return "Hubo un problema";
+        }
+       
     }
+    
     
     public Sede leerSedePorId(String id){
         connect();
@@ -1781,6 +1792,8 @@ public class DBConnection {
         }
        return "Sede actualizada con éxito";
     }
+    
+    
     
     public String eliminarSede(String id){
         connect();
