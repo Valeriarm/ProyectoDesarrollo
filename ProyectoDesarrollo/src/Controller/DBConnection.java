@@ -25,8 +25,8 @@ public class DBConnection {
     //----------------------------------------------------------------------
     
     //Usuario de la base de datos en postgresql
-    private final String dBUser = "postgres";
-    private final String dBPassword = "1144211502";
+    private final String dBUser = "desarrollo";
+    private final String dBPassword = "desarrollo";
   
 
     //puerto
@@ -1031,7 +1031,7 @@ public class DBConnection {
     }
     
       /**
-     * Lista a todos los Jefes de taller presentes en la base de datos
+     * Lista a todos los Vendedores presentes en la base de datos
      * @return Lista de todos los vendedores
      */
     public String listarVendedores(){
