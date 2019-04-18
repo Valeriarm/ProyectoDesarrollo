@@ -44,9 +44,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         desactivarCampos();
         bAceptar.setVisible(false);
         
-        //Elementos del popup menú para modf,agregar y consultar
-        this.ordenesDeTrabajo.setSelected(false);
-        this.itemDeInventario.setSelected(false);
         
        }
 
@@ -66,22 +63,24 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jefeDeTaller = new javax.swing.JPopupMenu();
-        ordenesDeTrabajo = new javax.swing.JCheckBoxMenuItem();
-        itemDeInventario = new javax.swing.JCheckBoxMenuItem();
         jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        iconUsu = new javax.swing.JLabel();
-        labLogo = new javax.swing.JLabel();
-        jSplitPane2 = new javax.swing.JSplitPane();
         jPanel3 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        fecha = new javax.swing.JLabel();
+        fechaYhora = new javax.swing.JLabel();
+        hora = new javax.swing.JLabel();
         bAgregar = new javax.swing.JButton();
         bModf = new javax.swing.JButton();
         bConsul = new javax.swing.JButton();
         bAnular = new javax.swing.JButton();
-        bReportes = new javax.swing.JToggleButton();
-        CheckOrden = new javax.swing.JCheckBox();
-        CheckReferencia = new javax.swing.JCheckBox();
+        anularInv = new javax.swing.JToggleButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        modInv = new javax.swing.JButton();
+        consulInv = new javax.swing.JButton();
+        addInv = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         labCantidad = new javax.swing.JLabel();
         labEspecificaciones = new javax.swing.JLabel();
@@ -101,376 +100,17 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labIdOrden = new javax.swing.JLabel();
         cbIdOrden = new javax.swing.JComboBox<>();
         bConfirmar = new javax.swing.JButton();
-        jPanel5 = new javax.swing.JPanel();
-        fecha = new javax.swing.JLabel();
-        fechaYhora = new javax.swing.JLabel();
-        hora = new javax.swing.JLabel();
-
-        jefeDeTaller.setToolTipText("");
-
-        ordenesDeTrabajo.setSelected(true);
-        ordenesDeTrabajo.setText("Orden de Trabajo");
-        ordenesDeTrabajo.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                ordenesDeTrabajoMouseReleased(evt);
-            }
-        });
-        ordenesDeTrabajo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ordenesDeTrabajoActionPerformed(evt);
-            }
-        });
-        jefeDeTaller.add(ordenesDeTrabajo);
-
-        itemDeInventario.setSelected(true);
-        itemDeInventario.setText("Item de Inventario");
-        itemDeInventario.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                itemDeInventarioMouseReleased(evt);
-            }
-        });
-        itemDeInventario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemDeInventarioActionPerformed(evt);
-            }
-        });
-        jefeDeTaller.add(itemDeInventario);
+        jPanel2 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        jPanel1.setBackground(new java.awt.Color(51, 51, 51));
 
-        iconUsu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO workshop.png"))); // NOI18N
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
-        labLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/logo.png"))); // NOI18N
-        labLogo.setName(""); // NOI18N
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(labLogo)
-                .addGap(377, 377, 377)
-                .addComponent(iconUsu)
-                .addGap(22, 22, 22))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labLogo, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(iconUsu)
-                        .addContainerGap())))
-        );
-
-        jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
-
-        bAgregar.setForeground(new java.awt.Color(51, 51, 51));
-        bAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO add.png"))); // NOI18N
-        bAgregar.setText("Agregar");
-        bAgregar.setToolTipText("Para activar los campos presionar de nuevo el boton");
-        bAgregar.setBorderPainted(false);
-        bAgregar.setContentAreaFilled(false);
-        bAgregar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                bAgregarMouseReleased(evt);
-            }
-        });
-        bAgregar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bAgregarActionPerformed(evt);
-            }
-        });
-
-        bModf.setForeground(new java.awt.Color(51, 51, 51));
-        bModf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO edit.png"))); // NOI18N
-        bModf.setText("Modificar");
-        bModf.setToolTipText("Para activar los campos presionar de nuevo el boton");
-        bModf.setBorderPainted(false);
-        bModf.setContentAreaFilled(false);
-        bModf.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                bModfMouseReleased(evt);
-            }
-        });
-        bModf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bModfActionPerformed(evt);
-            }
-        });
-
-        bConsul.setForeground(new java.awt.Color(51, 51, 51));
-        bConsul.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO search.png"))); // NOI18N
-        bConsul.setText("Consultar");
-        bConsul.setToolTipText("Para activar los campos presionar de nuevo el boton");
-        bConsul.setBorderPainted(false);
-        bConsul.setContentAreaFilled(false);
-        bConsul.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                bConsulMouseReleased(evt);
-            }
-        });
-
-        bAnular.setForeground(new java.awt.Color(51, 51, 51));
-        bAnular.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO delete.png"))); // NOI18N
-        bAnular.setText("Anular");
-        bAnular.setToolTipText("Para activar los campos presionar de nuevo el boton");
-        bAnular.setBorderPainted(false);
-        bAnular.setContentAreaFilled(false);
-        bAnular.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                bAnularMouseReleased(evt);
-            }
-        });
-        bAnular.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bAnularActionPerformed(evt);
-            }
-        });
-
-        bReportes.setForeground(new java.awt.Color(51, 51, 51));
-        bReportes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO report.png"))); // NOI18N
-        bReportes.setText("Reportes");
-        bReportes.setToolTipText("Para activar los campos presionar de nuevo el boton");
-        bReportes.setBorderPainted(false);
-        bReportes.setContentAreaFilled(false);
-        bReportes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bReportesActionPerformed(evt);
-            }
-        });
-
-        CheckOrden.setText("Orden Trabajo");
-        CheckOrden.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CheckOrdenActionPerformed(evt);
-            }
-        });
-
-        CheckReferencia.setText("Referencia");
-        CheckReferencia.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CheckReferenciaActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(bReportes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(bAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(bModf, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(bConsul, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(bAnular, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(CheckOrden)
-                            .addComponent(CheckReferencia))))
-                .addContainerGap())
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(bAgregar)
-                .addGap(18, 18, 18)
-                .addComponent(bModf)
-                .addGap(18, 18, 18)
-                .addComponent(bConsul)
-                .addGap(18, 18, 18)
-                .addComponent(bAnular)
-                .addGap(18, 18, 18)
-                .addComponent(bReportes)
-                .addGap(35, 35, 35)
-                .addComponent(CheckOrden)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(CheckReferencia)
-                .addContainerGap())
-        );
-
-        jSplitPane2.setLeftComponent(jPanel3);
-
-        labCantidad.setText("Cantidad:");
-
-        labEspecificaciones.setText("Especificaciones:");
-
-        tEspecificaciones.setToolTipText("");
-
-        bAceptar.setText("Agregar");
-        bAceptar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                bAceptarMouseClicked(evt);
-            }
-        });
-        bAceptar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bAceptarActionPerformed(evt);
-            }
-        });
-
-        tCantidad.setToolTipText("");
-        tCantidad.setPreferredSize(new java.awt.Dimension(152, 24));
-        tCantidad.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tCantidadActionPerformed(evt);
-            }
-        });
-
-        labNombreProducto.setText("Nombre Producto:");
-
-        tNombreProducto.setToolTipText("");
-        tNombreProducto.setPreferredSize(new java.awt.Dimension(152, 24));
-        tNombreProducto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tNombreProductoActionPerformed(evt);
-            }
-        });
-
-        labValorUnitario.setText("Valor Unitario:");
-
-        tValorUnitario.setToolTipText("");
-        tValorUnitario.setPreferredSize(new java.awt.Dimension(152, 24));
-        tValorUnitario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tValorUnitarioActionPerformed(evt);
-            }
-        });
-
-        labDescripcion.setText("Descripcion:");
-
-        tDescripcion.setToolTipText("");
-        tDescripcion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tDescripcionActionPerformed(evt);
-            }
-        });
-
-        labRefProductoCB.setText("Ref Producto:");
-
-        cbRefProducto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione una referencia" }));
-        cbRefProducto.setPreferredSize(new java.awt.Dimension(152, 20));
-
-        labEstadoOrden.setText("Estado:");
-
-        cbEstadoOrden.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione un estado", "En proceso", "Terminada" }));
-        cbEstadoOrden.setPreferredSize(new java.awt.Dimension(152, 20));
-        cbEstadoOrden.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbEstadoOrdenActionPerformed(evt);
-            }
-        });
-
-        labIdOrden.setText("Id Orden de Trabajo:");
-
-        cbIdOrden.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione una  orden" }));
-        cbIdOrden.setPreferredSize(new java.awt.Dimension(152, 20));
-        cbIdOrden.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cbIdOrdenItemStateChanged(evt);
-            }
-        });
-        cbIdOrden.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbIdOrdenActionPerformed(evt);
-            }
-        });
-
-        bConfirmar.setText("Confirmar");
-        bConfirmar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bConfirmarActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labEspecificaciones)
-                            .addComponent(labCantidad)
-                            .addComponent(labNombreProducto)
-                            .addComponent(labDescripcion)
-                            .addComponent(labValorUnitario)
-                            .addComponent(labRefProductoCB)
-                            .addComponent(labEstadoOrden)
-                            .addComponent(labIdOrden))
-                        .addGap(55, 55, 55)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(tCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tEspecificaciones)
-                            .addComponent(tNombreProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tDescripcion)
-                            .addComponent(tValorUnitario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cbEstadoOrden, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbIdOrden, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbRefProducto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(189, 189, 189)
-                        .addComponent(bAceptar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(bConfirmar)))
-                .addContainerGap(101, Short.MAX_VALUE))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(68, 68, 68)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labCantidad)
-                    .addComponent(tCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tEspecificaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labEspecificaciones))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labNombreProducto))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tValorUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labValorUnitario))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labDescripcion))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbRefProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labRefProductoCB))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbEstadoOrden, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labEstadoOrden))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbIdOrden, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labIdOrden))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 196, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bAceptar)
-                    .addComponent(bConfirmar))
-                .addGap(64, 64, 64))
-        );
-
-        jSplitPane2.setRightComponent(jPanel4);
-
-        jPanel1.add(jSplitPane2, java.awt.BorderLayout.CENTER);
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
         fecha.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         fecha.setText("dd-mm-yyyy");
@@ -485,41 +125,438 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 629, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(fechaYhora)
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel5Layout.createSequentialGroup()
                     .addGap(78, 78, 78)
                     .addComponent(fecha)
-                    .addContainerGap(304, Short.MAX_VALUE)))
-            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel5Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(fechaYhora)
-                    .addContainerGap(369, Short.MAX_VALUE)))
+                    .addContainerGap(58, Short.MAX_VALUE)))
             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel5Layout.createSequentialGroup()
                     .addGap(142, 142, 142)
                     .addComponent(hora)
-                    .addContainerGap(256, Short.MAX_VALUE)))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 29, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(fechaYhora))
             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                    .addGap(1, 1, 1)
-                    .addComponent(fecha, javax.swing.GroupLayout.DEFAULT_SIZE, 16, Short.MAX_VALUE)
+                    .addComponent(fecha, javax.swing.GroupLayout.DEFAULT_SIZE, 17, Short.MAX_VALUE)
                     .addContainerGap()))
-            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel5Layout.createSequentialGroup()
-                    .addGap(3, 3, 3)
-                    .addComponent(fechaYhora)
-                    .addContainerGap(7, Short.MAX_VALUE)))
             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel5Layout.createSequentialGroup()
                     .addGap(4, 4, 4)
                     .addComponent(hora)
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+
+        bAgregar.setForeground(new java.awt.Color(51, 51, 51));
+        bAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO ordersadd.png"))); // NOI18N
+        bAgregar.setToolTipText("Para activar los campos presionar de nuevo el boton");
+        bAgregar.setBorderPainted(false);
+        bAgregar.setContentAreaFilled(false);
+        bAgregar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bAgregarMouseReleased(evt);
+            }
+        });
+
+        bModf.setForeground(new java.awt.Color(51, 51, 51));
+        bModf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO ordersedit.png"))); // NOI18N
+        bModf.setToolTipText("Para activar los campos presionar de nuevo el boton");
+        bModf.setBorderPainted(false);
+        bModf.setContentAreaFilled(false);
+        bModf.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bModfMouseReleased(evt);
+            }
+        });
+
+        bConsul.setForeground(new java.awt.Color(51, 51, 51));
+        bConsul.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO orderssearch.png"))); // NOI18N
+        bConsul.setToolTipText("Para activar los campos presionar de nuevo el boton");
+        bConsul.setBorderPainted(false);
+        bConsul.setContentAreaFilled(false);
+        bConsul.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bConsulMouseReleased(evt);
+            }
+        });
+
+        bAnular.setForeground(new java.awt.Color(51, 51, 51));
+        bAnular.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO ordersabort.png"))); // NOI18N
+        bAnular.setToolTipText("Para activar los campos presionar de nuevo el boton");
+        bAnular.setBorderPainted(false);
+        bAnular.setContentAreaFilled(false);
+        bAnular.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bAnularMouseReleased(evt);
+            }
+        });
+
+        anularInv.setForeground(new java.awt.Color(51, 51, 51));
+        anularInv.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO Invdelete.png"))); // NOI18N
+        anularInv.setToolTipText("Para activar los campos presionar de nuevo el boton");
+        anularInv.setBorderPainted(false);
+        anularInv.setContentAreaFilled(false);
+        anularInv.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                anularInvMouseReleased(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
+        jLabel1.setText("---------- Agregar ----------");
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
+        jLabel2.setText("---------- Modificar ----------");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
+        jLabel3.setText("---------- Consultar ----------");
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
+        jLabel4.setText("----------- Anular ------------");
+
+        modInv.setForeground(new java.awt.Color(51, 51, 51));
+        modInv.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO Invedit.png"))); // NOI18N
+        modInv.setToolTipText("Para activar los campos presionar de nuevo el boton");
+        modInv.setBorderPainted(false);
+        modInv.setContentAreaFilled(false);
+        modInv.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                modInvMouseReleased(evt);
+            }
+        });
+
+        consulInv.setForeground(new java.awt.Color(51, 51, 51));
+        consulInv.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO Invsearch.png"))); // NOI18N
+        consulInv.setToolTipText("Para activar los campos presionar de nuevo el boton");
+        consulInv.setBorderPainted(false);
+        consulInv.setContentAreaFilled(false);
+        consulInv.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                consulInvMouseReleased(evt);
+            }
+        });
+
+        addInv.setForeground(new java.awt.Color(51, 51, 51));
+        addInv.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO Invadd.png"))); // NOI18N
+        addInv.setToolTipText("Para activar los campos presionar de nuevo el boton");
+        addInv.setBorderPainted(false);
+        addInv.setContentAreaFilled(false);
+        addInv.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                addInvMouseReleased(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel1)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(bAnular, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(anularInv, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addComponent(bAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(38, 38, 38)
+                        .addComponent(addInv, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(bModf, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31)
+                        .addComponent(modInv, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addComponent(bConsul, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
+                .addComponent(consulInv, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bAgregar)
+                    .addComponent(addInv))
+                .addGap(9, 9, 9)
+                .addComponent(jLabel2)
+                .addGap(9, 9, 9)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bModf)
+                    .addComponent(modInv))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(bConsul)
+                        .addGap(14, 14, 14)
+                        .addComponent(jLabel4))
+                    .addComponent(consulInv))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(bAnular)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(anularInv)
+                        .addGap(0, 0, Short.MAX_VALUE))))
+        );
+
+        jPanel4.setBackground(new java.awt.Color(51, 51, 51));
+
+        labCantidad.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
+        labCantidad.setForeground(new java.awt.Color(255, 255, 255));
+        labCantidad.setText("Cantidad:");
+
+        labEspecificaciones.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
+        labEspecificaciones.setForeground(new java.awt.Color(255, 255, 255));
+        labEspecificaciones.setText("Especificaciones:");
+
+        tEspecificaciones.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
+        tEspecificaciones.setToolTipText("");
+
+        bAceptar.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
+        bAceptar.setText("Agregar");
+        bAceptar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bAceptarMouseClicked(evt);
+            }
+        });
+
+        tCantidad.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
+        tCantidad.setToolTipText("");
+        tCantidad.setPreferredSize(new java.awt.Dimension(152, 24));
+        tCantidad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tCantidadActionPerformed(evt);
+            }
+        });
+
+        labNombreProducto.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
+        labNombreProducto.setForeground(new java.awt.Color(255, 255, 255));
+        labNombreProducto.setText("Nombre Producto:");
+
+        tNombreProducto.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
+        tNombreProducto.setToolTipText("");
+        tNombreProducto.setPreferredSize(new java.awt.Dimension(152, 24));
+        tNombreProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tNombreProductoActionPerformed(evt);
+            }
+        });
+
+        labValorUnitario.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
+        labValorUnitario.setForeground(new java.awt.Color(255, 255, 255));
+        labValorUnitario.setText("Valor Unitario:");
+
+        tValorUnitario.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
+        tValorUnitario.setToolTipText("");
+        tValorUnitario.setPreferredSize(new java.awt.Dimension(152, 24));
+        tValorUnitario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tValorUnitarioActionPerformed(evt);
+            }
+        });
+
+        labDescripcion.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
+        labDescripcion.setForeground(new java.awt.Color(255, 255, 255));
+        labDescripcion.setText("Descripcion:");
+
+        tDescripcion.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
+        tDescripcion.setToolTipText("");
+        tDescripcion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tDescripcionActionPerformed(evt);
+            }
+        });
+
+        labRefProductoCB.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
+        labRefProductoCB.setForeground(new java.awt.Color(255, 255, 255));
+        labRefProductoCB.setText("Ref Producto:");
+
+        cbRefProducto.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
+        cbRefProducto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione una referencia" }));
+        cbRefProducto.setPreferredSize(new java.awt.Dimension(152, 20));
+
+        labEstadoOrden.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
+        labEstadoOrden.setForeground(new java.awt.Color(255, 255, 255));
+        labEstadoOrden.setText("Estado:");
+
+        cbEstadoOrden.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
+        cbEstadoOrden.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione un estado", "En proceso", "Terminada" }));
+        cbEstadoOrden.setPreferredSize(new java.awt.Dimension(152, 20));
+        cbEstadoOrden.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbEstadoOrdenActionPerformed(evt);
+            }
+        });
+
+        labIdOrden.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
+        labIdOrden.setForeground(new java.awt.Color(255, 255, 255));
+        labIdOrden.setText("Id Orden de Trabajo:");
+
+        cbIdOrden.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
+        cbIdOrden.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione una  orden" }));
+        cbIdOrden.setPreferredSize(new java.awt.Dimension(152, 20));
+        cbIdOrden.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbIdOrdenItemStateChanged(evt);
+            }
+        });
+        cbIdOrden.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbIdOrdenActionPerformed(evt);
+            }
+        });
+
+        bConfirmar.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
+        bConfirmar.setText("Confirmar");
+        bConfirmar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bConfirmarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labEspecificaciones)
+                    .addComponent(labCantidad)
+                    .addComponent(labNombreProducto)
+                    .addComponent(labDescripcion)
+                    .addComponent(labValorUnitario)
+                    .addComponent(labRefProductoCB)
+                    .addComponent(labEstadoOrden)
+                    .addComponent(labIdOrden))
+                .addGap(55, 55, 55)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(tCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tEspecificaciones)
+                    .addComponent(tNombreProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tDescripcion)
+                    .addComponent(tValorUnitario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cbEstadoOrden, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbIdOrden, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbRefProducto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(bAceptar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(bConfirmar)
+                .addGap(83, 83, 83))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labCantidad)
+                    .addComponent(tCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tEspecificaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labEspecificaciones))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labNombreProducto))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tValorUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labValorUnitario))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labDescripcion))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbRefProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labRefProductoCB))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbEstadoOrden, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labEstadoOrden))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbIdOrden, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labIdOrden))
+                .addGap(31, 31, 31)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bAceptar)
+                    .addComponent(bConfirmar)))
+        );
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        jLabel5.setText("Jefe De Taller");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(56, Short.MAX_VALUE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 42, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -528,46 +565,23 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(694, Short.MAX_VALUE)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addContainerGap()))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void ordenesDeTrabajoMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ordenesDeTrabajoMouseReleased
-        this.CheckOrden.setSelected(true);
-        this.CheckReferencia.setSelected(false);
-        this.ordenesDeTrabajo.setSelected(true);
-        this.itemDeInventario.setSelected(false);
-    }//GEN-LAST:event_ordenesDeTrabajoMouseReleased
-
-    private void itemDeInventarioMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemDeInventarioMouseReleased
-        this.CheckOrden.setSelected(false);
-        this.CheckReferencia.setSelected(true);
-        this.ordenesDeTrabajo.setSelected(false);
-        this.itemDeInventario.setSelected(true);
-    }//GEN-LAST:event_itemDeInventarioMouseReleased
-
     private void bAgregarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAgregarMouseReleased
        //muestra las opciones (Ordenes de trabajo o Items de inventario)
-        if(evt.isPopupTrigger()){
-         jefeDeTaller.show(evt.getComponent(),evt.getX(),evt.getY());
-        } 
               
-        if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
             this.referencias = new ArrayList<>();
             this.cantidades = new ArrayList<>();
             consultaInv="disponible";
@@ -580,28 +594,12 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             bAceptar.setText("Agregar");
             bAceptar.setVisible(true);
             bAceptar.setEnabled(true);
-        }
         
-        if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
-            limpiarCampos();
-            desactivarCampos();
-            cambiarVisibilidadCamposInventarioAgregar(true);
-        
-            botonAceptar = 1;
-            bAceptar.setText("Agregar");
-            bAceptar.setVisible(true);
-            bAceptar.setEnabled(true);
-        }
         
     }//GEN-LAST:event_bAgregarMouseReleased
 
     private void bModfMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bModfMouseReleased
-       //muestra las opciones (sede o usuarios)
-        if(evt.isPopupTrigger()){
-         jefeDeTaller.show(evt.getComponent(),evt.getX(),evt.getY());
-        } 
         
-        if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
             this.referencias = new ArrayList<>();
             this.cantidades = new ArrayList<>();
             consultaInv = "disponible";
@@ -617,30 +615,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             bAceptar.setText("Modificar");
             bAceptar.setVisible(true);              
             bAceptar.setEnabled(true);
-        }
-        
-        if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
-            consultaInv = "disponible";
-            limpiarCampos();
-            desactivarCampos();
-            cambiarVisibilidadCamposInventarioModf(true);
-            llenarComboboxInventario();
-        
-            botonAceptar = 2;
-            bAceptar.setText("Modificar");
-            bAceptar.setVisible(true);
-            bAceptar.setEnabled(true);
-        }
         
     }//GEN-LAST:event_bModfMouseReleased
 
     private void bConsulMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bConsulMouseReleased
-        //muestra las opciones (sede o usuarios)
-        if(evt.isPopupTrigger()){
-         jefeDeTaller.show(evt.getComponent(),evt.getX(),evt.getY());
-        }
-        
-        if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
+   
             consulta="consultar";
             limpiarCampos();
             desactivarCampos();
@@ -651,30 +630,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             bAceptar.setText("Consultar");
             bAceptar.setVisible(true);
             bAceptar.setEnabled(true);
-        }
-        
-        if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
-            consultaInv = "disponible";
-            limpiarCampos();
-            desactivarCampos();
-            cambiarVisibilidadCamposInventarioConsultar(true);
-            llenarComboboxInventario();
-            
-            botonAceptar = 3;
-            bAceptar.setText("Consultar");
-            bAceptar.setVisible(true);
-            bAceptar.setEnabled(true);
-        }
         
     }//GEN-LAST:event_bConsulMouseReleased
 
     private void bAnularMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAnularMouseReleased
-        //muestra las opciones (sede o usuarios)
-        if(evt.isPopupTrigger()){
-            jefeDeTaller.show(evt.getComponent(),evt.getX(),evt.getY());
-        }
 
-        if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
             consulta="modificar";
             limpiarCampos();
             desactivarCampos();
@@ -686,82 +646,38 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             bAceptar.setVisible(true);
             bAceptar.setEnabled(true);
 
-        }
-
-        if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
-            consultaInv="disponible";
-            limpiarCampos();
-            desactivarCampos();
-            cambiarVisibilidadCamposInventarioEliminar(true);
-            llenarComboboxInventario();
-
-            botonAceptar = 4;
-            bAceptar.setText("Eliminar");
-            bAceptar.setVisible(true);
-            bAceptar.setEnabled(true);
-        }
     }//GEN-LAST:event_bAnularMouseReleased
 
-    private void bAnularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAnularActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bAnularActionPerformed
-
-    private void bAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAgregarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bAgregarActionPerformed
-
-    private void ordenesDeTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ordenesDeTrabajoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ordenesDeTrabajoActionPerformed
-
-    private void itemDeInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemDeInventarioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_itemDeInventarioActionPerformed
-
-    private void bReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bReportesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bReportesActionPerformed
-
     private void bAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAceptarMouseClicked
-        // TODO add your handling code here:
-        switch(botonAceptar){
+
             //Agregar
-            case 1:
-            if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
+            
+            if(botonAceptar == 1){
                 agregarUnaOrdenDeTrabajo();
             }
-            if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
-                agregarReferencia();
-            }
-            break;
+            else if(botonAceptar == 5){
+                 agregarReferencia();
             //Modificar
-            case 2:
-            if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
-                agregarReferenciaOrden();
+            }else if(botonAceptar == 2){
+                modificarOrdenDeTrabajo();
             }
-            if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
+            else if(botonAceptar == 6){
                 modificarItemDeInventario();
-            }
-            break;
-            //Consultar
-            case 3:
-            if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
+             //Concultar
+            }else if(botonAceptar == 3){
                 consultarOrdenDeTrabajo();
             }
-            if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
+            else if(botonAceptar == 7){
                 consultarItemDeInventario();
-            }
-            break;
-            //Despedir
-            case 4:
-            if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
+             //Despedir
+            }else if(botonAceptar == 4){
                 anularOrdenDeTrabajo();
             }
-            if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
+            else if(botonAceptar == 8){
                 eliminarItemDeInventario();
+
             }
-            break;
-        }
+            
     }//GEN-LAST:event_bAceptarMouseClicked
 
     private void tCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tCantidadActionPerformed
@@ -789,25 +705,16 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     }//GEN-LAST:event_cbIdOrdenActionPerformed
 
     private void bConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bConfirmarActionPerformed
-        switch(botonAceptar){
-            //Agregar
-            case 1:
-            if(this.ordenesDeTrabajo.isSelected()){
+  
+        if(botonAceptar == 1){
                 agregarOrdenDeTrabajo();
             }
-            break;
-            //Modificar
-            case 2:
-            if(this.ordenesDeTrabajo.isSelected()){
-                modificarOrdenDeTrabajo();
+            else if(botonAceptar == 5){
+                 modificarOrdenDeTrabajo();
+          
             }
-            break;
-        }
+          
     }//GEN-LAST:event_bConfirmarActionPerformed
-
-    private void bModfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bModfActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bModfActionPerformed
 
     private void cbIdOrdenItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbIdOrdenItemStateChanged
         // TODO add your handling code here:
@@ -816,231 +723,64 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         llenarComboboxInventarioOrden();
     }//GEN-LAST:event_cbIdOrdenItemStateChanged
 
-    private void CheckReferenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckReferenciaActionPerformed
-        // TODO add your handling code here:
-        this.CheckOrden.setSelected(false);
-        this.CheckReferencia.setSelected(true);
-        this.ordenesDeTrabajo.setSelected(false);
-        this.itemDeInventario.setSelected(true);
-        switch(botonAceptar){
-            //Agregar
-            case 1:
-            if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
-            consultaInv="disponible";
-            limpiarCampos();
-            desactivarCampos();
-            cambiarVisibilidadCamposOrdenAgregar(true);
-            llenarComboboxInventario();
-            botonAceptar = 1;
-            bAceptar.setText("Agregar");
-            bAceptar.setVisible(true);
-            bAceptar.setEnabled(true);
-            }
-            if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
-                limpiarCampos();
-                desactivarCampos();
-                cambiarVisibilidadCamposInventarioAgregar(true);
-                botonAceptar = 1;
-                bAceptar.setText("Agregar");
-                bAceptar.setVisible(true);
-                bAceptar.setEnabled(true);
-            }
-            break;
-            //Modificar
-            case 2:
-            if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
+    private void modInvMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modInvMouseReleased
+        
             consultaInv = "disponible";
-            consulta  = "modificar";
             limpiarCampos();
             desactivarCampos();
             cambiarVisibilidadCamposOrdenModificar(true);
-            llenarComboboxOrden();
-            this.cbRefProducto.removeAllItems();
-            llenarComboboxInventarioOrden();
-            botonAceptar = 2;
+            llenarComboboxInventario();
+        
+            botonAceptar = 6;
             bAceptar.setText("Modificar");
-            bAceptar.setVisible(true);              
+            bAceptar.setVisible(true);
             bAceptar.setEnabled(true);
-            }
-            if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
-                consultaInv = "disponible";
-                limpiarCampos();
-                desactivarCampos();
-                cambiarVisibilidadCamposInventarioModf(true);
-                llenarComboboxInventario();
-                botonAceptar = 2;
-                bAceptar.setText("Modificar");
-                bAceptar.setVisible(true);
-                bAceptar.setEnabled(true);
-            }
-            break;
-            //Consultar
-            case 3:
-            if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
-            consulta="consultar";
+                
+    }//GEN-LAST:event_modInvMouseReleased
+
+    private void consulInvMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_consulInvMouseReleased
+        
+            consultaInv = "disponible";
             limpiarCampos();
             desactivarCampos();
-            cambiarVisibilidadCamposOrdenConsultar(true);
-            llenarComboboxOrden();
-            botonAceptar = 3;
+            cambiarVisibilidadCamposInventarioConsultar(true);
+            llenarComboboxInventario();
+            
+            botonAceptar = 7;
             bAceptar.setText("Consultar");
             bAceptar.setVisible(true);
             bAceptar.setEnabled(true);
-            }
-            if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
-                consultaInv = "disponible";
-                limpiarCampos();
-                desactivarCampos();
-                cambiarVisibilidadCamposInventarioConsultar(true);
-                llenarComboboxInventario();
-                botonAceptar = 3;
-                bAceptar.setText("Consultar");
-                bAceptar.setVisible(true);
-                bAceptar.setEnabled(true);
-            }
-            break;
-            //Despedir
-            case 4:
-            if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
-            consulta="modificar";
-            limpiarCampos();
-            desactivarCampos();
-            cambiarVisibilidadCamposOrdenAnular(true);
-            llenarComboboxOrden();
-            botonAceptar = 4;
-            bAceptar.setText("Anular");
-            bAceptar.setVisible(true);
-            bAceptar.setEnabled(true);
-            }
-            if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
-                consultaInv="disponible";
-                limpiarCampos();
-                desactivarCampos();
-                cambiarVisibilidadCamposInventarioEliminar(true);
-                llenarComboboxInventario();
-                botonAceptar = 4;
-                bAceptar.setText("Eliminar");
-                bAceptar.setVisible(true);
-                bAceptar.setEnabled(true);
-            }
-            break;
-        }
-    }//GEN-LAST:event_CheckReferenciaActionPerformed
+         
+    }//GEN-LAST:event_consulInvMouseReleased
 
-    private void CheckOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckOrdenActionPerformed
-        // TODO add your handling code here:
-        this.CheckOrden.setSelected(true);
-        this.CheckReferencia.setSelected(false);
-        this.ordenesDeTrabajo.setSelected(true);
-        this.itemDeInventario.setSelected(false);
-        switch(botonAceptar){
-            //Agregar
-            case 1:
-            if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
-            consultaInv="disponible";
+    private void addInvMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addInvMouseReleased
+       
             limpiarCampos();
             desactivarCampos();
-            cambiarVisibilidadCamposOrdenAgregar(true);
-            llenarComboboxInventario();
-            botonAceptar = 1;
+            cambiarVisibilidadCamposInventarioAgregar(true);
+        
+            botonAceptar = 5;
             bAceptar.setText("Agregar");
             bAceptar.setVisible(true);
             bAceptar.setEnabled(true);
-            }
-            if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
-                limpiarCampos();
-                desactivarCampos();
-                cambiarVisibilidadCamposInventarioAgregar(true);
-                botonAceptar = 1;
-                bAceptar.setText("Agregar");
-                bAceptar.setVisible(true);
-                bAceptar.setEnabled(true);
-            }
-            break;
-            //Modificar
-            case 2:
-            if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
-            consultaInv = "disponible";
-            consulta  = "modificar";
-            limpiarCampos();
-            desactivarCampos();
-            cambiarVisibilidadCamposOrdenModificar(true);
-            llenarComboboxOrden();
-            this.cbRefProducto.removeAllItems();
-            llenarComboboxInventarioOrden();
-            botonAceptar = 2;
-            bAceptar.setText("Modificar");
-            bAceptar.setVisible(true);              
-            bAceptar.setEnabled(true);
-            }
-            if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
-                consultaInv = "disponible";
-                limpiarCampos();
-                desactivarCampos();
-                cambiarVisibilidadCamposInventarioModf(true);
-                llenarComboboxInventario();
-                botonAceptar = 2;
-                bAceptar.setText("Modificar");
-                bAceptar.setVisible(true);
-                bAceptar.setEnabled(true);
-            }
-            break;
-            //Consultar
-            case 3:
-            if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
-            consulta="consultar";
-            limpiarCampos();
-            desactivarCampos();
-            cambiarVisibilidadCamposOrdenConsultar(true);
-            llenarComboboxOrden();
-            botonAceptar = 3;
-            bAceptar.setText("Consultar");
-            bAceptar.setVisible(true);
-            bAceptar.setEnabled(true);
-            }
-            if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
-                consultaInv = "disponible";
-                limpiarCampos();
-                desactivarCampos();
-                cambiarVisibilidadCamposInventarioConsultar(true);
-                llenarComboboxInventario();
-                botonAceptar = 3;
-                bAceptar.setText("Consultar");
-                bAceptar.setVisible(true);
-                bAceptar.setEnabled(true);
-            }
-            break;
-            //Despedir
-            case 4:
-            if(this.ordenesDeTrabajo.isSelected() || this.CheckOrden.isSelected()){
-            consulta="modificar";
-            limpiarCampos();
-            desactivarCampos();
-            cambiarVisibilidadCamposOrdenAnular(true);
-            llenarComboboxOrden();
-            botonAceptar = 4;
-            bAceptar.setText("Anular");
-            bAceptar.setVisible(true);
-            bAceptar.setEnabled(true);
-            }
-            if(this.itemDeInventario.isSelected() || this.CheckReferencia.isSelected()){
-                consultaInv="disponible";
-                limpiarCampos();
-                desactivarCampos();
-                cambiarVisibilidadCamposInventarioEliminar(true);
-                llenarComboboxInventario();
-                botonAceptar = 4;
-                bAceptar.setText("Eliminar");
-                bAceptar.setVisible(true);
-                bAceptar.setEnabled(true);
-            }
-            break;
-        }
-    }//GEN-LAST:event_CheckOrdenActionPerformed
+        
+        
+    }//GEN-LAST:event_addInvMouseReleased
 
-    private void bAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAceptarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bAceptarActionPerformed
+    private void anularInvMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_anularInvMouseReleased
+        
+            consultaInv="disponible";
+            limpiarCampos();
+            desactivarCampos();
+            cambiarVisibilidadCamposInventarioEliminar(true);
+            llenarComboboxInventario();
+
+            botonAceptar = 8;
+            bAceptar.setText("Eliminar");
+            bAceptar.setVisible(true);
+            bAceptar.setEnabled(true);
+        
+    }//GEN-LAST:event_anularInvMouseReleased
     
     public void llenarComboboxOrden(){
         String [] ordenes = bD.listarOrden(this.idJefe, consulta).split("\\$");
@@ -1558,40 +1298,40 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox CheckOrden;
-    private javax.swing.JCheckBox CheckReferencia;
+    private javax.swing.JButton addInv;
+    private javax.swing.JToggleButton anularInv;
     private javax.swing.JButton bAceptar;
     private javax.swing.JButton bAgregar;
     private javax.swing.JButton bAnular;
     private javax.swing.JButton bConfirmar;
     private javax.swing.JButton bConsul;
     private javax.swing.JButton bModf;
-    private javax.swing.JToggleButton bReportes;
     private javax.swing.JComboBox<String> cbEstadoOrden;
     private javax.swing.JComboBox<String> cbIdOrden;
     private javax.swing.JComboBox<String> cbRefProducto;
+    private javax.swing.JButton consulInv;
     private javax.swing.JLabel fecha;
     private javax.swing.JLabel fechaYhora;
     private javax.swing.JLabel hora;
-    private javax.swing.JLabel iconUsu;
-    private javax.swing.JCheckBoxMenuItem itemDeInventario;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JSplitPane jSplitPane2;
-    private javax.swing.JPopupMenu jefeDeTaller;
     private javax.swing.JLabel labCantidad;
     private javax.swing.JLabel labDescripcion;
     private javax.swing.JLabel labEspecificaciones;
     private javax.swing.JLabel labEstadoOrden;
     private javax.swing.JLabel labIdOrden;
-    private javax.swing.JLabel labLogo;
     private javax.swing.JLabel labNombreProducto;
     private javax.swing.JLabel labRefProductoCB;
     private javax.swing.JLabel labValorUnitario;
-    private javax.swing.JCheckBoxMenuItem ordenesDeTrabajo;
+    private javax.swing.JButton modInv;
     private javax.swing.JTextField tCantidad;
     private javax.swing.JTextField tDescripcion;
     private javax.swing.JTextField tEspecificaciones;
