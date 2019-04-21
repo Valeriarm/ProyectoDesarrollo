@@ -109,6 +109,8 @@ public class prinGerente extends javax.swing.JFrame {
         if(salario.equals("")){ mensaje = mensaje+"- Salario\n"; validacion = false; }
         fechaValida = validarFecha(fechaNac);
         
+        System.out.println(mensaje);
+        
         if(!validacion){ //Hay campos vacios
             mensaje = "Los siguientes campos están vacios:\n"+mensaje;
             if((!nombre.equals("")) && (nombre.charAt(0) == ' ')) mensaje = "Nombre de Usuario Invalido\n"+mensaje;
@@ -320,13 +322,14 @@ public class prinGerente extends javax.swing.JFrame {
             sede = listaSedes[i].split(",");
             listaDeIds[i] = sede[0];
         }
+        //System.out.println(listaDeIds[1]);
         
         return listaDeIds;
     }
     
     private void actualizarComboxSedes(){
         String sedes = "";
-        if(botonAceptar==7 || botonAceptar==6 || botonAceptar==8){ sedes = bD.listarSedes(true); }
+        if(botonAceptar==1){ sedes = bD.listarSedes(true); }
         else { sedes = bD.listarSedes(false); }
         
         if(sedes.equals("")){ //No Hay empleados
@@ -344,6 +347,7 @@ public class prinGerente extends javax.swing.JFrame {
         
 
     private void llenarCamposModfVendedor(){
+        System.out.println(comboxEmple.getSelectedIndex()-1);
         String id = listaIds[comboxEmple.getSelectedIndex()-1];
         Vendedor ven = bD.leerVendedorPorId(id);
         
@@ -358,6 +362,9 @@ public class prinGerente extends javax.swing.JFrame {
         tSal.setText(Float.toString(ven.getSalario()));
         
         String[] fechaNac = ven.getFechaNacimiento().split("-");
+        System.out.println(fechaNac[0]);
+        System.out.println(fechaNac[1]);
+        System.out.println(fechaNac[2]);
         int diaNac = Integer.parseInt(fechaNac[2]);
         String mesNac = obtenerNumMes(Integer.valueOf(fechaNac[1]));
         int anoNac = Integer.parseInt(fechaNac[0]);
@@ -365,15 +372,19 @@ public class prinGerente extends javax.swing.JFrame {
         comboxDia.setSelectedIndex(diaNac-1); //El Combobox empieza desde 0
         comboxMes.setSelectedItem(mesNac);
         comboxAno.setSelectedIndex((anoNac-2000)*-1); //El año 2000 es la posición 0, *-1 porque puede dar negativo
+        
+        System.out.println(ven.getIdSede());
         comboxSedes.setSelectedIndex(ven.getIdSede());
     }
     
     
     private void llenarCamposModfJefeTaller(){
+        System.out.println(comboxEmple.getSelectedIndex()-1);
         String id = listaIds[comboxEmple.getSelectedIndex()-1];
         JefeTaller jef = bD.leerJefeTallerPorId(id);
         
         tNombreUsu.setText(jef.getNombreUsuario());
+        System.out.println(jef.getNombreUsuario());
         tContra.setText(jef.getContrasena());
         tNombre.setText(jef.getNombre());
         tCorreo.setText(jef.getCorreo());
@@ -393,6 +404,7 @@ public class prinGerente extends javax.swing.JFrame {
         comboxAno.setSelectedIndex((anoNac-2000)*-1); 
         
         //actualizarComboxSedes();
+        System.out.println(jef.getIdSede());
         comboxSedes.setSelectedIndex(jef.getIdSede());
     }
 
@@ -418,13 +430,15 @@ public class prinGerente extends javax.swing.JFrame {
         String mesCumple = comboxMes.getItemAt(comboxMes.getSelectedIndex());
         String anoCumple = comboxAno.getItemAt(comboxAno.getSelectedIndex());
         String fechaNac = anoCumple+"-"+obtenerMesNum(mesCumple)+"-"+diaCumple;
+        System.out.println("Fecha Nac: "+fechaNac);
                        
         boolean validacion = validarCampos(nombreUsu,nombre,cedula,correo,cuenta,direccion,telefono,tSal.getText(),fechaNac);
         if(validacion){
             //Fecha de reg
             Date fechaSist = new Date(); 
             SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-            String fechaReg = formato.format(fechaSist);      
+            String fechaReg = formato.format(fechaSist);
+            System.out.println("Fecha reg: "+fechaReg);          
             
             String respuesta = bD.crearVendedor(nombre, cedula,cargo,telefono,direccion,genero,fechaNac,correo,salario, cuenta,fechaReg, nombreUsu, sedeGerente);
             if(respuesta.contains("La cedula") && (!respuesta.contains("El nombre de usuario"))) limpiarCamposUsuarios();
@@ -455,13 +469,15 @@ public class prinGerente extends javax.swing.JFrame {
     String mesCumple = comboxMes.getItemAt(comboxMes.getSelectedIndex());
     String anoCumple = comboxAno.getItemAt(comboxAno.getSelectedIndex());
     String fechaNac = anoCumple+"-"+obtenerMesNum(mesCumple)+"-"+diaCumple;
-    
+    System.out.println("Fecha Nac: "+fechaNac);
+
     boolean validacion = validarCampos(nombreUsu,nombre,cedula,correo,cuenta,direccion,telefono,tSal.getText(),fechaNac);
     if(validacion){
         //Fecha de reg
         Date fechaSist = new Date(); 
             SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-            String fechaReg = formato.format(fechaSist);       
+            String fechaReg = formato.format(fechaSist);
+            System.out.println("Fecha reg: "+fechaReg);          
 
         String respuesta = bD.crearJefeTaller(nombreUsu,nombre,cedula,cargo, telefono,direccion,genero,fechaNac,correo,salario, cuenta, fechaReg, idGerente, sedeGerente);
         if(respuesta.contains("La cedula")&& (!respuesta.contains("El nombre de usuario"))) limpiarCamposUsuarios();
@@ -470,8 +486,8 @@ public class prinGerente extends javax.swing.JFrame {
 }
     
     private boolean validarCamposSedes(String nombre, String direccion){
-        boolean validacion = true; 
-        String mensaje = ""; //
+        boolean validacion = true; // validacion, en un principio, es solo para los campos vacios
+        String mensaje = ""; //En caso de hayan campos invalidos
         
         if(nombre.equals("")){
             mensaje = mensaje+"- Nombre\n"; validacion = false;
@@ -480,25 +496,29 @@ public class prinGerente extends javax.swing.JFrame {
         }        
         if(direccion.equals("")){ mensaje = mensaje+"- Direccion\n"; validacion = false; }
         
+        System.out.println(mensaje);
         
         if(!validacion){ //Hay campos vacios            
             mensaje = "Los siguientes campos están vacios:\n"+mensaje;
             if((!nombre.equals("")) && (nombre.charAt(0) == ' ')) mensaje = "Nombre de Sede Invalido\n"+mensaje;
         }
-       
+        
+        if(!mensaje.equals("")) JOptionPane.showMessageDialog(this, mensaje);
+        
         return validacion;   
     }
     
     private void agregarSede(){
     String nombreSede = tNombre.getText();
-    String direccion = tDir.getText();
+    String direccion = tDir.getText();  
 
     boolean validacion = validarCamposSedes(nombreSede, direccion);
-    
     if(validacion){
+        //Fecha de reg
         Date fechaSist = new Date(); 
-        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-        String fechaReg = formato.format(fechaSist);          
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+            String fechaReg = formato.format(fechaSist);
+            System.out.println("Fecha reg: "+fechaReg);          
 
         String respuesta = bD.crearSede( nombreSede,direccion, fechaReg);
         JOptionPane.showMessageDialog(this, respuesta);
@@ -531,7 +551,7 @@ public class prinGerente extends javax.swing.JFrame {
         String fechaNac = anoCumple+"-"+obtenerMesNum(mesCumple)+"-"+diaCumple;
         
         //Datos Anteriores
-        String id = listaIds[comboxEmple.getSelectedIndex()];
+        String id = listaIds[comboxEmple.getSelectedIndex()-1];
         Vendedor ven = bD.leerVendedorPorId(id);
         
         //Comparación
@@ -554,6 +574,7 @@ public class prinGerente extends javax.swing.JFrame {
         Date fechaSist = new Date(); 
             SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
             String fechaReg = formato.format(fechaSist);
+            System.out.println("Fecha reg: "+fechaReg);
         
             if(!mensaje.equals("")){
                 mensaje = "Los siguientes campos se van a modificar:\n"+mensaje;
@@ -632,44 +653,8 @@ public class prinGerente extends javax.swing.JFrame {
     }
     
     
-    private void modificarSede(){
-        String mensaje = "";
-        
-        //Datos Modf
-        String nombre = tNombre.getText();
-        String direccion = tDir.getText();
-        String telefono = tTel.getText();
-        
-        //Datos Anteriores
+    private void consultar(){
         String id = listaIds[comboxEmple.getSelectedIndex()-1];
-        Sede sede = bD.leerSedePorId(id);
-        String fechaCreacion = sede.getFechaCreacion();
-        String fechaFinalizacion = null;
-        //Comparación
-        
-        if(!nombre.equals(sede.getNombreSede())) mensaje = mensaje+"Nombre\n";
-        
-        if(!direccion.equals(sede.getDireccion())) mensaje = mensaje+"Direccion\n";
-        if(!direccion.equals(sede.getDireccion())) mensaje = mensaje+"Direccion\n";
-        
-        if(!mensaje.equals("")){
-            mensaje = "Los siguientes campos se van a modificar:\n"+mensaje;
-            int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
-            
-        
-            
-            if(opcion==0){ //Modificar
-                String respuesta = bD.actualizarSede(id, nombre, direccion, fechaCreacion, fechaFinalizacion, idGerente);
-                JOptionPane.showMessageDialog(this, respuesta);
-            }
-        }else{
-            mensaje = "Cambie un campo para modificar al Jefe de Taller";
-            JOptionPane.showMessageDialog(this, mensaje);
-        }
-    }
-    
-    private void consultar(int index){
-        String id = listaIds[index-1];
         Vendedor vendedor = bD.leerVendedorPorId(id);
         JefeTaller jefe = bD.leerJefeTallerPorId(id);
         String genero;
@@ -679,7 +664,6 @@ public class prinGerente extends javax.swing.JFrame {
                 genero = "Masculino";
             }else{
                 genero = "Femenino";
-            }
             
             int edad = calcularEdad(vendedor.getFechaNacimiento());
         
@@ -699,7 +683,7 @@ public class prinGerente extends javax.swing.JFrame {
             
         
             JOptionPane.showMessageDialog(this, mensaje);
-        }else{
+        }}else{
            if(jefe.getGenero()==0){
                 genero = "Masculino";
             }else{
@@ -739,7 +723,7 @@ public class prinGerente extends javax.swing.JFrame {
             int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
             if(opcion==0){ //Despedir
                 Date fechaSist = new Date(); 
-                SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
                 String fechaDespido = formato.format(fechaSist); 
 
                 String respuesta = bD.despedirVendedor(id, fechaDespido);
@@ -752,7 +736,7 @@ public class prinGerente extends javax.swing.JFrame {
             int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
             if(opcion==0){ //Despedir
                 Date fechaSist = new Date(); 
-                SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
                 String fechaDespido = formato.format(fechaSist); 
 
                 String respuesta = bD.despedirJefeTaller(id, fechaDespido);
@@ -915,7 +899,6 @@ public class prinGerente extends javax.swing.JFrame {
         labGenero.setVisible(varControl);
         labSal.setVisible(varControl);
         labSede.setVisible(varControl);
-        labTel.setVisible(varControl);
         
         comboxCargo.setVisible(varControl);
         comboxCargo.setSelectedIndex(0);
@@ -940,8 +923,6 @@ public class prinGerente extends javax.swing.JFrame {
         tCuentaBan.setText("");
         tSal.setVisible(varControl);
         tSal.setText("");
-        tTel.setVisible(varControl);
-        tTel.setText("");
   
     }
     
@@ -1716,41 +1697,30 @@ public class prinGerente extends javax.swing.JFrame {
 
     private void bAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAceptarActionPerformed
         // TODO add your handling code here:
-        
-        actualizarComboxSedes();
-        int index = comboxEmple.getSelectedIndex();
+        System.out.println(botonAceptar);
         if(botonAceptar==1){
             if (comboxCargo.getSelectedItem()== "Vendedor"){
              this.agregarVendedor();
-             limpiarCamposUsuarios();
             }else{
                 this.agregarJefeTaller();
-                limpiarCamposUsuarios();
             }}else if(botonAceptar==2){
-                actualizarComboxVendedoresYJefes();
-                String id = listaIds[comboxEmple.getSelectedIndex()];
+                String id = listaIds[comboxEmple.getSelectedIndex()-1];
                 Vendedor vendedor = bD.leerVendedorPorId(id);
                 JefeTaller jefe = bD.leerJefeTallerPorId(id);
                 /**hay que seleccionar el tipo de usuario*/
                 if(vendedor != null){
                     modificarVendedor();
-                }else {
-                    if (jefe != null) {
+                }else if (jefe != null) {
                     modificarJefeTaller();
-                    }
                 }
                 
             }else if(botonAceptar==3){
-                actualizarComboxVendedoresYJefes();
-                System.out.println("Entro al if");
-                System.out.println(index);
-                this.consultar(index);
+                this.consultar();
             }else if(botonAceptar==4){
-                actualizarComboxVendedoresYJefes();
                 this.despedir();
-            }else if (botonAceptar == 5){
-                this.agregarSede();
-            }//else if (botonAceptar == 6){
+            }//else if (botonAceptar == 5){
+              //  this.agregarSede();
+            //}else if (botonAceptar == 6){
                 
             //}else if (botonAceptar == 7){
                 
@@ -1761,10 +1731,12 @@ public class prinGerente extends javax.swing.JFrame {
 
 
     private void comboxEmpleItemStateChanged(java.awt.event.ItemEvent evt) {                                             
-        // TODO add your handling code here:]
+        // TODO add your handling code here:
         String id = listaIds[comboxEmple.getSelectedIndex()-1];
         Vendedor vendedor = bD.leerVendedorPorId(id);
         JefeTaller jefe = bD.leerJefeTallerPorId(id);
+        System.out.println(vendedor);
+        System.out.println(jefe);
         
         
         if(comboxEmple.getSelectedIndex() == 0){
@@ -1788,7 +1760,8 @@ public class prinGerente extends javax.swing.JFrame {
 
     private void bAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAceptarMouseClicked
         // TODO add your handling code here:
-        
+        actualizarComboxVendedoresYJefes();
+        actualizarComboxSedes();
     }//GEN-LAST:event_bAceptarMouseClicked
 
     private void comboxEmpleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboxEmpleActionPerformed
@@ -1840,7 +1813,7 @@ public class prinGerente extends javax.swing.JFrame {
             cambiarVisibilidadCampos(true);
             cambiarVisibilidadCamposSede(false);
             cambiarVisibilidadCamposSedeModf(false);
-            this.actualizarComboxSedes();
+            actualizarComboxSedes();
         
             botonAceptar = 6;
             bAceptar.setText("Modificar");
@@ -1851,7 +1824,7 @@ public class prinGerente extends javax.swing.JFrame {
     private void bConsulMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bConsulMouseClicked
             cambiarVisibilidadCamposmodf(false);
             cambiarVisibilidadCampos(false);
-            this.actualizarComboxVendedoresYJefes();
+            actualizarComboxVendedoresYJefes();
         
             botonAceptar = 3;
             bAceptar.setText("Consultar");

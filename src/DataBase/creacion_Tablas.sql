@@ -72,6 +72,7 @@ CREATE TABLE Gerente (
 
   PRIMARY KEY (id_Gerente),
   FOREIGN KEY (id_Sede) REFERENCES Sede(id_Sede)
+
 );
 
 
@@ -243,17 +244,3 @@ CREATE TABLE Consulta (
     FOREIGN KEY (id_Cotizacion) REFERENCES Cotizacion(id_Cotizacion)
 );
 
-INSERT INTO Sede (nombre_Sede, direccion, fecha_creacion, habilitada) VALUES 
-                        ('Sede1','Calle1', '2000-01-01',true);
-
-INSERT INTO Sede (nombre_Sede, direccion, fecha_creacion, habilitada) VALUES
-                        ('Sede2','Calle2', '2000-01-01',true);
-
-INSERT INTO Sede (nombre_Sede, direccion, fecha_creacion, habilitada) VALUES 
-                        ('Sede3','Calle3', '2000-01-01',true);
-
-INSERT INTO Sede (nombre_Sede, direccion, fecha_creacion, habilitada) VALUES
-                        ('Sede4','Calle4','2000-01-01',true);
-
-INSERT INTO SuperUsuario (id_SuperUsuario, nombre_SuperUsuario, cedula, correo, fecha_nacimiento, nombre_Usuario, contrasenia ) VALUES
-                                ('0','super','super','super','2000-01-01','super','super');
