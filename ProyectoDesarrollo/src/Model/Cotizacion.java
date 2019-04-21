@@ -15,38 +15,38 @@ public class Cotizacion {
     // ATRIBUTOS
     //-------------------------------------------------------------------------
     
-    private String id;
+    private float valor;
     
-    private String nombreProducto;
+    private String nombreCliente;
     
-    private float valorUnitario;
+    private String telefonoCliente;
+  
+    private String email;
     
-    private int cantidad;
+    private String fecha;
     
-    private String descripcionProducto;
-    
-    private String nombreEmpresa;
-    
-    private String telefonoEmpresa;
-    
-    private String direccionEmpresa;
-    
-    private String idVendedor;
+    private String producto;
             
     //-------------------------------------------------------------------------
     // CONSTRUCTOR
     //-------------------------------------------------------------------------
 
-    public Cotizacion(String id, String nombreProducto, float valorUnitario, int cantidad, String descripcionProducto, String nombreEmpresa, String telefonoEmpresa, String direccionEmpresa, String idVendedor) {
-        this.id = id;
-        this.nombreProducto = nombreProducto;
-        this.valorUnitario = valorUnitario;
-        this.cantidad = cantidad;
-        this.descripcionProducto = descripcionProducto;
-        this.nombreEmpresa = nombreEmpresa;
-        this.telefonoEmpresa = telefonoEmpresa;
-        this.direccionEmpresa = direccionEmpresa;
-        this.idVendedor = idVendedor;
+    public Cotizacion(float valor, String nombreCliente, String telefonoCliente, String email, String fecha, String producto) {
+
+        this.valor = valor;
+        this.nombreCliente = nombreCliente;
+        this.telefonoCliente = telefonoCliente;
+        this.email = email;
+        this.fecha = fecha;
+        this.producto = producto;
+    }
+
+    public Cotizacion(String idCotizacion, String nombreProducto, float valorUnitario, int cantidad, String descripcion, String nombreEmpresa, String telefonoEmpresa, String direccionEmpresa, String idVendedor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Cotizacion(float valor, String nombreCliente, String telefonoCliente, String email, String fecha) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     
@@ -54,76 +54,52 @@ public class Cotizacion {
     // GETS AND SETS
     //-------------------------------------------------------------------------
 
-    public String getId() {
-        return id;
+    public String getNombreCliente() {
+        return nombreCliente;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getNombreProducto() {
-        return nombreProducto;
-    }
-
-    public void setNombreProducto(String nombreProducto) {
-        this.nombreProducto = nombreProducto;
+    public void setNombreCliente(String nombreCliente) {
+        this.nombreCliente = nombreCliente;
     }
 
     public float getValorUnitario() {
-        return valorUnitario;
+        return valor;
     }
 
-    public void setValorUnitario(float valorUnitario) {
-        this.valorUnitario = valorUnitario;
+    public void setValor(float valor) {
+        this.valor = valor;
     }
 
-    public int getCantidad() {
-        return cantidad;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
+    public void setNombreEmpresa(String email) {
+        this.email = email;
     }
 
-    public String getDescripcionProducto() {
-        return descripcionProducto;
+    public String getTelefonoCliente() {
+        return telefonoCliente;
     }
 
-    public void setDescripcionProducto(String descripcionProducto) {
-        this.descripcionProducto = descripcionProducto;
+    public void setTelefonoEmpresa(String telefonoCliente) {
+        this.telefonoCliente = telefonoCliente;
+    }
+    
+    public String getProducto() {
+        return producto;
     }
 
-    public String getNombreEmpresa() {
-        return nombreEmpresa;
+    public void setProducto(String producto) {
+        this.producto = producto;
+    }
+    
+    public String getFecha() {
+        return fecha;
     }
 
-    public void setNombreEmpresa(String nombreEmpresa) {
-        this.nombreEmpresa = nombreEmpresa;
-    }
-
-    public String getTelefonoEmpresa() {
-        return telefonoEmpresa;
-    }
-
-    public void setTelefonoEmpresa(String telefonoEmpresa) {
-        this.telefonoEmpresa = telefonoEmpresa;
-    }
-
-    public String getDireccionEmpresa() {
-        return direccionEmpresa;
-    }
-
-    public void setDireccionEmpresa(String direccionEmpresa) {
-        this.direccionEmpresa = direccionEmpresa;
-    }
-
-    public String getIdVendedor() {
-        return idVendedor;
-    }
-
-    public void setIdVendedor(String idVendedor) {
-        this.idVendedor = idVendedor;
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
     
 }
