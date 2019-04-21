@@ -27,11 +27,13 @@ public class DBConnection {
     
     //Usuario de la base de datos en postgresql
     private final String dBUser = "postgres";
+
     private final String dBPassword = "Marthox2299";
+
   
 
     //puerto
-    private final String port = "5432";
+    private final String port = "5433";
     //Nombre de la base de datos
     private final String dBName = "muebles_XYZ";
     //Dirección del host de la base de datos
@@ -1195,10 +1197,13 @@ public class DBConnection {
                 String nombreCliente = rs.getString("nombre_cliente");
                 String telefonoCliente = rs.getString("telefono_Cliente");
                 String cedulaCliente = rs.getString("cedula_Cliente");
-                int valorVenta = Integer.parseInt(rs.getString("valor_Venta"));
+                float valorVenta = Float.valueOf(rs.getString("valor_Venta"));
                 String descripcionVenta = rs.getString("descripcion_Venta");
+                //String idVendedor = rs.getString("idVendedor"); // NO REVISADO //////////////////////////////////////////////////////
                 
+
                 Venta venta = new Venta(id, nombreCliente, telefonoCliente, cedulaCliente, valorVenta, descripcionVenta,"");
+
                 
                 rs.close();
                 st.close();
@@ -1718,7 +1723,9 @@ public class DBConnection {
                 String telefonoCliente = rs.getString("telefono_cliente");
                 String email = rs.getString("email");
                 String fecha = rs.getString("fecha_cotizacion");
-                Cotizacion cotizacion = new Cotizacion("","",1,1,"","","","","");
+
+                Cotizacion cotizacion = new Cotizacion(id,valor, nombreCliente, telefonoCliente,email,fecha);
+
                 
                 rs.close();
                 st.close();
