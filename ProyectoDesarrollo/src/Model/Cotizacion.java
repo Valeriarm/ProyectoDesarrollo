@@ -16,36 +16,24 @@ public class Cotizacion {
     //-------------------------------------------------------------------------
     
     private String id;
-    
-    private String nombreProducto;
-    
-    private float valorUnitario;
-    
-    private int cantidad;
-    
-    private String descripcionProducto;
-    
-    private String nombreEmpresa;
-    
-    private String telefonoEmpresa;
-    
-    private String direccionEmpresa;
-    
+    private String nombreCliente;
+    private String valorCotizacion;
+    private String telefonoCliente;
+    private String fechaCotizacion;
+    private String correoCliente;
     private String idVendedor;
             
     //-------------------------------------------------------------------------
     // CONSTRUCTOR
     //-------------------------------------------------------------------------
 
-    public Cotizacion(String id, String nombreProducto, float valorUnitario, int cantidad, String descripcionProducto, String nombreEmpresa, String telefonoEmpresa, String direccionEmpresa, String idVendedor) {
+    public Cotizacion(String id, String nombreCliente, String valorCotizacion, String telefonoCliente, String fechaCotizacion, String correoCliente, String idVendedor) {
         this.id = id;
-        this.nombreProducto = nombreProducto;
-        this.valorUnitario = valorUnitario;
-        this.cantidad = cantidad;
-        this.descripcionProducto = descripcionProducto;
-        this.nombreEmpresa = nombreEmpresa;
-        this.telefonoEmpresa = telefonoEmpresa;
-        this.direccionEmpresa = direccionEmpresa;
+        this.nombreCliente = nombreCliente;
+        this.valorCotizacion = valorCotizacion;
+        this.telefonoCliente = telefonoCliente;
+        this.fechaCotizacion = fechaCotizacion;
+        this.correoCliente = correoCliente;
         this.idVendedor = idVendedor;
     }
     
@@ -62,60 +50,44 @@ public class Cotizacion {
         this.id = id;
     }
 
-    public String getNombreProducto() {
-        return nombreProducto;
+    public String getNombreCliente() {
+        return nombreCliente;
     }
 
-    public void setNombreProducto(String nombreProducto) {
-        this.nombreProducto = nombreProducto;
+    public void setNombreCliente(String nombreCliente) {
+        this.nombreCliente = nombreCliente;
     }
 
-    public float getValorUnitario() {
-        return valorUnitario;
+    public String getValorCotizacion() {
+        return valorCotizacion;
     }
 
-    public void setValorUnitario(float valorUnitario) {
-        this.valorUnitario = valorUnitario;
+    public void setValorCotizacion(String valorCotizacion) {
+        this.valorCotizacion = valorCotizacion;
     }
 
-    public int getCantidad() {
-        return cantidad;
+    public String getTelefonoCliente() {
+        return telefonoCliente;
     }
 
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
+    public void setTelefonoCliente(String telefono) {
+        this.telefonoCliente = telefono;
     }
 
-    public String getDescripcionProducto() {
-        return descripcionProducto;
+    public String getFechaCotizacion() {
+        return fechaCotizacion;
     }
 
-    public void setDescripcionProducto(String descripcionProducto) {
-        this.descripcionProducto = descripcionProducto;
+    public void setFechaCotizacion(String fechaC) {
+        this.fechaCotizacion = fechaC;
     }
 
-    public String getNombreEmpresa() {
-        return nombreEmpresa;
+    public String getCorreoCliente() {
+        return correoCliente;
     }
 
-    public void setNombreEmpresa(String nombreEmpresa) {
-        this.nombreEmpresa = nombreEmpresa;
-    }
-
-    public String getTelefonoEmpresa() {
-        return telefonoEmpresa;
-    }
-
-    public void setTelefonoEmpresa(String telefonoEmpresa) {
-        this.telefonoEmpresa = telefonoEmpresa;
-    }
-
-    public String getDireccionEmpresa() {
-        return direccionEmpresa;
-    }
-
-    public void setDireccionEmpresa(String direccionEmpresa) {
-        this.direccionEmpresa = direccionEmpresa;
+    public void setCorreoCliente(String correoC) {
+        this.correoCliente = correoC;
     }
 
     public String getIdVendedor() {
