@@ -284,7 +284,7 @@ public class prinGerente extends javax.swing.JFrame {
     
     private void actualizarComboxVendedoresYJefes(){
         Gerente ger = bD.leerGerentePorId(idGerente);
-        String empleados = bD.listarVendedoresYJefes(ger.getSede());        
+        String empleados = bD.listarVendedoresYJefes(ger.getIdSede());        
         
         if(empleados.equals("")){ //No Hay empleados
            String[] opciones = { "No seleccionado" };
@@ -688,7 +688,7 @@ public class prinGerente extends javax.swing.JFrame {
                          "Cargo: "+vendedor.getCargo()+"\n"+
                          "salario: "+vendedor.getSalario()+"\n"+
                          "Cuenta Bancaria: "+vendedor.getCuentaBancaria()+"\n"+
-                         "Sede: "+ vendedor.getSede()+"\n"+
+                         "Sede: "+ vendedor.getIdSede()+"\n"+
                          "Fecha Registro: "+vendedor.getFechaRegistro()+"\n"+
                          "Edad: "+edad+"\n"+
                          "Fecha Nacimiento: "+vendedor.getFechaNacimiento()+"\n"+
@@ -713,7 +713,7 @@ public class prinGerente extends javax.swing.JFrame {
                          "Cargo: "+jefe.getCargo()+"\n"+
                          "salario: "+jefe.getSalario()+"\n"+
                          "Cuenta Bancaria: "+jefe.getCuentaBancaria()+"\n"+
-                         "Sede: "+jefe.getSede()+"\n"+
+                         "Sede: "+jefe.getIdSede()+"\n"+
                          "Fecha Registro: "+jefe.getFechaRegistro()+"\n"+
                          "Edad: "+edad+"\n"+
                          "Fecha Nacimiento: "+jefe.getFechaNacimiento()+"\n"+
@@ -735,7 +735,7 @@ public class prinGerente extends javax.swing.JFrame {
         if(vendedor != null){
             String mensaje = "Seguro que desea despedir al vendedor:\n"+"Nombre: "+vendedor.getNombre()+"\nCedula: "+vendedor.getCedula()+"\n"+
                              "Cargo: "+vendedor.getCargo()+"\nsalario: "+vendedor.getSalario()+"\n"+
-                             "Sede: "+vendedor.getSede();
+                             "Sede: "+vendedor.getIdSede();
             int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
             if(opcion==0){ //Despedir
                 Date fechaSist = new Date(); 
@@ -748,7 +748,7 @@ public class prinGerente extends javax.swing.JFrame {
         }else{
             String mensaje = "Seguro que desea despedir al jefe de taller:\n"+"Nombre: "+jefe.getNombre()+"\nCedula: "+jefe.getCedula()+"\n"+
                              "Cargo: "+jefe.getCargo()+"\nsalario: "+jefe.getSalario()+"\n"+
-                             "Sede: "+jefe.getSede();
+                             "Sede: "+jefe.getIdSede();
             int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
             if(opcion==0){ //Despedir
                 Date fechaSist = new Date(); 

@@ -9,27 +9,16 @@ package Model;
  *
  * @author crist
  */
-public class Vendedor extends Usuario{
-    
-    private String managerId;
-    private int idSede;
+public class Vendedor extends Usuario{    
     
     public Vendedor(String id, String nombre,  String cedula, 
             String cargo, String telefono, String direccion, int genero,
             String fechaNacimiento, String correo, float salario, 
             String cuentaBancaria, String fechaRegistro, String nombreUsuario,
-            String contrasenia, boolean habilitado, String fechaDespido, int sede) {
+            String contrasenia, boolean habilitado, String fechaDespido, int idSede) {
         super(id, contrasenia, nombreUsuario, nombre, cedula, cargo, telefono, direccion, genero,
-             fechaNacimiento,  correo,  salario, cuentaBancaria,  fechaRegistro,fechaDespido,sede);
+             fechaNacimiento,  correo,  salario, cuentaBancaria,  fechaRegistro,fechaDespido,idSede);
 
-        this.idSede = idSede;
     }
-
-
-    public int getIdSede(){
-        return idSede;
-    }
-
-    
     
 }

@@ -30,40 +30,24 @@ public class Usuario {
     //-------------------------------------------------------------------------
     
     private String id;
-    
     private String nombre;
-    
     private String nombreUsuario;
-    
     private String contrasena;
-    
     private String cedula;
-    
     private String cargo;
-    
     private String correo;
-    
     private int genero;
-    
     private String direccion;
-    
     private String telefono;
-    
     private float salario;
-    
     private String fechaNacimiento;
-    
     private boolean habilitado;
-    
     private String cuentaBancaria;
-    
     private String fechaRegistro;
     
-    private String fechaDespido;
+    private String fechaDespido;    
     
-    private String managerId;
-    
-    private int sede;
+    private int idSede;
     
     //-------------------------------------------------------------------------
     // CONSTRUCTORES
@@ -91,7 +75,7 @@ public class Usuario {
             String cargo, String correo, int genero, String direccion, 
             String telefono, float salario, String fechaNacimiento, 
             String cuentaBancaria, String fechaRegistro, String nombreUsuario,
-            String contrasena, boolean habilitado, String fechaDespido, int sede) {
+            String contrasena, boolean habilitado, String fechaDespido, int idSede) {
         this.id = id;
         this.nombre = nombre;
         this.nombreUsuario = nombreUsuario;
@@ -108,7 +92,7 @@ public class Usuario {
         this.contrasena = contrasena;
         this.habilitado = habilitado;
         this.fechaDespido = fechaDespido;
-        this.sede = sede;
+        this.idSede = idSede;
     }
     
     /**
@@ -203,7 +187,7 @@ public class Usuario {
         this.fechaNacimiento = fechaNacimiento;
         this.cuentaBancaria = cuentaBancaria;
         this.fechaRegistro = fechaRegistro;
-        this.sede = sede;
+        this.idSede = idSede;
     }
     
     //-------------------------------------------------------------------------
@@ -346,12 +330,12 @@ public class Usuario {
         this.fechaDespido = fechaDespido;
     }
 
-    public int getSede() {
-        return sede;
+    public int getIdSede() {
+        return idSede;
     }
 
-    public void setSede(int sede) {
-        this.sede = sede;
+    public void setIdSede(int idSede) {
+        this.idSede = idSede;
     }
     
     
