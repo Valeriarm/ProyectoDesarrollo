@@ -7,13 +7,10 @@ package Controller;
 import Model.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * Clase tentativa para el manejo y conexión a la base de datos
@@ -27,11 +24,11 @@ public class DBConnection {
     
     //Usuario de la base de datos en postgresql
     private final String dBUser = "postgres";
-    private final String dBPassword = "Marthox2299";
+    private final String dBPassword = "1144211502";
   
 
     //puerto
-    private final String port = "5432";
+    private final String port = "5433";
     //Nombre de la base de datos
     private final String dBName = "muebles_XYZ";
     //Dirección del host de la base de datos
@@ -129,64 +126,6 @@ public class DBConnection {
         return respuesta;
     }
     
-    private String idSiguienteCotizacion(){
-    
-        connect();
-        int idMayor = 0;
-        String id = "0";
-        
-        try {
-            //////////////////Orden de trabajo/////////////////////////////////
-            sql = "SELECT id_cotizacion FROM cotizacion";
-            rs = st.executeQuery(sql);
-
-            while(rs.next()){//En caso de que hayan ordenes de trabajo
-                id = rs.getString("id_cotizacion");
-                if(idMayor<Integer.parseInt(id)) idMayor = Integer.parseInt(id); 
-            }
-            //idMayor = idMayor;
-            ////////////////////////////////////////////////////////////            
-            id = String.valueOf(idMayor+1);
-            
-            rs.close();
-            st.close();
-            connection.close();
-            
-        } catch (NumberFormatException | SQLException e) {
-            System.out.println("ERROR DE SQL " + e.getMessage());
-        }
-      
-        return id;
-    }
-    
-    private String idSiguienteVenta(){
-    connect();
-        int idMayor = 0;
-        String id = "0";
-        
-        try {
-            //////////////////Orden de trabajo/////////////////////////////////
-            sql = "SELECT id_factura FROM venta";
-            rs = st.executeQuery(sql);
-
-            while(rs.next()){//En caso de que hayan ordenes de trabajo
-                id = rs.getString("id_factura");
-                if(idMayor<Integer.parseInt(id)) idMayor = Integer.parseInt(id); 
-            }
-            //idMayor = idMayor;
-            ////////////////////////////////////////////////////////////            
-            id = String.valueOf(idMayor+1);
-            
-            rs.close();
-            st.close();
-            connection.close();
-            
-        } catch (NumberFormatException | SQLException e) {
-            System.out.println("ERROR DE SQL " + e.getMessage());
-        }
-      
-        return id;
-    }
     
     //Busca cual es el siguiente id a ser asignado
     private String idSiguiente(){
@@ -277,7 +216,6 @@ public class DBConnection {
         }
         return id;
     }
-    
     
     private String idSiguienteInventario(){
         connect();
@@ -1160,26 +1098,32 @@ public class DBConnection {
     ////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////
     
+    
+     
     public String crearVenta(String nombreCliente, String telefonoCliente, 
            String cedulaCliente, float valorVenta, String descripcionVenta, String idVendedor){
         
         
        String respuesta = "Ocurrió un error";
-       System.out.println(idVendedor);
-        String id = idSiguienteVenta();
+        String id = idSiguiente();
         connect();
 
         try {
-            sql = "INSERT INTO venta VALUES ('"+id+"','"+nombreCliente+"','"+telefonoCliente+"','"+cedulaCliente+"','"+valorVenta+"','"+descripcionVenta+
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                return "La orden de trabajo con el id "+id+" ya existe";
+            }
+            else{
+            sql = "INSERT INTO venta (id_venta, nombre_cliente, telefono_cliente, cedula_cliente, valor_venta, descripcion_venta, id_vendedor"
+                    + "VALUES ('"+id+"','"+nombreCliente+"','"+telefonoCliente+"','"+cedulaCliente+"','"+valorVenta+"','"+descripcionVenta+
                     "','"+idVendedor+"')";
                 
             st.executeUpdate(sql);
             rs.close();
             st.close();
             connection.close();
-            respuesta = "Venta agregada con éxito\n\nId: "+id+"\nNombre Cliente: "+nombreCliente+"\ntelefono Cliente: "+telefonoCliente;       
-            
-                             
+            }
+            respuesta = "Venta agregada con éxito\n\nId: "+id+"\nNombre Cliente: "+nombreCliente+"\ntelefono Cliente: "+telefonoCliente;                        
         } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }        
@@ -1195,10 +1139,13 @@ public class DBConnection {
                 String nombreCliente = rs.getString("nombre_cliente");
                 String telefonoCliente = rs.getString("telefono_Cliente");
                 String cedulaCliente = rs.getString("cedula_Cliente");
-                int valorVenta = Integer.parseInt(rs.getString("valor_Venta"));
+                float valorVenta = Float.valueOf(rs.getString("valor_Venta"));
                 String descripcionVenta = rs.getString("descripcion_Venta");
+                String fecha = rs.getString("fecha_venta");
+                //String idVendedor = rs.getString("idVendedor"); // NO REVISADO //////////////////////////////////////////////////////
                 
-                Venta venta = new Venta(id, nombreCliente, telefonoCliente, cedulaCliente, valorVenta, descripcionVenta,"");
+                Venta venta = new Venta(id, nombreCliente, telefonoCliente, cedulaCliente, valorVenta, descripcionVenta, fecha, "");
+                //Venta venta = new Venta(id, nombreCliente, telefonoCliente, cedulaCliente, valorVenta, descripcionVenta, "");
                 
                 rs.close();
                 st.close();
@@ -1508,12 +1455,16 @@ public class DBConnection {
     
     
     public String crearInventario(String nombreProducto, float valorUnitario, 
-            String descripcion, String idJefe){     
+            String descripcion, String idJefe){        
+        System.out.println(idJefe);
         String id = idSiguienteInventario();
+        System.out.println(id);
         connect();
         sql = "SELECT id_Producto FROM Inventario WHERE id_Producto = '"+id+"'";
         try {
+            System.out.println(sql);
             rs = st.executeQuery(sql);
+            System.out.println("jaime dice");
             if(rs.next()){
                 return "El Producto con el id "+id+" ya existe";
                 
@@ -1682,28 +1633,35 @@ public class DBConnection {
     
     
     
-    public String crearCotizacion( String nombre_Cliente, String telefono, String email , float valor_Unitario,
-                                    String fecha, String idVendedor){
-        
-        String respuesta = "Ocurrió un error";
-       System.out.println(idVendedor);
-        String id = idSiguienteCotizacion();
+    public String crearCotizacion(String id, String nombre_Producto, float valor_Unitario, int cantidad,
+                                    String descripcion_Producto, String nombreEmpresa, String telefono,
+                                    String direccion, String id_Vendedor){
         connect();
-
-        
         sql = "SELECT id_Cotizacion FROM Cotizacion WHERE id_Cotizacion = '"+id+"'";
         try {
-                sql = "INSERT INTO Cotizacion VALUES ('"+id+"','"+nombre_Cliente+"','"+telefono+"','"+email+"','"+valor_Unitario+"','"+fecha+"','"+idVendedor+"')";                
-                st.executeUpdate(sql);
-                rs.close();
-                st.close();
-                connection.close();
-                respuesta = "Cotizacion agregada con éxito\n\nId: "+id+"\nNombre Cliente: "+nombre_Cliente+"\nEmail Cliente: "+email;  ;
-
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                return "La Cotizacion con el id "+id+" ya existe";
+                
+            }else{ 
+                sql = "SELECT id_Cotizacion FROM Cotizacion WHERE id_Cotizacion = '"+id+"'";
+                rs = st.executeQuery(sql);
+                if(rs.next()){
+                    sql = "INSERT INTO Cotizacion VALUES ('"+id+"','"+nombre_Producto+"','"+valor_Unitario+"','"+cantidad+"','"+descripcion_Producto+"','"+nombreEmpresa+"','"+telefono+"','"+direccion+"','"+id_Vendedor+"')";                
+                    st.executeUpdate(sql);
+                    rs.close();
+                    st.close();
+                    connection.close();
+                }else{
+                    return "La Cotizacion con el id "+id+" no existe";
+                }
+                
+            }
+            
         } catch (Exception e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
-       return respuesta;
+       return "Cotizacion agregado con éxito";
     }
     
     public Cotizacion leerCotizacionPorId(String id){
@@ -1713,12 +1671,14 @@ public class DBConnection {
             rs = st.executeQuery(sql);
             if(rs.next()){
 
-                float valor = rs.getFloat("valor_cotizacion");
+                String valor = String.valueOf(rs.getFloat("valor_cotizacion"));
                 String nombreCliente = rs.getString("nombre_cliente");
                 String telefonoCliente = rs.getString("telefono_cliente");
                 String email = rs.getString("email");
                 String fecha = rs.getString("fecha_cotizacion");
-                Cotizacion cotizacion = new Cotizacion("","",1,1,"","","","","");
+                
+                Cotizacion cotizacion = new Cotizacion(id, nombreCliente, valor, telefonoCliente, fecha, email, "");
+                //Cotizacion cotizacion = new Cotizacion(id,valor, nombreCliente, telefonoCliente,email,fecha);
                 
                 rs.close();
                 st.close();
@@ -1944,142 +1904,6 @@ public class DBConnection {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return "";
-    }
-    
-    ////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////// REPORTES /////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////
-    
-    public List reporteInventario(){
-        connect();
-        //Obtaining data from database
-        sql = "SELECT * FROM inventario";
-        try {
-            rs = st.executeQuery(sql);
-            List reportes = new ArrayList();
-            String id = "";
-            String nombre = "";
-            int cant = 0;
-            Report report = new Report("",0);
-            while(rs.next()){
-                id = rs.getString("id_producto");
-                nombre = rs.getString("nombre_producto");
-                cant = rs.getInt("cantidad");
-                        report = new Report(nombre+"("+id+")", cant);
-                        reportes.add(report);
-            }
-            rs.close();
-            st.close();
-            connection.close();
-            return reportes;
-        } catch (SQLException e) {
-            System.out.println("Error en Reporte inventario");
-            System.out.println("ERROR DE SQL " + e.getMessage());
-        }
-        List empty = new ArrayList();
-        return empty;
-    }
-    
-    public List reporteOrdenesTrabajoDia(String jefe, String initDate, String finishDate){
-        connect();
-        //Obtaining data from database
-        sql = "SELECT EXTRACT(YEAR FROM fecha_creacion) as anio, EXTRACT(MONTH "
-                + "FROM fecha_creacion) as mes, EXTRACT(DAY FROM fecha_creacion) "
-                + "as dia, COUNT(*) AS cant FROM Orden_Trabajo WHERE id_Jefe = '"
-                +jefe+"' AND fecha_creacion > '"+initDate+"' AND fecha_creacion "
-                + "< '"+finishDate+"' GROUP BY dia, mes, anio";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sql);
-            rs = stmt.executeQuery();
-            List reportes = new ArrayList();
-            String dia = "";
-            String mes = "";
-            String anio = "";
-            int cant = 0;
-            Report report = new Report("",0);
-            while(rs.next()){
-                dia = rs.getString("dia");
-                mes = rs.getString("mes");
-                anio = rs.getString("anio");
-                
-                cant = rs.getInt("cant");
-                report = new Report(dia+"/"+mes+"/"+anio, cant);
-                reportes.add(report);
-            }
-            rs.close();
-            st.close();
-            connection.close();
-            return reportes;
-        } catch (SQLException e) {
-            System.out.println("ERROR DE SQL " + e.getMessage());
-        }
-        List empty = new ArrayList();
-        return empty;
-    }
-    
-    public List reporteOrdenesTrabajoMes(String jefe, String initDate, String finishDate){
-        connect();
-        //Obtaining data from database
-        sql = "SELECT EXTRACT(YEAR FROM fecha_creacion) as anio, EXTRACT(MONTH "
-                + "FROM fecha_creacion) as mes, COUNT(*) AS cant FROM Orden_Trabajo"
-                + " WHERE id_Jefe = '"+jefe+"' AND fecha_creacion > '"+initDate+"' "
-                + "AND fecha_creacion < '"+finishDate+"' GROUP BY mes, anio";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sql);
-            rs = stmt.executeQuery();
-            List reportes = new ArrayList();
-            String mes = "";
-            String anio = "";
-            int cant = 0;
-            Report report = new Report("",0);
-            while(rs.next()){
-                mes = rs.getString("mes");
-                anio = rs.getString("anio");
-                
-                cant = rs.getInt("cant");
-                
-                report = new Report(mes+"/"+anio, cant);
-                reportes.add(report);
-            }
-            rs.close();
-            st.close();
-            connection.close();
-            return reportes;
-        } catch (SQLException e) {
-            System.out.println("ERROR DE SQL " + e.getMessage());
-        }
-        List empty = new ArrayList();
-        return empty;
-    }
-    
-    public List reporteOrdenesTrabajoAnio(String jefe, String initDate, String finishDate){
-        connect();
-        //Obtaining data from database
-        sql = "SELECT EXTRACT(YEAR FROM fecha_creacion) as anio, COUNT(*) AS cant FROM Orden_Trabajo"
-                + " WHERE id_Jefe = '"+jefe+"' AND fecha_creacion > '"+initDate+"' "
-                + "AND fecha_creacion < '"+finishDate+"' GROUP BY anio";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sql);
-            rs = stmt.executeQuery();
-            List reportes = new ArrayList();
-            String anio = "";
-            int cant = 0;
-            Report report = new Report("",0);
-            while(rs.next()){
-                anio = rs.getString("anio");
-                cant = rs.getInt("cant");
-                report = new Report(anio, cant);
-                reportes.add(report);
-            }
-            rs.close();
-            st.close();
-            connection.close();
-            return reportes;
-        } catch (SQLException e) {
-            System.out.println("ERROR DE SQL " + e.getMessage());
-        }
-        List empty = new ArrayList();
-        return empty;
     }
     
     public static void main(String args[]) {    
