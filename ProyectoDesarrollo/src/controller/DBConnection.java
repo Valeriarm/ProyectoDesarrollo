@@ -1198,7 +1198,7 @@ public class DBConnection {
                 int valorVenta = Integer.parseInt(rs.getString("valor_Venta"));
                 String descripcionVenta = rs.getString("descripcion_Venta");
                 
-                Venta venta = new Venta(id, nombreCliente, telefonoCliente, cedulaCliente, valorVenta, descripcionVenta);
+                Venta venta = new Venta(id, nombreCliente, telefonoCliente, cedulaCliente, valorVenta, descripcionVenta,"");
                 
                 rs.close();
                 st.close();
@@ -1508,16 +1508,12 @@ public class DBConnection {
     
     
     public String crearInventario(String nombreProducto, float valorUnitario, 
-            String descripcion, String idJefe){        
-        System.out.println(idJefe);
+            String descripcion, String idJefe){     
         String id = idSiguienteInventario();
-        System.out.println(id);
         connect();
         sql = "SELECT id_Producto FROM Inventario WHERE id_Producto = '"+id+"'";
         try {
-            System.out.println(sql);
             rs = st.executeQuery(sql);
-            System.out.println("jaime dice");
             if(rs.next()){
                 return "El Producto con el id "+id+" ya existe";
                 
@@ -1722,8 +1718,7 @@ public class DBConnection {
                 String telefonoCliente = rs.getString("telefono_cliente");
                 String email = rs.getString("email");
                 String fecha = rs.getString("fecha_cotizacion");
-                
-                Cotizacion cotizacion = new Cotizacion(valor, nombreCliente, telefonoCliente,email,fecha);
+                Cotizacion cotizacion = new Cotizacion("","",1,1,"","","","","");
                 
                 rs.close();
                 st.close();
@@ -1956,19 +1951,19 @@ public class DBConnection {
     ////////////////////////////////////////////////////////////////////////////
     
     public List reporteInventario(){
+        connect();
         //Obtaining data from database
         sql = "SELECT * FROM inventario";
         try {
-            PreparedStatement stmt = connection.prepareStatement(sql);
-            rs = stmt.executeQuery();
+            rs = st.executeQuery(sql);
             List reportes = new ArrayList();
             String id = "";
             String nombre = "";
             int cant = 0;
             Report report = new Report("",0);
             while(rs.next()){
-                id = rs.getString("id_Producto");
-                nombre = rs.getString("nombre_Producto");
+                id = rs.getString("id_producto");
+                nombre = rs.getString("nombre_producto");
                 cant = rs.getInt("cantidad");
                         report = new Report(nombre+"("+id+")", cant);
                         reportes.add(report);
@@ -1978,28 +1973,37 @@ public class DBConnection {
             connection.close();
             return reportes;
         } catch (SQLException e) {
+            System.out.println("Error en Reporte inventario");
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         List empty = new ArrayList();
         return empty;
     }
     
-    public List reporteOrdenesTrabajoDia(String jefe){
+    public List reporteOrdenesTrabajoDia(String jefe, String initDate, String finishDate){
+        connect();
         //Obtaining data from database
-        sql = "SELECT *,EXTRACT(YEAR FROM fecha_creacion) as anio, EXTRACT(MONTH FROM fecha_creacion) as mes, EXTRACT(DAY FROM fecha_creacion) as dia, COUNT(*) AS cant FROM Orden_Trabajo WHERE id_Jefe = '"+jefe+"' GROUP BY dia, mes, anio";
+        sql = "SELECT EXTRACT(YEAR FROM fecha_creacion) as anio, EXTRACT(MONTH "
+                + "FROM fecha_creacion) as mes, EXTRACT(DAY FROM fecha_creacion) "
+                + "as dia, COUNT(*) AS cant FROM Orden_Trabajo WHERE id_Jefe = '"
+                +jefe+"' AND fecha_creacion > '"+initDate+"' AND fecha_creacion "
+                + "< '"+finishDate+"' GROUP BY dia, mes, anio";
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
             rs = stmt.executeQuery();
             List reportes = new ArrayList();
-            String id = "";
-            String nombre = "";
+            String dia = "";
+            String mes = "";
+            String anio = "";
             int cant = 0;
             Report report = new Report("",0);
             while(rs.next()){
-                id = rs.getString("id_Producto");
-                nombre = rs.getString("nombre_Producto");
-                cant = rs.getInt("cantidad");
-                report = new Report(nombre+"("+id+")", cant);
+                dia = rs.getString("dia");
+                mes = rs.getString("mes");
+                anio = rs.getString("anio");
+                
+                cant = rs.getInt("cant");
+                report = new Report(dia+"/"+mes+"/"+anio, cant);
                 reportes.add(report);
             }
             rs.close();
@@ -2013,22 +2017,28 @@ public class DBConnection {
         return empty;
     }
     
-    public List reporteOrdenesTrabajoMes(String jefe){
+    public List reporteOrdenesTrabajoMes(String jefe, String initDate, String finishDate){
+        connect();
         //Obtaining data from database
-        sql = "SELECT *,EXTRACT(YEAR FROM fecha_creacion) as anio, EXTRACT(MONTH FROM fecha_creacion), COUNT(*) AS cant FROM Orden_Trabajo WHERE id_Jefe = '"+jefe+"' GROUP BY tiempo, anio";
+        sql = "SELECT EXTRACT(YEAR FROM fecha_creacion) as anio, EXTRACT(MONTH "
+                + "FROM fecha_creacion) as mes, COUNT(*) AS cant FROM Orden_Trabajo"
+                + " WHERE id_Jefe = '"+jefe+"' AND fecha_creacion > '"+initDate+"' "
+                + "AND fecha_creacion < '"+finishDate+"' GROUP BY mes, anio";
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
             rs = stmt.executeQuery();
             List reportes = new ArrayList();
-            String id = "";
-            String nombre = "";
+            String mes = "";
+            String anio = "";
             int cant = 0;
             Report report = new Report("",0);
             while(rs.next()){
-                id = rs.getString("id_Producto");
-                nombre = rs.getString("nombre_Producto");
-                cant = rs.getInt("cantidad");
-                report = new Report(nombre+"("+id+")", cant);
+                mes = rs.getString("mes");
+                anio = rs.getString("anio");
+                
+                cant = rs.getInt("cant");
+                
+                report = new Report(mes+"/"+anio, cant);
                 reportes.add(report);
             }
             rs.close();
@@ -2042,22 +2052,23 @@ public class DBConnection {
         return empty;
     }
     
-    public List reporteOrdenesTrabajoAnio(String jefe){
+    public List reporteOrdenesTrabajoAnio(String jefe, String initDate, String finishDate){
+        connect();
         //Obtaining data from database
-        sql = "SELECT *,EXTRACT(YEAR FROM fecha_creacion) as anio, COUNT(*) AS cant FROM Orden_Trabajo WHERE id_Jefe = '"+jefe+"' GROUP BY anio";
+        sql = "SELECT EXTRACT(YEAR FROM fecha_creacion) as anio, COUNT(*) AS cant FROM Orden_Trabajo"
+                + " WHERE id_Jefe = '"+jefe+"' AND fecha_creacion > '"+initDate+"' "
+                + "AND fecha_creacion < '"+finishDate+"' GROUP BY anio";
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
             rs = stmt.executeQuery();
             List reportes = new ArrayList();
-            String id = "";
-            String nombre = "";
+            String anio = "";
             int cant = 0;
             Report report = new Report("",0);
             while(rs.next()){
-                id = rs.getString("id_Producto");
-                nombre = rs.getString("nombre_Producto");
-                cant = rs.getInt("cantidad");
-                report = new Report(nombre+"("+id+")", cant);
+                anio = rs.getString("anio");
+                cant = rs.getInt("cant");
+                report = new Report(anio, cant);
                 reportes.add(report);
             }
             rs.close();
