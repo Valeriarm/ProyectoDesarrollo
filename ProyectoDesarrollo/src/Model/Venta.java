@@ -14,9 +14,7 @@ public class Venta {
     //-------------------------------------------------------------------------
     // ATRIBUTOS
     //-------------------------------------------------------------------------
-    
-    private String id;
-    
+
     private String nombreCliente;
     
     private String telefonoCliente;
@@ -27,34 +25,33 @@ public class Venta {
     
     private String descripcionVenta;
     
-    private String idVendedor;
+    private String producto;
     
     //-------------------------------------------------------------------------
     // CONSTRUCTOR
     //-------------------------------------------------------------------------
 
 
-    public Venta(String id, String nombreCliente, String telefonoCliente, String cedulaCliente, float valorVenta, String descripcionVenta, String idVendedor) {
-        this.id = id;
+    public Venta(String nombreCliente, String telefonoCliente, String cedulaCliente, float valorVenta, String descripcionVenta, String producto) {
+
         this.nombreCliente = nombreCliente;
         this.telefonoCliente = telefonoCliente;
         this.cedulaCliente = cedulaCliente;
         this.valorVenta = valorVenta;
         this.descripcionVenta = descripcionVenta;
-        this.idVendedor = idVendedor;
+        this.producto = producto;
     }
     
     //-------------------------------------------------------------------------
     // GETS AND SETS
     //-------------------------------------------------------------------------
 
-
-    public String getId() {
-        return id;
+    public Venta(String id, String nombreCliente, String telefonoCliente, String cedulaCliente, int valorVenta, String descripcionVenta, String fecha, String producto) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public Venta(String id, String nombreCliente, String telefonoCliente, String cedulaCliente, int valorVenta, String descripcionVenta) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public String getNombreCliente() {
@@ -96,15 +93,12 @@ public class Venta {
     public void setDescripcionVenta(String descripcionVenta) {
         this.descripcionVenta = descripcionVenta;
     }
-
-    public String getIdVendedor() {
-        return idVendedor;
+    
+    public String getNombreProducto() {
+        return producto;
     }
 
-    public void setIdVendedor(String idVendedor) {
-        this.idVendedor = idVendedor;
+    public void setNombreProducto(String producto) {
+        this.producto = producto;
     }
-    
-    
-    
 }
