@@ -7,10 +7,13 @@ package Controller;
 import Model.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Clase tentativa para el manejo y conexión a la base de datos
@@ -24,7 +27,7 @@ public class DBConnection {
     
     //Usuario de la base de datos en postgresql
     private final String dBUser = "postgres";
-    private final String dBPassword = "yuuki198";
+    private final String dBPassword = "Marthox2299";
   
 
     //puerto
@@ -1946,6 +1949,126 @@ public class DBConnection {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return "";
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////// REPORTES /////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    
+    public List reporteInventario(){
+        //Obtaining data from database
+        sql = "SELECT * FROM inventario";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String id = "";
+            String nombre = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                id = rs.getString("id_Producto");
+                nombre = rs.getString("nombre_Producto");
+                cant = rs.getInt("cantidad");
+                        report = new Report(nombre+"("+id+")", cant);
+                        reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
+    public List reporteOrdenesTrabajoDia(String jefe){
+        //Obtaining data from database
+        sql = "SELECT *,EXTRACT(YEAR FROM fecha_creacion) as anio, EXTRACT(MONTH FROM fecha_creacion) as mes, EXTRACT(DAY FROM fecha_creacion) as dia, COUNT(*) AS cant FROM Orden_Trabajo WHERE id_Jefe = '"+jefe+"' GROUP BY dia, mes, anio";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String id = "";
+            String nombre = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                id = rs.getString("id_Producto");
+                nombre = rs.getString("nombre_Producto");
+                cant = rs.getInt("cantidad");
+                report = new Report(nombre+"("+id+")", cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
+    public List reporteOrdenesTrabajoMes(String jefe){
+        //Obtaining data from database
+        sql = "SELECT *,EXTRACT(YEAR FROM fecha_creacion) as anio, EXTRACT(MONTH FROM fecha_creacion), COUNT(*) AS cant FROM Orden_Trabajo WHERE id_Jefe = '"+jefe+"' GROUP BY tiempo, anio";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String id = "";
+            String nombre = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                id = rs.getString("id_Producto");
+                nombre = rs.getString("nombre_Producto");
+                cant = rs.getInt("cantidad");
+                report = new Report(nombre+"("+id+")", cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
+    public List reporteOrdenesTrabajoAnio(String jefe){
+        //Obtaining data from database
+        sql = "SELECT *,EXTRACT(YEAR FROM fecha_creacion) as anio, COUNT(*) AS cant FROM Orden_Trabajo WHERE id_Jefe = '"+jefe+"' GROUP BY anio";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String id = "";
+            String nombre = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                id = rs.getString("id_Producto");
+                nombre = rs.getString("nombre_Producto");
+                cant = rs.getInt("cantidad");
+                report = new Report(nombre+"("+id+")", cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
     }
     
     public static void main(String args[]) {    
