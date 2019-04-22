@@ -5,6 +5,7 @@
  */
 package Controller;
 import Model.*;
+import static com.alee.utils.MathUtils.max;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -225,14 +226,15 @@ public class DBConnection {
             idsMayor[2] = idMayor;
                     
             ////////////////////////////////////////////////////////////
-            idMayor = idsMayor[0];
+            /*idMayor = idsMayor[0];
             if(idMayor<idsMayor[1]){
                 idMayor = idsMayor[1];
             }else{
                 if(idMayor<idsMayor[2]){
                     idMayor = idsMayor[2];
                 }
-            }
+            }*/
+            idMayor= max(idsMayor[0], idsMayor[1], idsMayor[2]);
             
             id = String.valueOf(idMayor+1);
             
@@ -1003,8 +1005,7 @@ public class DBConnection {
                 String contrasenia = rs.getString("contrasenia");
                 boolean habilitado = rs.getBoolean("habilitado");
                 String fechaDespido = rs.getString("fecha_Despido");
-                int sedeV = rs.getInt("id_Sede");
-                
+                int sedeV = rs.getInt("id_sede");
                 Vendedor vendedor = new Vendedor(id, nombre, cedula, cargo, telefono, 
                 direccion, genero, fechaNa, email, salario, cuentaBanc, fechaReg, 
                 nombreUsuario, contrasenia, habilitado, fechaDespido,sedeV);

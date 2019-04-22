@@ -716,9 +716,6 @@ public class prinGerente extends javax.swing.JFrame {
             }else{
                 genero = "Femenino";
             }
-            
-            int edad = calcularEdad(vendedor.getFechaNacimiento());
-        
             String mensaje = "Nombre: "+vendedor.getNombre()+"\n"+
                          "Cedula: "+vendedor.getCedula()+"\n"+
                          "Cargo: "+vendedor.getCargo()+"\n"+
@@ -726,14 +723,12 @@ public class prinGerente extends javax.swing.JFrame {
                          "Cuenta Bancaria: "+vendedor.getCuentaBancaria()+"\n"+
                          "Sede: "+ vendedor.getIdSede()+"\n"+
                          "Fecha Registro: "+vendedor.getFechaRegistro()+"\n"+
-                         "Edad: "+edad+"\n"+
                          "Fecha Nacimiento: "+vendedor.getFechaNacimiento()+"\n"+
                          "Correo: "+vendedor.getCorreo()+"\n"+
                          "Genero: "+genero+"\n"+
                          "Dirección: "+vendedor.getDireccion()+"\n"+
                          "Teléfono: "+vendedor.getTelefono()+"\n";
             
-        
             JOptionPane.showMessageDialog(this, mensaje);
         }else{
            if(jefe.getGenero()==0){
@@ -741,8 +736,6 @@ public class prinGerente extends javax.swing.JFrame {
             }else{
                 genero = "Femenino";
             }
-       
-            int edad = calcularEdad(jefe.getFechaNacimiento());
         
             String mensaje = "Nombre: "+jefe.getNombre()+"\n"+
                          "Cedula: "+jefe.getCedula()+"\n"+
@@ -751,7 +744,6 @@ public class prinGerente extends javax.swing.JFrame {
                          "Cuenta Bancaria: "+jefe.getCuentaBancaria()+"\n"+
                          "Sede: "+jefe.getIdSede()+"\n"+
                          "Fecha Registro: "+jefe.getFechaRegistro()+"\n"+
-                         "Edad: "+edad+"\n"+
                          "Fecha Nacimiento: "+jefe.getFechaNacimiento()+"\n"+
                          "Correo: "+jefe.getCorreo()+"\n"+
                          "Genero: "+genero+"\n"+
@@ -773,8 +765,6 @@ public class prinGerente extends javax.swing.JFrame {
             genero = "Femenino";
         }
         
-        int edad = calcularEdad(ger.getFechaNacimiento());
-        
         String mensaje = "Nombre: "+ger.getNombre()+"\n"+
                          "Cedula: "+ger.getCedula()+"\n"+
                          "Cargo: "+ger.getCargo()+"\n"+
@@ -782,7 +772,6 @@ public class prinGerente extends javax.swing.JFrame {
                          "Cuenta Bancaria: "+ger.getCuentaBancaria()+"\n"+
                          "Sede: "+sede.getNombreSede()+"\n"+
                          "Fecha Registro: "+ger.getFechaRegistro()+"\n"+
-                         "Edad: "+edad+"\n"+
                          "Fecha Nacimiento: "+ger.getFechaNacimiento()+"\n"+
                          "Correo: "+ger.getCorreo()+"\n"+
                          "Genero: "+genero+"\n"+
@@ -1862,6 +1851,7 @@ public class prinGerente extends javax.swing.JFrame {
                 System.out.println("Entro al if");
                 System.out.println(index);
                 this.consultar(index);
+                bAceptar.setEnabled(false);
             }else if(botonAceptar==4){
                 actualizarComboxVendedoresYJefes();
                 this.despedir(index);
@@ -1883,38 +1873,35 @@ public class prinGerente extends javax.swing.JFrame {
     private void comboxEmpleItemStateChanged(java.awt.event.ItemEvent evt) {                                             
         // TODO add your handling code here:]
         
-        // TODO add your handling code here:]
         Vendedor vendedor = null;
         JefeTaller jefe = null;
         Sede sede = null;
-        if (botonAceptar==2 || botonAceptar==3 || botonAceptar==4){
+        
+        if (comboxEmple.getSelectedIndex()==0){
+            bAceptar.setEnabled(false);
+        }else if (botonAceptar==2 || botonAceptar==3 || botonAceptar==4){
+            bAceptar.setEnabled(!false);
             String id = listaIds[comboxEmple.getSelectedIndex()-1];
+            
+            System.out.println(comboxEmple.getSelectedIndex()-1);
+            System.out.println(id);
+            
             vendedor = bD.leerVendedorPorId(id);
             jefe = bD.leerJefeTallerPorId(id);
-        }else{
-            String idSedes = listaIdsSede[comboxEmple.getSelectedIndex()-1];
-            sede = bD.leerSedePorId(idSedes);
-        }
-        if(comboxEmple.getSelectedIndex() == 0){
-            bAceptar.setEnabled(false);
-            
+            habilitarCamposmodf(false);
             if(botonAceptar==2){ 
-                //limpiarCamposUsuarios(); 
-                habilitarCamposmodf(false);
                 this.comboxCargo.setEnabled(false);
+                bAceptar.setEnabled(true);
+                if(vendedor != null){
+                    llenarCamposModfVendedor();
+                }else if (jefe != null) {
+                    llenarCamposModfJefeTaller();
+                    }
+                habilitarCamposmodf(true);
             }else if (botonAceptar==6){
-                habilitarCamposmodf(false);
                 llenarCamposModfSede();
             }
-        }else{
-            bAceptar.setEnabled(true);
-            if(vendedor != null){
-                llenarCamposModfVendedor();
-            }else if (jefe != null) {
-                llenarCamposModfJefeTaller();
-                }
-            habilitarCamposmodf(true);
-        }       
+        }
     }//GEN-LAST:event_bAceptarActionPerformed
 
     private void bAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAceptarMouseClicked
