@@ -22,12 +22,14 @@ public class reportGerente extends javax.swing.JFrame {
 
     private DBConnection bD;
     private final String idGerente;
+    private final int sede;
     
-    public reportGerente(DBConnection baseDatos, String idGerente) {
+    public reportGerente(DBConnection baseDatos, String idGerente, int sede) {
         initComponents();
         llenarCBox();
         this.bD = baseDatos;
         this.idGerente = idGerente;
+        this.sede = sede;
     }    
     
     @SuppressWarnings("unchecked")
@@ -58,6 +60,7 @@ public class reportGerente extends javax.swing.JFrame {
         jComboBox2 = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        checkSede = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -127,11 +130,21 @@ public class reportGerente extends javax.swing.JFrame {
 
         jLabel4.setText("Fecha inicio");
 
+        checkSede.setText("Sede");
+        checkSede.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkSedeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 634, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(560, Short.MAX_VALUE)
+                .addComponent(checkSede)
+                .addGap(25, 25, 25))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
@@ -176,7 +189,10 @@ public class reportGerente extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 395, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addComponent(checkSede)
+                .addContainerGap(331, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
@@ -232,20 +248,35 @@ public class reportGerente extends javax.swing.JFrame {
             String.valueOf(this.fechaFinAnio.getSelectedItem());
             System.out.println(initDate);
             System.out.println(finishDate);
-            if(null != String.valueOf(this.jComboBox2.getSelectedItem()))switch (String.valueOf(this.jComboBox2.getSelectedItem())) {
-                case "Dia":
-                valores = bD.reporteOrdenesTrabajoDia(idGerente, initDate, finishDate);
-                break;
-                case "Mes":
-                valores = bD.reporteOrdenesTrabajoMes(idGerente, initDate, finishDate);
-                break;
-                case "Anio":
-                valores = bD.reporteOrdenesTrabajoAnio(idGerente, initDate, finishDate);
-                break;
-                default:
-                break;
+            if(!this.checkSede.isSelected()){
+                if(null != String.valueOf(this.jComboBox2.getSelectedItem()))switch (String.valueOf(this.jComboBox2.getSelectedItem())) {
+                    case "Dia":
+                    valores = bD.reporteGerenteOrdenesTrabajoDia(initDate, finishDate);
+                    break;
+                    case "Mes":
+                    valores = bD.reporteGerenteOrdenesTrabajoMes(initDate, finishDate);
+                    break;
+                    case "Anio":
+                    valores = bD.reporteGerenteOrdenesTrabajoAnio(initDate, finishDate);
+                    break;
+                    default:
+                    break;
+                }
+            }else{
+                if(null != String.valueOf(this.jComboBox2.getSelectedItem()))switch (String.valueOf(this.jComboBox2.getSelectedItem())) {
+                    case "Dia":
+                    valores = bD.reporteGerenteSedeOrdenesTrabajoDia(String.valueOf(this.sede), initDate, finishDate);
+                    break;
+                    case "Mes":
+                    valores = bD.reporteGerenteSedeOrdenesTrabajoMes(String.valueOf(this.sede), initDate, finishDate);
+                    break;
+                    case "Anio":
+                    valores = bD.reporteGerenteSedeOrdenesTrabajoAnio(String.valueOf(this.sede), initDate, finishDate);
+                    break;
+                    default:
+                    break;
+                }
             }
-
         }
         DefaultCategoryDataset dcd = new DefaultCategoryDataset();
         Report report = new Report("", 0);
@@ -280,6 +311,10 @@ public class reportGerente extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void checkSedeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkSedeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_checkSedeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -317,6 +352,7 @@ public class reportGerente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox checkSede;
     private javax.swing.JComboBox<String> fechaFinAnio;
     private javax.swing.JComboBox<String> fechaFinDia;
     private javax.swing.JComboBox<String> fechaFinMes;
