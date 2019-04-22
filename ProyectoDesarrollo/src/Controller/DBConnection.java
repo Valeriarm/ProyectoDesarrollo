@@ -24,12 +24,12 @@ public class DBConnection {
     //----------------------------------------------------------------------
     
     //Usuario de la base de datos en postgresql
-    private final String dBUser = "desarrollo";
-    private final String dBPassword = "desarrollo";
+    private final String dBUser = "postgres";
+    private final String dBPassword = "Marthox2299";
   
 
     //puerto
-    private final String port = "5433";
+    private final String port = "5432";
     //Nombre de la base de datos
     private final String dBName = "muebles_XYZ";
     //Dirección del host de la base de datos
@@ -2193,7 +2193,7 @@ public class DBConnection {
                 + "FROM fecha_creacion) as mes, EXTRACT(DAY FROM fecha_creacion) "
                 + "as dia, COUNT(*) AS cant FROM orden_trabajo NATURAL JOIN "
                 + "jefe_taller  WHERE id_sede = "+String.valueOf(sede)+" "
-                + "WHERE fecha_creacion > '"+initDate+"' AND fecha_creacion "
+                + "AND fecha_creacion > '"+initDate+"' AND fecha_creacion "
                 + "< '"+finishDate+"' GROUP BY anio, mes, dia";
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
@@ -2231,7 +2231,7 @@ public class DBConnection {
         sql = "SELECT EXTRACT(YEAR FROM fecha_creacion) as anio, EXTRACT(MONTH "
                 + "FROM fecha_creacion) as mes, COUNT(*) AS cant FROM orden_trabajo NATURAL JOIN "
                 + "jefe_taller  WHERE id_sede = "+String.valueOf(sede)+" "
-                + "WHERE fecha_creacion > '"+initDate+"' AND fecha_creacion "
+                + "AND fecha_creacion > '"+initDate+"' AND fecha_creacion "
                 + "< '"+finishDate+"' GROUP BY anio, mes";
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
@@ -2268,7 +2268,7 @@ public class DBConnection {
         sql = "SELECT EXTRACT(YEAR FROM fecha_creacion) as anio, COUNT(*) AS cant "
                 + "FROM orden_trabajo NATURAL JOIN "
                 + "jefe_taller  WHERE id_sede = "+String.valueOf(sede)+" "
-                + "WHERE fecha_creacion > '"+initDate+"' AND fecha_creacion "
+                + "AND fecha_creacion > '"+initDate+"' AND fecha_creacion "
                 + "< '"+finishDate+"' GROUP BY anio";
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
