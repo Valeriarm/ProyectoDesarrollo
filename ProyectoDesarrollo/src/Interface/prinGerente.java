@@ -341,7 +341,23 @@ public class prinGerente extends javax.swing.JFrame {
         }
     }
         
+    private void actualizarComboxSedesMod(){
+        String sedes = "";
+        if(botonAceptar==7 || botonAceptar==6 || botonAceptar==8){ sedes = bD.listarSedes(true); }
+        else { sedes = bD.listarSedes(false); }
         
+        if(sedes.equals("")){ //No Hay empleados
+           String[] opciones = { "No seleccionado" };
+           comboxEmple.setModel(new DefaultComboBoxModel(opciones));
+        }else{ //Hay empleados
+            String[] listaSedes = sedes.split("\\$");
+            listaIdsSede = obtenerListaIdsSedes(listaSedes);
+            String[] opciones = obtenerOpcionesSedes(listaSedes);
+            comboxEmple.setModel(new DefaultComboBoxModel(opciones));
+            
+        }
+    }
+   
 
     private void llenarCamposModfVendedor(){
         String id = listaIds[comboxEmple.getSelectedIndex()-1];
@@ -488,6 +504,7 @@ public class prinGerente extends javax.swing.JFrame {
        
         return validacion;   
     }
+    
     
     private void agregarSede(){
     String nombreSede = tNombre.getText();
@@ -668,6 +685,17 @@ public class prinGerente extends javax.swing.JFrame {
         }
     }
     
+     private void consultarSede(int index){
+        String id = listaIdsSede[index-1];
+        Sede sede = bD.leerSedePorId(id);
+        
+        String mensaje = "Nombre: "+sede.getNombreSede()+"\n"+
+                         "Fecha Creacion: "+sede.getFechaCreacion()+"\n"+
+                         "Dirección: "+sede.getDireccion()+"\n";
+        
+        JOptionPane.showMessageDialog(this, mensaje);
+    }
+    
     private void consultar(int index){
         String id = listaIds[index-1];
         Vendedor vendedor = bD.leerVendedorPorId(id);
@@ -727,8 +755,8 @@ public class prinGerente extends javax.swing.JFrame {
     }
     
     
-    private void despedir(){
-        String id = listaIds[comboxEmple.getSelectedIndex()-1];
+    private void despedir(int index){
+        String id = listaIds[index-1];
         Vendedor vendedor = bD.leerVendedorPorId(id);
         JefeTaller jefe = bD.leerJefeTallerPorId(id);
         
@@ -761,7 +789,23 @@ public class prinGerente extends javax.swing.JFrame {
         }
     }
         
-    
+    private void deshabilitarSede(int index){
+        String id = listaIds[index-1];
+        Sede sede = bD.leerSedePorId(id);        
+
+        String mensaje = "Seguro que desea deshabilitar la sede:\n"+"Nombre: "+sede.getNombreSede()+"\nFecha de Creacion: "+sede.getDireccion()+"\n"+
+                         "Direccion: "+sede.getDireccion();
+        int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
+        if(opcion==0){ //Despedir
+            Date fechaSist = new Date(); 
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+            String fechaDeshabilitado = formato.format(fechaSist); 
+
+            //String respuesta = bD.eliminarSede(id);
+            //JOptionPane.showMessageDialog(this, respuesta);
+        }
+        
+    }
         
     //Limpia los campos(jTextfields) de la interfaz
     private void limpiarCamposUsuarios(){
@@ -1715,8 +1759,6 @@ public class prinGerente extends javax.swing.JFrame {
     }//GEN-LAST:event_bConsulMouseReleased
 
     private void bAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAceptarActionPerformed
-        // TODO add your handling code here:
-        
         actualizarComboxSedes();
         int index = comboxEmple.getSelectedIndex();
         if(botonAceptar==1){
@@ -1739,7 +1781,6 @@ public class prinGerente extends javax.swing.JFrame {
                     modificarJefeTaller();
                     }
                 }
-                
             }else if(botonAceptar==3){
                 actualizarComboxVendedoresYJefes();
                 System.out.println("Entro al if");
@@ -1747,12 +1788,16 @@ public class prinGerente extends javax.swing.JFrame {
                 this.consultar(index);
             }else if(botonAceptar==4){
                 actualizarComboxVendedoresYJefes();
-                this.despedir();
+                this.despedir(index);
             }else if (botonAceptar == 5){
                 this.agregarSede();
-            }//else if (botonAceptar == 6){
-                
-            //}else if (botonAceptar == 7){
+            }else if (botonAceptar == 6){
+                actualizarComboxSedes();
+                this.modificarSede();
+            }else if (botonAceptar == 7){
+                actualizarComboxSedes();
+                this.consultarSede(index);
+            }
                 
             //}else if (botonAceptar == 8){
                 
@@ -1760,13 +1805,19 @@ public class prinGerente extends javax.swing.JFrame {
     }  
 
 
-    private void comboxEmpleItemStateChanged(java.awt.event.ItemEvent evt) {                                             
+    private void comboxEmpleItemStateChanged(java.awt.event.ItemEvent evt) {                                              
         // TODO add your handling code here:]
-        String id = listaIds[comboxEmple.getSelectedIndex()-1];
-        Vendedor vendedor = bD.leerVendedorPorId(id);
-        JefeTaller jefe = bD.leerJefeTallerPorId(id);
-        
-        
+        Vendedor vendedor = null;
+        JefeTaller jefe = null;
+        Sede sede = null;
+        if (botonAceptar==2 || botonAceptar==3 || botonAceptar==4){
+            String id = listaIds[comboxEmple.getSelectedIndex()-1];
+            vendedor = bD.leerVendedorPorId(id);
+            jefe = bD.leerJefeTallerPorId(id);
+        }else{
+            String idSedes = listaIdsSede[comboxEmple.getSelectedIndex()-1];
+            sede = bD.leerSedePorId(idSedes);
+        }
         if(comboxEmple.getSelectedIndex() == 0){
             bAceptar.setEnabled(false);
             
@@ -1774,6 +1825,8 @@ public class prinGerente extends javax.swing.JFrame {
                 //limpiarCamposUsuarios(); 
                 habilitarCamposmodf(false);
                 this.comboxCargo.setEnabled(false);
+            }else if (botonAceptar==6){
+                habilitarCamposmodf(false);
             }
         }else{
             bAceptar.setEnabled(true);
@@ -1781,9 +1834,12 @@ public class prinGerente extends javax.swing.JFrame {
                 llenarCamposModfVendedor();
             }else if (jefe != null) {
                 llenarCamposModfJefeTaller();
+                }else if (sede != null){
+                     
                 }
             habilitarCamposmodf(true);
         }       
+          
     }//GEN-LAST:event_bAceptarActionPerformed
 
     private void bAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAceptarMouseClicked
@@ -1840,7 +1896,7 @@ public class prinGerente extends javax.swing.JFrame {
             cambiarVisibilidadCampos(true);
             cambiarVisibilidadCamposSede(false);
             cambiarVisibilidadCamposSedeModf(false);
-            this.actualizarComboxSedes();
+            this.actualizarComboxSedesMod();
         
             botonAceptar = 6;
             bAceptar.setText("Modificar");
@@ -1865,7 +1921,7 @@ public class prinGerente extends javax.swing.JFrame {
             cambiarVisibilidadCamposmodf(false);
             cambiarVisibilidadCampos(false);
             cambiarVisibilidadCamposSedeModf(false);
-            actualizarComboxSedes();
+            actualizarComboxSedesMod();
             
             botonAceptar = 7;
             bAceptar.setText("Consultar");
@@ -1890,7 +1946,7 @@ public class prinGerente extends javax.swing.JFrame {
             cambiarVisibilidadCamposmodf(false);
             cambiarVisibilidadCampos(false);
             cambiarVisibilidadCamposSedeModf(false);
-            actualizarComboxSedes();
+            actualizarComboxSedesMod();
             
             botonAceptar = 8;
             bAceptar.setText("Deshabilitar");
