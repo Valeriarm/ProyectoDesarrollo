@@ -317,26 +317,26 @@ public class prinGerente extends javax.swing.JFrame {
     
     private String[] obtenerListaIdsSedes(String[] listaSedes){
         String[] listaDeIds = new String[listaSedes.length];
-        String[] sede;
+        String[] sedeaux;
         
         for(int i=0; i<(listaDeIds.length); i++){
-            sede = listaSedes[i].split(",");
-            listaDeIds[i] = sede[0];
+            sedeaux = listaSedes[i].split(",");
+            listaDeIds[i] = sedeaux[0];
         }
         
         return listaDeIds;
     }
     
     private void actualizarComboxSedes(){
-        String sedes = "";
-        if(botonAceptar==7 || botonAceptar==6 || botonAceptar==8){ sedes = bD.listarSedes(true); }
-        else { sedes = bD.listarSedes(false); }
+        String sedesaux;
+        if(botonAceptar==7 || botonAceptar==6 || botonAceptar==8){ sedesaux = bD.listarSedes(false); }
+        else { sedesaux = bD.listarSedes(false); }
         
-        if(sedes.equals("")){ //No Hay empleados
+        if(sedesaux.equals("")){ //No Hay empleados
            String[] opciones = { "No seleccionado" };
            comboxSedes.setModel(new DefaultComboBoxModel(opciones));
         }else{ //Hay empleados
-            String[] listaSedes = sedes.split("\\$");
+            String[] listaSedes = sedesaux.split("\\$");
             listaIdsSede = obtenerListaIdsSedes(listaSedes);
             String[] opciones = obtenerOpcionesSedes(listaSedes);
             comboxSedes.setModel(new DefaultComboBoxModel(opciones));
@@ -346,7 +346,7 @@ public class prinGerente extends javax.swing.JFrame {
         
     private void actualizarComboxSedesMod(){
         String sedes = "";
-        if(botonAceptar==7 || botonAceptar==6 || botonAceptar==8){ sedes = bD.listarSedes(true); }
+        if(botonAceptar==7 || botonAceptar==6 || botonAceptar==8){ sedes = bD.listarSedes(false); }
         else { sedes = bD.listarSedes(false); }
         
         if(sedes.equals("")){ //No Hay empleados
@@ -418,8 +418,9 @@ public class prinGerente extends javax.swing.JFrame {
     private void llenarCamposModfSede(){
         String id = listaIdsSede[comboxEmple.getSelectedIndex()-1];
         Sede sedee = bD.leerSedePorId(id);
-        
-        tNombreUsu.setText(sedee.getNombreSede());
+        System.out.println(sedee.getNombreSede());
+        System.out.println(sedee.getDireccion());
+        tNombreUsu.setText("Esto es una prueba");
         tContra.setText(sedee.getDireccion());
     }
     
@@ -667,7 +668,7 @@ public class prinGerente extends javax.swing.JFrame {
         String direccion = tDir.getText();
         
         //Datos Anteriores
-        String id = listaIds[comboxEmple.getSelectedIndex()-1];
+        String id = listaIdsSede[comboxEmple.getSelectedIndex()-1];
         Sede sede = bD.leerSedePorId(id);
         String fechaCreacion = sede.getFechaCreacion();
         String fechaFinalizacion = null;
@@ -817,7 +818,7 @@ public class prinGerente extends javax.swing.JFrame {
     }
         
     private void deshabilitarSede(int index){
-        String id = listaIds[index-1];
+        String id = listaIdsSede[index-1];
         Sede sede = bD.leerSedePorId(id);        
 
         String mensaje = "Seguro que desea deshabilitar la sede:\n"+"Nombre: "+sede.getNombreSede()+"\nFecha de Creacion: "+sede.getDireccion()+"\n"+
@@ -828,8 +829,8 @@ public class prinGerente extends javax.swing.JFrame {
             SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
             String fechaDeshabilitado = formato.format(fechaSist); 
 
-            //String respuesta = bD.eliminarSede(id);
-            //JOptionPane.showMessageDialog(this, respuesta);
+            String respuesta = bD.deshabilitarSede(id, fechaDeshabilitado);
+            JOptionPane.showMessageDialog(this, respuesta);
         }
         
     }
@@ -1020,7 +1021,6 @@ public class prinGerente extends javax.swing.JFrame {
     public void cambiarVisibilidadCamposSedeModf(boolean varControl){
         
         labNombre.setText("Nombre de sede:");
-        labFechaNac.setText("Fecha de creación:");
         labEmple.setText("Sede:");
         labEmple.setVisible(!varControl);
         comboxEmple.setVisible(!varControl);
@@ -1858,14 +1858,15 @@ public class prinGerente extends javax.swing.JFrame {
             }else if (botonAceptar == 5){
                 this.agregarSede();
             }else if (botonAceptar == 6){
-                actualizarComboxSedesMod();
                 this.modificarSede();
+                actualizarComboxSedesMod();
             }else if (botonAceptar == 7){
                 actualizarComboxSedesMod();
                 this.consultarSede(index);
+                bAceptar.setEnabled(false);
             }else if (botonAceptar == 8){
-                actualizarComboxSedesMod();
                 this.deshabilitarSede(index);
+                actualizarComboxSedesMod();
             }
     }  
 
@@ -1898,9 +1899,15 @@ public class prinGerente extends javax.swing.JFrame {
                     llenarCamposModfJefeTaller();
                     }
                 habilitarCamposmodf(true);
-            }else if (botonAceptar==6){
-                llenarCamposModfSede();
             }
+        }else if (botonAceptar==6){
+            bAceptar.setEnabled(!false);
+            habilitarCamposmodf(true);
+            llenarCamposModfSede();
+        }else if (botonAceptar==7){
+            bAceptar.setEnabled(!false);
+        }else if (botonAceptar==8){
+            bAceptar.setEnabled(!false);
         }
     }//GEN-LAST:event_bAceptarActionPerformed
 
