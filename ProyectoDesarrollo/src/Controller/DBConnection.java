@@ -1788,13 +1788,14 @@ public class DBConnection {
     //////////////////////////////////CRUD SEDE/////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////
-    public String crearSede(String nombreSede, String direccion, String fechaCreacion){
+     public String crearSede(String nombreSede, String direccion, String fechaCreacion){
         connect();
         sql = "SELECT * FROM Sede ";
+        String mensaje = "";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                 sql = "INSERT INTO Sede VALUES (nombre_Sede, direccion, fecha_creacion, habilitada)"
+                 sql = "INSERT INTO Sede  (nombre_Sede, direccion, fecha_creacion, habilitada) VALUES"
                       + "('"+nombreSede+"','"+direccion+"','"+fechaCreacion+"','"+true+"')";                
                     st.executeUpdate(sql);
                     rs.close();
@@ -1802,10 +1803,13 @@ public class DBConnection {
                     connection.close();
                 }
             
+            mensaje = "Sede agregada con éxito";
+            
         } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
+            mensaje = "Hubo un Error";
         }
-       return "Sede agregada con éxito";
+       return mensaje;
     }
     
     public Sede leerSedePorId(String id){

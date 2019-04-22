@@ -17,6 +17,9 @@ import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import javax.swing.UnsupportedLookAndFeelException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -412,6 +415,13 @@ public class prinGerente extends javax.swing.JFrame {
         comboxSedes.setSelectedIndex(jef.getIdSede());
     }
 
+    private void llenarCamposModfSede(){
+        String id = listaIdsSede[comboxEmple.getSelectedIndex()-1];
+        Sede sedee = bD.leerSedePorId(id);
+        
+        tNombreUsu.setText(sedee.getNombreSede());
+        tContra.setText(sedee.getDireccion());
+    }
     
     private void agregarVendedor(){
         String nombreUsu = tNombreUsu.getText();
@@ -655,7 +665,6 @@ public class prinGerente extends javax.swing.JFrame {
         //Datos Modf
         String nombre = tNombre.getText();
         String direccion = tDir.getText();
-        String telefono = tTel.getText();
         
         //Datos Anteriores
         String id = listaIds[comboxEmple.getSelectedIndex()-1];
@@ -666,7 +675,6 @@ public class prinGerente extends javax.swing.JFrame {
         
         if(!nombre.equals(sede.getNombreSede())) mensaje = mensaje+"Nombre\n";
         
-        if(!direccion.equals(sede.getDireccion())) mensaje = mensaje+"Direccion\n";
         if(!direccion.equals(sede.getDireccion())) mensaje = mensaje+"Direccion\n";
         
         if(!mensaje.equals("")){
@@ -753,6 +761,36 @@ public class prinGerente extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, mensaje);
         }
     }
+    
+     private void consultarInfoPersonal(){
+        Gerente ger = bD.leerGerentePorId(idGerente);
+        Sede sede = bD.leerSedePorId(String.valueOf(ger.getIdSede()));
+        
+        String genero;
+        if(ger.getGenero()==0){
+            genero = "Masculino";
+        }else{
+            genero = "Femenino";
+        }
+        
+        int edad = calcularEdad(ger.getFechaNacimiento());
+        
+        String mensaje = "Nombre: "+ger.getNombre()+"\n"+
+                         "Cedula: "+ger.getCedula()+"\n"+
+                         "Cargo: "+ger.getCargo()+"\n"+
+                         "salario: "+String.format( "%.2f", ger.getSalario())+"\n"+
+                         "Cuenta Bancaria: "+ger.getCuentaBancaria()+"\n"+
+                         "Sede: "+sede.getNombreSede()+"\n"+
+                         "Fecha Registro: "+ger.getFechaRegistro()+"\n"+
+                         "Edad: "+edad+"\n"+
+                         "Fecha Nacimiento: "+ger.getFechaNacimiento()+"\n"+
+                         "Correo: "+ger.getCorreo()+"\n"+
+                         "Genero: "+genero+"\n"+
+                         "Dirección: "+ger.getDireccion()+"\n"+
+                         "Teléfono: "+ger.getTelefono()+"\n";
+        
+        JOptionPane.showMessageDialog(this, mensaje);
+    }  
     
     
     private void despedir(int index){
@@ -1053,9 +1091,13 @@ public class prinGerente extends javax.swing.JFrame {
         usuario = new javax.swing.JCheckBoxMenuItem();
         sedes = new javax.swing.JCheckBoxMenuItem();
         ventas = new javax.swing.JCheckBoxMenuItem();
+        jLabel7 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
+        logOut = new javax.swing.JLabel();
+        Profile = new javax.swing.JLabel();
+        Reports = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         labNombreUsu = new javax.swing.JLabel();
         labCedula = new javax.swing.JLabel();
@@ -1152,6 +1194,8 @@ public class prinGerente extends javax.swing.JFrame {
         });
         opReporte.add(ventas);
 
+        jLabel7.setText("jLabel6");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
@@ -1159,8 +1203,24 @@ public class prinGerente extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Segoe UI Light", 0, 48)); // NOI18N
         jLabel5.setText("Gerente");
+
+        logOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO logout.png"))); // NOI18N
+        logOut.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logOutMouseClicked(evt);
+            }
+        });
+
+        Profile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO userInfo.png"))); // NOI18N
+        Profile.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ProfileMouseClicked(evt);
+            }
+        });
+
+        Reports.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO report.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -1169,13 +1229,31 @@ public class prinGerente extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Reports, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(Profile, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(logOut, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Profile, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(logOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addContainerGap())
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(Reports, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
 
         jPanel4.setBackground(new java.awt.Color(51, 51, 51));
@@ -1365,7 +1443,6 @@ public class prinGerente extends javax.swing.JFrame {
                             .addComponent(labContra))
                         .addGap(27, 27, 27)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(tNombreUsu)
                             .addComponent(tCedula)
                             .addComponent(tCorreo)
                             .addComponent(tCuentaBan)
@@ -1374,10 +1451,11 @@ public class prinGerente extends javax.swing.JFrame {
                             .addComponent(comboxSedes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(comboxCargo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(comboxEmple, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tContra)
                             .addComponent(tNombre)
                             .addComponent(tDir)
-                            .addComponent(tTel, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(tTel, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+                            .addComponent(tNombreUsu)
+                            .addComponent(tContra))))
                 .addGap(50, 50, 50))
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(121, 121, 121)
@@ -1772,9 +1850,11 @@ public class prinGerente extends javax.swing.JFrame {
                 /**hay que seleccionar el tipo de usuario*/
                 if(vendedor != null){
                     modificarVendedor();
+                    limpiarCamposUsuarios();
                 }else {
                     if (jefe != null) {
                     modificarJefeTaller();
+                    limpiarCamposUsuarios();
                     }
                 }
             }else if(botonAceptar==3){
@@ -1788,16 +1868,15 @@ public class prinGerente extends javax.swing.JFrame {
             }else if (botonAceptar == 5){
                 this.agregarSede();
             }else if (botonAceptar == 6){
-                actualizarComboxSedes();
+                actualizarComboxSedesMod();
                 this.modificarSede();
             }else if (botonAceptar == 7){
-                actualizarComboxSedes();
+                actualizarComboxSedesMod();
                 this.consultarSede(index);
+            }else if (botonAceptar == 8){
+                actualizarComboxSedesMod();
+                this.deshabilitarSede(index);
             }
-                
-            //}else if (botonAceptar == 8){
-                
-           // }
     }  
 
 
@@ -1825,6 +1904,7 @@ public class prinGerente extends javax.swing.JFrame {
                 this.comboxCargo.setEnabled(false);
             }else if (botonAceptar==6){
                 habilitarCamposmodf(false);
+                llenarCamposModfSede();
             }
         }else{
             bAceptar.setEnabled(true);
@@ -1832,8 +1912,6 @@ public class prinGerente extends javax.swing.JFrame {
                 llenarCamposModfVendedor();
             }else if (jefe != null) {
                 llenarCamposModfJefeTaller();
-                }else if (sede != null){
-                     
                 }
             habilitarCamposmodf(true);
         }       
@@ -2028,6 +2106,21 @@ public class prinGerente extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_bAgregarSedeActionPerformed
 
+    private void ProfileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ProfileMouseClicked
+        // TODO add your handling code here:
+        consultarInfoPersonal();
+    }//GEN-LAST:event_ProfileMouseClicked
+
+    private void logOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutMouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        try {
+            new Login().setVisible(true);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(prinSuper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_logOutMouseClicked
+
     
 
     
@@ -2042,6 +2135,8 @@ public class prinGerente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Profile;
+    private javax.swing.JLabel Reports;
     private javax.swing.JButton bAceptar;
     private javax.swing.JButton bAgregarSede;
     private javax.swing.JButton bAgregarUsr;
@@ -2066,6 +2161,7 @@ public class prinGerente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -2084,6 +2180,7 @@ public class prinGerente extends javax.swing.JFrame {
     private javax.swing.JLabel labSal;
     private javax.swing.JLabel labSede;
     private javax.swing.JLabel labTel;
+    private javax.swing.JLabel logOut;
     private javax.swing.JPopupMenu opReporte;
     private javax.swing.JCheckBoxMenuItem sede;
     private javax.swing.JCheckBoxMenuItem sedes;
