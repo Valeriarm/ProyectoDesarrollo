@@ -226,6 +226,9 @@
                   <Image iconType="3" name="/Images/ICO report.png"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="ReportsMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
