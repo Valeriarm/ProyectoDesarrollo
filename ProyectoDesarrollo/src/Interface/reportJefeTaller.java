@@ -13,6 +13,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 
+
 public class reportJefeTaller extends javax.swing.JFrame {
 
     private DBConnection bD;
@@ -209,6 +210,7 @@ public class reportJefeTaller extends javax.swing.JFrame {
             fechaFinAnio.addItem(String.valueOf(i));
         }
     }
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         List valores = new ArrayList();
         if ("Inventario".equals(String.valueOf(this.jComboBox1.getSelectedItem()))){

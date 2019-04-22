@@ -418,10 +418,8 @@ public class prinGerente extends javax.swing.JFrame {
     private void llenarCamposModfSede(){
         String id = listaIdsSede[comboxEmple.getSelectedIndex()-1];
         Sede sedee = bD.leerSedePorId(id);
-        System.out.println(sedee.getNombreSede());
-        System.out.println(sedee.getDireccion());
-        tNombreUsu.setText("Esto es una prueba");
         tContra.setText(sedee.getDireccion());
+        tNombreUsu.setText(sedee.getNombreSede());
     }
     
     private void agregarVendedor(){
@@ -664,14 +662,12 @@ public class prinGerente extends javax.swing.JFrame {
         String mensaje = "";
         
         //Datos Modf
-        String nombre = tNombre.getText();
-        String direccion = tDir.getText();
+        String nombre = tNombreUsu.getText();
+        String direccion = tContra.getText();
         
         //Datos Anteriores
         String id = listaIdsSede[comboxEmple.getSelectedIndex()-1];
         Sede sede = bD.leerSedePorId(id);
-        String fechaCreacion = sede.getFechaCreacion();
-        String fechaFinalizacion = null;
         //Comparación
         
         if(!nombre.equals(sede.getNombreSede())) mensaje = mensaje+"Nombre\n";
@@ -685,7 +681,7 @@ public class prinGerente extends javax.swing.JFrame {
         
             
             if(opcion==0){ //Modificar
-                String respuesta = bD.actualizarSede(id, nombre, direccion, fechaCreacion, fechaFinalizacion, idGerente);
+                String respuesta = bD.actualizarSede(id, nombre, direccion);
                 JOptionPane.showMessageDialog(this, respuesta);
             }
         }else{
@@ -1172,6 +1168,11 @@ public class prinGerente extends javax.swing.JFrame {
                 sedesMouseReleased(evt);
             }
         });
+        sedes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sedesActionPerformed(evt);
+            }
+        });
         opReporte.add(sedes);
 
         ventas.setSelected(true);
@@ -1490,14 +1491,19 @@ public class prinGerente extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labGenero)
                     .addComponent(comboxGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labDir)
-                    .addComponent(tDir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labTel)
-                    .addComponent(tTel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(tDir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(labDir)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(tTel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2))
+                    .addComponent(labTel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labSal, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1901,9 +1907,9 @@ public class prinGerente extends javax.swing.JFrame {
                 habilitarCamposmodf(true);
             }
         }else if (botonAceptar==6){
+            llenarCamposModfSede();
             bAceptar.setEnabled(!false);
             habilitarCamposmodf(true);
-            llenarCamposModfSede();
         }else if (botonAceptar==7){
             bAceptar.setEnabled(!false);
         }else if (botonAceptar==8){
@@ -2114,6 +2120,10 @@ public class prinGerente extends javax.swing.JFrame {
             Logger.getLogger(prinSuper.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_logOutMouseClicked
+
+    private void sedesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sedesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_sedesActionPerformed
 
     
 

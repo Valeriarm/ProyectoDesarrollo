@@ -1839,27 +1839,28 @@ public class DBConnection {
         return null;
     }
     
-    public String actualizarSede(String id, String nombreSede, String direccion, String fechaCreacion,
-                             String fechaFinalizacion, String idGerente){
+    public String actualizarSede(String id, String nombreSede, String direccion){
         connect();
         sql = "SELECT id_Sede FROM Sede WHERE id_Sede = '"+id+"'";
+        String mensaje = "";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                sql = "UPDATE Sede SET nombre_Sede = '"+nombreSede+"', direccion = '"+direccion+
-                        "', fecha_Creacion = '"+fechaCreacion+"', fecha_Finalizacion = '"+fechaFinalizacion+"',"+" id_Gerente = '"+idGerente+"'";
+                sql = "UPDATE Sede SET nombre_Sede = '"+nombreSede+"', direccion = '"+direccion+"'";
                 st.executeUpdate(sql);
                 rs.close();
                 st.close();
                 connection.close();
             }else{        
-                return "La Sede con el id "+id+" no existe";
+                mensaje = "La Sede con el id "+id+" no existe";
             }
+            mensaje = "Sede actualizada con éxito";
             
         } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
+            mensaje = "Hubo un error";
         }
-       return "Sede actualizada con éxito";
+       return mensaje;
     }
     
     public String eliminarSede(String id){
