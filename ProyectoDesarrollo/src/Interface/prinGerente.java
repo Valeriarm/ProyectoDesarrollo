@@ -2132,7 +2132,9 @@ public class prinGerente extends javax.swing.JFrame {
 
     private void ReportsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ReportsMouseClicked
         // TODO add your handling code here:
-        new reportGerente(bD, idGerente).setVisible(true);
+        Gerente ger = bD.leerGerentePorId(idGerente);
+        int sede = ger.getIdSede();
+        new reportGerente(bD, idGerente, sede).setVisible(true);
     }//GEN-LAST:event_ReportsMouseClicked
 
     
