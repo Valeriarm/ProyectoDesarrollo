@@ -17,6 +17,9 @@ import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import javax.swing.UnsupportedLookAndFeelException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -314,26 +317,26 @@ public class prinGerente extends javax.swing.JFrame {
     
     private String[] obtenerListaIdsSedes(String[] listaSedes){
         String[] listaDeIds = new String[listaSedes.length];
-        String[] sede;
+        String[] sedeaux;
         
         for(int i=0; i<(listaDeIds.length); i++){
-            sede = listaSedes[i].split(",");
-            listaDeIds[i] = sede[0];
+            sedeaux = listaSedes[i].split(",");
+            listaDeIds[i] = sedeaux[0];
         }
         
         return listaDeIds;
     }
     
     private void actualizarComboxSedes(){
-        String sedes = "";
-        if(botonAceptar==7 || botonAceptar==6 || botonAceptar==8){ sedes = bD.listarSedes(true); }
-        else { sedes = bD.listarSedes(false); }
+        String sedesaux;
+        if(botonAceptar==7 || botonAceptar==6 || botonAceptar==8){ sedesaux = bD.listarSedes(false); }
+        else { sedesaux = bD.listarSedes(false); }
         
-        if(sedes.equals("")){ //No Hay empleados
+        if(sedesaux.equals("")){ //No Hay empleados
            String[] opciones = { "No seleccionado" };
            comboxSedes.setModel(new DefaultComboBoxModel(opciones));
         }else{ //Hay empleados
-            String[] listaSedes = sedes.split("\\$");
+            String[] listaSedes = sedesaux.split("\\$");
             listaIdsSede = obtenerListaIdsSedes(listaSedes);
             String[] opciones = obtenerOpcionesSedes(listaSedes);
             comboxSedes.setModel(new DefaultComboBoxModel(opciones));
@@ -341,7 +344,23 @@ public class prinGerente extends javax.swing.JFrame {
         }
     }
         
+    private void actualizarComboxSedesMod(){
+        String sedes = "";
+        if(botonAceptar==7 || botonAceptar==6 || botonAceptar==8){ sedes = bD.listarSedes(false); }
+        else { sedes = bD.listarSedes(false); }
         
+        if(sedes.equals("")){ //No Hay empleados
+           String[] opciones = { "No seleccionado" };
+           comboxEmple.setModel(new DefaultComboBoxModel(opciones));
+        }else{ //Hay empleados
+            String[] listaSedes = sedes.split("\\$");
+            listaIdsSede = obtenerListaIdsSedes(listaSedes);
+            String[] opciones = obtenerOpcionesSedes(listaSedes);
+            comboxEmple.setModel(new DefaultComboBoxModel(opciones));
+            
+        }
+    }
+   
 
     private void llenarCamposModfVendedor(){
         String id = listaIds[comboxEmple.getSelectedIndex()-1];
@@ -396,6 +415,12 @@ public class prinGerente extends javax.swing.JFrame {
         comboxSedes.setSelectedIndex(jef.getIdSede());
     }
 
+    private void llenarCamposModfSede(){
+        String id = listaIdsSede[comboxEmple.getSelectedIndex()-1];
+        Sede sedee = bD.leerSedePorId(id);
+        tContra.setText(sedee.getDireccion());
+        tNombreUsu.setText(sedee.getNombreSede());
+    }
     
     private void agregarVendedor(){
         String nombreUsu = tNombreUsu.getText();
@@ -488,6 +513,7 @@ public class prinGerente extends javax.swing.JFrame {
        
         return validacion;   
     }
+    
     
     private void agregarSede(){
     String nombreSede = tNombre.getText();
@@ -636,20 +662,16 @@ public class prinGerente extends javax.swing.JFrame {
         String mensaje = "";
         
         //Datos Modf
-        String nombre = tNombre.getText();
-        String direccion = tDir.getText();
-        String telefono = tTel.getText();
+        String nombre = tNombreUsu.getText();
+        String direccion = tContra.getText();
         
         //Datos Anteriores
-        String id = listaIds[comboxEmple.getSelectedIndex()-1];
+        String id = listaIdsSede[comboxEmple.getSelectedIndex()-1];
         Sede sede = bD.leerSedePorId(id);
-        String fechaCreacion = sede.getFechaCreacion();
-        String fechaFinalizacion = null;
         //Comparación
         
         if(!nombre.equals(sede.getNombreSede())) mensaje = mensaje+"Nombre\n";
         
-        if(!direccion.equals(sede.getDireccion())) mensaje = mensaje+"Direccion\n";
         if(!direccion.equals(sede.getDireccion())) mensaje = mensaje+"Direccion\n";
         
         if(!mensaje.equals("")){
@@ -659,13 +681,24 @@ public class prinGerente extends javax.swing.JFrame {
         
             
             if(opcion==0){ //Modificar
-                String respuesta = bD.actualizarSede(id, nombre, direccion, fechaCreacion, fechaFinalizacion, idGerente);
+                String respuesta = bD.actualizarSede(id, nombre, direccion);
                 JOptionPane.showMessageDialog(this, respuesta);
             }
         }else{
             mensaje = "Cambie un campo para modificar al Jefe de Taller";
             JOptionPane.showMessageDialog(this, mensaje);
         }
+    }
+    
+     private void consultarSede(int index){
+        String id = listaIdsSede[index-1];
+        Sede sede = bD.leerSedePorId(id);
+        
+        String mensaje = "Nombre: "+sede.getNombreSede()+"\n"+
+                         "Fecha Creacion: "+sede.getFechaCreacion()+"\n"+
+                         "Dirección: "+sede.getDireccion()+"\n";
+        
+        JOptionPane.showMessageDialog(this, mensaje);
     }
     
     private void consultar(int index){
@@ -680,9 +713,6 @@ public class prinGerente extends javax.swing.JFrame {
             }else{
                 genero = "Femenino";
             }
-            
-            int edad = calcularEdad(vendedor.getFechaNacimiento());
-        
             String mensaje = "Nombre: "+vendedor.getNombre()+"\n"+
                          "Cedula: "+vendedor.getCedula()+"\n"+
                          "Cargo: "+vendedor.getCargo()+"\n"+
@@ -690,14 +720,12 @@ public class prinGerente extends javax.swing.JFrame {
                          "Cuenta Bancaria: "+vendedor.getCuentaBancaria()+"\n"+
                          "Sede: "+ vendedor.getIdSede()+"\n"+
                          "Fecha Registro: "+vendedor.getFechaRegistro()+"\n"+
-                         "Edad: "+edad+"\n"+
                          "Fecha Nacimiento: "+vendedor.getFechaNacimiento()+"\n"+
                          "Correo: "+vendedor.getCorreo()+"\n"+
                          "Genero: "+genero+"\n"+
                          "Dirección: "+vendedor.getDireccion()+"\n"+
                          "Teléfono: "+vendedor.getTelefono()+"\n";
             
-        
             JOptionPane.showMessageDialog(this, mensaje);
         }else{
            if(jefe.getGenero()==0){
@@ -705,8 +733,6 @@ public class prinGerente extends javax.swing.JFrame {
             }else{
                 genero = "Femenino";
             }
-       
-            int edad = calcularEdad(jefe.getFechaNacimiento());
         
             String mensaje = "Nombre: "+jefe.getNombre()+"\n"+
                          "Cedula: "+jefe.getCedula()+"\n"+
@@ -715,7 +741,6 @@ public class prinGerente extends javax.swing.JFrame {
                          "Cuenta Bancaria: "+jefe.getCuentaBancaria()+"\n"+
                          "Sede: "+jefe.getIdSede()+"\n"+
                          "Fecha Registro: "+jefe.getFechaRegistro()+"\n"+
-                         "Edad: "+edad+"\n"+
                          "Fecha Nacimiento: "+jefe.getFechaNacimiento()+"\n"+
                          "Correo: "+jefe.getCorreo()+"\n"+
                          "Genero: "+genero+"\n"+
@@ -726,9 +751,36 @@ public class prinGerente extends javax.swing.JFrame {
         }
     }
     
+     private void consultarInfoPersonal(){
+        Gerente ger = bD.leerGerentePorId(idGerente);
+        Sede sede = bD.leerSedePorId(String.valueOf(ger.getIdSede()));
+        
+        String genero;
+        if(ger.getGenero()==0){
+            genero = "Masculino";
+        }else{
+            genero = "Femenino";
+        }
+        
+        String mensaje = "Nombre: "+ger.getNombre()+"\n"+
+                         "Cedula: "+ger.getCedula()+"\n"+
+                         "Cargo: "+ger.getCargo()+"\n"+
+                         "salario: "+String.format( "%.2f", ger.getSalario())+"\n"+
+                         "Cuenta Bancaria: "+ger.getCuentaBancaria()+"\n"+
+                         "Sede: "+sede.getNombreSede()+"\n"+
+                         "Fecha Registro: "+ger.getFechaRegistro()+"\n"+
+                         "Fecha Nacimiento: "+ger.getFechaNacimiento()+"\n"+
+                         "Correo: "+ger.getCorreo()+"\n"+
+                         "Genero: "+genero+"\n"+
+                         "Dirección: "+ger.getDireccion()+"\n"+
+                         "Teléfono: "+ger.getTelefono()+"\n";
+        
+        JOptionPane.showMessageDialog(this, mensaje);
+    }  
     
-    private void despedir(){
-        String id = listaIds[comboxEmple.getSelectedIndex()-1];
+    
+    private void despedir(int index){
+        String id = listaIds[index-1];
         Vendedor vendedor = bD.leerVendedorPorId(id);
         JefeTaller jefe = bD.leerJefeTallerPorId(id);
         
@@ -761,7 +813,23 @@ public class prinGerente extends javax.swing.JFrame {
         }
     }
         
-    
+    private void deshabilitarSede(int index){
+        String id = listaIdsSede[index-1];
+        Sede sede = bD.leerSedePorId(id);        
+
+        String mensaje = "Seguro que desea deshabilitar la sede:\n"+"Nombre: "+sede.getNombreSede()+"\nFecha de Creacion: "+sede.getDireccion()+"\n"+
+                         "Direccion: "+sede.getDireccion();
+        int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
+        if(opcion==0){ //Despedir
+            Date fechaSist = new Date(); 
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+            String fechaDeshabilitado = formato.format(fechaSist); 
+
+            String respuesta = bD.deshabilitarSede(id, fechaDeshabilitado);
+            JOptionPane.showMessageDialog(this, respuesta);
+        }
+        
+    }
         
     //Limpia los campos(jTextfields) de la interfaz
     private void limpiarCamposUsuarios(){
@@ -949,7 +1017,6 @@ public class prinGerente extends javax.swing.JFrame {
     public void cambiarVisibilidadCamposSedeModf(boolean varControl){
         
         labNombre.setText("Nombre de sede:");
-        labFechaNac.setText("Fecha de creación:");
         labEmple.setText("Sede:");
         labEmple.setVisible(!varControl);
         comboxEmple.setVisible(!varControl);
@@ -993,10 +1060,6 @@ public class prinGerente extends javax.swing.JFrame {
   
     }
     
-          
-
-       
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -1013,9 +1076,13 @@ public class prinGerente extends javax.swing.JFrame {
         usuario = new javax.swing.JCheckBoxMenuItem();
         sedes = new javax.swing.JCheckBoxMenuItem();
         ventas = new javax.swing.JCheckBoxMenuItem();
+        jLabel7 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
+        logOut = new javax.swing.JLabel();
+        Profile = new javax.swing.JLabel();
+        Reports = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         labNombreUsu = new javax.swing.JLabel();
         labCedula = new javax.swing.JLabel();
@@ -1101,6 +1168,11 @@ public class prinGerente extends javax.swing.JFrame {
                 sedesMouseReleased(evt);
             }
         });
+        sedes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sedesActionPerformed(evt);
+            }
+        });
         opReporte.add(sedes);
 
         ventas.setSelected(true);
@@ -1112,6 +1184,8 @@ public class prinGerente extends javax.swing.JFrame {
         });
         opReporte.add(ventas);
 
+        jLabel7.setText("jLabel6");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
@@ -1119,8 +1193,29 @@ public class prinGerente extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Segoe UI Light", 0, 48)); // NOI18N
         jLabel5.setText("Gerente");
+
+        logOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO logout.png"))); // NOI18N
+        logOut.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logOutMouseClicked(evt);
+            }
+        });
+
+        Profile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO userInfo.png"))); // NOI18N
+        Profile.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ProfileMouseClicked(evt);
+            }
+        });
+
+        Reports.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO report.png"))); // NOI18N
+        Reports.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ReportsMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -1129,13 +1224,31 @@ public class prinGerente extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Reports, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(Profile, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(logOut, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Profile, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(logOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addContainerGap())
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(Reports, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
 
         jPanel4.setBackground(new java.awt.Color(51, 51, 51));
@@ -1325,7 +1438,6 @@ public class prinGerente extends javax.swing.JFrame {
                             .addComponent(labContra))
                         .addGap(27, 27, 27)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(tNombreUsu)
                             .addComponent(tCedula)
                             .addComponent(tCorreo)
                             .addComponent(tCuentaBan)
@@ -1334,10 +1446,11 @@ public class prinGerente extends javax.swing.JFrame {
                             .addComponent(comboxSedes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(comboxCargo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(comboxEmple, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tContra)
                             .addComponent(tNombre)
                             .addComponent(tDir)
-                            .addComponent(tTel, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(tTel, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+                            .addComponent(tNombreUsu)
+                            .addComponent(tContra))))
                 .addGap(50, 50, 50))
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(121, 121, 121)
@@ -1383,14 +1496,19 @@ public class prinGerente extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labGenero)
                     .addComponent(comboxGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labDir)
-                    .addComponent(tDir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labTel)
-                    .addComponent(tTel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(tDir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(labDir)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(tTel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2))
+                    .addComponent(labTel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labSal, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1715,8 +1833,6 @@ public class prinGerente extends javax.swing.JFrame {
     }//GEN-LAST:event_bConsulMouseReleased
 
     private void bAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAceptarActionPerformed
-        // TODO add your handling code here:
-        
         actualizarComboxSedes();
         int index = comboxEmple.getSelectedIndex();
         if(botonAceptar==1){
@@ -1734,56 +1850,76 @@ public class prinGerente extends javax.swing.JFrame {
                 /**hay que seleccionar el tipo de usuario*/
                 if(vendedor != null){
                     modificarVendedor();
+                    limpiarCamposUsuarios();
                 }else {
                     if (jefe != null) {
                     modificarJefeTaller();
+                    limpiarCamposUsuarios();
                     }
                 }
-                
             }else if(botonAceptar==3){
                 actualizarComboxVendedoresYJefes();
                 System.out.println("Entro al if");
                 System.out.println(index);
                 this.consultar(index);
+                bAceptar.setEnabled(false);
             }else if(botonAceptar==4){
                 actualizarComboxVendedoresYJefes();
-                this.despedir();
+                this.despedir(index);
             }else if (botonAceptar == 5){
                 this.agregarSede();
-            }//else if (botonAceptar == 6){
-                
-            //}else if (botonAceptar == 7){
-                
-            //}else if (botonAceptar == 8){
-                
-           // }
+            }else if (botonAceptar == 6){
+                this.modificarSede();
+                actualizarComboxSedesMod();
+            }else if (botonAceptar == 7){
+                actualizarComboxSedesMod();
+                this.consultarSede(index);
+                bAceptar.setEnabled(false);
+            }else if (botonAceptar == 8){
+                this.deshabilitarSede(index);
+                actualizarComboxSedesMod();
+            }
     }  
 
 
     private void comboxEmpleItemStateChanged(java.awt.event.ItemEvent evt) {                                             
         // TODO add your handling code here:]
-        String id = listaIds[comboxEmple.getSelectedIndex()-1];
-        Vendedor vendedor = bD.leerVendedorPorId(id);
-        JefeTaller jefe = bD.leerJefeTallerPorId(id);
         
+        Vendedor vendedor = null;
+        JefeTaller jefe = null;
+        Sede sede = null;
         
-        if(comboxEmple.getSelectedIndex() == 0){
+        if (comboxEmple.getSelectedIndex()==0){
             bAceptar.setEnabled(false);
+        }else if (botonAceptar==2 || botonAceptar==3 || botonAceptar==4){
+            bAceptar.setEnabled(!false);
+            String id = listaIds[comboxEmple.getSelectedIndex()-1];
             
+            System.out.println(comboxEmple.getSelectedIndex()-1);
+            System.out.println(id);
+            
+            vendedor = bD.leerVendedorPorId(id);
+            jefe = bD.leerJefeTallerPorId(id);
+            habilitarCamposmodf(false);
             if(botonAceptar==2){ 
-                //limpiarCamposUsuarios(); 
-                habilitarCamposmodf(false);
                 this.comboxCargo.setEnabled(false);
+                bAceptar.setEnabled(true);
+                if(vendedor != null){
+                    llenarCamposModfVendedor();
+                }else if (jefe != null) {
+                    llenarCamposModfJefeTaller();
+                    }
+                habilitarCamposmodf(true);
             }
-        }else{
-            bAceptar.setEnabled(true);
-            if(vendedor != null){
-                llenarCamposModfVendedor();
-            }else if (jefe != null) {
-                llenarCamposModfJefeTaller();
-                }
+        }else if (botonAceptar==6){
+            llenarCamposModfSede();
+            bAceptar.setEnabled(!false);
             habilitarCamposmodf(true);
-        }       
+        }else if (botonAceptar==7){
+            bAceptar.setEnabled(!false);
+        }else if (botonAceptar==8){
+            bAceptar.setEnabled(!false);
+        }
     }//GEN-LAST:event_bAceptarActionPerformed
 
     private void bAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAceptarMouseClicked
@@ -1840,7 +1976,7 @@ public class prinGerente extends javax.swing.JFrame {
             cambiarVisibilidadCampos(true);
             cambiarVisibilidadCamposSede(false);
             cambiarVisibilidadCamposSedeModf(false);
-            this.actualizarComboxSedes();
+            this.actualizarComboxSedesMod();
         
             botonAceptar = 6;
             bAceptar.setText("Modificar");
@@ -1865,7 +2001,7 @@ public class prinGerente extends javax.swing.JFrame {
             cambiarVisibilidadCamposmodf(false);
             cambiarVisibilidadCampos(false);
             cambiarVisibilidadCamposSedeModf(false);
-            actualizarComboxSedes();
+            actualizarComboxSedesMod();
             
             botonAceptar = 7;
             bAceptar.setText("Consultar");
@@ -1890,7 +2026,7 @@ public class prinGerente extends javax.swing.JFrame {
             cambiarVisibilidadCamposmodf(false);
             cambiarVisibilidadCampos(false);
             cambiarVisibilidadCamposSedeModf(false);
-            actualizarComboxSedes();
+            actualizarComboxSedesMod();
             
             botonAceptar = 8;
             bAceptar.setText("Deshabilitar");
@@ -1975,6 +2111,32 @@ public class prinGerente extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_bAgregarSedeActionPerformed
 
+    private void ProfileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ProfileMouseClicked
+        // TODO add your handling code here:
+        consultarInfoPersonal();
+    }//GEN-LAST:event_ProfileMouseClicked
+
+    private void logOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutMouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        try {
+            new Login().setVisible(true);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(prinSuper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_logOutMouseClicked
+
+    private void sedesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sedesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_sedesActionPerformed
+
+    private void ReportsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ReportsMouseClicked
+        // TODO add your handling code here:
+        Gerente ger = bD.leerGerentePorId(idGerente);
+        int sede = ger.getIdSede();
+        new reportGerente(bD, idGerente, sede).setVisible(true);
+    }//GEN-LAST:event_ReportsMouseClicked
+
     
 
     
@@ -1989,6 +2151,8 @@ public class prinGerente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Profile;
+    private javax.swing.JLabel Reports;
     private javax.swing.JButton bAceptar;
     private javax.swing.JButton bAgregarSede;
     private javax.swing.JButton bAgregarUsr;
@@ -2013,6 +2177,7 @@ public class prinGerente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -2031,6 +2196,7 @@ public class prinGerente extends javax.swing.JFrame {
     private javax.swing.JLabel labSal;
     private javax.swing.JLabel labSede;
     private javax.swing.JLabel labTel;
+    private javax.swing.JLabel logOut;
     private javax.swing.JPopupMenu opReporte;
     private javax.swing.JCheckBoxMenuItem sede;
     private javax.swing.JCheckBoxMenuItem sedes;
