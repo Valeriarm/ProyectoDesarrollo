@@ -2060,5 +2060,4 @@ public class DBConnection {
         
         prueba.readSU();
     }
-    
 }
