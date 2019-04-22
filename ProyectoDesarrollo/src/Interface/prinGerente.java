@@ -1211,6 +1211,11 @@ public class prinGerente extends javax.swing.JFrame {
         });
 
         Reports.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO report.png"))); // NOI18N
+        Reports.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ReportsMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -2124,6 +2129,11 @@ public class prinGerente extends javax.swing.JFrame {
     private void sedesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sedesActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_sedesActionPerformed
+
+    private void ReportsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ReportsMouseClicked
+        // TODO add your handling code here:
+        new reportGerente(bD, idGerente).setVisible(true);
+    }//GEN-LAST:event_ReportsMouseClicked
 
     
 

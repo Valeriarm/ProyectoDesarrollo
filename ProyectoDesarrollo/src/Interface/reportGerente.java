@@ -104,7 +104,7 @@ public class reportGerente extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel1.setText("Seleccione su reporte Jefe de taller");
+        jLabel1.setText("Seleccione su reporte Gerente");
 
         fechaFinAnio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

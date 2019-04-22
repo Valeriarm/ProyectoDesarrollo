@@ -306,7 +306,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Dialog" size="18" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Seleccione su reporte Jefe de taller"/>
+        <Property name="text" type="java.lang.String" value="Seleccione su reporte Gerente"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="fechaFinAnio">
