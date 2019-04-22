@@ -1915,7 +1915,27 @@ public class DBConnection {
         return "";
     }
     
-    
+    public String deshabilitarSede(String id, String fechaDeshabilitado){
+        connect();
+        sql = "SELECT id_Sede FROM Sede WHERE id_sede = '"+id+"' AND habilitada = '"+true+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                sql = "UPDATE Sede SET habilitada = '"+false+"', fecha_Finalizacion = '"+fechaDeshabilitado+"' WHERE id_sede = '"+id+"'";
+                st.executeUpdate(sql);
+                rs.close();
+                st.close();
+                connection.close();
+                return "La sede Fue deshabilitada";
+            }else{              
+                return "La sede ya habia sido deshabilitada";
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return "";
+    }
     
 
         /*listar Vendedores y Jefes*/

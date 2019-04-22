@@ -801,8 +801,8 @@ public class prinGerente extends javax.swing.JFrame {
             SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
             String fechaDeshabilitado = formato.format(fechaSist); 
 
-            //String respuesta = bD.eliminarSede(id);
-            //JOptionPane.showMessageDialog(this, respuesta);
+            String respuesta = bD.deshabilitarSede(id, fechaDeshabilitado);
+            JOptionPane.showMessageDialog(this, respuesta);
         }
         
     }
