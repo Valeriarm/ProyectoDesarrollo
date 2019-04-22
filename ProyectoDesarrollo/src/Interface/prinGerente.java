@@ -284,7 +284,7 @@ public class prinGerente extends javax.swing.JFrame {
     
     private void actualizarComboxVendedoresYJefes(){
         Gerente ger = bD.leerGerentePorId(idGerente);
-        String empleados = bD.listarVendedoresYJefes(ger.getSede());        
+        String empleados = bD.listarVendedoresYJefes(ger.getIdSede());        
         
         if(empleados.equals("")){ //No Hay empleados
            String[] opciones = { "No seleccionado" };
@@ -341,23 +341,7 @@ public class prinGerente extends javax.swing.JFrame {
         }
     }
         
-    private void actualizarComboxSedesMod(){
-        String sedes = "";
-        if(botonAceptar==7 || botonAceptar==6 || botonAceptar==8){ sedes = bD.listarSedes(true); }
-        else { sedes = bD.listarSedes(false); }
         
-        if(sedes.equals("")){ //No Hay sedes
-           String[] opciones = { "No seleccionado" };
-           comboxEmple.setModel(new DefaultComboBoxModel(opciones));
-        }else{ //Hay empleados
-            String[] listaSedes = sedes.split("\\$");
-            listaIdsSede = obtenerListaIdsSedes(listaSedes);
-            String[] opciones = obtenerOpcionesSedes(listaSedes);
-            comboxEmple.setModel(new DefaultComboBoxModel(opciones));
-            
-        }
-    }
-   
 
     private void llenarCamposModfVendedor(){
         String id = listaIds[comboxEmple.getSelectedIndex()-1];
@@ -504,7 +488,6 @@ public class prinGerente extends javax.swing.JFrame {
        
         return validacion;   
     }
-    
     
     private void agregarSede(){
     String nombreSede = tNombre.getText();
@@ -685,119 +668,74 @@ public class prinGerente extends javax.swing.JFrame {
         }
     }
     
-     private void consultarSede(int index){
-        if (index != 0){
-            String id = listaIdsSede[index-1];
-            Sede sede = bD.leerSedePorId(id);
+    private void consultar(int index){
+        String id = listaIds[index-1];
+        Vendedor vendedor = bD.leerVendedorPorId(id);
+        JefeTaller jefe = bD.leerJefeTallerPorId(id);
+        String genero;
+        
+        if(vendedor != null){
+            if(vendedor.getGenero()==0){
+                genero = "Masculino";
+            }else{
+                genero = "Femenino";
+            }
             
-            String mensaje = "Nombre: "+sede.getNombreSede()+"\n"+
-                         "Fecha Creacion: "+sede.getFechaCreacion()+"\n"+
-                         "Dirección: "+sede.getDireccion()+"\n";
+            int edad = calcularEdad(vendedor.getFechaNacimiento());
+        
+            String mensaje = "Nombre: "+vendedor.getNombre()+"\n"+
+                         "Cedula: "+vendedor.getCedula()+"\n"+
+                         "Cargo: "+vendedor.getCargo()+"\n"+
+                         "salario: "+vendedor.getSalario()+"\n"+
+                         "Cuenta Bancaria: "+vendedor.getCuentaBancaria()+"\n"+
+                         "Sede: "+ vendedor.getIdSede()+"\n"+
+                         "Fecha Registro: "+vendedor.getFechaRegistro()+"\n"+
+                         "Edad: "+edad+"\n"+
+                         "Fecha Nacimiento: "+vendedor.getFechaNacimiento()+"\n"+
+                         "Correo: "+vendedor.getCorreo()+"\n"+
+                         "Genero: "+genero+"\n"+
+                         "Dirección: "+vendedor.getDireccion()+"\n"+
+                         "Teléfono: "+vendedor.getTelefono()+"\n";
+            
         
             JOptionPane.showMessageDialog(this, mensaje);
-            
-        }        
-    }
-    
-    private void consultar(int index){
-        if (index != 0){
-            String id = listaIds[index-1];
-            Vendedor vendedor = bD.leerVendedorPorId(id);
-            JefeTaller jefe = bD.leerJefeTallerPorId(id);
-            String genero;
-
-            if(vendedor != null){
-                if(vendedor.getGenero()==0){
-                    genero = "Masculino";
-                }else{
-                    genero = "Femenino";
-                }
-
-                int edad = calcularEdad(vendedor.getFechaNacimiento());
-
-                String mensaje = "Nombre: "+vendedor.getNombre()+"\n"+
-                             "Cedula: "+vendedor.getCedula()+"\n"+
-                             "Cargo: "+vendedor.getCargo()+"\n"+
-                             "salario: "+vendedor.getSalario()+"\n"+
-                             "Cuenta Bancaria: "+vendedor.getCuentaBancaria()+"\n"+
-                             "Sede: "+ vendedor.getSede()+"\n"+
-                             "Fecha Registro: "+vendedor.getFechaRegistro()+"\n"+
-                             "Edad: "+edad+"\n"+
-                             "Fecha Nacimiento: "+vendedor.getFechaNacimiento()+"\n"+
-                             "Correo: "+vendedor.getCorreo()+"\n"+
-                             "Genero: "+genero+"\n"+
-                             "Dirección: "+vendedor.getDireccion()+"\n"+
-                             "Teléfono: "+vendedor.getTelefono()+"\n";
-
-
-                JOptionPane.showMessageDialog(this, mensaje);
-            }else{
-               if(jefe.getGenero()==0){
-                    genero = "Masculino";
-                }else{
-                    genero = "Femenino";
-                }
-
-                int edad = calcularEdad(jefe.getFechaNacimiento());
-
-                String mensaje = "Nombre: "+jefe.getNombre()+"\n"+
-                             "Cedula: "+jefe.getCedula()+"\n"+
-                             "Cargo: "+jefe.getCargo()+"\n"+
-                             "salario: "+jefe.getSalario()+"\n"+
-                             "Cuenta Bancaria: "+jefe.getCuentaBancaria()+"\n"+
-                             "Sede: "+jefe.getSede()+"\n"+
-                             "Fecha Registro: "+jefe.getFechaRegistro()+"\n"+
-                             "Edad: "+edad+"\n"+
-                             "Fecha Nacimiento: "+jefe.getFechaNacimiento()+"\n"+
-                             "Correo: "+jefe.getCorreo()+"\n"+
-                             "Genero: "+genero+"\n"+
-                             "Dirección: "+jefe.getDireccion()+"\n"+
-                             "Teléfono: "+jefe.getTelefono()+"\n";
-
-                JOptionPane.showMessageDialog(this, mensaje);
-            }
-        }        
-    }
-    
-     private void consultarInfoPersonal(){
-        Gerente ger = bD.leerGerentePorId(idGerente);
-        Sede sede = bD.leerSedePorId(String.valueOf(ger.getIdSede()));
-        
-        String genero;
-        if(ger.getGenero()==0){
-            genero = "Masculino";
         }else{
-            genero = "Femenino";
-        }
+           if(jefe.getGenero()==0){
+                genero = "Masculino";
+            }else{
+                genero = "Femenino";
+            }
+       
+            int edad = calcularEdad(jefe.getFechaNacimiento());
         
-        int edad = calcularEdad(ger.getFechaNacimiento());
-        
-        String mensaje = "Nombre: "+ger.getNombre()+"\n"+
-                         "Cedula: "+ger.getCedula()+"\n"+
-                         "Cargo: "+ger.getCargo()+"\n"+
-                         "salario: "+String.format( "%.2f", ger.getSalario())+"\n"+
-                         "Cuenta Bancaria: "+ger.getCuentaBancaria()+"\n"+
-                         "Sede: "+sede.getNombreSede()+"\n"+
-                         "Fecha Registro: "+ger.getFechaRegistro()+"\n"+
+            String mensaje = "Nombre: "+jefe.getNombre()+"\n"+
+                         "Cedula: "+jefe.getCedula()+"\n"+
+                         "Cargo: "+jefe.getCargo()+"\n"+
+                         "salario: "+jefe.getSalario()+"\n"+
+                         "Cuenta Bancaria: "+jefe.getCuentaBancaria()+"\n"+
+                         "Sede: "+jefe.getIdSede()+"\n"+
+                         "Fecha Registro: "+jefe.getFechaRegistro()+"\n"+
                          "Edad: "+edad+"\n"+
-                         "Fecha Nacimiento: "+ger.getFechaNacimiento()+"\n"+
-                         "Correo: "+ger.getCorreo()+"\n"+
+                         "Fecha Nacimiento: "+jefe.getFechaNacimiento()+"\n"+
+                         "Correo: "+jefe.getCorreo()+"\n"+
                          "Genero: "+genero+"\n"+
-                         "Dirección: "+ger.getDireccion()+"\n"+
-                         "Teléfono: "+ger.getTelefono()+"\n";
+                         "Dirección: "+jefe.getDireccion()+"\n"+
+                         "Teléfono: "+jefe.getTelefono()+"\n";
         
-        JOptionPane.showMessageDialog(this, mensaje);
+            JOptionPane.showMessageDialog(this, mensaje);
+        }
     }
     
-    private void despedir(int index){
-        String id = listaIds[index-1];
+    
+    private void despedir(){
+        String id = listaIds[comboxEmple.getSelectedIndex()-1];
         Vendedor vendedor = bD.leerVendedorPorId(id);
         JefeTaller jefe = bD.leerJefeTallerPorId(id);
         
         if(vendedor != null){
             String mensaje = "Seguro que desea despedir al vendedor:\n"+"Nombre: "+vendedor.getNombre()+"\nCedula: "+vendedor.getCedula()+"\n"+
                              "Cargo: "+vendedor.getCargo()+"\nsalario: "+vendedor.getSalario()+"\n"+
-                             "Sede: "+vendedor.getSede();
+                             "Sede: "+vendedor.getIdSede();
             int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
             if(opcion==0){ //Despedir
                 Date fechaSist = new Date(); 
@@ -810,7 +748,7 @@ public class prinGerente extends javax.swing.JFrame {
         }else{
             String mensaje = "Seguro que desea despedir al jefe de taller:\n"+"Nombre: "+jefe.getNombre()+"\nCedula: "+jefe.getCedula()+"\n"+
                              "Cargo: "+jefe.getCargo()+"\nsalario: "+jefe.getSalario()+"\n"+
-                             "Sede: "+jefe.getSede();
+                             "Sede: "+jefe.getIdSede();
             int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
             if(opcion==0){ //Despedir
                 Date fechaSist = new Date(); 
@@ -823,23 +761,7 @@ public class prinGerente extends javax.swing.JFrame {
         }
     }
         
-    private void deshabilitarSede(int index){
-        String id = listaIds[index-1];
-        Sede sede = bD.leerSedePorId(id);        
-
-        String mensaje = "Seguro que desea deshabilitar la sede:\n"+"Nombre: "+sede.getNombreSede()+"\nFecha de Creacion: "+sede.getDireccion()+"\n"+
-                         "Direccion: "+sede.getDireccion();
-        int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
-        if(opcion==0){ //Despedir
-            Date fechaSist = new Date(); 
-            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-            String fechaDeshabilitado = formato.format(fechaSist); 
-
-            String respuesta = bD.deshabilitarSede(id, fechaDeshabilitado);
-            JOptionPane.showMessageDialog(this, respuesta);
-        }
-        
-    }
+    
         
     //Limpia los campos(jTextfields) de la interfaz
     private void limpiarCamposUsuarios(){
@@ -1094,9 +1016,6 @@ public class prinGerente extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         labNombreUsu = new javax.swing.JLabel();
         labCedula = new javax.swing.JLabel();
@@ -1200,19 +1119,8 @@ public class prinGerente extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI Light", 0, 48)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
         jLabel5.setText("Gerente");
-
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO logout.png"))); // NOI18N
-
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO userInfo.png"))); // NOI18N
-        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel7MouseClicked(evt);
-            }
-        });
-
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO report.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -1221,26 +1129,13 @@ public class prinGerente extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap())))
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jPanel4.setBackground(new java.awt.Color(51, 51, 51));
@@ -1820,6 +1715,8 @@ public class prinGerente extends javax.swing.JFrame {
     }//GEN-LAST:event_bConsulMouseReleased
 
     private void bAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAceptarActionPerformed
+        // TODO add your handling code here:
+        
         actualizarComboxSedes();
         int index = comboxEmple.getSelectedIndex();
         if(botonAceptar==1){
@@ -1842,6 +1739,7 @@ public class prinGerente extends javax.swing.JFrame {
                     modificarJefeTaller();
                     }
                 }
+                
             }else if(botonAceptar==3){
                 actualizarComboxVendedoresYJefes();
                 System.out.println("Entro al if");
@@ -1849,17 +1747,12 @@ public class prinGerente extends javax.swing.JFrame {
                 this.consultar(index);
             }else if(botonAceptar==4){
                 actualizarComboxVendedoresYJefes();
-                this.despedir(index);
+                this.despedir();
             }else if (botonAceptar == 5){
                 this.agregarSede();
-            }else if (botonAceptar == 6){
-                actualizarComboxSedes();
-                this.modificarSede();
-            }else if (botonAceptar == 7){
-                actualizarComboxSedes();
-                System.out.println(index);
-                this.consultarSede(index);
-            }
+            }//else if (botonAceptar == 6){
+                
+            //}else if (botonAceptar == 7){
                 
             //}else if (botonAceptar == 8){
                 
@@ -1867,23 +1760,13 @@ public class prinGerente extends javax.swing.JFrame {
     }  
 
 
-    private void comboxEmpleItemStateChanged(java.awt.event.ItemEvent evt) {                                              
+    private void comboxEmpleItemStateChanged(java.awt.event.ItemEvent evt) {                                             
         // TODO add your handling code here:]
-        Vendedor vendedor = null;
-        JefeTaller jefe = null;
-        Sede sede = null;
-        if (botonAceptar==2 || botonAceptar==3 || botonAceptar==4){
-            if (comboxEmple.getSelectedIndex() != 0){
-                String id = listaIds[comboxEmple.getSelectedIndex()-1];
-                vendedor = bD.leerVendedorPorId(id);
-                jefe = bD.leerJefeTallerPorId(id);
-            }
-        }else{
-            if (comboxEmple.getSelectedIndex() != 0){
-                String idSedes = listaIdsSede[comboxEmple.getSelectedIndex()-1];
-                sede = bD.leerSedePorId(idSedes);
-            }
-        }
+        String id = listaIds[comboxEmple.getSelectedIndex()-1];
+        Vendedor vendedor = bD.leerVendedorPorId(id);
+        JefeTaller jefe = bD.leerJefeTallerPorId(id);
+        
+        
         if(comboxEmple.getSelectedIndex() == 0){
             bAceptar.setEnabled(false);
             
@@ -1891,8 +1774,6 @@ public class prinGerente extends javax.swing.JFrame {
                 //limpiarCamposUsuarios(); 
                 habilitarCamposmodf(false);
                 this.comboxCargo.setEnabled(false);
-            }else if (botonAceptar==6){
-                habilitarCamposmodf(false);
             }
         }else{
             bAceptar.setEnabled(true);
@@ -1900,12 +1781,9 @@ public class prinGerente extends javax.swing.JFrame {
                 llenarCamposModfVendedor();
             }else if (jefe != null) {
                 llenarCamposModfJefeTaller();
-                }else if (sede != null){
-                     
                 }
             habilitarCamposmodf(true);
         }       
-          
     }//GEN-LAST:event_bAceptarActionPerformed
 
     private void bAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAceptarMouseClicked
@@ -1962,7 +1840,7 @@ public class prinGerente extends javax.swing.JFrame {
             cambiarVisibilidadCampos(true);
             cambiarVisibilidadCamposSede(false);
             cambiarVisibilidadCamposSedeModf(false);
-            this.actualizarComboxSedesMod();
+            this.actualizarComboxSedes();
         
             botonAceptar = 6;
             bAceptar.setText("Modificar");
@@ -1987,15 +1865,7 @@ public class prinGerente extends javax.swing.JFrame {
             cambiarVisibilidadCamposmodf(false);
             cambiarVisibilidadCampos(false);
             cambiarVisibilidadCamposSedeModf(false);
-            actualizarComboxSedesMod();
-            
-            System.out.println(listaIdsSede.length);
-            System.out.println(listaIdsSede[0]);
-            System.out.println(listaIdsSede[1]);
-            System.out.println(listaIdsSede[2]);
-            System.out.println(listaIdsSede[3]);
-            System.out.println(listaIdsSede[4]);
-            System.out.println(listaIdsSede[5]);
+            actualizarComboxSedes();
             
             botonAceptar = 7;
             bAceptar.setText("Consultar");
@@ -2020,7 +1890,7 @@ public class prinGerente extends javax.swing.JFrame {
             cambiarVisibilidadCamposmodf(false);
             cambiarVisibilidadCampos(false);
             cambiarVisibilidadCamposSedeModf(false);
-            actualizarComboxSedesMod();
+            actualizarComboxSedes();
             
             botonAceptar = 8;
             bAceptar.setText("Deshabilitar");
@@ -2105,11 +1975,6 @@ public class prinGerente extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_bAgregarSedeActionPerformed
 
-    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-        // TODO add your handling code here:
-        consultarInfoPersonal();
-    }//GEN-LAST:event_jLabel7MouseClicked
-
     
 
     
@@ -2148,9 +2013,6 @@ public class prinGerente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

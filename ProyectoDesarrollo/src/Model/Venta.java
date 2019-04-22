@@ -16,17 +16,12 @@ public class Venta {
     //-------------------------------------------------------------------------
     
     private String id;
-    
     private String nombreCliente;
-    
     private String telefonoCliente;
-    
     private String cedulaCliente;
-    
     private float valorVenta;
-    
     private String descripcionVenta;
-    
+    private String fecha;
     private String idVendedor;
     
     //-------------------------------------------------------------------------
@@ -34,13 +29,14 @@ public class Venta {
     //-------------------------------------------------------------------------
 
 
-    public Venta(String id, String nombreCliente, String telefonoCliente, String cedulaCliente, float valorVenta, String descripcionVenta, String idVendedor) {
+    public Venta(String id, String nombreCliente, String telefonoCliente, String cedulaCliente, float valorVenta, String descripcionVenta, String fecha, String idVendedor) {
         this.id = id;
         this.nombreCliente = nombreCliente;
         this.telefonoCliente = telefonoCliente;
         this.cedulaCliente = cedulaCliente;
         this.valorVenta = valorVenta;
         this.descripcionVenta = descripcionVenta;
+        this.fecha = fecha;
         this.idVendedor = idVendedor;
     }
     
@@ -96,6 +92,14 @@ public class Venta {
     public void setDescripcionVenta(String descripcionVenta) {
         this.descripcionVenta = descripcionVenta;
     }
+    
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
 
     public String getIdVendedor() {
         return idVendedor;
@@ -103,8 +107,6 @@ public class Venta {
 
     public void setIdVendedor(String idVendedor) {
         this.idVendedor = idVendedor;
-    }
-    
-    
+    }    
     
 }
