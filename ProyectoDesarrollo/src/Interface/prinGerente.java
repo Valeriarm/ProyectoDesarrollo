@@ -898,7 +898,7 @@ public class prinGerente extends javax.swing.JFrame {
         
         labEmple.setText("Empleado:");
         labNombreUsu.setVisible(varControl);
-        labNombre.setText("Nombre:");
+        labNombre.setText("Nombres:");
         labNombre.setVisible(varControl);
         labCedula.setVisible(varControl);
         labCargo.setVisible(varControl);
