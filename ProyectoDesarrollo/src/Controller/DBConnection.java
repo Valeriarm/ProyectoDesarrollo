@@ -5,12 +5,16 @@
  */
 package Controller;
 import Model.*;
+import static com.alee.utils.MathUtils.max;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Clase tentativa para el manejo y conexión a la base de datos
@@ -134,11 +138,11 @@ public class DBConnection {
         
         try {
             //////////////////Orden de trabajo/////////////////////////////////
-            sql = "SELECT id_Cotizacion FROM cotizacion";
+            sql = "SELECT id_cotizacion FROM cotizacion";
             rs = st.executeQuery(sql);
 
             while(rs.next()){//En caso de que hayan ordenes de trabajo
-                id = rs.getString("id_Cotizacion");
+                id = rs.getString("id_cotizacion");
                 if(idMayor<Integer.parseInt(id)) idMayor = Integer.parseInt(id); 
             }
             //idMayor = idMayor;
@@ -163,11 +167,11 @@ public class DBConnection {
         
         try {
             //////////////////Orden de trabajo/////////////////////////////////
-            sql = "SELECT id_factura FROM Venta";
+            sql = "SELECT id_factura FROM venta";
             rs = st.executeQuery(sql);
 
             while(rs.next()){//En caso de que hayan ordenes de trabajo
-                id = rs.getString("id_Factura");
+                id = rs.getString("id_factura");
                 if(idMayor<Integer.parseInt(id)) idMayor = Integer.parseInt(id); 
             }
             //idMayor = idMayor;
@@ -184,7 +188,7 @@ public class DBConnection {
       
         return id;
     }
-    
+	
     //Busca cual es el siguiente id a ser asignado
     private String idSiguiente(){
         connect();
@@ -201,8 +205,7 @@ public class DBConnection {
                 id = rs.getString("id_Gerente");
                 if(idMayor<Integer.parseInt(id)) idMayor = Integer.parseInt(id); 
             }            
-            idsMayor[0] = idMayor;
-            
+            idsMayor[0] = idMayor;            
             idMayor = 0;
             
             //////////////////Jefe Taller/////////////////////////////////
@@ -226,14 +229,15 @@ public class DBConnection {
             idsMayor[2] = idMayor;
                     
             ////////////////////////////////////////////////////////////
-            idMayor = idsMayor[0];
+            /*idMayor = idsMayor[0];
             if(idMayor<idsMayor[1]){
                 idMayor = idsMayor[1];
             }else{
                 if(idMayor<idsMayor[2]){
                     idMayor = idsMayor[2];
                 }
-            }
+            }*/
+            idMayor= max(idsMayor[0], idsMayor[1], idsMayor[2]);
             
             id = String.valueOf(idMayor+1);
             
@@ -274,7 +278,6 @@ public class DBConnection {
         }
         return id;
     }
-    
     
     private String idSiguienteInventario(){
         connect();
@@ -620,8 +623,7 @@ public class DBConnection {
         }
         return "";
     }
-    
-    
+        
     /**
      * Lista a todas las sedes presentes en la base de datos     
      * @param agregar true si la función que lo llama es agregar, false para modificar
@@ -747,8 +749,7 @@ public class DBConnection {
         }        
        return respuesta;
     }
-    
-    
+        
     public JefeTaller leerJefeTallerPorId(String id){
         connect();
         sql = "SELECT * FROM Jefe_Taller WHERE id_Jefe = '"+id+"'";
@@ -757,9 +758,7 @@ public class DBConnection {
             if(rs.next()){
                 String nombre = rs.getString("nombre_jefe");
                 String nombreUsuario = rs.getString("nombre_Usuario");
-                System.out.println(nombreUsuario);
                 String contrasenia = rs.getString("contrasenia");
-                System.out.println(contrasenia);
                 String cedula = rs.getString("cedula");
                 String cargo = rs.getString("cargo");
                 String telefono = rs.getString("telefono");
@@ -800,14 +799,14 @@ public class DBConnection {
             if(rs.next()){
                 if(fechaDespido!=null){
                     sql = "UPDATE Jefe_taller SET contrasenia = '"+contrasenia+"', nombre_usuario = '"+nombreUsuario+"', nombre_Jefe = '"+nombreJefe+"',"
-                            +"  telefono = '"+telefono+"', direccion = '"+direccion+"', genero = "+genero+", fecha_Nacimiento = '"+fechaNacimiento+
-                            "', cuenta_Bancaria = '"+cuentaBancaria+"', e_mail = '"+correo+"', salario = '"+salario+
+                            +"  telefono = '"+telefono+"', direccion = '"+direccion+"', genero = "+genero+", fecha_Nacimiento = '"+fechaNacimiento+"', "
+                            +" cuenta_Bancaria = '"+cuentaBancaria+"', e_mail = '"+correo+"', salario = '"+salario+
                             "', fecha_Registro = '"+fechaRegistro+"', fecha_Despido = '"+fechaDespido+"', habilitado = '"+habilitado+
                             "' WHERE id_jefe = '"+id+"'";
                 }else{ //En caso de que no se esté despidiendo no se modf la fecha en la base de datos
                     sql = "UPDATE Jefe_taller SET contrasenia = '"+contrasenia+"', nombre_usuario = '"+nombreUsuario+"', nombre_Jefe = '"+nombreJefe+"',"
-                            +" telefono = '"+telefono+"', direccion = '"+direccion+"', genero = "+genero+", fecha_Nacimiento = '"+fechaNacimiento+
-                            "', cuenta_Bancaria = '"+cuentaBancaria+"', e_mail = '"+correo+"', salario = '"+salario+
+                            +" telefono = '"+telefono+"', direccion = '"+direccion+"', genero = "+genero+", fecha_Nacimiento = '"+fechaNacimiento+"',"
+                            +" cuenta_Bancaria = '"+cuentaBancaria+"', e_mail = '"+correo+"', salario = '"+salario+
                             "', fecha_Registro = '"+fechaRegistro+"', habilitado = '"+habilitado+
                             "' WHERE id_jefe = '"+id+"'";
                 }
@@ -846,8 +845,7 @@ public class DBConnection {
         }
         return "";
     }
-    
-    
+        
      /**
      * Lista a todos los Jefes de taller presentes en la base de datos
      * @return Lista de los jefes de taller
@@ -1010,8 +1008,7 @@ public class DBConnection {
                 String contrasenia = rs.getString("contrasenia");
                 boolean habilitado = rs.getBoolean("habilitado");
                 String fechaDespido = rs.getString("fecha_Despido");
-                int sedeV = rs.getInt("id_Sede");
-                
+                int sedeV = rs.getInt("id_sede");
                 Vendedor vendedor = new Vendedor(id, nombre, cedula, cargo, telefono, 
                 direccion, genero, fechaNa, email, salario, cuentaBanc, fechaReg, 
                 nombreUsuario, contrasenia, habilitado, fechaDespido,sedeV);
@@ -1040,13 +1037,13 @@ public class DBConnection {
             if(rs.next()){
                 if(fechaDespido!=null){
                     sql = "UPDATE vendedor SET nombre_vendedor = '"+nombre+"', fecha_despido = '"+fechaDespido+"',"
-                            +" telefono = '"+telefono+"', direccion = '"+direccion+"', genero = '"+genero+"', fecha_nacimiento = "+fechaNacimiento+", e_mail = '"+correo+
+                            +" telefono = '"+telefono+"', direccion = '"+direccion+"', genero = '"+genero+"', fecha_nacimiento = '"+fechaNacimiento+"', e_mail = '"+correo+
                             "', salario = '"+salario+"', cuenta_Bancaria = '"+cuentaBancaria+"', fecha_registro = '"+fechaRegistro+
                             "', nombre_Usuario = '"+nombreUsuario+"', contrasenia = '"+contrasenia+"', habilitado = '"+habilitado+
                             "' WHERE id_vendedor = '"+id+"'";
                 }else{ //En caso de que no se esté despidiendo no se modf la fecha en la base de datos
                     sql = "UPDATE vendedor SET nombre_vendedor = '"+nombre+"',"
-                            +" telefono = '"+telefono+"', direccion = '"+direccion+"', genero = '"+genero+"', fecha_nacimiento = "+fechaNacimiento+", e_mail = '"+correo+
+                            +" telefono = '"+telefono+"', direccion = '"+direccion+"', genero = '"+genero+"', fecha_nacimiento = '"+fechaNacimiento+"', e_mail = '"+correo+
                             "', salario = '"+salario+"', cuenta_Bancaria = '"+cuentaBancaria+"', fecha_registro = '"+fechaRegistro+
                             "', nombre_Usuario = '"+nombreUsuario+"', contrasenia = '"+contrasenia+"', habilitado = '"+habilitado+
                             "' WHERE id_vendedor = '"+id+"'";
@@ -1126,7 +1123,7 @@ public class DBConnection {
         return "";
     }
     
-        //Deshabilita al Jefe de taller en la base de datos
+        //Deshabilita al vendedor en la base de datos
     public String despedirVendedor(String id, String fechaDespido){
         connect();
         sql = "SELECT id_Vendedor FROM Vendedor WHERE id_Vendedor = '"+id+"' AND habilitado = '"+true+"'";
@@ -1148,8 +1145,7 @@ public class DBConnection {
         }
         return "";
     }
-    
-    
+        
     
     ////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -1321,9 +1317,6 @@ public class DBConnection {
     //////////////////////////////////CRUD ORDEN///////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////
-    
-    
-    
     public String crearOrden(String especificaciones, String estado, String fechaCreacion ,String idJefe, String[] referencias, int[] cantidades){                
         String id = idSiguienteOrden();
         connect();
@@ -1379,8 +1372,7 @@ public class DBConnection {
         }
         return null;
     }
-    
-    
+        
     public String actualizarOrden(String id, String especificaciones, String estado,int[] cantidades, String[] referencias,String idJefe){
         connect();
         System.out.println(estado.equals("Terminada"));
@@ -1543,29 +1535,17 @@ public class DBConnection {
     //////////////////////////////////CRUD INVENTARIO///////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////
-    
-    
-    
-    
     public String crearInventario(String nombreProducto, float valorUnitario, 
             String descripcion, String idJefe){        
-        System.out.println(idJefe);
         String id = idSiguienteInventario();
-        System.out.println(id);
         connect();
         sql = "SELECT id_Producto FROM Inventario WHERE id_Producto = '"+id+"'";
         try {
-            System.out.println(sql);
             rs = st.executeQuery(sql);
-            System.out.println("jaime dice");
             if(rs.next()){
                 return "El Producto con el id "+id+" ya existe";
                 
             }else{
-                
-                
-                System.out.println(idJefe);
-                System.out.println(id);
                // sql = "SELECT id_Producto FROM Inventario WHERE id_Producto = '"+id+"'";
                 //rs = st.executeQuery(sql);
                 //if(rs.next()){
@@ -1979,16 +1959,14 @@ public class DBConnection {
     //////////////////////////////////CRUD SEDE/////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////
-    
-    
-        
-    public String crearSede(String nombreSede, String direccion, String fechaCreacion){
+     public String crearSede(String nombreSede, String direccion, String fechaCreacion){
         connect();
         sql = "SELECT * FROM Sede ";
+        String mensaje = "";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                 sql = "INSERT INTO Sede VALUES (nombre_Sede, direccion, fecha_creacion, habilitada)"
+                 sql = "INSERT INTO Sede  (nombre_Sede, direccion, fecha_creacion, habilitada) VALUES"
                       + "('"+nombreSede+"','"+direccion+"','"+fechaCreacion+"','"+true+"')";                
                     st.executeUpdate(sql);
                     rs.close();
@@ -1996,10 +1974,13 @@ public class DBConnection {
                     connection.close();
                 }
             
+            mensaje = "Sede agregada con éxito";
+            
         } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
+            mensaje = "Hubo un Error";
         }
-       return "Sede agregada con éxito";
+       return mensaje;
     }
     
     public Sede leerSedePorId(String id){
@@ -2028,27 +2009,29 @@ public class DBConnection {
         return null;
     }
     
-    public String actualizarSede(String id, String nombreSede, String direccion, String fechaCreacion,
-                             String fechaFinalizacion, String idGerente){
+    public String actualizarSede(String id, String nombreSede, String direccion){
         connect();
         sql = "SELECT id_Sede FROM Sede WHERE id_Sede = '"+id+"'";
+        String mensaje = "";
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                sql = "UPDATE Sede SET nombre_Sede = '"+nombreSede+"', direccion = '"+direccion+
-                        "', fecha_Creacion = '"+fechaCreacion+"', fecha_Finalizacion = '"+fechaFinalizacion+"',"+" id_Gerente = '"+idGerente+"'";
+                sql = "UPDATE Sede SET nombre_Sede = '"+nombreSede+"', direccion = '"+direccion+"' "
+                        + "WHERE id_sede = "+id;
                 st.executeUpdate(sql);
                 rs.close();
                 st.close();
                 connection.close();
             }else{        
-                return "La Sede con el id "+id+" no existe";
+                mensaje = "La Sede con el id "+id+" no existe";
             }
+            mensaje = "Sede actualizada con éxito";
             
         } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
+            mensaje = "Hubo un error";
         }
-       return "Sede actualizada con éxito";
+       return mensaje;
     }
     
     public String eliminarSede(String id){
@@ -2073,16 +2056,40 @@ public class DBConnection {
         return "";
     }
     
+    public String deshabilitarSede(String id, String fechaDespido){
+        connect();
+        sql = "SELECT id_sede FROM Sede WHERE id_sede = '"+id+"' AND habilitada = '"+true+"'";
+        try {
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                sql = "UPDATE Sede SET habilitada = '"+false+"', fecha_finalizacion = '"+fechaDespido+"' WHERE id_sede = '"+id+"'";
+                st.executeUpdate(sql);
+                rs.close();
+                st.close();
+                connection.close();
+                return "la sede fue deshabilitada";
+            }else{              
+                return "la Sede ya habia sido deshabilitada";
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return "";
+    }
     
     
+    ////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////    
 
-        /*listar Vendedores y Jefes*/
+    /*listar Vendedores y Jefes*/
     
     public String listarVendedoresYJefes(int sedeGerente){
         connect();
         //hacemos una union entre todos lo vendedores y todos los jefes y retornamos los id, nombre, cedula
-        sql = "SELECT id_vendedor, nombre_Vendedor, cedula from Vendedor  "
-                + "WHERE Habilitado = '"+true+"' and id_Sede = '"+sedeGerente+"' UNION SELECT id_jefe, nombre_jefe , cedula from jefe_taller  WHERE Habilitado = '"+true+"' and id_Sede = '"+sedeGerente+"'";
+        sql = "SELECT id_vendedor as id, nombre_Vendedor as nombre, cedula from Vendedor  "
+                + "WHERE Habilitado = '"+true+"' and id_Sede = '"+sedeGerente+"' UNION SELECT id_jefe as id, nombre_jefe as nombre , cedula from jefe_taller  WHERE Habilitado = '"+true+"' and id_Sede = '"+sedeGerente+"'";
         try {
             rs = st.executeQuery(sql);
             
@@ -2090,8 +2097,8 @@ public class DBConnection {
             String empleados = "";
             
             while(rs.next()){
-                id = rs.getString("id_Vendedor");
-                nombre = rs.getString("nombre_Vendedor");
+                id = rs.getString("id");
+                nombre = rs.getString("nombre");
                 cedula = rs.getString("cedula");
                 
                 empleados = empleados+id+","+nombre+","+cedula+"$";
@@ -2109,10 +2116,358 @@ public class DBConnection {
         return "";
     }
     
+    ////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////// REPORTES /////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    
+    public List reporteInventario(){
+        connect();
+        //Obtaining data from database
+        sql = "SELECT * FROM inventario";
+        try {
+            rs = st.executeQuery(sql);
+            List reportes = new ArrayList();
+            String id = "";
+            String nombre = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                id = rs.getString("id_producto");
+                nombre = rs.getString("nombre_producto");
+                cant = rs.getInt("cantidad");
+                        report = new Report(nombre+"("+id+")", cant);
+                        reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("Error en Reporte inventario");
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
+    public List reporteOrdenesTrabajoDia(String jefe, String initDate, String finishDate){
+        connect();
+        //Obtaining data from database
+        sql = "SELECT EXTRACT(YEAR FROM fecha_creacion) as anio, EXTRACT(MONTH "
+                + "FROM fecha_creacion) as mes, EXTRACT(DAY FROM fecha_creacion) "
+                + "as dia, COUNT(*) AS cant FROM Orden_Trabajo WHERE id_Jefe = '"
+                +jefe+"' AND fecha_creacion > '"+initDate+"' AND fecha_creacion "
+                + "< '"+finishDate+"' GROUP BY dia, mes, anio";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String dia = "";
+            String mes = "";
+            String anio = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                dia = rs.getString("dia");
+                mes = rs.getString("mes");
+                anio = rs.getString("anio");
+                
+                cant = rs.getInt("cant");
+                report = new Report(dia+"/"+mes+"/"+anio, cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
+    public List reporteOrdenesTrabajoMes(String jefe, String initDate, String finishDate){
+        connect();
+        //Obtaining data from database
+        sql = "SELECT EXTRACT(YEAR FROM fecha_creacion) as anio, EXTRACT(MONTH "
+                + "FROM fecha_creacion) as mes, COUNT(*) AS cant FROM Orden_Trabajo"
+                + " WHERE id_Jefe = '"+jefe+"' AND fecha_creacion > '"+initDate+"' "
+                + "AND fecha_creacion < '"+finishDate+"' GROUP BY mes, anio";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String mes = "";
+            String anio = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                mes = rs.getString("mes");
+                anio = rs.getString("anio");
+                
+                cant = rs.getInt("cant");
+                
+                report = new Report(mes+"/"+anio, cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
+    public List reporteOrdenesTrabajoAnio(String jefe, String initDate, String finishDate){
+        connect();
+        //Obtaining data from database
+        sql = "SELECT EXTRACT(YEAR FROM fecha_creacion) as anio, COUNT(*) AS cant FROM Orden_Trabajo"
+                + " WHERE id_Jefe = '"+jefe+"' AND fecha_creacion > '"+initDate+"' "
+                + "AND fecha_creacion < '"+finishDate+"' GROUP BY anio";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String anio = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                anio = rs.getString("anio");
+                cant = rs.getInt("cant");
+                report = new Report(anio, cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
+    //Esta funcion lo que nos retorna los reportes de toda la empresa por dia
+    public List reporteGerenteOrdenesTrabajoDia(String initDate, String finishDate){
+        connect();
+        //Obtaining data from database
+        sql = "SELECT EXTRACT(YEAR FROM fecha_creacion) as anio, EXTRACT(MONTH "
+                + "FROM fecha_creacion) as mes, EXTRACT(DAY FROM fecha_creacion) "
+                + "as dia, COUNT(*) AS cant FROM Orden_Trabajo WHERE fecha_creacion > '"+initDate+"' AND fecha_creacion "
+                + "< '"+finishDate+"' GROUP BY dia, mes, anio";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String dia = "";
+            String mes = "";
+            String anio = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                dia = rs.getString("dia");
+                mes = rs.getString("mes");
+                anio = rs.getString("anio");
+                
+                cant = rs.getInt("cant");
+                report = new Report(dia+"/"+mes+"/"+anio, cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
+    //Esta funcion lo que nos retorna los reportes de toda la empresa por mes
+    public List reporteGerenteOrdenesTrabajoMes(String initDate, String finishDate){
+        connect();
+        //Obtaining data from database
+        sql = "SELECT EXTRACT(YEAR FROM fecha_creacion) as anio, EXTRACT(MONTH "
+                + "FROM fecha_creacion) as mes, COUNT(*) AS cant FROM Orden_Trabajo"
+                + " WHERE fecha_creacion > '"+initDate+"' "
+                + "AND fecha_creacion < '"+finishDate+"' GROUP BY mes, anio";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String mes = "";
+            String anio = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                mes = rs.getString("mes");
+                anio = rs.getString("anio");
+                
+                cant = rs.getInt("cant");
+                
+                report = new Report(mes+"/"+anio, cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
+    //Esta funcion lo que nos retorna los reportes de toda la empresa por Anio
+    public List reporteGerenteOrdenesTrabajoAnio(String initDate, String finishDate){
+        connect();
+        //Obtaining data from database
+        sql = "SELECT EXTRACT(YEAR FROM fecha_creacion) as anio, COUNT(*) AS cant FROM Orden_Trabajo"
+                + " WHERE fecha_creacion > '"+initDate+"' "
+                + "AND fecha_creacion < '"+finishDate+"' GROUP BY anio";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String anio = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                anio = rs.getString("anio");
+                cant = rs.getInt("cant");
+                report = new Report(anio, cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
+    //Esta funcion lo que nos retorna los reportes de toda la empresa por dia
+    public List reporteGerenteSedeOrdenesTrabajoDia(String sede, String initDate, String finishDate){
+        connect();
+        //Obtaining data from database
+        sql = "SELECT EXTRACT(YEAR FROM fecha_creacion) as anio, EXTRACT(MONTH "
+                + "FROM fecha_creacion) as mes, EXTRACT(DAY FROM fecha_creacion) "
+                + "as dia, COUNT(*) AS cant FROM orden_trabajo NATURAL JOIN "
+                + "jefe_taller  WHERE id_sede = "+String.valueOf(sede)+" "
+                + "AND fecha_creacion > '"+initDate+"' AND fecha_creacion "
+                + "< '"+finishDate+"' GROUP BY anio, mes, dia";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String dia = "";
+            String mes = "";
+            String anio = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                dia = rs.getString("dia");
+                mes = rs.getString("mes");
+                anio = rs.getString("anio");
+                
+                cant = rs.getInt("cant");
+                report = new Report(dia+"/"+mes+"/"+anio, cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
+    //Esta funcion lo que nos retorna los reportes de toda la empresa por mes
+    public List reporteGerenteSedeOrdenesTrabajoMes(String sede, String initDate, String finishDate){
+        connect();
+        //Obtaining data from database
+        sql = "SELECT EXTRACT(YEAR FROM fecha_creacion) as anio, EXTRACT(MONTH "
+                + "FROM fecha_creacion) as mes, COUNT(*) AS cant FROM orden_trabajo NATURAL JOIN "
+                + "jefe_taller  WHERE id_sede = "+String.valueOf(sede)+" "
+                + "AND fecha_creacion > '"+initDate+"' AND fecha_creacion "
+                + "< '"+finishDate+"' GROUP BY anio, mes";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String mes = "";
+            String anio = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                mes = rs.getString("mes");
+                anio = rs.getString("anio");
+                
+                cant = rs.getInt("cant");
+                
+                report = new Report(mes+"/"+anio, cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
+    //Esta funcion lo que nos retorna los reportes de toda la empresa por Anio
+    public List reporteGerenteSedeOrdenesTrabajoAnio(String sede, String initDate, String finishDate){
+        connect();
+        //Obtaining data from database
+        sql = "SELECT EXTRACT(YEAR FROM fecha_creacion) as anio, COUNT(*) AS cant "
+                + "FROM orden_trabajo NATURAL JOIN "
+                + "jefe_taller  WHERE id_sede = "+String.valueOf(sede)+" "
+                + "AND fecha_creacion > '"+initDate+"' AND fecha_creacion "
+                + "< '"+finishDate+"' GROUP BY anio";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String anio = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                anio = rs.getString("anio");
+                cant = rs.getInt("cant");
+                report = new Report(anio, cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
     public static void main(String args[]) {    
         DBConnection prueba = new DBConnection();
         
         prueba.readSU();
     }
-    
 }
