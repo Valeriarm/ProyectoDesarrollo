@@ -14,42 +14,48 @@ public class Cotizacion {
     //-------------------------------------------------------------------------
     // ATRIBUTOS
     //-------------------------------------------------------------------------
+    private String idCotizacion;
     
-    private String id;
+    private float valor;
+    
     private String nombreCliente;
-    private String valorCotizacion;
+    
     private String telefonoCliente;
-    private String fechaCotizacion;
-    private String correoCliente;
+  
+    private String email;
+    
+    private String fecha;
+    
     private String idVendedor;
+    
             
     //-------------------------------------------------------------------------
     // CONSTRUCTOR
     //-------------------------------------------------------------------------
 
-    public Cotizacion(String id, String nombreCliente, String valorCotizacion, String telefonoCliente, String fechaCotizacion, String correoCliente, String idVendedor) {
-        this.id = id;
+    public Cotizacion(String idCotizacion, float valor, String nombreCliente, String telefonoCliente, String email, String fecha, String idVendedor) {
+        
+        this.idCotizacion = idCotizacion;
+        this.valor = valor;
         this.nombreCliente = nombreCliente;
-        this.valorCotizacion = valorCotizacion;
         this.telefonoCliente = telefonoCliente;
-        this.fechaCotizacion = fechaCotizacion;
-        this.correoCliente = correoCliente;
+        this.email = email;
+        this.fecha = fecha;
         this.idVendedor = idVendedor;
     }
-    
-    
+
+    public Cotizacion(String idCotizacion, float valorUnitario, int cantidad, String descripcion, String nombreEmpresa, String telefonoEmpresa, String direccionEmpresa, String idVendedor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     //-------------------------------------------------------------------------
     // GETS AND SETS
     //-------------------------------------------------------------------------
 
-    public String getId() {
-        return id;
+    public String getIdCotizacion() {
+        return idCotizacion;
     }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
+    
     public String getNombreCliente() {
         return nombreCliente;
     }
@@ -58,44 +64,44 @@ public class Cotizacion {
         this.nombreCliente = nombreCliente;
     }
 
-    public String getValorCotizacion() {
-        return valorCotizacion;
+    public float getValorUnitario() {
+        return valor;
     }
 
-    public void setValorCotizacion(String valorCotizacion) {
-        this.valorCotizacion = valorCotizacion;
+    public void setValor(float valor) {
+        this.valor = valor;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setNombreEmpresa(String email) {
+        this.email = email;
     }
 
     public String getTelefonoCliente() {
         return telefonoCliente;
     }
 
-    public void setTelefonoCliente(String telefono) {
-        this.telefonoCliente = telefono;
+    public void setTelefonoEmpresa(String telefonoCliente) {
+        this.telefonoCliente = telefonoCliente;
     }
-
-    public String getFechaCotizacion() {
-        return fechaCotizacion;
-    }
-
-    public void setFechaCotizacion(String fechaC) {
-        this.fechaCotizacion = fechaC;
-    }
-
-    public String getCorreoCliente() {
-        return correoCliente;
-    }
-
-    public void setCorreoCliente(String correoC) {
-        this.correoCliente = correoC;
-    }
-
+    
     public String getIdVendedor() {
         return idVendedor;
     }
 
     public void setIdVendedor(String idVendedor) {
         this.idVendedor = idVendedor;
+    }
+    
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
     
 }
