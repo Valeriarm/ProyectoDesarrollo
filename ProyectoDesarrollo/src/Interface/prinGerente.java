@@ -404,15 +404,15 @@ public class prinGerente extends javax.swing.JFrame {
         
         String[] fechaNac = jef.getFechaNacimiento().split("-");
         int diaNac = Integer.parseInt(fechaNac[2]);
-        int mesNac = obtenerMesNum(fechaNac[1]);
+        String mesNac = obtenerNumMes(Integer.valueOf(fechaNac[1]));
         int anoNac = Integer.parseInt(fechaNac[0]);
         
         comboxDia.setSelectedIndex(diaNac-1); 
-        comboxMes.setSelectedIndex(mesNac);
+        comboxMes.setSelectedItem(mesNac);
         comboxAno.setSelectedIndex((anoNac-2000)*-1); 
         
         //actualizarComboxSedes();
-        comboxSedes.setSelectedIndex(jef.getIdSede());
+        //comboxSedes.setSelectedIndex(jef.getIdSede());
     }
 
     private void llenarCamposModfSede(){
