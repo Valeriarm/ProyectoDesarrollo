@@ -187,7 +187,7 @@ public class Usuario {
         this.fechaNacimiento = fechaNacimiento;
         this.cuentaBancaria = cuentaBancaria;
         this.fechaRegistro = fechaRegistro;
-        this.idSede = idSede;
+        this.idSede = sede;
     }
     
     //-------------------------------------------------------------------------

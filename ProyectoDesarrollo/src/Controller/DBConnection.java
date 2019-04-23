@@ -24,12 +24,12 @@ public class DBConnection {
     //----------------------------------------------------------------------
     
     //Usuario de la base de datos en postgresql
-    private final String dBUser = "desarrollo";
-    private final String dBPassword = "desarrollo";
+    private final String dBUser = "postgres";
+    private final String dBPassword = "Marthox2299";
   
 
     //puerto
-    private final String port = "5433";
+    private final String port = "5432";
     //Nombre de la base de datos
     private final String dBName = "muebles_XYZ";
     //Dirección del host de la base de datos
@@ -769,10 +769,10 @@ public class DBConnection {
                 boolean habilitado = rs.getBoolean("habilitado");
                 String fechaDespido = rs.getString("fecha_Despido");
                 int sede = rs.getInt("id_Sede");
-                
+                System.out.println(sede);
                 JefeTaller jefe = new JefeTaller(id, contrasenia, nombreUsuario, nombre, cedula, cargo, telefono, 
                 direccion, genero, fechaNa, email, salario, cuentaBanc, fechaReg, habilitado, fechaDespido, sede);
-                
+                System.out.println(jefe.getIdSede());
                 rs.close();
                 st.close();
                 connection.close();
@@ -1362,7 +1362,7 @@ public class DBConnection {
                         "' ,estado_Orden='Terminada', fecha_Entrega='"+fecha_entrega+"' WHERE id_jefe ='"+idJefe+"' AND id_Orden = '"+id+"';";
                 for(int i=0; i<cantidades.length; i++){
                     sql += "UPDATE Actualiza SET cantidad="+cantidades[i]+" WHERE id_Producto = '"+referencias[i]+"' AND id_Orden = '"+id+"';";
-                    sql += "UPDATE Inventario SET cantidad="+cantidades[i]+" WHERE id_Producto = '"+referencias[i]+"' ;";
+                    sql += "UPDATE Inventario SET cantidad=cantidad + "+cantidades[i]+" WHERE id_Producto = '"+referencias[i]+"' ;";
                     System.out.println(cantidades[i]+" - "+referencias[i]);
                 }
                 rs = st.executeQuery(sql);
@@ -1453,28 +1453,21 @@ public class DBConnection {
     }
     
     public String listarInventarioOrden(String id_orden){
-        //Llamamos el metodo que cree arriba para poder conectarnos a la base de datos
         connect();
-        //Creo la sentencia sql de lo que quiero hacer, en este caso, quiero todas las columnas de la tabla
         sql = "SELECT actualiza.id_Producto, nombre_Producto, actualiza.cantidad FROM "+
                 "Actualiza INNER JOIN inventario on actualiza.id_producto=inventario.id_producto "+
                 "WHERE actualiza.id_orden= '"+id_orden+"';";                
-        //Necesito un try catch porque esto me puede arrojar un error de consulta (SQL)
         try {            
-            //Aquí usamos el metodo de Statment executeQuery y le pasamos la sentencia sql, esto lo guardamos en el 
-            //Resultset y usamos next() para saltar entre filas, cada fila es un ingreso de la base de datos
             rs = st.executeQuery(sql);
             String id, nombre;
             int cantidad;
             String ordenes = "";
             while(rs.next()){
-                //Usando getString podemos obtener el resultado de nuestra consulta pasandole el nombre de la columna
                 id = rs.getString("id_Producto");
                 nombre = rs.getString("nombre_Producto");
                 cantidad = rs.getInt("cantidad");
                 ordenes = ordenes+id+","+nombre+","+cantidad+"$";
             }
-            //POR ULTIMO E IMPORTANTE: hay que cerrar siempre las conexiones
             rs.close();
             st.close();
             connection.close();
@@ -1485,6 +1478,29 @@ public class DBConnection {
         return "";
     }
     
+    public int obtainCantidadRefOrden(String id_orden, String id_ref){
+        connect();
+        sql = "SELECT actualiza.id_Producto, nombre_Producto, actualiza.cantidad FROM "+
+                "Actualiza INNER JOIN inventario on actualiza.id_producto=inventario.id_producto "+
+                "WHERE actualiza.id_orden= '"+id_orden+"' AND actualiza.id_producto = '"
+                + id_ref +"';";                
+        try {            
+            rs = st.executeQuery(sql);
+            int cantidad=0;
+            while(rs.next()){
+                cantidad = rs.getInt("cantidad");
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return cantidad;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return -1;
+    }
+    
+
     ////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////CRUD INVENTARIO///////////////////////////////////////
