@@ -280,7 +280,7 @@
                                   <Component id="tSal" min="-2" pref="152" max="-2" attributes="0"/>
                                   <Component id="comboxSedes" alignment="0" max="32767" attributes="0"/>
                                   <Component id="comboxCargo" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="comboxEmple" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="comboxEmple" alignment="0" min="-2" pref="152" max="-2" attributes="0"/>
                                   <Component id="tNombre" alignment="0" min="-2" pref="152" max="-2" attributes="0"/>
                                   <Component id="tDir" alignment="0" min="-2" pref="152" max="-2" attributes="0"/>
                                   <Component id="tTel" alignment="0" min="-2" pref="152" max="-2" attributes="0"/>
