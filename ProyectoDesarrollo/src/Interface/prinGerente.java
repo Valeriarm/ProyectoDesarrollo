@@ -842,6 +842,7 @@ public class prinGerente extends javax.swing.JFrame {
         comboxDia.setSelectedIndex(0);
         comboxMes.setSelectedIndex(0);
         comboxAno.setSelectedIndex(0);
+        comboxCargo.setSelectedIndex(0);
     }
     
     
@@ -1836,47 +1837,49 @@ public class prinGerente extends javax.swing.JFrame {
             if (comboxCargo.getSelectedItem()== "Vendedor"){
              this.agregarVendedor();
              limpiarCamposUsuarios();
-            }else{
+            }else if (comboxCargo.getSelectedItem() == "Jefe de taller"){
                 this.agregarJefeTaller();
                 limpiarCamposUsuarios();
-            }}else if(botonAceptar==2){
-                String id = listaIds[comboxEmple.getSelectedIndex()-1];
-                Vendedor vendedor = bD.leerVendedorPorId(id);
-                JefeTaller jefe = bD.leerJefeTallerPorId(id);
-                /**hay que seleccionar el tipo de usuario*/
-                if(vendedor != null){
-                    modificarVendedor();
-                    limpiarCamposUsuarios();
-                }else {
-                    if (jefe != null) {
-                    modificarJefeTaller();
-                    limpiarCamposUsuarios();
+            }else if (comboxCargo.getSelectedIndex()==0){
+                JOptionPane.showMessageDialog(this, "Seleccione un tipo de Usuario");
+                }}else if(botonAceptar==2){
+                    String id = listaIds[comboxEmple.getSelectedIndex()-1];
+                    Vendedor vendedor = bD.leerVendedorPorId(id);
+                    JefeTaller jefe = bD.leerJefeTallerPorId(id);
+                    /**hay que seleccionar el tipo de usuario*/
+                    if(vendedor != null){
+                        modificarVendedor();
+                        limpiarCamposUsuarios();
+                    }else {
+                        if (jefe != null) {
+                        modificarJefeTaller();
+                        limpiarCamposUsuarios();
+                        }
                     }
+                    actualizarComboxVendedoresYJefes();
+                }else if(botonAceptar==3){
+                    actualizarComboxVendedoresYJefes();
+                    System.out.println("Entro al if");
+                    System.out.println(index);
+                    this.consultar(index);
+                    bAceptar.setEnabled(false);
+                }else if(botonAceptar==4){
+                    actualizarComboxVendedoresYJefes();
+                    this.despedir(index);
+                }else if (botonAceptar == 5){
+                    this.agregarSede();
+                    limpiarCamposUsuarios();
+                }else if (botonAceptar == 6){
+                    this.modificarSede();
+                    actualizarComboxSedesMod();
+                }else if (botonAceptar == 7){
+                    actualizarComboxSedesMod();
+                    this.consultarSede(index);
+                    bAceptar.setEnabled(false);
+                }else if (botonAceptar == 8){
+                    this.deshabilitarSede(index);
+                    actualizarComboxSedesMod();
                 }
-                actualizarComboxVendedoresYJefes();
-            }else if(botonAceptar==3){
-                actualizarComboxVendedoresYJefes();
-                System.out.println("Entro al if");
-                System.out.println(index);
-                this.consultar(index);
-                bAceptar.setEnabled(false);
-            }else if(botonAceptar==4){
-                actualizarComboxVendedoresYJefes();
-                this.despedir(index);
-            }else if (botonAceptar == 5){
-                this.agregarSede();
-                limpiarCamposUsuarios();
-            }else if (botonAceptar == 6){
-                this.modificarSede();
-                actualizarComboxSedesMod();
-            }else if (botonAceptar == 7){
-                actualizarComboxSedesMod();
-                this.consultarSede(index);
-                bAceptar.setEnabled(false);
-            }else if (botonAceptar == 8){
-                this.deshabilitarSede(index);
-                actualizarComboxSedesMod();
-            }
     }  
 
 
