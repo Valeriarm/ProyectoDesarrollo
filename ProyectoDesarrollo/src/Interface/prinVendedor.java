@@ -260,9 +260,9 @@ public class prinVendedor extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         bAgregarVenta = new javax.swing.JButton();
-        bModfVenta = new javax.swing.JButton();
         bConsulVenta = new javax.swing.JButton();
         bAnularVenta = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -315,6 +315,8 @@ public class prinVendedor extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
         jLabel5.setText("Vendedor");
 
+        jLabel6.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -322,13 +324,17 @@ public class prinVendedor extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(485, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(141, 141, 141))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -341,21 +347,6 @@ public class prinVendedor extends javax.swing.JFrame {
         bAgregarVenta.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bAgregarVentaMouseClicked(evt);
-            }
-        });
-
-        bModfVenta.setForeground(new java.awt.Color(51, 51, 51));
-        bModfVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO Invsell.png"))); // NOI18N
-        bModfVenta.setBorderPainted(false);
-        bModfVenta.setContentAreaFilled(false);
-        bModfVenta.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                bModfVentaMouseClicked(evt);
-            }
-        });
-        bModfVenta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bModfVentaActionPerformed(evt);
             }
         });
 
@@ -541,9 +532,7 @@ public class prinVendedor extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bAgregarCot, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(bModfVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(106, 106, 106)
                         .addComponent(bModfCot, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(30, 30, 30)
@@ -569,9 +558,7 @@ public class prinVendedor extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addGap(9, 9, 9)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(bModfCot, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bModfVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(bModfCot, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3)
                 .addGap(10, 10, 10)
@@ -902,35 +889,8 @@ public class prinVendedor extends javax.swing.JFrame {
         bAceptar.setEnabled(true);
     }//GEN-LAST:event_bAgregarCotMouseClicked
 
-    private void bModfVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bModfVentaMouseClicked
-         this.productos = new ArrayList<>();
-         this.cantidades = new ArrayList<>();
-        cambiarVisibilidadCampos(false);
-        CambiarVisibilidadModCamposVenta(true);
-        this.comboxProduc.removeAllItems();
-        llenarComboBoxVenta();
-        botonAceptar = 2;
-        consulta="modificar";
-        bAceptar.setText("Modificar");
-        bAceptar.setVisible(true);
-        bAceptar.setEnabled(false);
-
-        comboxCotizacion.setSelectedIndex(0);
-    }//GEN-LAST:event_bModfVentaMouseClicked
-
     private void bModfCotMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bModfCotMouseClicked
-        
-        cambiarVisibilidadCampos(false);
-        CambiarVisibilidadModCamposCot(true);
-        llenarComboBoxCotizacion();
 
-        botonAceptar = 6;
-        consulta  = "modificar";
-        bAceptar.setText("Modificar");
-        bAceptar.setVisible(true);
-        bAceptar.setEnabled(false);
-
-        comboxCotizacion.setSelectedIndex(0);
     }//GEN-LAST:event_bModfCotMouseClicked
 
     private void bConsulVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bConsulVentaMouseClicked
@@ -985,10 +945,6 @@ public class prinVendedor extends javax.swing.JFrame {
         comboxCotizacion.setSelectedIndex(0);
     }//GEN-LAST:event_bAnularCotMouseClicked
 
-    private void bModfVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bModfVentaActionPerformed
-
-    }//GEN-LAST:event_bModfVentaActionPerformed
-
     private void bAgregarCotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAgregarCotActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_bAgregarCotActionPerformed
@@ -1022,31 +978,32 @@ public class prinVendedor extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         if(botonAceptar==1){
-            System.out.println("prueba de acceso1");
+            jLabel6.setText("Agregando Venta");
             agregarUnaVenta();
            agregarVenta();
         }
         else if(botonAceptar == 5){
-            System.out.println("prueba de acceso5");
+           jLabel6.setText("Agregando Cotizacion");
            agregarCotizacion();   
         }
-        else if(botonAceptar == 2){
-                modificarVenta();
-        }
         else if(botonAceptar == 6){
-            System.out.println("prueba de acceso6");
+            jLabel6.setText("Modificando Cotizacion");
                modificarCotizacion();
         }
         else if(botonAceptar == 3){
+            jLabel6.setText("Consultar Venta");
                 consultarVenta();
             }
         else if(botonAceptar == 7){
+            jLabel6.setText("Consultar Cotizacion");
                 consultarCotizacion();
             }
         else if(botonAceptar == 4){
+            jLabel6.setText("Anular Venta");
                 deshabilitarVenta();
             }
         else if(botonAceptar == 8){
+            jLabel6.setText("Anular Cotizacion");
                 deshabilitarCotizacion();
             }
             
@@ -1114,7 +1071,7 @@ public class prinVendedor extends javax.swing.JFrame {
 
         }
 
-        if(botonAceptar == 2 || botonAceptar == 3 || botonAceptar == 4){
+        if(botonAceptar == 3 || botonAceptar == 4){
 
             if(comboxCotizacion.getSelectedIndex() == 0){
                 bAceptar.setEnabled(false);
@@ -1145,37 +1102,6 @@ public class prinVendedor extends javax.swing.JFrame {
             tEmail.setVisible(true);
             tEmail.setEnabled(true);
             tEmail.setText("");
-        }
-
-        if(botonAceptar == 2 ){
-
-            //elementos para ventas y cotizacion
-
-            tNombreCliente.setVisible(true);
-            tNombreCliente.setText("");
-            tNombreCliente.setEnabled(true);
-            tVlr.setVisible(true);
-            tVlr.setText("");
-            tVlr.setEnabled(true);
-            tTel.setVisible(true);
-            tTel.setText("");
-            tTel.setEnabled(true);
-
-            //elementos para ventas
-            tDescrip.setVisible(true);
-            tDescrip.setEnabled(true);
-            tDescrip.setText("");
-            tDescrip.setEnabled(true);
-            jScrollPane1.setVisible(true);
-            labCCcliente.setVisible(true);
-            tCCcliente.setVisible(true);
-            tCCcliente.setEnabled(true);
-            tCCcliente.setText("");
-            tCCcliente.setEnabled(true);
-            labCant.setVisible(true);
-            tCant.setVisible(true);
-            tCant.setEnabled(true);
-            tCant.setText("");
         }
 
     }//GEN-LAST:event_comboxCotizacionItemStateChanged
@@ -1715,35 +1641,7 @@ public class prinVendedor extends javax.swing.JFrame {
 
         return true;
     }
-     
-    private boolean modificarVenta(){
-    if(!validarCamposModificarVenta()){
-            return false;
-        }
-    
-    int[] cant = new int[cantidades.size()];
-    String[] product = new String[productos.size()];
-        for (int i=0; i<cant.length;i++){
-            cant[i]=cantidades.get(i);
-            product[i]=productos.get(i).split(",")[0];
-        }
-    
-        String idVenta = String.valueOf(comboxCotizacion.getSelectedItem());
-        String telefono = tTel.getText();
-        String descripcion = tDescrip.getText();
-        String nombreCliente = tNombreCliente.getText();
-        String cedCliente = tCCcliente.getText();
-        float valor = Float.parseFloat(tVlr.getText());
-        
-        String respuesta = bD.actualizarVenta(idVenta, nombreCliente, cedCliente,descripcion,telefono ,cant,product, valor,idVendedor);
-        JOptionPane.showMessageDialog(this, respuesta);
-        limpiarCampos();
-        llenarComboBoxVenta();
-        this.comboxProduc.removeAllItems();
-        llenarComboBoxProducto();
-        return true;
-     }
-     
+
      private boolean consultarVenta(){
                
           if(!validarCamposConsultarVenta()){
@@ -1895,7 +1793,6 @@ public class prinVendedor extends javax.swing.JFrame {
     private javax.swing.JButton bConsulVenta;
     private javax.swing.JButton bConsultarCot;
     private javax.swing.JButton bModfCot;
-    private javax.swing.JButton bModfVenta;
     private javax.swing.JComboBox<String> comboxAno;
     private javax.swing.JComboBox<String> comboxCotizacion;
     private javax.swing.JComboBox<String> comboxDia;
@@ -1909,6 +1806,7 @@ public class prinVendedor extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
