@@ -1158,12 +1158,21 @@ public class DBConnection {
         
         String id = idSiguienteVenta();
         connect();
-
-        sql = "SELECT Venta.id_Factura, Modifica.id_Producto FROM Venta "
-                + "INNER JOIN Modifica ON  Modifica.id_Factura = '"+id+"';";
+        String mensaje = "No hay existencias del producto ";
         
         try {
-            
+            for(int i=0; i<cantidad.length; i++){
+                    sql = "SELECT * FROM inventario WHERE id_producto = '"+producto[i]+"' AND cantidad < "+cantidad[i];
+                    rs = st.executeQuery(sql);
+                    if(rs.next()){
+                        mensaje += rs.getString("nombre_producto")+" id:"+rs.getString("id_producto");
+                    }
+                }
+            if(!mensaje.equals("No hay existencias del producto ")){
+                        return mensaje;
+                    }
+            sql = "SELECT Venta.id_Factura, Modifica.id_Producto FROM Venta "
+                + "INNER JOIN Modifica ON  Modifica.id_Factura = '"+id+"';";
             rs = st.executeQuery(sql);
             if(rs.next()){
                 return "La venta con el id "+id+" ya existe";
@@ -1172,7 +1181,10 @@ public class DBConnection {
                     "','"+idVendedor+"');";
               
             for(int i=0; i<cantidad.length; i++){
-                    sql += "INSERT INTO Modifica VALUES ("+cantidad[i]+",'"+id+"','"+producto[i]+"');";
+                    sql += "INSERT INTO Modifica VALUES ("+cantidad[i]+",'"+id
+                            +"','"+producto[i]+"'); ";
+                    sql += "UPDATE inventario SET cantidad = cantidad-"+
+                            cantidad[i]+" WHERE id_producto = '"+producto[i]+"'; ";
                 }
 
             st.executeUpdate(sql);
