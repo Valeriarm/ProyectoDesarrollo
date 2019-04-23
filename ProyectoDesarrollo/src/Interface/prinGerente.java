@@ -418,6 +418,7 @@ public class prinGerente extends javax.swing.JFrame {
     private void llenarCamposModfSede(){
         String id = listaIdsSede[comboxEmple.getSelectedIndex()-1];
         Sede sedee = bD.leerSedePorId(id);
+        System.out.println("entro al llenar campos");
         tDir.setText(sedee.getDireccion());
         tNombre.setText(sedee.getNombreSede());
     }
@@ -452,8 +453,12 @@ public class prinGerente extends javax.swing.JFrame {
             String fechaReg = formato.format(fechaSist);      
             
             String respuesta = bD.crearVendedor(nombre, cedula,cargo,telefono,direccion,genero,fechaNac,correo,salario, cuenta,fechaReg, nombreUsu, sedeGerente);
-            if(respuesta.contains("La cedula") && (!respuesta.contains("El nombre de usuario"))) limpiarCamposUsuarios();
-            JOptionPane.showMessageDialog(this, respuesta);
+            if(respuesta.contains("La cedula") && (!respuesta.contains("El nombre de usuario"))){
+                JOptionPane.showMessageDialog(this, respuesta);
+            }else{
+                JOptionPane.showMessageDialog(this, respuesta);  
+                limpiarCamposUsuarios();
+            }          
         }        
     }
     
@@ -489,8 +494,12 @@ public class prinGerente extends javax.swing.JFrame {
             String fechaReg = formato.format(fechaSist);       
 
         String respuesta = bD.crearJefeTaller(nombreUsu,nombre,cedula,cargo, telefono,direccion,genero,fechaNac,correo,salario, cuenta, fechaReg, idGerente, sedeGerente);
-        if(respuesta.contains("La cedula")&& (!respuesta.contains("El nombre de usuario"))) limpiarCamposUsuarios();
-        JOptionPane.showMessageDialog(this, respuesta);
+        if(respuesta.contains("La cedula") && (!respuesta.contains("El nombre de usuario"))){
+                JOptionPane.showMessageDialog(this, respuesta);
+        }else{
+            JOptionPane.showMessageDialog(this, respuesta);  
+            limpiarCamposUsuarios();
+        }       
     }        
 }
     
@@ -527,7 +536,13 @@ public class prinGerente extends javax.swing.JFrame {
         String fechaReg = formato.format(fechaSist);          
 
         String respuesta = bD.crearSede( nombreSede,direccion, fechaReg);
-        JOptionPane.showMessageDialog(this, respuesta);
+        if(respuesta.contains("Hubo un Error")){
+            JOptionPane.showMessageDialog(this, respuesta);  
+            limpiarCamposUsuarios();
+        }else{
+            JOptionPane.showMessageDialog(this, respuesta);  
+            limpiarCamposUsuarios();
+        } 
     }        
 }
     
@@ -557,7 +572,7 @@ public class prinGerente extends javax.swing.JFrame {
         String fechaNac = anoCumple+"-"+obtenerMesNum(mesCumple)+"-"+diaCumple;
         
         //Datos Anteriores
-        String id = listaIds[comboxEmple.getSelectedIndex()];
+        String id = listaIds[comboxEmple.getSelectedIndex()-1];
         Vendedor ven = bD.leerVendedorPorId(id);
         
         //Comparación
@@ -589,12 +604,14 @@ public class prinGerente extends javax.swing.JFrame {
                     respuesta = bD.actualizarVendedor(id, nombre,telefono,direccion,genero,fechaNac, correo, salario, cuenta, fechaReg,nombreUsu, contrasena, true, ven.getFechaDespido());
                     JOptionPane.showMessageDialog(this, respuesta);
                 }
+                limpiarCamposUsuarios();
             }else{
                 mensaje = "Cambie un campo para modificar al Vendedor";
                 JOptionPane.showMessageDialog(this, mensaje);
             }
         }else{
             JOptionPane.showMessageDialog(this, respuesta);
+            limpiarCamposUsuarios();
         }
     }
     
@@ -651,6 +668,7 @@ public class prinGerente extends javax.swing.JFrame {
                 String respuesta = bD.actualizarJefe(id, contrasena,nombreUsu,nombre,telefono,direccion,genero, fechaNac,correo,salario,cuenta,jef.getFechaRegistro(),true,jef.getFechaDespido());
                 JOptionPane.showMessageDialog(this, respuesta);
             }
+            limpiarCamposUsuarios();
         }else{
             mensaje = "Cambie un campo para modificar al Jefe de Taller";
             JOptionPane.showMessageDialog(this, mensaje);
@@ -681,6 +699,7 @@ public class prinGerente extends javax.swing.JFrame {
                 String respuesta = bD.actualizarSede(id, nombre, direccion);
                 JOptionPane.showMessageDialog(this, respuesta);
             }
+            limpiarCamposUsuarios();
         }else{
             mensaje = "Cambie un campo para modificar la sede";
             JOptionPane.showMessageDialog(this, mensaje);
@@ -845,6 +864,7 @@ public class prinGerente extends javax.swing.JFrame {
         comboxMes.setSelectedIndex(0);
         comboxAno.setSelectedIndex(0);
         comboxCargo.setSelectedIndex(0);
+        comboxCargo.setSelectedIndex(0);
     }
     
     
@@ -878,7 +898,7 @@ public class prinGerente extends javax.swing.JFrame {
         
         labEmple.setText("Empleado:");
         labNombreUsu.setVisible(varControl);
-        labNombre.setText("Nombre:");
+        labNombre.setText("Nombres:");
         labNombre.setVisible(varControl);
         labCedula.setVisible(varControl);
         labCargo.setVisible(varControl);
@@ -1131,6 +1151,7 @@ public class prinGerente extends javax.swing.JFrame {
         fechaYhora = new javax.swing.JLabel();
         fecha = new javax.swing.JLabel();
         hora = new javax.swing.JLabel();
+        tituloLabel = new javax.swing.JLabel();
 
         users.setToolTipText("");
 
@@ -1224,7 +1245,7 @@ public class prinGerente extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 264, Short.MAX_VALUE)
                 .addComponent(Reports, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Profile, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1438,22 +1459,22 @@ public class prinGerente extends javax.swing.JFrame {
                             .addComponent(labContra))
                         .addGap(27, 27, 27)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(tCedula)
-                            .addComponent(tCorreo)
-                            .addComponent(tCuentaBan)
+                            .addComponent(tCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tCuentaBan, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(comboxGenero, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tSal)
+                            .addComponent(tSal, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(comboxSedes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(comboxCargo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(comboxEmple, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboxEmple, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tDir, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tTel)
-                            .addComponent(tNombreUsu)
-                            .addComponent(tContra))))
+                            .addComponent(tTel, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tNombreUsu, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tContra, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(50, 50, 50))
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(121, 121, 121)
+                .addGap(114, 114, 114)
                 .addComponent(bAceptar)
                 .addContainerGap())
         );
@@ -1523,8 +1544,9 @@ public class prinGerente extends javax.swing.JFrame {
                     .addComponent(comboxDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(comboxMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(comboxAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-                .addComponent(bAceptar))
+                .addGap(18, 18, 18)
+                .addComponent(bAceptar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
@@ -1731,6 +1753,11 @@ public class prinGerente extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        tituloLabel.setBackground(new java.awt.Color(51, 51, 51));
+        tituloLabel.setFont(new java.awt.Font("Segoe UI Light", 0, 24)); // NOI18N
+        tituloLabel.setForeground(new java.awt.Color(255, 255, 255));
+        tituloLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -1738,20 +1765,25 @@ public class prinGerente extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(tituloLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tituloLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(27, Short.MAX_VALUE))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1838,10 +1870,8 @@ public class prinGerente extends javax.swing.JFrame {
         if(botonAceptar==1){
             if (comboxCargo.getSelectedItem()== "Vendedor"){
              this.agregarVendedor();
-             limpiarCamposUsuarios();
             }else if (comboxCargo.getSelectedItem() == "Jefe de taller"){
                 this.agregarJefeTaller();
-                limpiarCamposUsuarios();
             }else if (comboxCargo.getSelectedIndex()==0){
                 JOptionPane.showMessageDialog(this, "Seleccione un tipo de Usuario");
                 }}else if(botonAceptar==2){
@@ -1851,11 +1881,9 @@ public class prinGerente extends javax.swing.JFrame {
                     /**hay que seleccionar el tipo de usuario*/
                     if(vendedor != null){
                         modificarVendedor();
-                        limpiarCamposUsuarios();
                     }else {
                         if (jefe != null) {
                         modificarJefeTaller();
-                        limpiarCamposUsuarios();
                         }
                     }
                     actualizarComboxVendedoresYJefes();
@@ -1870,7 +1898,6 @@ public class prinGerente extends javax.swing.JFrame {
                     this.despedir(index);
                 }else if (botonAceptar == 5){
                     this.agregarSede();
-                    limpiarCamposUsuarios();
                 }else if (botonAceptar == 6){
                     this.modificarSede();
                     actualizarComboxSedesMod();
@@ -1940,6 +1967,7 @@ public class prinGerente extends javax.swing.JFrame {
         cambiarVisibilidadCamposmodf(false);
         cambiarVisibilidadCampos(true);
         tCedula.setEnabled(true);
+        tituloLabel.setText("Agregar Usuario");
         
         botonAceptar = 1;
         bAceptar.setText("Agregar");
@@ -1953,7 +1981,7 @@ public class prinGerente extends javax.swing.JFrame {
         cambiarVisibilidadCamposmodf(false);
         cambiarVisibilidadCampos(true);
         cambiarVisibilidadCamposSede(false);
-        
+        tituloLabel.setText("Agregar Sede");
         botonAceptar = 5;
         bAceptar.setText("Agregar");
         bAceptar.setVisible(true);
@@ -1966,6 +1994,8 @@ public class prinGerente extends javax.swing.JFrame {
             cambiarVisibilidadCamposmodf(true);
             actualizarComboxVendedoresYJefes();
             actualizarComboxSedes();
+            
+            tituloLabel.setText("Modificar Usuario");
         
             botonAceptar = 2;
             bAceptar.setText("Modificar");
@@ -1981,7 +2011,7 @@ public class prinGerente extends javax.swing.JFrame {
             cambiarVisibilidadCamposSede(false);
             cambiarVisibilidadCamposSedeModf(false);
             this.actualizarComboxSedesMod();
-        
+            tituloLabel.setText("Modificar Sede");
             botonAceptar = 6;
             bAceptar.setText("Modificar");
             bAceptar.setVisible(true);
@@ -1992,7 +2022,7 @@ public class prinGerente extends javax.swing.JFrame {
             cambiarVisibilidadCamposmodf(false);
             cambiarVisibilidadCampos(false);
             this.actualizarComboxVendedoresYJefes();
-        
+            tituloLabel.setText("Consultar Usuario");
             botonAceptar = 3;
             bAceptar.setText("Consultar");
             bAceptar.setVisible(true);
@@ -2006,7 +2036,7 @@ public class prinGerente extends javax.swing.JFrame {
             cambiarVisibilidadCampos(false);
             cambiarVisibilidadCamposSedeModf(false);
             actualizarComboxSedesMod();
-            
+            tituloLabel.setText("Consultar Sede");
             botonAceptar = 7;
             bAceptar.setText("Consultar");
             bAceptar.setVisible(true);
@@ -2017,7 +2047,7 @@ public class prinGerente extends javax.swing.JFrame {
     cambiarVisibilidadCamposmodf(false);
         cambiarVisibilidadCampos(false);
         actualizarComboxVendedoresYJefes();
-        
+        tituloLabel.setText("Despedir Usuario");
         botonAceptar = 4;
         bAceptar.setText("Despedir");
         bAceptar.setVisible(true);
@@ -2031,7 +2061,7 @@ public class prinGerente extends javax.swing.JFrame {
             cambiarVisibilidadCampos(false);
             cambiarVisibilidadCamposSedeModf(false);
             actualizarComboxSedesMod();
-            
+            tituloLabel.setText("Deshabilitar Sede");
             botonAceptar = 8;
             bAceptar.setText("Deshabilitar");
             bAceptar.setVisible(true);
@@ -2213,6 +2243,7 @@ public class prinGerente extends javax.swing.JFrame {
     private javax.swing.JTextField tNombreUsu;
     private javax.swing.JTextField tSal;
     private javax.swing.JTextField tTel;
+    private javax.swing.JLabel tituloLabel;
     private javax.swing.JPopupMenu users;
     private javax.swing.JCheckBoxMenuItem usuario;
     private javax.swing.JCheckBoxMenuItem usuarios;
