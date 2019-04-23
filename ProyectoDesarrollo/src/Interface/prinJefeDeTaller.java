@@ -9,6 +9,7 @@ import Controller.DBConnection;
 import Model.OrdenTrabajo;
 import Model.Inventario;
 import Model.JefeTaller;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -19,6 +20,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import javax.swing.UnsupportedLookAndFeelException;
 
 /**
@@ -42,6 +44,14 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         initComponents();
         this.bD = baseDatos;
         this.idJefe = idJefe;
+        
+        Date fechaSist = new Date(); 
+        SimpleDateFormat formato = new SimpleDateFormat("dd-MMM-yyyy");
+        fecha.setText(formato.format(fechaSist));
+        
+        //Hora
+        Timer tiempo = new Timer(100, new prinJefeDeTaller.hora());
+        tiempo.start();
         
         referencias = new ArrayList<>();
         cantidades = new ArrayList<>();
@@ -175,6 +185,9 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         bModf.setBorderPainted(false);
         bModf.setContentAreaFilled(false);
         bModf.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bModfMouseClicked(evt);
+            }
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 bModfMouseReleased(evt);
             }
@@ -347,6 +360,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
         tEspecificaciones.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
         tEspecificaciones.setToolTipText("");
+        tEspecificaciones.setMaximumSize(new java.awt.Dimension(152, 24));
+        tEspecificaciones.setPreferredSize(new java.awt.Dimension(152, 24));
 
         bAceptar.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
         bAceptar.setText("Agregar");
@@ -358,6 +373,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
         tCantidad.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
         tCantidad.setToolTipText("");
+        tCantidad.setMaximumSize(new java.awt.Dimension(152, 24));
         tCantidad.setPreferredSize(new java.awt.Dimension(152, 24));
         tCantidad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -371,6 +387,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
         tNombreProducto.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
         tNombreProducto.setToolTipText("");
+        tNombreProducto.setMaximumSize(new java.awt.Dimension(152, 24));
         tNombreProducto.setPreferredSize(new java.awt.Dimension(152, 24));
         tNombreProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -384,6 +401,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
         tValorUnitario.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
         tValorUnitario.setToolTipText("");
+        tValorUnitario.setMaximumSize(new java.awt.Dimension(152, 24));
         tValorUnitario.setPreferredSize(new java.awt.Dimension(152, 24));
         tValorUnitario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -397,6 +415,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
         tDescripcion.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
         tDescripcion.setToolTipText("");
+        tDescripcion.setMaximumSize(new java.awt.Dimension(14, 29));
+        tDescripcion.setPreferredSize(new java.awt.Dimension(152, 29));
         tDescripcion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tDescripcionActionPerformed(evt);
@@ -409,7 +429,9 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
         cbRefProducto.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
         cbRefProducto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione una referencia" }));
-        cbRefProducto.setPreferredSize(new java.awt.Dimension(152, 20));
+        cbRefProducto.setMaximumSize(new java.awt.Dimension(152, 24));
+        cbRefProducto.setMinimumSize(new java.awt.Dimension(152, 24));
+        cbRefProducto.setPreferredSize(new java.awt.Dimension(152, 24));
         cbRefProducto.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cbRefProductoItemStateChanged(evt);
@@ -422,7 +444,9 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
         cbEstadoOrden.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
         cbEstadoOrden.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione un estado", "En proceso", "Terminada" }));
-        cbEstadoOrden.setPreferredSize(new java.awt.Dimension(152, 20));
+        cbEstadoOrden.setMaximumSize(new java.awt.Dimension(152, 24));
+        cbEstadoOrden.setMinimumSize(new java.awt.Dimension(152, 24));
+        cbEstadoOrden.setPreferredSize(new java.awt.Dimension(152, 24));
         cbEstadoOrden.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbEstadoOrdenActionPerformed(evt);
@@ -472,14 +496,14 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                     .addComponent(labIdOrden))
                 .addGap(55, 55, 55)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(tCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tEspecificaciones)
-                    .addComponent(tNombreProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tDescripcion)
-                    .addComponent(tValorUnitario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cbEstadoOrden, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbIdOrden, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbRefProducto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tEspecificaciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tNombreProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tValorUnitario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbEstadoOrden, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbIdOrden, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cbRefProducto, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tDescripcion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -503,14 +527,14 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labNombreProducto))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addGap(22, 22, 22)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tValorUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labValorUnitario))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labDescripcion))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labDescripcion)
+                    .addComponent(tDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbRefProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -528,6 +552,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                     .addComponent(bAceptar)
                     .addComponent(bConfirmar)))
         );
+
+        tNombreProducto.getAccessibleContext().setAccessibleName("");
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -768,14 +794,14 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     }//GEN-LAST:event_cbIdOrdenItemStateChanged
 
     private void modInvMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modInvMouseReleased
-        
+
             consultaInv = "disponible";
             botonAceptar = 6;
             limpiarCampos();
             desactivarCampos();
             cambiarVisibilidadCamposInventarioModf(true);
             llenarComboboxInventario();
-        
+            
             bAceptar.setText("Modificar");
             bAceptar.setVisible(true);
             bAceptar.setEnabled(true);
@@ -881,7 +907,20 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
     private void cbRefProductoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbRefProductoItemStateChanged
         // TODO add your handling code here:
+        String idInventario = String.valueOf(cbRefProducto.getSelectedItem()).split(",")[0];
+        Inventario inventario = bD.leerInventarioPorId(idInventario);
+        Dimension d = tDescripcion.getPreferredSize();
+        tDescripcion.setMaximumSize(d);
+        if(inventario != null){
+            tNombreProducto.setText(inventario.getNombreProducto());
+            tValorUnitario.setText(String.valueOf(inventario.getValorUnitario()));
+            tDescripcion.setText(inventario.getDescripcion());
+        }
     }//GEN-LAST:event_cbRefProductoItemStateChanged
+
+    private void bModfMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bModfMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bModfMouseClicked
     
     public void llenarComboboxOrden(){
         String [] ordenes = bD.listarOrden(this.idJefe, consulta).split("\\$");

@@ -24,12 +24,12 @@ public class DBConnection {
     //----------------------------------------------------------------------
     
     //Usuario de la base de datos en postgresql
-    private final String dBUser = "desarrollo";
-    private final String dBPassword = "desarrollo";
+    private final String dBUser = "postgres";
+    private final String dBPassword = "Marthox2299";
   
 
     //puerto
-    private final String port = "5433";
+    private final String port = "5432";
     //Nombre de la base de datos
     private final String dBName = "muebles_XYZ";
     //Dirección del host de la base de datos
@@ -769,10 +769,10 @@ public class DBConnection {
                 boolean habilitado = rs.getBoolean("habilitado");
                 String fechaDespido = rs.getString("fecha_Despido");
                 int sede = rs.getInt("id_Sede");
-                
+                System.out.println(sede);
                 JefeTaller jefe = new JefeTaller(id, contrasenia, nombreUsuario, nombre, cedula, cargo, telefono, 
                 direccion, genero, fechaNa, email, salario, cuentaBanc, fechaReg, habilitado, fechaDespido, sede);
-                
+                System.out.println(jefe.getIdSede());
                 rs.close();
                 st.close();
                 connection.close();
