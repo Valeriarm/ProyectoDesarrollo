@@ -702,6 +702,7 @@ public class prinGerente extends javax.swing.JFrame {
         String id = listaIds[index-1];
         Vendedor vendedor = bD.leerVendedorPorId(id);
         JefeTaller jefe = bD.leerJefeTallerPorId(id);
+        Gerente ger = bD.leerGerentePorId(idGerente);
         String genero;
         
         if(vendedor != null){
@@ -710,12 +711,13 @@ public class prinGerente extends javax.swing.JFrame {
             }else{
                 genero = "Femenino";
             }
+            Sede sede = bD.leerSedePorId(String.valueOf(ger.getIdSede()));
             String mensaje = "Nombre: "+vendedor.getNombre()+"\n"+
                          "Cedula: "+vendedor.getCedula()+"\n"+
                          "Cargo: "+vendedor.getCargo()+"\n"+
                          "salario: "+vendedor.getSalario()+"\n"+
                          "Cuenta Bancaria: "+vendedor.getCuentaBancaria()+"\n"+
-                         "Sede: "+ vendedor.getIdSede()+"\n"+
+                         "Sede: "+ sede.getNombreSede()+"\n"+
                          "Fecha Registro: "+vendedor.getFechaRegistro()+"\n"+
                          "Fecha Nacimiento: "+vendedor.getFechaNacimiento()+"\n"+
                          "Correo: "+vendedor.getCorreo()+"\n"+
@@ -730,13 +732,13 @@ public class prinGerente extends javax.swing.JFrame {
             }else{
                 genero = "Femenino";
             }
-        
+            Sede sede = bD.leerSedePorId(String.valueOf(ger.getIdSede()));
             String mensaje = "Nombre: "+jefe.getNombre()+"\n"+
                          "Cedula: "+jefe.getCedula()+"\n"+
                          "Cargo: "+jefe.getCargo()+"\n"+
                          "salario: "+jefe.getSalario()+"\n"+
                          "Cuenta Bancaria: "+jefe.getCuentaBancaria()+"\n"+
-                         "Sede: "+jefe.getIdSede()+"\n"+
+                         "Sede: "+sede.getNombreSede()+"\n"+
                          "Fecha Registro: "+jefe.getFechaRegistro()+"\n"+
                          "Fecha Nacimiento: "+jefe.getFechaNacimiento()+"\n"+
                          "Correo: "+jefe.getCorreo()+"\n"+
