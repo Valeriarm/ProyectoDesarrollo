@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
@@ -42,8 +43,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         this.bD = baseDatos;
         this.idJefe = idJefe;
         
-        this.referencias = new ArrayList<>();
-        this.cantidades = new ArrayList<>();
+        referencias = new ArrayList<>();
+        cantidades = new ArrayList<>();
         
         desactivarCampos();
         bAceptar.setVisible(false);
@@ -134,32 +135,20 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addComponent(fechaYhora)
-                .addGap(0, 129, Short.MAX_VALUE))
-            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel5Layout.createSequentialGroup()
-                    .addGap(78, 78, 78)
-                    .addComponent(fecha)
-                    .addContainerGap(58, Short.MAX_VALUE)))
-            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel5Layout.createSequentialGroup()
-                    .addGap(142, 142, 142)
-                    .addComponent(hora)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(fecha)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(hora)
+                .addGap(0, 21, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(fechaYhora))
-            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fechaYhora)
                     .addComponent(fecha, javax.swing.GroupLayout.DEFAULT_SIZE, 17, Short.MAX_VALUE)
-                    .addContainerGap()))
-            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel5Layout.createSequentialGroup()
-                    .addGap(4, 4, 4)
-                    .addComponent(hora)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(hora)))
         );
 
         bAgregar.setForeground(new java.awt.Color(51, 51, 51));
@@ -421,6 +410,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         cbRefProducto.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
         cbRefProducto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione una referencia" }));
         cbRefProducto.setPreferredSize(new java.awt.Dimension(152, 20));
+        cbRefProducto.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbRefProductoItemStateChanged(evt);
+            }
+        });
 
         labEstadoOrden.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
         labEstadoOrden.setForeground(new java.awt.Color(255, 255, 255));
@@ -594,8 +588,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(42, 42, 42)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(41, 41, 41)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(42, Short.MAX_VALUE))
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -608,7 +602,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 39, Short.MAX_VALUE))
+                .addGap(0, 45, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -633,16 +627,16 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
     private void bAgregarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAgregarMouseReleased
        //muestra las opciones (Ordenes de trabajo o Items de inventario)
-              
-            this.referencias = new ArrayList<>();
-            this.cantidades = new ArrayList<>();
+             
+            referencias = new ArrayList<>();
+            cantidades = new ArrayList<>();
             consultaInv="disponible";
+            botonAceptar = 1;
             limpiarCampos();
             desactivarCampos();
             cambiarVisibilidadCamposOrdenAgregar(true);
             llenarComboboxInventario();
         
-            botonAceptar = 1;
             bAceptar.setText("Agregar");
             bAceptar.setVisible(true);
             bAceptar.setEnabled(true);
@@ -652,10 +646,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
     private void bModfMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bModfMouseReleased
         
-            this.referencias = new ArrayList<>();
-            this.cantidades = new ArrayList<>();
+            referencias = new ArrayList<>();
+            cantidades = new ArrayList<>();
             consultaInv = "disponible";
             consulta  = "modificar";
+            botonAceptar = 2;
             limpiarCampos();
             desactivarCampos();
             cambiarVisibilidadCamposOrdenModificar(true);
@@ -663,7 +658,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             this.cbRefProducto.removeAllItems();
             llenarComboboxInventarioOrden();
         
-            botonAceptar = 2;
             bAceptar.setText("Modificar");
             bAceptar.setVisible(true);              
             bAceptar.setEnabled(true);
@@ -673,12 +667,12 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     private void bConsulMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bConsulMouseReleased
    
             consulta="consultar";
+            botonAceptar = 3;
             limpiarCampos();
             desactivarCampos();
             cambiarVisibilidadCamposOrdenConsultar(true);
             llenarComboboxOrden();
         
-            botonAceptar = 3;
             bAceptar.setText("Consultar");
             bAceptar.setVisible(true);
             bAceptar.setEnabled(true);
@@ -688,12 +682,12 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     private void bAnularMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAnularMouseReleased
 
             consulta="modificar";
+            botonAceptar = 4;
             limpiarCampos();
             desactivarCampos();
             cambiarVisibilidadCamposOrdenAnular(true);
             llenarComboboxOrden();
 
-            botonAceptar = 4;
             bAceptar.setText("Anular");
             bAceptar.setVisible(true);
             bAceptar.setEnabled(true);
@@ -763,9 +757,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             }
             else if(botonAceptar == 2){
                  modificarOrdenDeTrabajo();
-          
             }
-          
     }//GEN-LAST:event_bConfirmarActionPerformed
 
     private void cbIdOrdenItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbIdOrdenItemStateChanged
@@ -778,12 +770,12 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     private void modInvMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modInvMouseReleased
         
             consultaInv = "disponible";
+            botonAceptar = 6;
             limpiarCampos();
             desactivarCampos();
-            cambiarVisibilidadCamposOrdenModificar(true);
+            cambiarVisibilidadCamposInventarioModf(true);
             llenarComboboxInventario();
         
-            botonAceptar = 6;
             bAceptar.setText("Modificar");
             bAceptar.setVisible(true);
             bAceptar.setEnabled(true);
@@ -793,12 +785,12 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     private void consulInvMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_consulInvMouseReleased
         
             consultaInv = "disponible";
+            botonAceptar = 7;
             limpiarCampos();
             desactivarCampos();
             cambiarVisibilidadCamposInventarioConsultar(true);
             llenarComboboxInventario();
             
-            botonAceptar = 7;
             bAceptar.setText("Consultar");
             bAceptar.setVisible(true);
             bAceptar.setEnabled(true);
@@ -806,12 +798,12 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     }//GEN-LAST:event_consulInvMouseReleased
 
     private void addInvMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addInvMouseReleased
-       
+            
+            botonAceptar = 5;
             limpiarCampos();
             desactivarCampos();
             cambiarVisibilidadCamposInventarioAgregar(true);
         
-            botonAceptar = 5;
             bAceptar.setText("Agregar");
             bAceptar.setVisible(true);
             bAceptar.setEnabled(true);
@@ -822,12 +814,12 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     private void anularInvMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_anularInvMouseReleased
         
             consultaInv="disponible";
+            botonAceptar = 8;
             limpiarCampos();
             desactivarCampos();
             cambiarVisibilidadCamposInventarioEliminar(true);
             llenarComboboxInventario();
 
-            botonAceptar = 8;
             bAceptar.setText("Eliminar");
             bAceptar.setVisible(true);
             bAceptar.setEnabled(true);
@@ -886,6 +878,10 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     private void addInvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addInvActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_addInvActionPerformed
+
+    private void cbRefProductoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbRefProductoItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbRefProductoItemStateChanged
     
     public void llenarComboboxOrden(){
         String [] ordenes = bD.listarOrden(this.idJefe, consulta).split("\\$");
@@ -902,9 +898,19 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     }
     
     public void llenarComboboxInventarioOrden(){
-        String [] inventario = bD.listarInventarioOrden(String.valueOf(cbIdOrden.getSelectedItem())).split("\\$");
+        referencias = new ArrayList<>();
+        cantidades = new ArrayList<>();
+        String id_orden = String.valueOf(cbIdOrden.getSelectedItem());
+        String [] inventario = bD.listarInventarioOrden(id_orden).split("\\$");
+        String[] cositas = new String[3];
+        System.out.println(inventario.length);
         for(int i=0; i<inventario.length; i++){
             cbRefProducto.addItem(inventario[i]);
+            if(botonAceptar==2){
+                cositas = inventario[i].split(",");
+                referencias.add(cositas[0]);
+                cantidades.add(bD.obtainCantidadRefOrden(id_orden, cositas[0]));
+            }
         }
     }
     
@@ -1205,12 +1211,12 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         
         String respuesta = bD.crearOrden(especificaciones, estado, fecha_creacion ,idJefe, refs, cant);
         JOptionPane.showMessageDialog(this, respuesta);
-        this.referencias = new ArrayList<>();
-            this.cantidades = new ArrayList<>();
-            limpiarCampos();
-            desactivarCampos();
-            cambiarVisibilidadCamposOrdenAgregar(true);
-            llenarComboboxInventario();
+        referencias = new ArrayList<>();
+        cantidades = new ArrayList<>();
+        limpiarCampos();
+        desactivarCampos();
+        cambiarVisibilidadCamposOrdenAgregar(true);
+        llenarComboboxInventario();
         return true;
     }
     
@@ -1282,10 +1288,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         String nombreProducto = String.valueOf(tNombreProducto.getText());
         float valorUnitario = Float.parseFloat(tValorUnitario.getText());
         String descripcion = String.valueOf(tDescripcion.getText());
-        System.out.println(descripcion);
         
-        String respuesta = bD.actualizarInventario(id, nombreProducto, valorUnitario, 
-            descripcion);
+        bD.actualizarInventario(id, nombreProducto, valorUnitario, descripcion);
         limpiarCampos();
         desactivarCampos();
         cambiarVisibilidadCamposInventarioModf(true);
@@ -1303,7 +1307,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         Object[] nuevo = bD.leerOrdenPorId(idOrden);
         OrdenTrabajo orden = (OrdenTrabajo) nuevo[0];
         String refs = (String) nuevo[1];
-        System.out.println("HOLA "+refs);
         String[] splitedrefs = refs.split("\\$");
         
         String mensaje = "ID Orden de trabajo: "+orden.getIdOrden()+"\n"
@@ -1328,7 +1331,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             return false;            
         }
         String idInventario = String.valueOf(cbRefProducto.getSelectedItem()).split(",")[0];
-        //System.out.println(idInventario);
         Inventario inventario = bD.leerInventarioPorId(idInventario);
         String mensaje = "ID producto: "+inventario.getIdProducto()+"\n"
                 +"Nombre producto: "+inventario.getNombreProducto()+"\n"
@@ -1374,7 +1376,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             return false;
         }
         String idInventario = String.valueOf(cbRefProducto.getSelectedItem()).split(",")[0];
-        System.out.println(idInventario);
         Inventario inventario = bD.leerInventarioPorId(idInventario);
         String mensaje = "ID producto: "+inventario.getIdProducto()+"\n"
                 +"Nombre producto: "+inventario.getNombreProducto()+"\n"
