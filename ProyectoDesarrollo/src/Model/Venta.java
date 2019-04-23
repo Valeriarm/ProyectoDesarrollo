@@ -14,14 +14,18 @@ public class Venta {
     //-------------------------------------------------------------------------
     // ATRIBUTOS
     //-------------------------------------------------------------------------
+    private String idVenta;
     
-    private String id;
     private String nombreCliente;
+    
     private String telefonoCliente;
+    
     private String cedulaCliente;
+    
     private float valorVenta;
+    
     private String descripcionVenta;
-    private String fecha;
+    
     private String idVendedor;
     
     //-------------------------------------------------------------------------
@@ -29,14 +33,14 @@ public class Venta {
     //-------------------------------------------------------------------------
 
 
-    public Venta(String id, String nombreCliente, String telefonoCliente, String cedulaCliente, float valorVenta, String descripcionVenta, String fecha, String idVendedor) {
-        this.id = id;
+    public Venta(String idVenta,String nombreCliente, String telefonoCliente, String cedulaCliente, float valorVenta, String descripcionVenta, String idVendedor) {
+
+        this.idVenta = idVenta;
         this.nombreCliente = nombreCliente;
         this.telefonoCliente = telefonoCliente;
         this.cedulaCliente = cedulaCliente;
         this.valorVenta = valorVenta;
         this.descripcionVenta = descripcionVenta;
-        this.fecha = fecha;
         this.idVendedor = idVendedor;
     }
     
@@ -44,13 +48,12 @@ public class Venta {
     // GETS AND SETS
     //-------------------------------------------------------------------------
 
-
-    public String getId() {
-        return id;
+    public Venta(String id, String nombreCliente, String telefonoCliente, String cedulaCliente, int valorVenta, String descripcionVenta, String fecha, String producto) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void setId(String id) {
-        this.id = id;
+      public String getIdVenta() {
+        return idVenta;
     }
 
     public String getNombreCliente() {
@@ -93,20 +96,11 @@ public class Venta {
         this.descripcionVenta = descripcionVenta;
     }
     
-    public String getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
-    }
-
     public String getIdVendedor() {
         return idVendedor;
     }
 
     public void setIdVendedor(String idVendedor) {
         this.idVendedor = idVendedor;
-    }    
-    
+    }
 }
