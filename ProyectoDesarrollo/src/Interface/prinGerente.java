@@ -418,6 +418,7 @@ public class prinGerente extends javax.swing.JFrame {
     private void llenarCamposModfSede(){
         String id = listaIdsSede[comboxEmple.getSelectedIndex()-1];
         Sede sedee = bD.leerSedePorId(id);
+        System.out.println("entro al llenar campos");
         tDir.setText(sedee.getDireccion());
         tNombre.setText(sedee.getNombreSede());
     }
@@ -1453,7 +1454,7 @@ public class prinGerente extends javax.swing.JFrame {
                             .addComponent(tSal, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(comboxSedes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(comboxCargo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(comboxEmple, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboxEmple, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tDir, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tTel, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
