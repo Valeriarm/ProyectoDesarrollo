@@ -24,12 +24,12 @@ public class DBConnection {
     //----------------------------------------------------------------------
     
     //Usuario de la base de datos en postgresql
-    private final String dBUser = "postgres";
-    private final String dBPassword = "Marthox2299";
+    private final String dBUser = "desarrollo";
+    private final String dBPassword = "desarrollo";
   
 
     //puerto
-    private final String port = "5432";
+    private final String port = "5433";
     //Nombre de la base de datos
     private final String dBName = "muebles_XYZ";
     //Dirección del host de la base de datos
@@ -1862,7 +1862,8 @@ public class DBConnection {
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                sql = "UPDATE Sede SET nombre_Sede = '"+nombreSede+"', direccion = '"+direccion+"'";
+                sql = "UPDATE Sede SET nombre_Sede = '"+nombreSede+"', direccion = '"+direccion+"' "
+                        + "WHERE id_sede = "+id;
                 st.executeUpdate(sql);
                 rs.close();
                 st.close();
