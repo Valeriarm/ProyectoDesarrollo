@@ -115,6 +115,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         labIdOrden = new javax.swing.JLabel();
         cbIdOrden = new javax.swing.JComboBox<>();
         bConfirmar = new javax.swing.JButton();
+        tituloLabel = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -192,6 +193,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 bModfMouseReleased(evt);
             }
         });
+        bModf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bModfActionPerformed(evt);
+            }
+        });
 
         bConsul.setForeground(new java.awt.Color(51, 51, 51));
         bConsul.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO orderssearch.png"))); // NOI18N
@@ -201,6 +207,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         bConsul.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 bConsulMouseReleased(evt);
+            }
+        });
+        bConsul.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bConsulActionPerformed(evt);
             }
         });
 
@@ -214,6 +225,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 bAnularMouseReleased(evt);
             }
         });
+        bAnular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bAnularActionPerformed(evt);
+            }
+        });
 
         anularInv.setForeground(new java.awt.Color(51, 51, 51));
         anularInv.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO Invdelete.png"))); // NOI18N
@@ -223,6 +239,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         anularInv.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 anularInvMouseReleased(evt);
+            }
+        });
+        anularInv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                anularInvActionPerformed(evt);
             }
         });
 
@@ -262,6 +283,11 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         consulInv.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 consulInvMouseReleased(evt);
+            }
+        });
+        consulInv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                consulInvActionPerformed(evt);
             }
         });
 
@@ -479,10 +505,21 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             }
         });
 
+        tituloLabel.setBackground(new java.awt.Color(51, 51, 51));
+        tituloLabel.setFont(new java.awt.Font("Segoe UI Light", 0, 24)); // NOI18N
+        tituloLabel.setForeground(new java.awt.Color(255, 255, 255));
+        tituloLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(bAceptar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(bConfirmar)
+                .addGap(83, 83, 83))
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -505,17 +542,17 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                     .addComponent(cbRefProducto, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tDescripcion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(bAceptar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(bConfirmar)
-                .addGap(83, 83, 83))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(tituloLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
+                .addContainerGap()
+                .addComponent(tituloLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labCantidad)
                     .addComponent(tCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -628,7 +665,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 45, Short.MAX_VALUE))
+                .addGap(0, 34, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -895,14 +932,17 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
     private void bAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAgregarActionPerformed
         // TODO add your handling code here:
+        tituloLabel.setText("Agregar Orden");
     }//GEN-LAST:event_bAgregarActionPerformed
 
     private void modInvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modInvActionPerformed
         // TODO add your handling code here:
+        tituloLabel.setText("Modificar Referencia");
     }//GEN-LAST:event_modInvActionPerformed
 
     private void addInvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addInvActionPerformed
         // TODO add your handling code here:
+        tituloLabel.setText("Agregar Referencia");
     }//GEN-LAST:event_addInvActionPerformed
 
     private void cbRefProductoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbRefProductoItemStateChanged
@@ -921,6 +961,31 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     private void bModfMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bModfMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_bModfMouseClicked
+
+    private void bModfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bModfActionPerformed
+        // TODO add your handling code here:
+        tituloLabel.setText("Modificar Orden");
+    }//GEN-LAST:event_bModfActionPerformed
+
+    private void bConsulActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bConsulActionPerformed
+        // TODO add your handling code here:
+        tituloLabel.setText("Consultar Orden");
+    }//GEN-LAST:event_bConsulActionPerformed
+
+    private void bAnularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAnularActionPerformed
+        // TODO add your handling code here:
+        tituloLabel.setText("Eliminar Orden");
+    }//GEN-LAST:event_bAnularActionPerformed
+
+    private void consulInvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consulInvActionPerformed
+        // TODO add your handling code here:
+        tituloLabel.setText("Consultar Referencia");
+    }//GEN-LAST:event_consulInvActionPerformed
+
+    private void anularInvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anularInvActionPerformed
+        // TODO add your handling code here:
+        tituloLabel.setText("Eliminar Referencia");
+    }//GEN-LAST:event_anularInvActionPerformed
     
     public void llenarComboboxOrden(){
         String [] ordenes = bD.listarOrden(this.idJefe, consulta).split("\\$");
@@ -1485,5 +1550,6 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     private javax.swing.JTextField tEspecificaciones;
     private javax.swing.JTextField tNombreProducto;
     private javax.swing.JTextField tValorUnitario;
+    private javax.swing.JLabel tituloLabel;
     // End of variables declaration//GEN-END:variables
 }
