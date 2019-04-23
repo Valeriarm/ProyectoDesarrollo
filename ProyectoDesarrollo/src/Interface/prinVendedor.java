@@ -7,7 +7,6 @@ package Interface;
 
 import Controller.DBConnection;
 import Model.Cotizacion;
-import Model.OrdenTrabajo;
 import Model.Venta;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,7 +16,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
@@ -34,7 +32,6 @@ public class prinVendedor extends javax.swing.JFrame {
     private int botonAceptar = 0;  
     private DBConnection bD;
     private final String idVendedor;
-    private String[] listaIds;
     ArrayList<String> productos;
     ArrayList<Integer> cantidades;
     private String consulta;
@@ -95,72 +92,6 @@ public class prinVendedor extends javax.swing.JFrame {
     return validacion;
     }
        
-    private boolean validarCamposCotizaciones(String nombreCliente,String telCliente, String valor, String email, String fecha, String producto){
-     String mensaje ="";
-     boolean validacion = true;
-        try{
-            Integer.valueOf(tVlr.getText());
-        }catch(NumberFormatException nan){
-            
-            mensaje = mensaje + "- cantidad valida para el valor\n";
-            return validacion;
-        }
-        
-        if(tTel.getText().replace(" ", "").length()==0){
-            mensaje = mensaje + "- numero telefonico\n";
-            return validacion;
-        }
-        
-        if(tNombreCliente.getText().replace(" ", "").length()==0){
-            mensaje = mensaje + "- Nombre Cliente\n";
-            return validacion;
-        }
-        
-        if(tEmail.getText().replace(" ", "").length()==0){
-           mensaje = mensaje + "- email\n";
-
-            return validacion;
-        }
-        
-        if(!validacion){
-        mensaje = "Los siguientes campos están vacios:\n"+mensaje;
-    }
-        
-        return validacion;
-    }
-    
-     private int obtenerMesNum(String mes){
-        //ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic
-        switch(mes){
-            case "ene":
-                return 1;
-            case "feb":
-                return 2;
-            case "mar":
-                return 3;
-            case "abr":
-                return 4;
-            case "may":
-                return 5;
-            case "jun":
-                return 6;
-            case "jul":
-                return 7;
-            case "ago":
-                return 8;
-            case "sep":
-                return 9;
-            case "oct":
-                return 10;
-            case "nov":
-                return 11;
-            case "dic":
-                return 12;
-        }
-        return 0;
-    }
-     
-     
     
     class hora implements ActionListener{
     
@@ -248,7 +179,6 @@ public class prinVendedor extends javax.swing.JFrame {
            comboxCotizacion.setModel(new DefaultComboBoxModel (opciones));
     }else{
         String[] listaVentas = ventas.split("\\$");
-        listaIds = obtenerListaIdsVentas(listaVentas);
         String[] opciones = obtenerOpcionesVentas(listaVentas);
         comboxCotizacion.setModel(new DefaultComboBoxModel (opciones));
         }
@@ -284,15 +214,11 @@ public class prinVendedor extends javax.swing.JFrame {
         tNombreCliente = new javax.swing.JTextField();
         tEmail = new javax.swing.JTextField();
         labEmail = new javax.swing.JLabel();
-        labVlr = new javax.swing.JLabel();
-        tVlr = new javax.swing.JTextField();
         tCCcliente = new javax.swing.JTextField();
         labCCcliente = new javax.swing.JLabel();
         tTel = new javax.swing.JTextField();
         labTel = new javax.swing.JLabel();
         labDescrip = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tDescrip = new javax.swing.JTextArea();
         labFecha = new javax.swing.JLabel();
         comboxDia = new javax.swing.JComboBox<>();
         comboxAno = new javax.swing.JComboBox<>();
@@ -301,6 +227,7 @@ public class prinVendedor extends javax.swing.JFrame {
         comboxProduc = new javax.swing.JComboBox<>();
         labCant = new javax.swing.JLabel();
         tCant = new javax.swing.JTextField();
+        tDescrip = new javax.swing.JTextField();
         bAceptar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -347,6 +274,9 @@ public class prinVendedor extends javax.swing.JFrame {
         bAgregarVenta.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bAgregarVentaMouseClicked(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bAgregarVentaMouseReleased(evt);
             }
         });
 
@@ -414,6 +344,9 @@ public class prinVendedor extends javax.swing.JFrame {
         bAgregarCot.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bAgregarCotMouseClicked(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bAgregarCotMouseReleased(evt);
             }
         });
         bAgregarCot.addActionListener(new java.awt.event.ActionListener() {
@@ -544,7 +477,7 @@ public class prinVendedor extends javax.swing.JFrame {
                         .addComponent(bAnularVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bAnularCot, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -583,6 +516,9 @@ public class prinVendedor extends javax.swing.JFrame {
 
         comboxCotizacion.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
         comboxCotizacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No seleccionado" }));
+        comboxCotizacion.setMaximumSize(new java.awt.Dimension(152, 24));
+        comboxCotizacion.setMinimumSize(new java.awt.Dimension(152, 24));
+        comboxCotizacion.setPreferredSize(new java.awt.Dimension(152, 24));
         comboxCotizacion.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 comboxCotizacionItemStateChanged(evt);
@@ -612,23 +548,6 @@ public class prinVendedor extends javax.swing.JFrame {
         labEmail.setForeground(new java.awt.Color(255, 255, 255));
         labEmail.setText("Email:");
 
-        labVlr.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
-        labVlr.setForeground(new java.awt.Color(255, 255, 255));
-        labVlr.setText("Valor:");
-
-        tVlr.setToolTipText("");
-        tVlr.setPreferredSize(new java.awt.Dimension(164, 20));
-        tVlr.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tVlrActionPerformed(evt);
-            }
-        });
-        tVlr.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                tVlrKeyTyped(evt);
-            }
-        });
-
         tCCcliente.setPreferredSize(new java.awt.Dimension(164, 20));
         tCCcliente.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -656,10 +575,6 @@ public class prinVendedor extends javax.swing.JFrame {
         labDescrip.setForeground(new java.awt.Color(255, 255, 255));
         labDescrip.setText("Descripción venta:");
 
-        tDescrip.setColumns(20);
-        tDescrip.setRows(5);
-        jScrollPane1.setViewportView(tDescrip);
-
         labFecha.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
         labFecha.setForeground(new java.awt.Color(255, 255, 255));
         labFecha.setText("Fecha:");
@@ -682,9 +597,10 @@ public class prinVendedor extends javax.swing.JFrame {
 
         comboxProduc.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
         comboxProduc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No seleccionado" }));
-        comboxProduc.setMinimumSize(new java.awt.Dimension(152, 20));
+        comboxProduc.setMaximumSize(new java.awt.Dimension(152, 24));
+        comboxProduc.setMinimumSize(new java.awt.Dimension(152, 24));
         comboxProduc.setName(""); // NOI18N
-        comboxProduc.setPreferredSize(new java.awt.Dimension(190, 22));
+        comboxProduc.setPreferredSize(new java.awt.Dimension(152, 24));
 
         labCant.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
         labCant.setForeground(new java.awt.Color(255, 255, 255));
@@ -703,6 +619,14 @@ public class prinVendedor extends javax.swing.JFrame {
             }
         });
 
+        bAceptar.setFont(new java.awt.Font("Segoe UI Light", 0, 16)); // NOI18N
+        bAceptar.setText("Agregar");
+        bAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bAceptarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -711,54 +635,52 @@ public class prinVendedor extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(labCant)
-                        .addGap(115, 115, 115)
-                        .addComponent(tCant, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(labFecha)
-                        .addGap(110, 110, 110)
-                        .addComponent(comboxDia, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(comboxMes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(comboxAno, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(4, 4, 4))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                                .addComponent(labEmail)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(tEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(labIDcotizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
                                 .addComponent(comboxCotizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(labTel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(tTel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(labCCcliente)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(tCCcliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(labNombreCliente)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(tNombreCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labProducto)
-                                    .addComponent(labVlr)
-                                    .addComponent(labDescrip))
+                                    .addComponent(labCCcliente)
+                                    .addComponent(labTel)
+                                    .addComponent(labEmail)
+                                    .addComponent(labCant))
+                                .addGap(63, 63, 63)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(tCant, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(tEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(tTel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(tCCcliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addContainerGap(44, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(labNombreCliente)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tNombreCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labDescrip)
+                            .addComponent(labProducto)
+                            .addComponent(labFecha))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGap(36, 36, 36)
+                                .addComponent(comboxDia, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(comboxMes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(comboxAno, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(comboxProduc, 0, 0, Short.MAX_VALUE)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                                        .addGap(22, 22, 22)
-                                        .addComponent(tVlr, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                        .addContainerGap())))
+                                    .addComponent(tDescrip, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(comboxProduc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(43, 43, 43))))))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(154, 154, 154)
+                .addComponent(bAceptar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -779,43 +701,34 @@ public class prinVendedor extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labTel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tTel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labEmail)
+                    .addComponent(tEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labEmail))
+                    .addComponent(tCant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labCant))
                 .addGap(15, 15, 15)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labVlr)
-                    .addComponent(tVlr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(comboxAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboxMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboxDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labFecha))
+                .addGap(9, 9, 9)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labCant)
-                    .addComponent(tCant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboxProduc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labProducto))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labFecha)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(comboxDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(comboxMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(comboxAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(8, 8, 8)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labProducto)
-                    .addComponent(comboxProduc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labDescrip)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(tDescrip, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(bAceptar)
+                .addGap(49, 49, 49))
         );
 
-        bAceptar.setFont(new java.awt.Font("Segoe UI Light", 0, 16)); // NOI18N
-        bAceptar.setText("Agregar");
-        bAceptar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bAceptarActionPerformed(evt);
-            }
-        });
+        comboxProduc.getAccessibleContext().setAccessibleDescription("");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -824,14 +737,10 @@ public class prinVendedor extends javax.swing.JFrame {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(55, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(bAceptar)
-                .addGap(191, 191, 191))
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -839,10 +748,10 @@ public class prinVendedor extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
-                .addComponent(bAceptar)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 65, Short.MAX_VALUE))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -850,43 +759,25 @@ public class prinVendedor extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void bAgregarVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAgregarVentaMouseClicked
-        this.productos = new ArrayList<>();
         
-        cambiarVisibilidadCampos(false);
-        cambiarVisibilidadCamposVentas(true);
-        llenarComboBoxProducto();
-        botonAceptar = 1;
-        bAceptar.setText("Agregar");
-        bAceptar.setVisible(true);
-        bAceptar.setEnabled(true);
     }//GEN-LAST:event_bAgregarVentaMouseClicked
 
     private void bAgregarCotMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAgregarCotMouseClicked
-           
-        cambiarVisibilidadCampos(false);
-        cambiarVisibilidadCamposCot(true);
         
-        botonAceptar = 5;
-        bAceptar.setText("Agregar");
-        bAceptar.setVisible(true);
-        bAceptar.setEnabled(true);
     }//GEN-LAST:event_bAgregarCotMouseClicked
 
     private void bModfCotMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bModfCotMouseClicked
@@ -1031,17 +922,6 @@ public class prinVendedor extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tCCclienteKeyTyped
 
-    private void tVlrKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tVlrKeyTyped
-        char c = evt.getKeyChar();
-        if(c<'0' || c>'9'){
-            evt.consume();
-        }
-    }//GEN-LAST:event_tVlrKeyTyped
-
-    private void tVlrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tVlrActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tVlrActionPerformed
-
     private void tNombreClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tNombreClienteKeyTyped
         char c = evt.getKeyChar();
 
@@ -1069,9 +949,7 @@ public class prinVendedor extends javax.swing.JFrame {
             }else{
                 bAceptar.setEnabled(true);}
 
-        }
-
-        if(botonAceptar == 3 || botonAceptar == 4){
+        }else if(botonAceptar == 3 || botonAceptar == 4){
 
             if(comboxCotizacion.getSelectedIndex() == 0){
                 bAceptar.setEnabled(false);
@@ -1080,18 +958,11 @@ public class prinVendedor extends javax.swing.JFrame {
             }else{
                 bAceptar.setEnabled(true);}
 
-        }
-
-        //elementos para ventas y cotizacion
-
-        if(botonAceptar == 6 ){
+        }else if(botonAceptar == 6 ){
 
             tNombreCliente.setVisible(true);
             tNombreCliente.setText("");
             tNombreCliente.setEnabled(true);
-            tVlr.setVisible(true);
-            tVlr.setText("");
-            tVlr.setEnabled(true);
             tTel.setVisible(true);
             tTel.setText("");
             tTel.setEnabled(true);
@@ -1106,8 +977,37 @@ public class prinVendedor extends javax.swing.JFrame {
 
     }//GEN-LAST:event_comboxCotizacionItemStateChanged
 
-    
-     public void cambiarVisibilidadCampos(boolean varControl){
+    private void bAgregarVentaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAgregarVentaMouseReleased
+        // TODO add your handling code here:
+        this.productos = new ArrayList<>();
+        this.cantidades = new ArrayList<>();
+        comboxProduc.removeAllItems();;
+        
+        cambiarVisibilidadCampos(false);
+        cambiarVisibilidadCamposVentas(true);
+        llenarComboBoxProducto();
+        botonAceptar = 1;
+        bAceptar.setText("Agregar");
+        bAceptar.setVisible(true);
+        bAceptar.setEnabled(true);
+    }//GEN-LAST:event_bAgregarVentaMouseReleased
+
+    private void bAgregarCotMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAgregarCotMouseReleased
+        // TODO add your handling code here:
+        this.productos = new ArrayList<>();
+        this.cantidades = new ArrayList<>();
+        comboxProduc.removeAllItems();;
+        
+        cambiarVisibilidadCampos(false);
+        cambiarVisibilidadCamposCot(true);
+        llenarComboBoxProducto();
+        botonAceptar = 5;
+        bAceptar.setText("Agregar");
+        bAceptar.setVisible(true);
+        bAceptar.setEnabled(true);
+    }//GEN-LAST:event_bAgregarCotMouseReleased
+
+    public void cambiarVisibilidadCampos(boolean varControl){
         labIDcotizacion.setVisible(false);
         comboxCotizacion.setVisible(false);
 
@@ -1115,9 +1015,6 @@ public class prinVendedor extends javax.swing.JFrame {
       labNombreCliente.setVisible(varControl);
       tNombreCliente.setVisible(varControl);
       tNombreCliente.setText("");
-      labVlr.setVisible(varControl);
-      tVlr.setVisible(varControl);
-      tVlr.setText("");
       labTel.setVisible(varControl);
       tTel.setVisible(varControl);
       tTel.setText("");
@@ -1132,7 +1029,6 @@ public class prinVendedor extends javax.swing.JFrame {
       labDescrip.setVisible(varControl);
       tDescrip.setVisible(varControl);
       tDescrip.setText("");
-      jScrollPane1.setVisible(varControl);
       labCCcliente.setVisible(varControl);
       tCCcliente.setVisible(varControl);
       tCCcliente.setText("");
@@ -1150,140 +1046,123 @@ public class prinVendedor extends javax.swing.JFrame {
     }
      
     public void cambiarVisibilidadCamposVentas(boolean varControl){
-     
-     labIDcotizacion.setVisible(false);
+        labIDcotizacion.setVisible(false);
         comboxCotizacion.setVisible(false);
 
-      //elementos para ventas y cotizacion
-      labNombreCliente.setVisible(varControl);
-      tNombreCliente.setVisible(varControl);
-      tNombreCliente.setEnabled(varControl);
-      tNombreCliente.setText("");
-      labVlr.setVisible(varControl);
-      tVlr.setVisible(varControl);
-      tVlr.setEnabled(varControl);
-      tVlr.setText("");
-      labTel.setVisible(varControl);
-      tTel.setVisible(varControl);
-      tTel.setEnabled(varControl);
-      tTel.setText("");
-      labFecha.setVisible(!varControl);
-      comboxDia.setVisible(!varControl);
-      comboxMes.setVisible(!varControl);
-      comboxAno.setVisible(!varControl);
-      labProducto.setVisible(varControl);
-      comboxProduc.setVisible(varControl);
-      
-      //elementos ventas
-      labDescrip.setVisible(varControl);
-      tDescrip.setVisible(varControl);
-      tDescrip.setText("");
-      jScrollPane1.setVisible(varControl);
-      labCCcliente.setVisible(varControl);
-      tCCcliente.setVisible(varControl);
-      tCCcliente.setEnabled(varControl);
-      tCCcliente.setText("");
-      labCant.setVisible(varControl);
-      tCant.setVisible(varControl);
-      tCant.setText("");
-      
-      //elementos para cotizacion
-      labEmail.setVisible(!varControl);
-      tEmail.setVisible(!varControl);
-      tEmail.setEnabled(!varControl);
-      tEmail.setText("");
-         
-     }
+        //elementos para ventas y cotizacion
+        labNombreCliente.setVisible(varControl);
+        tNombreCliente.setVisible(varControl);
+        tNombreCliente.setEnabled(varControl);
+        tNombreCliente.setText("");
+        labTel.setVisible(varControl);
+        tTel.setVisible(varControl);
+        tTel.setEnabled(varControl);
+        tTel.setText("");
+        labFecha.setVisible(!varControl);
+        comboxDia.setVisible(!varControl);
+        comboxMes.setVisible(!varControl);
+        comboxAno.setVisible(!varControl);
+        labProducto.setVisible(varControl);
+        comboxProduc.setVisible(varControl);
+
+        //elementos ventas
+        labDescrip.setVisible(varControl);
+        tDescrip.setVisible(varControl);
+        tDescrip.setText("");
+        labCCcliente.setVisible(varControl);
+        tCCcliente.setVisible(varControl);
+        tCCcliente.setEnabled(varControl);
+        tCCcliente.setText("");
+        labCant.setVisible(varControl);
+        tCant.setVisible(varControl);
+        tCant.setText("");
+
+        //elementos para cotizacion
+        labEmail.setVisible(!varControl);
+        tEmail.setVisible(!varControl);
+        tEmail.setEnabled(!varControl);
+        tEmail.setText("");
+    }
     
     //Quita los campos usados en la función consultar y despedir (ej:empleado)
     //varControl: true para indicar que sea visible, false para lo opuesto
     public void cambiarVisibilidadCamposCot(boolean varControl){           
         labIDcotizacion.setVisible(false);
         comboxCotizacion.setVisible(false);
+        comboxCotizacion.setEnabled(false);
 
-      //elementos para ventas  y cotizacion
-      labNombreCliente.setVisible(varControl);
-      tNombreCliente.setVisible(varControl);
-      tNombreCliente.setEnabled(varControl);
-      tNombreCliente.setText("");
-      labVlr.setVisible(varControl);
-      tVlr.setVisible(varControl);
-      tVlr.setEnabled(varControl);
-      tVlr.setText("");
-      labTel.setVisible(varControl);
-      tTel.setVisible(varControl);
-      tTel.setEnabled(varControl);
-      tTel.setText("");
-      
-      //elementos para ventas
-      labDescrip.setVisible(!varControl);
-      tDescrip.setVisible(!varControl);
-      tDescrip.setEnabled(varControl);
-      tDescrip.setText("");
-      jScrollPane1.setVisible(!varControl);
-      labCCcliente.setVisible(!varControl);
-      tCCcliente.setVisible(!varControl);
-      tCCcliente.setEnabled(varControl);
-      tCCcliente.setText("");
-      labCant.setVisible(!varControl);
-      tCant.setVisible(!varControl);
-      tCant.setText("");
-      
-      //elementos para cotizacion
-      labEmail.setVisible(varControl);
-      tEmail.setVisible(varControl);
-      tEmail.setEnabled(varControl);
-      tEmail.setText("");
-      labFecha.setVisible(varControl);
-      comboxDia.setVisible(varControl);
-      comboxMes.setVisible(varControl);
-      comboxAno.setVisible(varControl);
+        labNombreCliente.setVisible(varControl);
+        tNombreCliente.setVisible(varControl);
+        tNombreCliente.setEnabled(varControl);
+        tNombreCliente.setText("");
+        labTel.setVisible(varControl);
+        tTel.setVisible(varControl);
+        tTel.setEnabled(varControl);
+        tTel.setText("");
+        labEmail.setVisible(varControl);
+        tEmail.setVisible(varControl);
+        tEmail.setEnabled(varControl);
+        tEmail.setText("");
+        labFecha.setVisible(!varControl);
+        comboxDia.setVisible(!varControl);
+        comboxMes.setVisible(!varControl);
+        comboxAno.setVisible(!varControl);
+        labProducto.setVisible(varControl);
+        comboxProduc.setVisible(varControl);
+        comboxProduc.setEnabled(varControl);
+
+        //elementos ventas
+        labDescrip.setVisible(!varControl);
+        labDescrip.setVisible(!varControl);
+        tDescrip.setVisible(!varControl);
+        tDescrip.setEnabled(!varControl);
+        labCCcliente.setVisible(!varControl);
+        tCCcliente.setVisible(!varControl);
+        tCCcliente.setEnabled(!varControl);
+        labCant.setVisible(varControl);
+        tCant.setVisible(varControl);
+        tCant.setText("");
     }
     
     public void CambiarVisibilidadModCamposVenta(boolean varControl){
        
-      labIDcotizacion.setText("ID factura:");
-      labIDcotizacion.setVisible(varControl);
-      comboxCotizacion.setVisible(varControl);
-              
-      //elementos para ventas y cotizacion 
-     
-      labNombreCliente.setVisible(varControl);
-      tNombreCliente.setVisible(varControl);
-      tNombreCliente.setText("");
-      tNombreCliente.setEnabled(!varControl);
-      labVlr.setVisible(varControl);
-      tVlr.setVisible(varControl);
-      tVlr.setText("");
-      tVlr.setEnabled(!varControl);
-      labTel.setVisible(varControl);
-      tTel.setVisible(varControl);
-      tTel.setText("");
-      tTel.setEnabled(!varControl);
-      
-     //elementos para ventas 
-      labDescrip.setVisible(varControl);
-      tDescrip.setVisible(varControl);
-      tDescrip.setEnabled(varControl);
-      tDescrip.setText("");
-      tDescrip.setEnabled(!varControl);
-      jScrollPane1.setVisible(varControl);
-      labCCcliente.setVisible(varControl);
-      tCCcliente.setVisible(varControl);
-      tCCcliente.setEnabled(varControl);
-      tCCcliente.setText("");
-      tCCcliente.setEnabled(!varControl);
-      labCant.setVisible(varControl);
-      tCant.setVisible(varControl);
-      tCant.setEnabled(!varControl);
-      tCant.setText("");
-      
-      //elementos para cotizacion
+        labIDcotizacion.setText("ID factura:");
+        labIDcotizacion.setVisible(varControl);
+        comboxCotizacion.setVisible(varControl);
 
-     labEmail.setVisible(!varControl);
-     tEmail.setVisible(!varControl);
-     tEmail.setEnabled(varControl);
-     tEmail.setText("");
+        //elementos para ventas y cotizacion 
+
+        labNombreCliente.setVisible(varControl);
+        tNombreCliente.setVisible(varControl);
+        tNombreCliente.setText("");
+        tNombreCliente.setEnabled(!varControl);
+        labTel.setVisible(varControl);
+        tTel.setVisible(varControl);
+        tTel.setText("");
+        tTel.setEnabled(!varControl);
+
+       //elementos para ventas 
+        labDescrip.setVisible(varControl);
+        tDescrip.setVisible(varControl);
+        tDescrip.setEnabled(varControl);
+        tDescrip.setText("");
+        tDescrip.setEnabled(!varControl);
+        labCCcliente.setVisible(varControl);
+        tCCcliente.setVisible(varControl);
+        tCCcliente.setEnabled(varControl);
+        tCCcliente.setText("");
+        tCCcliente.setEnabled(!varControl);
+        labCant.setVisible(varControl);
+        tCant.setVisible(varControl);
+        tCant.setEnabled(!varControl);
+        tCant.setText("");
+
+        //elementos para cotizacion
+
+       labEmail.setVisible(!varControl);
+       tEmail.setVisible(!varControl);
+       tEmail.setEnabled(varControl);
+       tEmail.setText("");
 
     }
     
@@ -1300,10 +1179,6 @@ public class prinVendedor extends javax.swing.JFrame {
       tNombreCliente.setVisible(varControl);
       tNombreCliente.setText("");
       tNombreCliente.setEnabled(!varControl);
-      labVlr.setVisible(varControl);
-      tVlr.setVisible(varControl);
-      tVlr.setText("");
-      tVlr.setEnabled(!varControl);
       labTel.setVisible(varControl);
       tTel.setVisible(varControl);
       tTel.setText("");
@@ -1314,7 +1189,6 @@ public class prinVendedor extends javax.swing.JFrame {
       tDescrip.setVisible(!varControl);
       tDescrip.setText("");
       tDescrip.setEnabled(!!varControl);
-      jScrollPane1.setVisible(!varControl);
       labCCcliente.setVisible(!varControl);
       tCCcliente.setVisible(!varControl);
       tCCcliente.setText("");
@@ -1345,10 +1219,6 @@ public class prinVendedor extends javax.swing.JFrame {
       tNombreCliente.setVisible(!varControl);
       tNombreCliente.setText("");
       tNombreCliente.setEnabled(!varControl);
-      labVlr.setVisible(!varControl);
-      tVlr.setVisible(!varControl);
-      tVlr.setText("");
-      tVlr.setEnabled(!varControl);
       labTel.setVisible(!varControl);
       tTel.setVisible(!varControl);
       tTel.setText("");
@@ -1359,7 +1229,6 @@ public class prinVendedor extends javax.swing.JFrame {
       tDescrip.setVisible(!varControl);
       tDescrip.setText("");
       tDescrip.setEnabled(!varControl);
-      jScrollPane1.setVisible(!varControl);
       labCCcliente.setVisible(!varControl);
       tCCcliente.setVisible(!varControl);
       tCCcliente.setText("");
@@ -1389,11 +1258,8 @@ public class prinVendedor extends javax.swing.JFrame {
       tEmail.setVisible(!varControl);
       labNombreCliente.setVisible(!varControl);
       tNombreCliente.setVisible(!varControl);
-      labVlr.setVisible(!varControl);
-      tVlr.setVisible(!varControl);
       labDescrip.setVisible(!varControl);
       tDescrip.setVisible(!varControl);
-      jScrollPane1.setVisible(!varControl);
       labCCcliente.setVisible(!varControl);
       tCCcliente.setVisible(!varControl);
       labTel.setVisible(!varControl);
@@ -1405,7 +1271,6 @@ public class prinVendedor extends javax.swing.JFrame {
 
       labDescrip.setVisible(!varControl);
       tDescrip.setVisible(!varControl);
-      jScrollPane1.setVisible(!varControl);
 
     }
     
@@ -1414,7 +1279,6 @@ public class prinVendedor extends javax.swing.JFrame {
        tDescrip.setText("");
        tTel.setText("");
        tCCcliente.setText("");
-       tVlr.setText("");
        tNombreCliente.setText("");
        tEmail.setText("");
        
@@ -1426,19 +1290,35 @@ public class prinVendedor extends javax.swing.JFrame {
        tDescrip.setEnabled(varControl);
        tTel.setEnabled(varControl);
        tCCcliente.setEnabled(varControl);
-       tVlr.setEnabled(varControl);
        tNombreCliente.setEnabled(varControl);
        tCant.setEnabled(varControl);
-    
     }
     
     private boolean validarCamposAgregarVenta(){
+        if(tNombreCliente.getText().replace(" ", "").length()==0){
+            return false;
+        }
+        if(tCCcliente.getText().replace(" ", "").length()==0){
+            return false;
+        }
+        if(tTel.getText().replace(" ", "").length()==0){
+            return false;
+        }
+        if(tCant.getText().replace(" ", "").length()==0){
+            return false;
+        }
+        try{
+            Integer.valueOf(tCant.getText());
+        }catch(NumberFormatException nan){
+            JOptionPane.showMessageDialog(this,
+                    "Por favor ingrese una cantidad valida");
+            return false;
+        }
         if(comboxProduc.getSelectedItem().equals("Seleccione un producto")){
             JOptionPane.showMessageDialog(this, 
                     "Por favor seleccione una referencia");
             return false;
         }
-        
         if(String.valueOf(tDescrip.getText()).replace(" ", "").length()==0){
             JOptionPane.showMessageDialog(this, 
                     "Por favor ingrese la descripcion");
@@ -1447,17 +1327,44 @@ public class prinVendedor extends javax.swing.JFrame {
         return true;
     }
     
+    private boolean validarCamposAgregarCotizacion(){
+        if(tNombreCliente.getText().replace(" ", "").length()==0){
+            return false;
+        }
+        if(tTel.getText().replace(" ", "").length()==0){
+            return false;
+        }
+        if(tEmail.getText().replace(" ", "").length()==0){
+            return false;
+        }
+        try{
+            Integer.valueOf(tCant.getText());
+        }catch(NumberFormatException nan){
+            JOptionPane.showMessageDialog(this,
+                    "Por favor ingrese una cantidad valida");
+            return false;
+        }
+        if(comboxProduc.getSelectedItem().equals("Seleccione un producto")){
+            JOptionPane.showMessageDialog(this, 
+                    "Por favor seleccione una referencia");
+            return false;
+        }
+        if(String.valueOf(tDescrip.getText()).replace(" ", "").length()==0){
+            JOptionPane.showMessageDialog(this, 
+                    "Por favor ingrese la descripcion");
+            return false;
+        }
+        return true;
+    }
     
     public void habilitarCamposModfCotizacion(boolean varControl){
        tTel.setEnabled(varControl);
        tCCcliente.setEnabled(varControl);
-       tVlr.setEnabled(varControl);
        tNombreCliente.setEnabled(varControl);
        tEmail.setEnabled(varControl);
-
     }
     
-         private boolean agregarUnaVenta(){
+    private boolean agregarUnaVenta(){
         if(!validarCamposAgregarVenta()){
             return false;
         }
@@ -1474,17 +1381,12 @@ public class prinVendedor extends javax.swing.JFrame {
         return true;
     }
     
-    
-     private boolean agregarVenta(){
-         comboxProduc.removeAllItems();
-         llenarComboBoxProducto();
-         
-         if(!validarCamposAgregarVenta()){
+     private boolean agregarVenta(){         
+        if(!validarCamposAgregarVenta()){
             return false;
         }
         int[] cant = new int[cantidades.size()]; 
-        String[] products = new String[productos.size()]; 
-         
+        String[] products = new String[productos.size()];
         for (int i=0; i<cant.length;i++){
             cant[i]=cantidades.get(i);
             products[i]=productos.get(i).split(",")[0];
@@ -1494,63 +1396,44 @@ public class prinVendedor extends javax.swing.JFrame {
         String telefonoCliente = tTel.getText();
         String cedulaCliente = tCCcliente.getText();
         String descripcion = tDescrip.getText();
-        String IDvendedor = "";
-        float valor;
-        if(tVlr.getText().equals("")){
-            valor = 0;
-        }else{
-            valor = Float.valueOf(tVlr.getText());
-        }
-        boolean validacion = validarCamposVentas( nombreCliente, cedulaCliente, telefonoCliente, tVlr.getText(), descripcion, products, cant,IDvendedor);
-        
-        if(validacion){
-            String respuesta = bD.crearVenta( nombreCliente, telefonoCliente, cedulaCliente, valor, descripcion, products, cant,idVendedor);
-            this.productos = new ArrayList<>();
-            this.cantidades = new ArrayList<>();
-            JOptionPane.showMessageDialog(this, respuesta);
-            llenarComboBoxProducto();
-
-        }
-        
+        float valor = bD.obtenerValorVenta(products);
+        String respuesta = bD.crearVenta(nombreCliente, telefonoCliente, valor, 
+                cedulaCliente, descripcion, products, cant, idVendedor);
+        this.productos = new ArrayList<>();
+        this.cantidades = new ArrayList<>();
+        JOptionPane.showMessageDialog(this, respuesta);
+        llenarComboBoxProducto();
         return true;
      } 
     
-     private void agregarCotizacion(){
-        String nombreCliente = tNombreCliente.getText();
-        String telefonoCliente = tTel.getText();
-        String producto = comboxProduc.getSelectedItem().toString();
-        String email = tEmail.getText();
-        float valor;
-        if(tVlr.getText().equals("")){
-            valor = 0;
-        }else{
-            valor = Float.valueOf(tVlr.getText());
+     private boolean agregarCotizacion(){
+        if(!validarCamposAgregarCotizacion()){
+            return false;
         }
-        
+        int[] cant = new int[cantidades.size()]; 
+        String[] products = new String[productos.size()];
+        for (int i=0; i<cant.length;i++){
+            cant[i]=cantidades.get(i);
+            products[i]=productos.get(i).split(",")[0];
+        }
         String dia = comboxDia.getItemAt(comboxDia.getSelectedIndex());
         String mes = comboxMes.getItemAt(comboxMes.getSelectedIndex());
         String ano = comboxAno.getItemAt(comboxAno.getSelectedIndex());
-        String fecha = dia+"/"+mes+"/"+ano;
-        
-        boolean validacion = validarCamposCotizaciones( nombreCliente, telefonoCliente, tVlr.getText(), email, fecha,producto);
-        
-        if(validacion){
-           String respuesta = bD.crearCotizacion( nombreCliente,  telefonoCliente, email, valor,fecha, idVendedor);
-           if(respuesta.contains("La cedula")) limpiarCamposCotizaciones();
-            JOptionPane.showMessageDialog(this, respuesta);
-        }
+        String fecha = dia+"-"+mes+"-"+ano;
+        String nombreCliente = tNombreCliente.getText();
+        String telefonoCliente = tTel.getText();
+        String email = tEmail.getText();
+        float valor = bD.obtenerValorVenta(products);
+        String respuesta = bD.crearCotizacion( nombreCliente,  telefonoCliente, 
+                email, valor,fecha, idVendedor, products, cant);
+        this.productos = new ArrayList<>();
+        this.cantidades = new ArrayList<>();
+        JOptionPane.showMessageDialog(this, respuesta);
+        llenarComboBoxProducto();
+        return true;
      }
      
      private boolean validarCamposModfCotizacion(){
-     
-         try{
-            Integer.valueOf(tVlr.getText());
-        }catch(NumberFormatException nan){
-            JOptionPane.showMessageDialog(this,
-                    "Por favor ingrese una cantidad valida");
-            return false;
-        }
-
 
          if(tTel.getText().replace(" ", "").length()==0){
             JOptionPane.showMessageDialog(this,
@@ -1569,12 +1452,10 @@ public class prinVendedor extends javax.swing.JFrame {
      }
      
      public void llenarComboBoxProducto(){
-     
-         String [] productos = bD.listarProducto(this.idVendedor, consulta).split("\\$");
-        for(int i=0; i<productos.length; i++){
-            comboxProduc.addItem(productos[i]);
+        String [] inventario = bD.listarInventario("disponible").split("\\$");
+        for(int i=0; i<inventario.length; i++){
+            comboxProduc.addItem(inventario[i]);
         }
-
      }
      
      
@@ -1605,9 +1486,9 @@ public class prinVendedor extends javax.swing.JFrame {
         System.out.println("2");
         String idCotizacion = String.valueOf(comboxCotizacion.getSelectedItem());
         String nombreCliente = tNombreCliente.getText();
-        float valor = Float.parseFloat(tVlr.getText());
         String telefono = tTel.getText();
         String email = tEmail.getText();
+        float valor = 0;
         
         String respuesta = bD.actualizarCotizacion(idCotizacion, nombreCliente, telefono,email, valor);
         JOptionPane.showMessageDialog(this, respuesta);
@@ -1617,30 +1498,8 @@ public class prinVendedor extends javax.swing.JFrame {
         System.out.println("3");
         return true;
         
- }
-    
-     private boolean validarCamposModificarVenta(){
-        try{
-            Integer.valueOf(tCant.getText());
-        }catch(NumberFormatException nan){
-            JOptionPane.showMessageDialog(this,
-                    "Por favor ingrese una cantidad valida");
-            return false;
-        }
-        if(comboxCotizacion.getSelectedItem().equals("Seleccione una venta")){
-            JOptionPane.showMessageDialog(this,
-                    "Por favor selecciona una venta");
-            return false;
-        }
-        
-        if(tDescrip.getText().replace(" ", "").length()==0){
-            JOptionPane.showMessageDialog(this,
-                    "Por favor ingrese la descripcion");
-            return false;
-        }
-
-        return true;
     }
+    
 
      private boolean consultarVenta(){
                
@@ -1751,7 +1610,6 @@ public class prinVendedor extends javax.swing.JFrame {
      tNombreCliente.setText("");
      tTel.setText("");
      tEmail.setText("");
-     tVlr.setText("");
      comboxCotizacion.removeAllItems();
      comboxDia.setSelectedIndex(0);
      comboxMes.setSelectedIndex(0);
@@ -1763,7 +1621,6 @@ public class prinVendedor extends javax.swing.JFrame {
      tNombreCliente.setText("");
      tTel.setText("");
      tCCcliente.setText("");
-     tVlr.setText("");
      tDescrip.setText("");
      comboxDia.setSelectedIndex(0);
      comboxMes.setSelectedIndex(0);
@@ -1812,7 +1669,6 @@ public class prinVendedor extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labCCcliente;
     private javax.swing.JLabel labCant;
     private javax.swing.JLabel labDescrip;
@@ -1822,13 +1678,11 @@ public class prinVendedor extends javax.swing.JFrame {
     private javax.swing.JLabel labNombreCliente;
     private javax.swing.JLabel labProducto;
     private javax.swing.JLabel labTel;
-    private javax.swing.JLabel labVlr;
     private javax.swing.JTextField tCCcliente;
     private javax.swing.JTextField tCant;
-    private javax.swing.JTextArea tDescrip;
+    private javax.swing.JTextField tDescrip;
     private javax.swing.JTextField tEmail;
     private javax.swing.JTextField tNombreCliente;
     private javax.swing.JTextField tTel;
-    private javax.swing.JTextField tVlr;
     // End of variables declaration//GEN-END:variables
 }
