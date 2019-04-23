@@ -54,7 +54,7 @@ public class reportJefeTaller extends javax.swing.JFrame {
 
         reportPanel.setLayout(new javax.swing.BoxLayout(reportPanel, javax.swing.BoxLayout.LINE_AXIS));
 
-        jButton1.setText("Show Chart");
+        jButton1.setText("Mostrar Grafico");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -69,7 +69,7 @@ public class reportJefeTaller extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel1.setText("Seleccione su reporte Jefe de taller");
+        jLabel1.setText("Reportes Jefe de Taller");
 
         jLabel2.setText("Objeto");
 
@@ -137,7 +137,7 @@ public class reportJefeTaller extends javax.swing.JFrame {
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 129, Short.MAX_VALUE)
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
