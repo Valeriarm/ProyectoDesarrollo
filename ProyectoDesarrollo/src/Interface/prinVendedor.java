@@ -229,6 +229,7 @@ public class prinVendedor extends javax.swing.JFrame {
         tCant = new javax.swing.JTextField();
         tDescrip = new javax.swing.JTextField();
         bAceptar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -627,6 +628,14 @@ public class prinVendedor extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setFont(new java.awt.Font("Segoe UI Light", 1, 16)); // NOI18N
+        jButton1.setText("Confirmar");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jButton1MouseReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -678,9 +687,11 @@ public class prinVendedor extends javax.swing.JFrame {
                                     .addComponent(comboxProduc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(43, 43, 43))))))
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(154, 154, 154)
+                .addGap(105, 105, 105)
                 .addComponent(bAceptar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -724,8 +735,10 @@ public class prinVendedor extends javax.swing.JFrame {
                     .addComponent(labDescrip)
                     .addComponent(tDescrip, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(bAceptar)
-                .addGap(49, 49, 49))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bAceptar)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(56, 56, 56))
         );
 
         comboxProduc.getAccessibleContext().setAccessibleDescription("");
@@ -871,11 +884,10 @@ public class prinVendedor extends javax.swing.JFrame {
         if(botonAceptar==1){
             jLabel6.setText("Agregando Venta");
             agregarUnaVenta();
-           agregarVenta();
         }
         else if(botonAceptar == 5){
            jLabel6.setText("Agregando Cotizacion");
-           agregarCotizacion();   
+           agregarUnaVenta();   
         }
         else if(botonAceptar == 6){
             jLabel6.setText("Modificando Cotizacion");
@@ -1006,6 +1018,18 @@ public class prinVendedor extends javax.swing.JFrame {
         bAceptar.setVisible(true);
         bAceptar.setEnabled(true);
     }//GEN-LAST:event_bAgregarCotMouseReleased
+
+    private void jButton1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseReleased
+        // TODO add your handling code here:
+        if(botonAceptar==1){
+            jLabel6.setText("Agregando Venta");
+            agregarVenta();
+        }
+        else if(botonAceptar == 5){
+           jLabel6.setText("Agregando Cotizacion");
+           agregarCotizacion();   
+        }
+    }//GEN-LAST:event_jButton1MouseReleased
 
     public void cambiarVisibilidadCampos(boolean varControl){
         labIDcotizacion.setVisible(false);
@@ -1658,6 +1682,7 @@ public class prinVendedor extends javax.swing.JFrame {
     private javax.swing.JLabel fecha;
     private javax.swing.JLabel fechaYhora;
     private javax.swing.JLabel hora;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
