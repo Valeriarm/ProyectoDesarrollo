@@ -121,6 +121,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        carrito = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -164,7 +165,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
         bAgregar.setForeground(new java.awt.Color(51, 51, 51));
         bAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO ordersadd.png"))); // NOI18N
-        bAgregar.setToolTipText("Para activar los campos presionar de nuevo el boton");
+        bAgregar.setToolTipText("");
         bAgregar.setBorderPainted(false);
         bAgregar.setContentAreaFilled(false);
         bAgregar.setMaximumSize(new java.awt.Dimension(77, 57));
@@ -182,7 +183,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
         bModf.setForeground(new java.awt.Color(51, 51, 51));
         bModf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO ordersedit.png"))); // NOI18N
-        bModf.setToolTipText("Para activar los campos presionar de nuevo el boton");
+        bModf.setToolTipText("");
         bModf.setBorderPainted(false);
         bModf.setContentAreaFilled(false);
         bModf.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -201,7 +202,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
         bConsul.setForeground(new java.awt.Color(51, 51, 51));
         bConsul.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO orderssearch.png"))); // NOI18N
-        bConsul.setToolTipText("Para activar los campos presionar de nuevo el boton");
+        bConsul.setToolTipText("");
         bConsul.setBorderPainted(false);
         bConsul.setContentAreaFilled(false);
         bConsul.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -217,7 +218,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
         bAnular.setForeground(new java.awt.Color(51, 51, 51));
         bAnular.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO ordersabort.png"))); // NOI18N
-        bAnular.setToolTipText("Para activar los campos presionar de nuevo el boton");
+        bAnular.setToolTipText("");
         bAnular.setBorderPainted(false);
         bAnular.setContentAreaFilled(false);
         bAnular.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -233,7 +234,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
         anularInv.setForeground(new java.awt.Color(51, 51, 51));
         anularInv.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO Invdelete.png"))); // NOI18N
-        anularInv.setToolTipText("Para activar los campos presionar de nuevo el boton");
+        anularInv.setToolTipText("");
         anularInv.setBorderPainted(false);
         anularInv.setContentAreaFilled(false);
         anularInv.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -261,7 +262,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
         modInv.setForeground(new java.awt.Color(51, 51, 51));
         modInv.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO Invedit.png"))); // NOI18N
-        modInv.setToolTipText("Para activar los campos presionar de nuevo el boton");
+        modInv.setToolTipText("");
         modInv.setBorderPainted(false);
         modInv.setContentAreaFilled(false);
         modInv.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -277,7 +278,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
         consulInv.setForeground(new java.awt.Color(51, 51, 51));
         consulInv.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO Invsearch.png"))); // NOI18N
-        consulInv.setToolTipText("Para activar los campos presionar de nuevo el boton");
+        consulInv.setToolTipText("");
         consulInv.setBorderPainted(false);
         consulInv.setContentAreaFilled(false);
         consulInv.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -293,7 +294,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
 
         addInv.setForeground(new java.awt.Color(51, 51, 51));
         addInv.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO Invadd.png"))); // NOI18N
-        addInv.setToolTipText("Para activar los campos presionar de nuevo el boton");
+        addInv.setToolTipText("");
         addInv.setBorderPainted(false);
         addInv.setContentAreaFilled(false);
         addInv.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -521,31 +522,32 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 .addComponent(bConfirmar)
                 .addGap(83, 83, 83))
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labEspecificaciones)
-                    .addComponent(labCantidad)
-                    .addComponent(labNombreProducto)
-                    .addComponent(labDescripcion)
-                    .addComponent(labValorUnitario)
-                    .addComponent(labRefProductoCB)
-                    .addComponent(labEstadoOrden)
-                    .addComponent(labIdOrden))
-                .addGap(55, 55, 55)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(tCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tEspecificaciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tNombreProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tValorUnitario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbEstadoOrden, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbIdOrden, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cbRefProducto, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tDescripcion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labEspecificaciones)
+                            .addComponent(labCantidad)
+                            .addComponent(labNombreProducto)
+                            .addComponent(labDescripcion)
+                            .addComponent(labValorUnitario)
+                            .addComponent(labRefProductoCB)
+                            .addComponent(labEstadoOrden)
+                            .addComponent(labIdOrden))
+                        .addGap(55, 55, 55)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tEspecificaciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tNombreProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tValorUnitario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbEstadoOrden, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbIdOrden, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cbRefProducto, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tDescripcion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(tituloLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tituloLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -618,6 +620,13 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
             }
         });
 
+        carrito.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/carrito.png"))); // NOI18N
+        carrito.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                carritoMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -626,6 +635,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 .addGap(38, 38, 38)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(carrito, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -635,14 +646,15 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
+            .addComponent(carrito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -665,7 +677,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 34, Short.MAX_VALUE))
+                .addGap(0, 33, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -986,6 +998,15 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         // TODO add your handling code here:
         tituloLabel.setText("Eliminar Referencia");
     }//GEN-LAST:event_anularInvActionPerformed
+
+    private void carritoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_carritoMouseClicked
+        // TODO add your handling code here:
+        String mensaje="Su carrito de compras tiene: \n";
+        for(int i=0; i < this.cantidades.size(); i++){
+            mensaje += "Producto: "+referencias.get(i)+" "+" Cantidad: "+cantidades.get(i)+"\n";
+        }
+        JOptionPane.showMessageDialog(this, mensaje);
+    }//GEN-LAST:event_carritoMouseClicked
     
     public void llenarComboboxOrden(){
         String [] ordenes = bD.listarOrden(this.idJefe, consulta).split("\\$");
@@ -1045,6 +1066,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         cbIdOrden.setEnabled(false);
         bConfirmar.setVisible(false);
         bConfirmar.setEnabled(false);
+        carrito.setVisible(false);
+        carrito.setEnabled(false);
     }
     
     public void cambiarVisibilidadCamposOrdenAgregar(boolean varControl){
@@ -1059,6 +1082,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tCantidad.setEnabled(varControl);
         bConfirmar.setVisible(varControl);
         bConfirmar.setEnabled(varControl);
+        carrito.setVisible(varControl);
+        carrito.setEnabled(varControl);
     }
     
     public void cambiarVisibilidadCamposOrdenModificar(boolean varControl){
@@ -1516,6 +1541,7 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
     private javax.swing.JButton bConfirmar;
     private javax.swing.JButton bConsul;
     private javax.swing.JButton bModf;
+    private javax.swing.JLabel carrito;
     private javax.swing.JComboBox<String> cbEstadoOrden;
     private javax.swing.JComboBox<String> cbIdOrden;
     private javax.swing.JComboBox<String> cbRefProducto;

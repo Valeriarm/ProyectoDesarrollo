@@ -92,7 +92,7 @@ public class reportGerente extends javax.swing.JFrame {
 
         fechaFinDia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Inventario", "Orden de trabajo" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Inventario", "Orden de trabajo", "Ventas", "Cotizaciones" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -237,13 +237,16 @@ public class reportGerente extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         List valores = new ArrayList();
+        String initDate ="";
+        String finishDate = "";
+        
         if ("Inventario".equals(String.valueOf(this.jComboBox1.getSelectedItem()))){
             valores = bD.reporteInventario();
         }else if ("Orden de trabajo".equals(String.valueOf(this.jComboBox1.getSelectedItem()))){
-            String initDate = String.valueOf(this.fechaInicioDia.getSelectedItem())+"-"+
+            initDate = String.valueOf(this.fechaInicioDia.getSelectedItem())+"-"+
             String.valueOf(this.fechaInicioMes.getSelectedItem())+"-"+
             String.valueOf(this.fechaInicioAnio.getSelectedItem());
-            String finishDate = String.valueOf(this.fechaFinDia.getSelectedItem())+"-"+
+            finishDate = String.valueOf(this.fechaFinDia.getSelectedItem())+"-"+
             String.valueOf(this.fechaFinMes.getSelectedItem())+"-"+
             String.valueOf(this.fechaFinAnio.getSelectedItem());
             System.out.println(initDate);
@@ -262,7 +265,7 @@ public class reportGerente extends javax.swing.JFrame {
                     default:
                     break;
                 }
-            }else{
+              }else{
                 if(null != String.valueOf(this.jComboBox2.getSelectedItem()))switch (String.valueOf(this.jComboBox2.getSelectedItem())) {
                     case "Dia":
                     valores = bD.reporteGerenteSedeOrdenesTrabajoDia(String.valueOf(this.sede), initDate, finishDate);
@@ -275,9 +278,85 @@ public class reportGerente extends javax.swing.JFrame {
                     break;
                     default:
                     break;
+                    }
+                }
+        }else if ("Ventas".equals(String.valueOf(this.jComboBox1.getSelectedItem()))){
+                initDate = String.valueOf(this.fechaInicioDia.getSelectedItem())+"-"+
+                String.valueOf(this.fechaInicioMes.getSelectedItem())+"-"+
+                String.valueOf(this.fechaInicioAnio.getSelectedItem());
+                finishDate = String.valueOf(this.fechaFinDia.getSelectedItem())+"-"+
+                String.valueOf(this.fechaFinMes.getSelectedItem())+"-"+
+                String.valueOf(this.fechaFinAnio.getSelectedItem());
+                System.out.println(initDate);
+                System.out.println(finishDate);
+                if(!this.checkSede.isSelected()){
+                    if(null != String.valueOf(this.jComboBox2.getSelectedItem()))switch (String.valueOf(this.jComboBox2.getSelectedItem())) {
+                        case "Dia":
+                        valores = bD.reporteGerenteVentasDia(initDate, finishDate);
+                        break;
+                        case "Mes":
+                        valores = bD.reporteGerenteVentasMes(initDate, finishDate);
+                        break;
+                        case "Anio":
+                        valores = bD.reporteGerenteVentasAnio(initDate, finishDate);
+                        break;
+                        default:
+                        break;
+                    }
+                }else{
+                    if(null != String.valueOf(this.jComboBox2.getSelectedItem()))switch (String.valueOf(this.jComboBox2.getSelectedItem())) {
+                        case "Dia":
+                        valores = bD.reporteGerenteSedeVentasDia(String.valueOf(this.sede), initDate, finishDate);
+                        break;
+                        case "Mes":
+                        valores = bD.reporteGerenteSedeVentasMes(String.valueOf(this.sede), initDate, finishDate);
+                        break;
+                        case "Anio":
+                        valores = bD.reporteGerenteSedeVentasAnio(String.valueOf(this.sede), initDate, finishDate);
+                        break;
+                        default:
+                        break;
+                    }
+                }
+        }else if ("Cotizaciones".equals(String.valueOf(this.jComboBox1.getSelectedItem()))){
+                initDate = String.valueOf(this.fechaInicioDia.getSelectedItem())+"-"+
+                String.valueOf(this.fechaInicioMes.getSelectedItem())+"-"+
+                String.valueOf(this.fechaInicioAnio.getSelectedItem());
+                finishDate = String.valueOf(this.fechaFinDia.getSelectedItem())+"-"+
+                String.valueOf(this.fechaFinMes.getSelectedItem())+"-"+
+                String.valueOf(this.fechaFinAnio.getSelectedItem());
+                System.out.println(initDate);
+                System.out.println(finishDate);
+                if(!this.checkSede.isSelected()){
+                    if(null != String.valueOf(this.jComboBox2.getSelectedItem()))switch (String.valueOf(this.jComboBox2.getSelectedItem())) {
+                        case "Dia":
+                        valores = bD.reporteGerenteCotizacionesDia(initDate, finishDate);
+                        break;
+                        case "Mes":
+                        valores = bD.reporteGerenteCotizacionMes(initDate, finishDate);
+                        break;
+                        case "Anio":
+                        valores = bD.reporteGerenteCotizacionAnio(initDate, finishDate);
+                        break;
+                        default:
+                        break;
                 }
             }
-        }
+        }else{
+                if(null != String.valueOf(this.jComboBox2.getSelectedItem()))switch (String.valueOf(this.jComboBox2.getSelectedItem())) {
+                    case "Dia":
+                    valores = bD.reporteGerenteSedeCotizacionDia(String.valueOf(this.sede), initDate, finishDate);
+                    break;
+                    case "Mes":
+                    valores = bD.reporteGerenteSedeCotizacionMes(String.valueOf(this.sede), initDate, finishDate);
+                    break;
+                    case "Anio":
+                    valores = bD.reporteGerenteSedeCotizacionAnio(String.valueOf(this.sede), initDate, finishDate);
+                    break;
+                    default:
+                    break;
+                }
+            }
         DefaultCategoryDataset dcd = new DefaultCategoryDataset();
         Report report = new Report("", 0);
         for (int i=0; i<valores.size(); i++){
