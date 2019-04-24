@@ -330,13 +330,13 @@ public class reportGerente extends javax.swing.JFrame {
                 if(!this.checkSede.isSelected()){
                     if(null != String.valueOf(this.jComboBox2.getSelectedItem()))switch (String.valueOf(this.jComboBox2.getSelectedItem())) {
                         case "Dia":
-                        //valores = bD.reporteGerenteOrdenesTrabajoDia(initDate, finishDate);
+                        valores = bD.reporteGerenteCotizacionesDia(initDate, finishDate);
                         break;
                         case "Mes":
-                        //valores = bD.reporteGerenteOrdenesTrabajoMes(initDate, finishDate);
+                        valores = bD.reporteGerenteCotizacionMes(initDate, finishDate);
                         break;
                         case "Anio":
-                        //valores = bD.reporteGerenteOrdenesTrabajoAnio(initDate, finishDate);
+                        valores = bD.reporteGerenteCotizacionAnio(initDate, finishDate);
                         break;
                         default:
                         break;
@@ -345,13 +345,13 @@ public class reportGerente extends javax.swing.JFrame {
         }else{
                 if(null != String.valueOf(this.jComboBox2.getSelectedItem()))switch (String.valueOf(this.jComboBox2.getSelectedItem())) {
                     case "Dia":
-                    //valores = bD.reporteGerenteSedeOrdenesTrabajoDia(String.valueOf(this.sede), initDate, finishDate);
+                    valores = bD.reporteGerenteSedeCotizacionDia(String.valueOf(this.sede), initDate, finishDate);
                     break;
                     case "Mes":
-                    //valores = bD.reporteGerenteSedeOrdenesTrabajoMes(String.valueOf(this.sede), initDate, finishDate);
+                    valores = bD.reporteGerenteSedeCotizacionMes(String.valueOf(this.sede), initDate, finishDate);
                     break;
                     case "Anio":
-                    //valores = bD.reporteGerenteSedeOrdenesTrabajoAnio(String.valueOf(this.sede), initDate, finishDate);
+                    valores = bD.reporteGerenteSedeCotizacionAnio(String.valueOf(this.sede), initDate, finishDate);
                     break;
                     default:
                     break;
