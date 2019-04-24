@@ -71,7 +71,7 @@
                       <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
                       <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="0" pref="34" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="33" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -233,7 +233,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Images/ICO ordersadd.png"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Para activar los campos presionar de nuevo el boton"/>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
                 <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="contentAreaFilled" type="boolean" value="false"/>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -256,7 +256,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Images/ICO ordersedit.png"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Para activar los campos presionar de nuevo el boton"/>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
                 <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="contentAreaFilled" type="boolean" value="false"/>
               </Properties>
@@ -274,7 +274,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Images/ICO orderssearch.png"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Para activar los campos presionar de nuevo el boton"/>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
                 <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="contentAreaFilled" type="boolean" value="false"/>
               </Properties>
@@ -291,7 +291,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Images/ICO ordersabort.png"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Para activar los campos presionar de nuevo el boton"/>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
                 <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="contentAreaFilled" type="boolean" value="false"/>
               </Properties>
@@ -308,7 +308,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Images/ICO Invdelete.png"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Para activar los campos presionar de nuevo el boton"/>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
                 <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="contentAreaFilled" type="boolean" value="false"/>
               </Properties>
@@ -357,7 +357,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Images/ICO Invedit.png"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Para activar los campos presionar de nuevo el boton"/>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
                 <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="contentAreaFilled" type="boolean" value="false"/>
               </Properties>
@@ -374,7 +374,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Images/ICO Invsearch.png"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Para activar los campos presionar de nuevo el boton"/>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
                 <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="contentAreaFilled" type="boolean" value="false"/>
               </Properties>
@@ -391,7 +391,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Images/ICO Invadd.png"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Para activar los campos presionar de nuevo el boton"/>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
                 <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="contentAreaFilled" type="boolean" value="false"/>
               </Properties>
@@ -420,34 +420,37 @@
                       <EmptySpace min="-2" pref="83" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="labEspecificaciones" min="-2" max="-2" attributes="0"/>
-                          <Component id="labCantidad" min="-2" max="-2" attributes="0"/>
-                          <Component id="labNombreProducto" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="labDescripcion" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="labValorUnitario" min="-2" max="-2" attributes="0"/>
-                          <Component id="labRefProductoCB" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="labEstadoOrden" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="labIdOrden" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="tCantidad" max="-2" attributes="0"/>
-                          <Component id="tEspecificaciones" alignment="0" max="-2" attributes="0"/>
-                          <Component id="tNombreProducto" alignment="0" max="-2" attributes="0"/>
-                          <Component id="tValorUnitario" alignment="0" max="-2" attributes="0"/>
-                          <Component id="cbEstadoOrden" alignment="1" max="-2" attributes="0"/>
-                          <Component id="cbIdOrden" alignment="1" max="32767" attributes="0"/>
-                          <Component id="cbRefProducto" alignment="1" max="-2" attributes="0"/>
-                          <Component id="tDescripcion" alignment="1" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="labEspecificaciones" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labCantidad" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labNombreProducto" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labDescripcion" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labValorUnitario" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labRefProductoCB" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labEstadoOrden" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labIdOrden" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="tCantidad" max="-2" attributes="0"/>
+                                  <Component id="tEspecificaciones" alignment="0" max="-2" attributes="0"/>
+                                  <Component id="tNombreProducto" alignment="0" max="-2" attributes="0"/>
+                                  <Component id="tValorUnitario" alignment="0" max="-2" attributes="0"/>
+                                  <Component id="cbEstadoOrden" alignment="1" max="-2" attributes="0"/>
+                                  <Component id="cbIdOrden" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="cbRefProducto" alignment="1" max="-2" attributes="0"/>
+                                  <Component id="tDescripcion" alignment="1" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="tituloLabel" min="-2" pref="353" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="tituloLabel" min="-2" pref="353" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -809,6 +812,8 @@
                       <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                       <Component id="jLabel5" min="-2" pref="232" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
+                      <Component id="carrito" min="-2" pref="46" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel8" min="-2" pref="63" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jLabel7" min="-2" pref="69" max="-2" attributes="0"/>
@@ -820,16 +825,17 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jLabel8" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel8" alignment="1" max="32767" attributes="0"/>
                           <Component id="jLabel7" alignment="1" max="32767" attributes="0"/>
                           <Component id="jLabel6" alignment="1" max="32767" attributes="0"/>
-                          <Component id="jLabel5" alignment="1" pref="63" max="32767" attributes="0"/>
+                          <Component id="jLabel5" alignment="1" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
+                  <Component id="carrito" alignment="0" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -870,6 +876,16 @@
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel8MouseClicked"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="carrito">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Images/carrito.png"/>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="carritoMouseClicked"/>
               </Events>
             </Component>
           </SubComponents>
