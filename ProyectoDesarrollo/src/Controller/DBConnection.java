@@ -12,8 +12,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,8 +29,8 @@ public class DBConnection {
     //----------------------------------------------------------------------
     
     //Usuario de la base de datos en postgresql
-    private final String dBUser = "desarrollo";
-    private final String dBPassword = "desarrollo";
+    private final String dBUser = "postgres";
+    private final String dBPassword = "1144211502";
   
 
     //puerto
@@ -1158,43 +1160,46 @@ public class DBConnection {
         
         String id = idSiguienteVenta();
         connect();
-        String mensaje = "No hay existencias del producto ";
+        String mensaje = "No hay existencias del producto:";
+        
+        Date fechaSist = new Date();
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        String fecha = formato.format(fechaSist);
         
         try {
             for(int i=0; i<cantidad.length; i++){
-                    sql = "SELECT * FROM inventario WHERE id_producto = '"+producto[i]+"' AND cantidad < "+cantidad[i];
-                    rs = st.executeQuery(sql);
-                    if(rs.next()){
-                        mensaje += rs.getString("nombre_producto")+" id:"+rs.getString("id_producto");
-                    }
+                sql = "SELECT * FROM inventario WHERE id_producto = '"+producto[i]+"' AND cantidad < "+cantidad[i]+";";
+                rs = st.executeQuery(sql);
+                if(rs.next()){
+                    mensaje += "\n"+rs.getString("nombre_producto")+" id:"+rs.getString("id_producto")+" cant disponible:"+rs.getString("cantidad");
                 }
-            if(!mensaje.equals("No hay existencias del producto ")){
-                        return mensaje;
-                    }
+            }
+            if(!mensaje.equals("No hay existencias del producto:")){
+                return mensaje;
+            }
             sql = "SELECT Venta.id_Factura, Modifica.id_Producto FROM Venta "
-                + "INNER JOIN Modifica ON  Modifica.id_Factura = '"+id+"';";
+                + "NATURAL JOIN Modifica WHERE  Modifica.id_Factura = '"+id+"';";
             rs = st.executeQuery(sql);
             if(rs.next()){
                 return "La venta con el id "+id+" ya existe";
             }else{ 
-            sql = "INSERT INTO Venta VALUES ('"+id+"','"+nombreCliente+"','"+telefonoCliente+"','"+cedulaCliente+"','"+valorVenta+"','"+descripcionVenta+
-                    "','"+idVendedor+"');";
-              
-            for(int i=0; i<cantidad.length; i++){
+                sql = "INSERT INTO Venta VALUES ('"+id+"','"+nombreCliente+"','"+telefonoCliente+"','"+cedulaCliente+"','"+valorVenta+"','"+descripcionVenta+
+                        "','"+fecha+"','"+idVendedor+"');";
+
+                for(int i=0; i<cantidad.length; i++){
                     sql += "INSERT INTO Modifica VALUES ("+cantidad[i]+",'"+id
                             +"','"+producto[i]+"'); ";
                     sql += "UPDATE inventario SET cantidad = cantidad-"+
                             cantidad[i]+" WHERE id_producto = '"+producto[i]+"'; ";
                 }
 
-            st.executeUpdate(sql);
-            rs.close();
-            st.close();
-            connection.close();
-            }
-                             
+                st.executeUpdate(sql);
+                rs.close();
+                st.close();
+                connection.close();
+            }                             
         } catch (SQLException e) {
-            System.out.println("ERROR DE SQL " + e.getMessage());
+            System.out.println("ERROR DE SQL " + e.getMessage() + " crearVenta");
         }        
        return "Venta agregada con exito";
     }
@@ -1216,7 +1221,7 @@ public class DBConnection {
             st.close();
             connection.close();
         } catch (SQLException e) {
-                System.out.println("ERROR DE SQL " + e.getMessage());
+                System.out.println("ERROR DE SQL " + e.getMessage() + " obtenerValorVenta");
             }
         return valor;
     }
@@ -1244,36 +1249,38 @@ public class DBConnection {
                 return venta;
             }
         } catch (SQLException e) {
-            System.out.println("ERROR DE SQL " + e.getMessage());
+            System.out.println("ERROR DE SQL " + e.getMessage() + " leerVentaPorId");
         }
         return null;
     }
     
     
-    public String listarVentas(){
-    //Creo la sentencia sql de lo que quiero hacer, en este caso, quiero todas las columnas de la tabla
-        sql = "SELECT * FROM Venta";
+    public String listarVentas(String idVend){
+        connect();
+    //Creo la sentencia sql de lo que quiero hacer, en este caso, quiero todas las columnas de la tabla        
+        sql = "SELECT * FROM Venta WHERE id_vendedor = '"+idVend+"'";
         try {
-        rs = st.executeQuery(sql);
-        String id,nombreCliente;
-        String ventas = "";
-         while(rs.next()){
-                    //Usando getString podemos obtener el resultado de nuestra consulta pasandole el nombre de la columna
-                    id = rs.getString("id_factura");
-                    nombreCliente = rs.getString("nombre_cliente");
+            //System.out.println("ANTES RS");
+            rs = st.executeQuery(sql);
+            //System.out.println("POST RS");
+            String id,nombreCliente;
+            String ventas = "";
+            while(rs.next()){
+                //Usando getString podemos obtener el resultado de nuestra consulta pasandole el nombre de la columna
+                id = rs.getString("id_factura");
+                nombreCliente = rs.getString("nombre_cliente");
 
-                    ventas = ventas+id+","+nombreCliente+"$";
-                  }
+                ventas = ventas+id+","+nombreCliente+"$";
+            }
 
-        rs.close();
-        st.close();
-        connection.close();
+            rs.close();
+            st.close();
+            connection.close();
 
-        return ventas;
-         }
-
+            return ventas;
+        }
         catch (SQLException e){
-            System.out.println("ERROR DE SQL"+ e.getMessage());
+            System.out.println("ERROR DE SQL"+ e.getMessage() + " listarVentas");
         }
 
      return "";   
@@ -1296,7 +1303,7 @@ public class DBConnection {
             }
             
         } catch (Exception e) {
-            System.out.println("ERROR DE SQL " + e.getMessage());
+            System.out.println("ERROR DE SQL " + e.getMessage() + " eliminarVenta");
         }
         return "";        
     }
@@ -1682,7 +1689,7 @@ public class DBConnection {
             connection.close();
             return ordenes;
         } catch (SQLException e) {
-            System.out.println("ERROR DE SQL " + e.getMessage());
+            System.out.println("ERROR DE SQL " + e.getMessage() + " listarInventario");
         }
         return "";
     }
@@ -1700,16 +1707,14 @@ public class DBConnection {
                                     String fecha, String idVendedor,String[] producto, int[] cantidad){
         
         String id = idSiguienteCotizacion();
-        connect();
-        
-        sql = "SELECT id_Cotizacion FROM Cotizacion WHERE id_Cotizacion = '"+id+"'";
-        
+        connect();        
+        sql = "SELECT id_Cotizacion FROM Cotizacion WHERE id_Cotizacion = '"+id+"'";        
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
                 return "La venta con el id "+id+" ya existe";
             }else{ 
-            sql = "INSERT INTO Cotizacion VALUES ('"+id+"','"+nombre_Cliente+"','"+telefono+"','"+email+"','"+valor_Unitario+"','"+fecha+"','"+idVendedor+"')";                
+            sql = "INSERT INTO Cotizacion VALUES ('"+id+"','"+nombre_Cliente+"','"+telefono+"','"+email+"','"+valor_Unitario+"','"+fecha+"','"+idVendedor+"');";
                 
             for(int i=0; i<cantidad.length; i++){
                     sql += "INSERT INTO Consulta VALUES ("+cantidad[i]+",'"+id+"','"+producto[i]+"');";
@@ -1722,7 +1727,7 @@ public class DBConnection {
             }
                              
         } catch (SQLException e) {
-            System.out.println("ERROR DE SQL " + e.getMessage());
+            System.out.println("ERROR DE SQL " + e.getMessage() + " crearCotizacion");
         }        
         return "Cotizacion agregada con éxito\n\nId: "+id+"\nNombre Cliente: "+nombre_Cliente+"\nEmail Cliente: "+email;
     }
@@ -1749,7 +1754,7 @@ public class DBConnection {
             
         } catch (Exception e) {
             System.out.println(":v prueba");
-            System.out.println("ERROR DE SQL " + e.getMessage());
+            System.out.println("ERROR DE SQL " + e.getMessage() + " actualizarCotizacion");
         }
        return "Cotizacion actualizado";          
     }
@@ -1809,7 +1814,7 @@ public class DBConnection {
             return ventas;
         } catch (SQLException e) {
             System.out.println(":vv");
-            System.out.println("ERROR DE SQL " + e.getMessage());
+            System.out.println("ERROR DE SQL " + e.getMessage() + " listarVenta");
         }
         return "";
     }
@@ -1838,7 +1843,7 @@ public class DBConnection {
             return cotizaciones;
         } catch (SQLException e) {
             System.out.println(":vv");
-            System.out.println("ERROR DE SQL " + e.getMessage());
+            System.out.println("ERROR DE SQL " + e.getMessage() + " listarCotizacion");
         }
         return "";
     }
@@ -1854,7 +1859,7 @@ public class DBConnection {
                 float valor = rs.getFloat("valor_Cotizacion");
                 String nombreCliente = rs.getString("nombre_Cliente");
                 String telefonoCliente = rs.getString("telefono_Cliente");
-                String email = rs.getString("email");
+                String email = rs.getString("e_mail");
                 String fecha = rs.getString("fecha_Cotizacion");
                 String idVendedor = rs.getString("id_Vendedor");
                 
@@ -1867,7 +1872,7 @@ public class DBConnection {
                 return cotizacion;
             }
         } catch (Exception e) {System.out.println(":/");
-            System.out.println("ERROR DE SQL " + e.getMessage());
+            System.out.println("ERROR DE SQL " + e.getMessage() + " leerCotizacionPorId");
         }
         return null;
     }
