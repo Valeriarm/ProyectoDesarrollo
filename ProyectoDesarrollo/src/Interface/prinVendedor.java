@@ -7,6 +7,8 @@ package Interface;
 
 import Controller.DBConnection;
 import Model.Cotizacion;
+import Model.Sede;
+import Model.Vendedor;
 import Model.Venta;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,9 +18,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -34,7 +39,7 @@ public class prinVendedor extends javax.swing.JFrame {
     private final String idVendedor;
     ArrayList<String> productos;
     ArrayList<Integer> cantidades;
-    private String consulta;
+    private String consulta = "consultar";
     
 
     public prinVendedor(DBConnection baseDatos, String idVendedor) {
@@ -55,6 +60,8 @@ public class prinVendedor extends javax.swing.JFrame {
         Timer tiempo = new Timer(100, new prinVendedor.hora());
         tiempo.start();
         
+        labAccion.setVisible(false);
+        bConfirmar.setVisible(false);
 
         bAceptar.setVisible(false);
         cambiarVisibilidadCampos(false);
@@ -170,17 +177,16 @@ public class prinVendedor extends javax.swing.JFrame {
         return opcionesCotizacion;
     }
 
-    private void actualizarComboxVenta(){
-    
-        String ventas = bD.listarVentas();
+    private void actualizarComboxVenta(){    
+        String ventas = bD.listarVentas(idVendedor);
         
         if(ventas.equals("")){ //No hay ventas
            String[] opciones = { "No seleccionado" };
            comboxCotizacion.setModel(new DefaultComboBoxModel (opciones));
-    }else{
-        String[] listaVentas = ventas.split("\\$");
-        String[] opciones = obtenerOpcionesVentas(listaVentas);
-        comboxCotizacion.setModel(new DefaultComboBoxModel (opciones));
+        }else{
+            String[] listaVentas = ventas.split("\\$");
+            String[] opciones = obtenerOpcionesVentas(listaVentas);
+            comboxCotizacion.setModel(new DefaultComboBoxModel (opciones));
         }
     }
     
@@ -190,7 +196,9 @@ public class prinVendedor extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        logOut = new javax.swing.JLabel();
+        Profile = new javax.swing.JLabel();
+        Reports = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         bAgregarVenta = new javax.swing.JButton();
         bConsulVenta = new javax.swing.JButton();
@@ -207,6 +215,7 @@ public class prinVendedor extends javax.swing.JFrame {
         fecha = new javax.swing.JLabel();
         fechaYhora = new javax.swing.JLabel();
         hora = new javax.swing.JLabel();
+        bModfVenta = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         labIDcotizacion = new javax.swing.JLabel();
         comboxCotizacion = new javax.swing.JComboBox<>();
@@ -229,7 +238,8 @@ public class prinVendedor extends javax.swing.JFrame {
         tCant = new javax.swing.JTextField();
         tDescrip = new javax.swing.JTextField();
         bAceptar = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        bConfirmar = new javax.swing.JButton();
+        labAccion = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -243,7 +253,26 @@ public class prinVendedor extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
         jLabel5.setText("Vendedor");
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        logOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO logout.png"))); // NOI18N
+        logOut.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logOutMouseClicked(evt);
+            }
+        });
+
+        Profile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO vendor.png"))); // NOI18N
+        Profile.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ProfileMouseClicked(evt);
+            }
+        });
+
+        Reports.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO report.png"))); // NOI18N
+        Reports.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ReportsMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -253,23 +282,32 @@ public class prinVendedor extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(141, 141, 141))
+                .addComponent(Reports)
+                .addGap(28, 28, 28)
+                .addComponent(Profile)
+                .addGap(18, 18, 18)
+                .addComponent(logOut)
+                .addGap(28, 28, 28))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 3, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Profile, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Reports, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(logOut, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
         bAgregarVenta.setForeground(new java.awt.Color(51, 51, 51));
-        bAgregarVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO Invsell.png"))); // NOI18N
+        bAgregarVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO Invselladd.png"))); // NOI18N
         bAgregarVenta.setBorderPainted(false);
         bAgregarVenta.setContentAreaFilled(false);
         bAgregarVenta.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -282,7 +320,7 @@ public class prinVendedor extends javax.swing.JFrame {
         });
 
         bConsulVenta.setForeground(new java.awt.Color(51, 51, 51));
-        bConsulVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO Invsell.png"))); // NOI18N
+        bConsulVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO Invsellsearch.png"))); // NOI18N
         bConsulVenta.setBorderPainted(false);
         bConsulVenta.setContentAreaFilled(false);
         bConsulVenta.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -324,9 +362,11 @@ public class prinVendedor extends javax.swing.JFrame {
         jLabel4.setText("----------- Anular ------------");
 
         bModfCot.setForeground(new java.awt.Color(51, 51, 51));
-        bModfCot.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO Invpricing.png"))); // NOI18N
+        bModfCot.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO pricingedit.png"))); // NOI18N
+        bModfCot.setToolTipText("Debe anular la cotización y crear una nueva");
         bModfCot.setBorderPainted(false);
         bModfCot.setContentAreaFilled(false);
+        bModfCot.setEnabled(false);
         bModfCot.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bModfCotMouseClicked(evt);
@@ -339,7 +379,7 @@ public class prinVendedor extends javax.swing.JFrame {
         });
 
         bAgregarCot.setForeground(new java.awt.Color(51, 51, 51));
-        bAgregarCot.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO ordersadd.png"))); // NOI18N
+        bAgregarCot.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO pricingadd.png"))); // NOI18N
         bAgregarCot.setBorderPainted(false);
         bAgregarCot.setContentAreaFilled(false);
         bAgregarCot.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -357,7 +397,7 @@ public class prinVendedor extends javax.swing.JFrame {
         });
 
         bConsultarCot.setForeground(new java.awt.Color(51, 51, 51));
-        bConsultarCot.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO orderssearch.png"))); // NOI18N
+        bConsultarCot.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO pricingsearch.png"))); // NOI18N
         bConsultarCot.setToolTipText("");
         bConsultarCot.setBorderPainted(false);
         bConsultarCot.setContentAreaFilled(false);
@@ -439,6 +479,23 @@ public class prinVendedor extends javax.swing.JFrame {
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
+        bModfVenta.setForeground(new java.awt.Color(51, 51, 51));
+        bModfVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO Invselledit.png"))); // NOI18N
+        bModfVenta.setToolTipText("Debe anular la venta y crear una nueva");
+        bModfVenta.setBorderPainted(false);
+        bModfVenta.setContentAreaFilled(false);
+        bModfVenta.setEnabled(false);
+        bModfVenta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bModfVentaMouseClicked(evt);
+            }
+        });
+        bModfVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bModfVentaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -466,7 +523,9 @@ public class prinVendedor extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bAgregarCot, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(106, 106, 106)
+                        .addGap(25, 25, 25)
+                        .addComponent(bModfVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(bModfCot, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(30, 30, 30)
@@ -478,7 +537,7 @@ public class prinVendedor extends javax.swing.JFrame {
                         .addComponent(bAnularVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bAnularCot, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addGap(5, 5, 5))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -492,7 +551,9 @@ public class prinVendedor extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addGap(9, 9, 9)
-                .addComponent(bModfCot, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bModfCot, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bModfVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3)
                 .addGap(10, 10, 10)
@@ -519,7 +580,7 @@ public class prinVendedor extends javax.swing.JFrame {
         comboxCotizacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No seleccionado" }));
         comboxCotizacion.setMaximumSize(new java.awt.Dimension(152, 24));
         comboxCotizacion.setMinimumSize(new java.awt.Dimension(152, 24));
-        comboxCotizacion.setPreferredSize(new java.awt.Dimension(152, 24));
+        comboxCotizacion.setPreferredSize(new java.awt.Dimension(208, 24));
         comboxCotizacion.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 comboxCotizacionItemStateChanged(evt);
@@ -535,7 +596,7 @@ public class prinVendedor extends javax.swing.JFrame {
         labNombreCliente.setForeground(new java.awt.Color(255, 255, 255));
         labNombreCliente.setText("Nombre cliente:");
 
-        tNombreCliente.setPreferredSize(new java.awt.Dimension(164, 20));
+        tNombreCliente.setPreferredSize(new java.awt.Dimension(208, 20));
         tNombreCliente.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 tNombreClienteKeyTyped(evt);
@@ -543,13 +604,13 @@ public class prinVendedor extends javax.swing.JFrame {
         });
 
         tEmail.setToolTipText("");
-        tEmail.setPreferredSize(new java.awt.Dimension(164, 20));
+        tEmail.setPreferredSize(new java.awt.Dimension(208, 20));
 
         labEmail.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
         labEmail.setForeground(new java.awt.Color(255, 255, 255));
         labEmail.setText("Email:");
 
-        tCCcliente.setPreferredSize(new java.awt.Dimension(164, 20));
+        tCCcliente.setPreferredSize(new java.awt.Dimension(208, 20));
         tCCcliente.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 tCCclienteKeyTyped(evt);
@@ -561,7 +622,12 @@ public class prinVendedor extends javax.swing.JFrame {
         labCCcliente.setText("Cedula cliente:");
 
         tTel.setToolTipText("");
-        tTel.setPreferredSize(new java.awt.Dimension(164, 20));
+        tTel.setPreferredSize(new java.awt.Dimension(208, 20));
+        tTel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tTelActionPerformed(evt);
+            }
+        });
         tTel.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 tTelKeyTyped(evt);
@@ -601,14 +667,14 @@ public class prinVendedor extends javax.swing.JFrame {
         comboxProduc.setMaximumSize(new java.awt.Dimension(152, 24));
         comboxProduc.setMinimumSize(new java.awt.Dimension(152, 24));
         comboxProduc.setName(""); // NOI18N
-        comboxProduc.setPreferredSize(new java.awt.Dimension(152, 24));
+        comboxProduc.setPreferredSize(new java.awt.Dimension(208, 24));
 
         labCant.setFont(new java.awt.Font("Segoe UI Light", 0, 15)); // NOI18N
         labCant.setForeground(new java.awt.Color(255, 255, 255));
         labCant.setText("Cantidad:");
 
         tCant.setToolTipText("");
-        tCant.setPreferredSize(new java.awt.Dimension(164, 20));
+        tCant.setPreferredSize(new java.awt.Dimension(208, 20));
         tCant.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tCantActionPerformed(evt);
@@ -620,6 +686,8 @@ public class prinVendedor extends javax.swing.JFrame {
             }
         });
 
+        tDescrip.setPreferredSize(new java.awt.Dimension(208, 52));
+
         bAceptar.setFont(new java.awt.Font("Segoe UI Light", 0, 16)); // NOI18N
         bAceptar.setText("Agregar");
         bAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -628,99 +696,97 @@ public class prinVendedor extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setFont(new java.awt.Font("Segoe UI Light", 1, 16)); // NOI18N
-        jButton1.setText("Confirmar");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+        bConfirmar.setFont(new java.awt.Font("Segoe UI Light", 1, 16)); // NOI18N
+        bConfirmar.setText("Confirmar");
+        bConfirmar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                jButton1MouseReleased(evt);
+                bConfirmarMouseReleased(evt);
             }
         });
+
+        labAccion.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        labAccion.setForeground(new java.awt.Color(255, 255, 255));
+        labAccion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labAccion.setText("Facturar Venta");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(117, 117, 117)
+                        .addComponent(bAceptar)
+                        .addGap(18, 18, 18)
+                        .addComponent(bConfirmar))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(labIDcotizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(comboxCotizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(comboxCotizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(labNombreCliente)
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labCCcliente)
-                                    .addComponent(labTel)
-                                    .addComponent(labEmail)
-                                    .addComponent(labCant))
-                                .addGap(63, 63, 63)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(tCant, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(tEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(tTel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(tCCcliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addContainerGap(44, Short.MAX_VALUE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(labNombreCliente)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(tNombreCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(44, 44, 44))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labDescrip)
-                            .addComponent(labProducto)
-                            .addComponent(labFecha))
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(labDescrip, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(labProducto)
+                                    .addComponent(labFecha)
+                                    .addComponent(labCant, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(36, 36, 36)
-                                .addComponent(comboxDia, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(comboxMes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(comboxAno, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(tDescrip, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(comboxProduc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(43, 43, 43))))))
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(tEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(tTel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(tNombreCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addComponent(comboxDia, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(comboxMes, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(comboxAno, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(tCCcliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(tCant, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(comboxProduc, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(tDescrip, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(labCCcliente)
+                            .addComponent(labTel)
+                            .addComponent(labEmail))))
+                .addGap(63, 63, 63))
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(105, 105, 105)
-                .addComponent(bAceptar)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(146, 146, 146)
+                .addComponent(labAccion, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addComponent(labAccion, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labIDcotizacion)
                     .addComponent(comboxCotizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(11, 11, 11)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labNombreCliente)
                     .addComponent(tNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(11, 11, 11)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labCCcliente)
                     .addComponent(tCCcliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(11, 11, 11)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labTel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tTel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labEmail)
                     .addComponent(tEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tCant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labCant))
-                .addGap(15, 15, 15)
+                .addGap(11, 11, 11)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(comboxAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(comboxMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -733,11 +799,11 @@ public class prinVendedor extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labDescrip)
-                    .addComponent(tDescrip, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tDescrip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bAceptar)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(bConfirmar))
                 .addGap(56, 56, 56))
         );
 
@@ -763,7 +829,7 @@ public class prinVendedor extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 65, Short.MAX_VALUE))
+                        .addGap(0, 55, Short.MAX_VALUE))
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -777,7 +843,7 @@ public class prinVendedor extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 0, 0)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -800,53 +866,93 @@ public class prinVendedor extends javax.swing.JFrame {
     private void bConsulVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bConsulVentaMouseClicked
         cambiarVisibilidadCampos(false);
         camposVentasConsulta(true);
-        llenarComboBoxVenta();
+        //llenarComboBoxVenta();//////////////////////////////////////
         
         botonAceptar = 3;
         consulta="consultar";
         bAceptar.setText("Consultar");
         bAceptar.setVisible(true);
-        bAceptar.setEnabled(false);
+        //bAceptar.setEnabled(false);
+        labAccion.setVisible(true);
+        labAccion.setText("Consultar Venta");
+        bConfirmar.setVisible(false);
 
         comboxCotizacion.setSelectedIndex(0);
+        comboxCotizacion.setEnabled(true);
+        
+        if(comboxCotizacion.getSelectedItem().toString().equals("No seleccionado")){
+            bAceptar.setEnabled(false);
+        }else{
+            bAceptar.setEnabled(true);
+        }
     }//GEN-LAST:event_bConsulVentaMouseClicked
 
     private void bConsultarCotMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bConsultarCotMouseClicked
         cambiarVisibilidadCampos(false);
         camposCotConsulta(true);
-        llenarComboBoxCotizacion();
+        //llenarComboBoxCotizacion();/////////////////////////////////////////
         
         botonAceptar = 7;
         consulta="consultar";
         bAceptar.setText("Consultar");
         bAceptar.setVisible(true);
-        bAceptar.setEnabled(false);
+        //bAceptar.setEnabled(false);
+        labAccion.setVisible(true);
+        labAccion.setText("Consultar Cotización");
+        bConfirmar.setVisible(false);
 
         comboxCotizacion.setSelectedIndex(0);
+        comboxCotizacion.setEnabled(true);
+        
+        if(comboxCotizacion.getSelectedItem().toString().equals("No seleccionado")){
+            bAceptar.setEnabled(false);
+        }else{
+            bAceptar.setEnabled(true);
+        }
     }//GEN-LAST:event_bConsultarCotMouseClicked
 
     private void bAnularVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAnularVentaMouseClicked
         cambiarVisibilidadCampos(false);
         camposVentasConsulta(true);
-        llenarComboBoxVenta();
+        //llenarComboBoxVenta();///////////////////////////////////////
         botonAceptar = 4;
         bAceptar.setText("Anular");
         bAceptar.setVisible(true);
-        bAceptar.setEnabled(false);
+        //bAceptar.setEnabled(false);
+        labAccion.setVisible(true);
+        labAccion.setText("Anular Venta");
+        bConfirmar.setVisible(false);
 
         comboxCotizacion.setSelectedIndex(0);
+        comboxCotizacion.setEnabled(true);
+        
+        if(comboxCotizacion.getSelectedItem().toString().equals("No seleccionado")){
+            bAceptar.setEnabled(false);
+        }else{
+            bAceptar.setEnabled(true);
+        }
     }//GEN-LAST:event_bAnularVentaMouseClicked
 
     private void bAnularCotMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAnularCotMouseClicked
         cambiarVisibilidadCampos(false);
         camposCotConsulta(true);
-        llenarComboBoxCotizacion();
+        //llenarComboBoxCotizacion();///////////////////////////////////////////////
         botonAceptar = 8;
         bAceptar.setText("Anular");
         bAceptar.setVisible(true);
-        bAceptar.setEnabled(false);
+        //bAceptar.setEnabled(false);
+        labAccion.setVisible(true);
+        labAccion.setText("Anular Cotización");
+        bConfirmar.setVisible(false);
 
         comboxCotizacion.setSelectedIndex(0);
+        comboxCotizacion.setEnabled(true);
+        
+        if(comboxCotizacion.getSelectedItem().toString().equals("No seleccionado")){
+            bAceptar.setEnabled(false);
+        }else{
+            bAceptar.setEnabled(true);
+        }
     }//GEN-LAST:event_bAnularCotMouseClicked
 
     private void bAgregarCotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAgregarCotActionPerformed
@@ -855,7 +961,9 @@ public class prinVendedor extends javax.swing.JFrame {
 
     private void bAnularVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAnularVentaActionPerformed
         // TODO add your handling code here:
-        this.actualizarComboxVenta();
+        //this.actualizarComboxVenta();
+        comboxCotizacion.removeAllItems();
+        llenarComboBoxVenta();
     }//GEN-LAST:event_bAnularVentaActionPerformed
 
     private void bModfCotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bModfCotActionPerformed
@@ -865,50 +973,57 @@ public class prinVendedor extends javax.swing.JFrame {
 
     private void bConsultarCotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bConsultarCotActionPerformed
         // TODO add your handling code here:
-
+        comboxCotizacion.removeAllItems();
+        llenarComboBoxCotizacion();
     }//GEN-LAST:event_bConsultarCotActionPerformed
 
     private void bAnularCotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAnularCotActionPerformed
         // TODO add your handling code here:
-
+        comboxCotizacion.removeAllItems();
+        llenarComboBoxCotizacion();
     }//GEN-LAST:event_bAnularCotActionPerformed
 
     private void bConsulVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bConsulVentaActionPerformed
         // TODO add your handling code here:
-        this.actualizarComboxVenta();
+        //this.actualizarComboxVenta();
+        comboxCotizacion.removeAllItems();
+        llenarComboBoxVenta();
     }//GEN-LAST:event_bConsulVentaActionPerformed
 
     private void bAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAceptarActionPerformed
         // TODO add your handling code here:
-        
-        if(botonAceptar==1){
-            jLabel6.setText("Agregando Venta");
-            agregarUnaVenta();
-        }
-        else if(botonAceptar == 5){
-           jLabel6.setText("Agregando Cotizacion");
-           agregarUnaVenta();   
-        }
-        else if(botonAceptar == 6){
-            jLabel6.setText("Modificando Cotizacion");
-               modificarCotizacion();
-        }
-        else if(botonAceptar == 3){
-            jLabel6.setText("Consultar Venta");
+        switch (botonAceptar) {
+            case 1:
+                //labAccion.setText("Facturar Venta");
+                agregarUnaVenta();
+                break;
+            case 5:
+                //labAccion.setText("Registrar Cotizacion");
+                agregarUnaCotizacion();
+                break;
+            case 6:
+                //labAccion.setText("Modificando Cotizacion");
+                modificarCotizacion();
+                break;
+            case 3:
+                //labAccion.setText("Consultar Venta");
                 consultarVenta();
-            }
-        else if(botonAceptar == 7){
-            jLabel6.setText("Consultar Cotizacion");
+                break;
+            case 7:
+                //labAccion.setText("Consultar Cotizacion");
                 consultarCotizacion();
-            }
-        else if(botonAceptar == 4){
-            jLabel6.setText("Anular Venta");
+                break;
+            case 4:
+                //labAccion.setText("Anular Venta");
                 deshabilitarVenta();
-            }
-        else if(botonAceptar == 8){
-            jLabel6.setText("Anular Cotizacion");
+                break;
+            case 8:
+                //labAccion.setText("Anular Cotizacion");
                 deshabilitarCotizacion();
-            }
+                break;
+            default:
+                break;
+        }
             
     }//GEN-LAST:event_bAceptarActionPerformed
 
@@ -993,7 +1108,7 @@ public class prinVendedor extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.productos = new ArrayList<>();
         this.cantidades = new ArrayList<>();
-        comboxProduc.removeAllItems();;
+        comboxProduc.removeAllItems();
         
         cambiarVisibilidadCampos(false);
         cambiarVisibilidadCamposVentas(true);
@@ -1002,6 +1117,12 @@ public class prinVendedor extends javax.swing.JFrame {
         bAceptar.setText("Agregar");
         bAceptar.setVisible(true);
         bAceptar.setEnabled(true);
+        
+        labAccion.setVisible(true);
+        labAccion.setText("Facturar Venta");
+        bConfirmar.setVisible(true);
+        
+        tDescrip.setEnabled(true);
     }//GEN-LAST:event_bAgregarVentaMouseReleased
 
     private void bAgregarCotMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAgregarCotMouseReleased
@@ -1017,19 +1138,60 @@ public class prinVendedor extends javax.swing.JFrame {
         bAceptar.setText("Agregar");
         bAceptar.setVisible(true);
         bAceptar.setEnabled(true);
+                
+        labAccion.setVisible(true);
+        labAccion.setText("Registrar Cotización");
+        bConfirmar.setVisible(true);
+        
+        labFecha.setVisible(true);
+        comboxDia.setVisible(true);
+        comboxMes.setVisible(true);
+        comboxAno.setVisible(true);
     }//GEN-LAST:event_bAgregarCotMouseReleased
 
-    private void jButton1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseReleased
+    private void bConfirmarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bConfirmarMouseReleased
         // TODO add your handling code here:
         if(botonAceptar==1){
-            jLabel6.setText("Agregando Venta");
             agregarVenta();
         }
         else if(botonAceptar == 5){
-           jLabel6.setText("Agregando Cotizacion");
            agregarCotizacion();   
         }
-    }//GEN-LAST:event_jButton1MouseReleased
+    }//GEN-LAST:event_bConfirmarMouseReleased
+
+    private void tTelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tTelActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tTelActionPerformed
+
+    private void bModfVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bModfVentaMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bModfVentaMouseClicked
+
+    private void bModfVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bModfVentaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bModfVentaActionPerformed
+
+    private void logOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutMouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        try {
+            new Login().setVisible(true);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(prinSuper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_logOutMouseClicked
+
+    private void ProfileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ProfileMouseClicked
+        // TODO add your handling code here:
+        consultarInfoPersonal();
+    }//GEN-LAST:event_ProfileMouseClicked
+
+    private void ReportsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ReportsMouseClicked
+        // TODO add your handling code here:
+        //Gerente ger = bD.leerGerentePorId(idGerente);
+        //int sede = ger.getIdSede();
+        //new reportGerente(bD, idGerente, sede).setVisible(true);
+    }//GEN-LAST:event_ReportsMouseClicked
 
     public void cambiarVisibilidadCampos(boolean varControl){
         labIDcotizacion.setVisible(false);
@@ -1170,7 +1332,7 @@ public class prinVendedor extends javax.swing.JFrame {
         tDescrip.setVisible(varControl);
         tDescrip.setEnabled(varControl);
         tDescrip.setText("");
-        tDescrip.setEnabled(!varControl);
+        //tDescrip.setEnabled(!varControl);
         labCCcliente.setVisible(varControl);
         tCCcliente.setVisible(varControl);
         tCCcliente.setEnabled(varControl);
@@ -1191,43 +1353,38 @@ public class prinVendedor extends javax.swing.JFrame {
     }
     
     public void CambiarVisibilidadModCamposCot(boolean varControl){
-       
+        labIDcotizacion.setText("ID cotizacion:");
+        labIDcotizacion.setVisible(varControl);
+        comboxCotizacion.setVisible(varControl);
 
-      labIDcotizacion.setText("ID cotizacion:");
-      labIDcotizacion.setVisible(varControl);
-      comboxCotizacion.setVisible(varControl);
+        //elementos para ventas y cotizacion      
+        labNombreCliente.setVisible(varControl);
+        tNombreCliente.setVisible(varControl);
+        tNombreCliente.setText("");
+        tNombreCliente.setEnabled(!varControl);
+        labTel.setVisible(varControl);
+        tTel.setVisible(varControl);
+        tTel.setText("");
+        tTel.setEnabled(!varControl);
 
-      //elementos para ventas y cotizacion 
-     
-      labNombreCliente.setVisible(varControl);
-      tNombreCliente.setVisible(varControl);
-      tNombreCliente.setText("");
-      tNombreCliente.setEnabled(!varControl);
-      labTel.setVisible(varControl);
-      tTel.setVisible(varControl);
-      tTel.setText("");
-      tTel.setEnabled(!varControl);
-      
-     //elementos para ventas 
-      labDescrip.setVisible(!varControl);
-      tDescrip.setVisible(!varControl);
-      tDescrip.setText("");
-      tDescrip.setEnabled(!!varControl);
-      labCCcliente.setVisible(!varControl);
-      tCCcliente.setVisible(!varControl);
-      tCCcliente.setText("");
-      tCCcliente.setEnabled(!varControl);
-      labCant.setVisible(!varControl);
-      tCant.setVisible(!varControl);
-      tCant.setText("");
-      
-      //elementos para cotizacion
+       //elementos para ventas 
+        labDescrip.setVisible(!varControl);
+        tDescrip.setVisible(!varControl);
+        tDescrip.setText("");
+        tDescrip.setEnabled(!!varControl);
+        labCCcliente.setVisible(!varControl);
+        tCCcliente.setVisible(!varControl);
+        tCCcliente.setText("");
+        tCCcliente.setEnabled(!varControl);
+        labCant.setVisible(!varControl);
+        tCant.setVisible(!varControl);
+        tCant.setText("");
 
-     labEmail.setVisible(varControl);
-     tEmail.setVisible(varControl);
-     tEmail.setEnabled(!varControl);
-     tEmail.setText("");
-
+        //elementos para cotizacion
+       labEmail.setVisible(varControl);
+       tEmail.setVisible(varControl);
+       tEmail.setEnabled(!varControl);
+       tEmail.setText("");
     }
     
     public void camposVentasConsulta(boolean varControl){
@@ -1270,65 +1427,67 @@ public class prinVendedor extends javax.swing.JFrame {
     }
     
     public void camposCotConsulta(boolean varControl){
-    
+        labIDcotizacion.setText("ID cotizacion:");  
 
-      labIDcotizacion.setText("ID cotizacion:");  
-        
-      labIDcotizacion.setVisible(varControl);
-      comboxCotizacion.setVisible(varControl);
+        labIDcotizacion.setVisible(varControl);
+        comboxCotizacion.setVisible(varControl);
 
-      //elementos para ventas  
-      labEmail.setVisible(!varControl);
-      tEmail.setVisible(!varControl);
-      labNombreCliente.setVisible(!varControl);
-      tNombreCliente.setVisible(!varControl);
-      labDescrip.setVisible(!varControl);
-      tDescrip.setVisible(!varControl);
-      labCCcliente.setVisible(!varControl);
-      tCCcliente.setVisible(!varControl);
-      labTel.setVisible(!varControl);
-      tTel.setVisible(!varControl);
-      labCant.setVisible(!varControl);
-      tCant.setVisible(!varControl);
-      tCant.setText("");
-      //elementos para cotizacion
+        //elementos para ventas  
+        labEmail.setVisible(!varControl);
+        tEmail.setVisible(!varControl);
+        labNombreCliente.setVisible(!varControl);
+        tNombreCliente.setVisible(!varControl);
+        labDescrip.setVisible(!varControl);
+        tDescrip.setVisible(!varControl);
+        labCCcliente.setVisible(!varControl);
+        tCCcliente.setVisible(!varControl);
+        labTel.setVisible(!varControl);
+        tTel.setVisible(!varControl);
+        labCant.setVisible(!varControl);
+        tCant.setVisible(!varControl);
+        tCant.setText("");
 
-      labDescrip.setVisible(!varControl);
-      tDescrip.setVisible(!varControl);
-
+        //elementos para cotizacion
+        //labDescrip.setVisible(!varControl);
+        //tDescrip.setVisible(!varControl);
     }
     
     private void limpiarCampos(){
-
-       tDescrip.setText("");
-       tTel.setText("");
-       tCCcliente.setText("");
-       tNombreCliente.setText("");
-       tEmail.setText("");
-       
+        tDescrip.setText("");
+        tTel.setText("");
+        tCCcliente.setText("");
+        tNombreCliente.setText("");
+        tEmail.setText("");       
     } 
 
     
-    public void habilitarCamposModfVenta(boolean varControl){
-    
-       tDescrip.setEnabled(varControl);
-       tTel.setEnabled(varControl);
-       tCCcliente.setEnabled(varControl);
-       tNombreCliente.setEnabled(varControl);
-       tCant.setEnabled(varControl);
+    public void habilitarCamposModfVenta(boolean varControl){    
+        tDescrip.setEnabled(varControl);
+        tTel.setEnabled(varControl);
+        tCCcliente.setEnabled(varControl);
+        tNombreCliente.setEnabled(varControl);
+        tCant.setEnabled(varControl);
     }
     
     private boolean validarCamposAgregarVenta(){
         if(tNombreCliente.getText().replace(" ", "").length()==0){
+            JOptionPane.showMessageDialog(this, 
+                    "Por favor ingrese un nombre de cliente valido");
             return false;
         }
         if(tCCcliente.getText().replace(" ", "").length()==0){
+            JOptionPane.showMessageDialog(this, 
+                    "Por favor ingrese una cedula de cliente valido");
             return false;
         }
         if(tTel.getText().replace(" ", "").length()==0){
+            JOptionPane.showMessageDialog(this, 
+                    "Por favor ingrese un telefono valido");
             return false;
         }
         if(tCant.getText().replace(" ", "").length()==0){
+            JOptionPane.showMessageDialog(this, 
+                    "Por favor ingrese una cantidad valida");
             return false;
         }
         try{
@@ -1353,12 +1512,18 @@ public class prinVendedor extends javax.swing.JFrame {
     
     private boolean validarCamposAgregarCotizacion(){
         if(tNombreCliente.getText().replace(" ", "").length()==0){
+            JOptionPane.showMessageDialog(this, 
+                    "Por favor ingrese un nombre de cliente valido");
             return false;
         }
         if(tTel.getText().replace(" ", "").length()==0){
+            JOptionPane.showMessageDialog(this, 
+                    "Por favor ingrese un telefono valido");
             return false;
         }
         if(tEmail.getText().replace(" ", "").length()==0){
+            JOptionPane.showMessageDialog(this, 
+                    "Por favor ingrese un email valido");
             return false;
         }
         try{
@@ -1373,11 +1538,11 @@ public class prinVendedor extends javax.swing.JFrame {
                     "Por favor seleccione una referencia");
             return false;
         }
-        if(String.valueOf(tDescrip.getText()).replace(" ", "").length()==0){
+        /*if(String.valueOf(tDescrip.getText()).replace(" ", "").length()==0){
             JOptionPane.showMessageDialog(this, 
                     "Por favor ingrese la descripcion");
             return false;
-        }
+        }*/
         return true;
     }
     
@@ -1388,9 +1553,52 @@ public class prinVendedor extends javax.swing.JFrame {
        tEmail.setEnabled(varControl);
     }
     
-    private boolean agregarUnaVenta(){
+    private void agregarUnaCotizacion(){
+        if(!validarCamposAgregarCotizacion()){
+            return;
+        }
+        if(productos.contains(comboxProduc.getSelectedItem().toString())){
+            productos.set(this.comboxProduc.getSelectedIndex(),
+                    String.valueOf(this.comboxProduc.getSelectedItem()));
+            cantidades.set(this.comboxProduc.getSelectedIndex(),
+                    Integer.valueOf(tCant.getText()));
+        }else{
+            productos.add(comboxProduc.getSelectedItem().toString());
+            cantidades.add(Integer.valueOf(tCant.getText()));
+        }
+        JOptionPane.showMessageDialog(this, "Producto "+comboxProduc.getSelectedItem().toString()+" Agregado");
+    }
+    
+    private void consultarInfoPersonal(){
+        Vendedor vend = bD.leerVendedorPorId(idVendedor);
+        Sede sede = bD.leerSedePorId(String.valueOf(vend.getIdSede()));
+        
+        String genero;
+        if(vend.getGenero()==0){
+            genero = "Masculino";
+        }else{
+            genero = "Femenino";
+        }
+        
+        String mensaje = "Nombre: "+vend.getNombre()+"\n"+
+                         "Cedula: "+vend.getCedula()+"\n"+
+                         "Cargo: "+vend.getCargo()+"\n"+
+                         "salario: "+String.format( "%.2f", vend.getSalario())+"\n"+
+                         "Cuenta Bancaria: "+vend.getCuentaBancaria()+"\n"+
+                         "Sede: "+sede.getNombreSede()+"\n"+
+                         "Fecha Ingreso: "+vend.getFechaRegistro()+"\n"+
+                         "Fecha Nacimiento: "+vend.getFechaNacimiento()+"\n"+
+                         "Correo: "+vend.getCorreo()+"\n"+
+                         "Genero: "+genero+"\n"+
+                         "Dirección: "+vend.getDireccion()+"\n"+
+                         "Teléfono: "+vend.getTelefono()+"\n";
+        
+        JOptionPane.showMessageDialog(this, mensaje);
+    }  
+    
+    private void agregarUnaVenta(){
         if(!validarCamposAgregarVenta()){
-            return false;
+            return;
         }
         if(productos.contains(comboxProduc.getSelectedItem().toString())){
             productos.set(this.comboxProduc.getSelectedIndex(), 
@@ -1402,7 +1610,6 @@ public class prinVendedor extends javax.swing.JFrame {
             cantidades.add(Integer.valueOf(tCant.getText()));
         }
         JOptionPane.showMessageDialog(this, "Producto "+comboxProduc.getSelectedItem().toString()+" Agregado");
-        return true;
     }
     
      private boolean agregarVenta(){         
@@ -1430,20 +1637,53 @@ public class prinVendedor extends javax.swing.JFrame {
         return true;
      } 
     
-     private boolean agregarCotizacion(){
+    //Retorna el valor numerico del mes, la variable mes tiene el formato puesto en el comboxMes
+    private int obtenerMesNum(String mes){
+        //ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic
+        switch(mes){
+            case "ene":
+                return 1;
+            case "feb":
+                return 2;
+            case "mar":
+                return 3;
+            case "abr":
+                return 4;
+            case "may":
+                return 5;
+            case "jun":
+                return 6;
+            case "jul":
+                return 7;
+            case "ago":
+                return 8;
+            case "sep":
+                return 9;
+            case "oct":
+                return 10;
+            case "nov":
+                return 11;
+            case "dic":
+                return 12;
+        }
+        return 0;
+    }
+     
+    private boolean agregarCotizacion(){
         if(!validarCamposAgregarCotizacion()){
             return false;
         }
         int[] cant = new int[cantidades.size()]; 
         String[] products = new String[productos.size()];
+        
         for (int i=0; i<cant.length;i++){
             cant[i]=cantidades.get(i);
             products[i]=productos.get(i).split(",")[0];
         }
         String dia = comboxDia.getItemAt(comboxDia.getSelectedIndex());
-        String mes = comboxMes.getItemAt(comboxMes.getSelectedIndex());
+        String mes = comboxMes.getItemAt(comboxMes.getSelectedIndex());        
         String ano = comboxAno.getItemAt(comboxAno.getSelectedIndex());
-        String fecha = dia+"-"+mes+"-"+ano;
+        String fecha = ano+"-"+obtenerMesNum(mes)+"-"+dia;
         String nombreCliente = tNombreCliente.getText();
         String telefonoCliente = tTel.getText();
         String email = tEmail.getText();
@@ -1483,23 +1723,22 @@ public class prinVendedor extends javax.swing.JFrame {
      }
      
      
-     public void llenarComboBoxVenta(){
-     
-         String [] ventas = bD.listarVenta(this.idVendedor, consulta).split("\\$");
+     public void llenarComboBoxVenta(){     
+        String [] ventas = bD.listarVenta(this.idVendedor, consulta).split("\\$");
         for(int i=0; i<ventas.length; i++){
             comboxCotizacion.addItem(ventas[i]);
         }
 
      }
      
-     public void llenarComboBoxCotizacion(){
      
-         String [] cotizaciones = bD.listarCotizacion(this.idVendedor, consulta).split("\\$");
+    public void llenarComboBoxCotizacion(){     
+        String [] cotizaciones = bD.listarCotizacion(this.idVendedor, consulta).split("\\$");
         for(int i=0; i<cotizaciones.length; i++){
             comboxCotizacion.addItem(cotizaciones[i]);
         }
-            System.out.println("4");
-     }
+        //System.out.println("4");
+    }
      
      private boolean modificarCotizacion(){
      if(!validarCamposModfCotizacion()){
@@ -1518,6 +1757,7 @@ public class prinVendedor extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, respuesta);
         limpiarCampos();
         CambiarVisibilidadModCamposCot(true);
+        comboxCotizacion.removeAllItems();
         llenarComboBoxCotizacion();
         System.out.println("3");
         return true;
@@ -1525,27 +1765,25 @@ public class prinVendedor extends javax.swing.JFrame {
     }
     
 
-     private boolean consultarVenta(){
-               
-          if(!validarCamposConsultarVenta()){
-            return false;            
+    private void consultarVenta(){               
+        if(!validarCamposConsultarVenta()){
+            return;            
         }
          
         String id = String.valueOf(comboxCotizacion.getSelectedItem());
-        Venta vent = bD.leerVentaPorId(id);
-         
+        Venta vent = bD.leerVentaPorId(id);         
   
-            String mensaje = "Nombre Cliente: "+vent.getNombreCliente()+"\n"+
+        String mensaje = "Nombre Cliente: "+vent.getNombreCliente()+"\n"+
                               "Cedula Cliente: "+vent.getCedulaCliente()+"\n"+
                               "Telefono Cliente: "+vent.getTelefonoCliente()+"\n"+
                               "Valor: "+vent.getValorVenta()+"\n"+
                               "Descripción Venta: "+vent.getDescripcionVenta()+"\n";
          
-           JOptionPane.showMessageDialog(this, mensaje);
-           limpiarCampos();
-           llenarComboBoxVenta();
-           return true;
-     }
+        JOptionPane.showMessageDialog(this, mensaje);
+        //limpiarCampos();
+        //comboxCotizacion.removeAllItems();
+        //llenarComboBoxVenta();
+    }
     
      private boolean validarCamposConsultarCotizacion(){
         if(comboxCotizacion.getSelectedItem().equals("Seleccione una cotizacion")){
@@ -1566,96 +1804,93 @@ public class prinVendedor extends javax.swing.JFrame {
     } 
      
     
-     private boolean consultarCotizacion(){
-         
-           if(!validarCamposConsultarCotizacion()){
-            return false;            
+    private void consultarCotizacion(){         
+        if(!validarCamposConsultarCotizacion()){
+            return;
         }
          
         String id = String.valueOf(comboxCotizacion.getSelectedItem());
-         Cotizacion cot = bD.leerCotizacionPorId(id);
+        Cotizacion cot = bD.leerCotizacionPorId(id);
          
-           String mensaje = "Nombre Cliente: "+cot.getNombreCliente()+"\n"+
-                            "Telefono Cliente: "+cot.getTelefonoCliente()+"\n"+
-                            "Email: "+cot.getEmail()+"\n"+
-                            "Valor: "+cot.getValorUnitario()+"\n"+
-                            "fecha: "+cot.getFecha()+"\n";
-           
-           JOptionPane.showMessageDialog(this, mensaje);
-           limpiarCampos();
-           llenarComboBoxCotizacion();
-           return true;
-     }
+        String mensaje = "Nombre Cliente: "+cot.getNombreCliente()+"\n"+
+                         "Telefono Cliente: "+cot.getTelefonoCliente()+"\n"+
+                         "Email: "+cot.getEmail()+"\n"+
+                         "Valor: "+cot.getValorUnitario()+"\n"+
+                         "fecha: "+cot.getFecha()+"\n";
+        
+        JOptionPane.showMessageDialog(this, mensaje);
+        //limpiarCampos();
+        //comboxCotizacion.removeAllItems();
+        //llenarComboBoxCotizacion();
+    }
      
      private void deshabilitarVenta(){
-         String id = String.valueOf(comboxCotizacion.getSelectedItem());
-         Venta vent = bD.leerVentaPorId(id);
+        String id = String.valueOf(comboxCotizacion.getSelectedItem());
+        Venta vent = bD.leerVentaPorId(id);
          
-             String mensaje = "Seguro que desea deshebilitar la factura:\n"+
-                              "Nombre Cliente: "+vent.getNombreCliente()+"\n"+
-                              "Telefono Cliente: "+vent.getTelefonoCliente()+"\n"+
-                              "Cedula Cliente: "+vent.getCedulaCliente()+"\n"+
-                              "Valor: "+vent.getValorVenta()+"\n"+
-                              "Descripcion: "+vent.getDescripcionVenta()+"\n";
-             
-            int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
+        String mensaje = "Seguro que desea deshebilitar la factura:\n"+
+                         "Nombre Cliente: "+vent.getNombreCliente()+"\n"+
+                         "Telefono Cliente: "+vent.getTelefonoCliente()+"\n"+
+                         "Cedula Cliente: "+vent.getCedulaCliente()+"\n"+
+                         "Valor: "+vent.getValorVenta()+"\n"+
+                         "Descripcion: "+vent.getDescripcionVenta()+"\n";
 
-         if(opcion == 0){
-                String respuesta = bD.eliminarVenta(id);
-                JOptionPane.showMessageDialog(this, respuesta);
-                limpiarCampos();
-                llenarComboBoxVenta();
-            }
+       int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
+
+        if(opcion == 0){
+            String respuesta = bD.eliminarVenta(id);
+            JOptionPane.showMessageDialog(this, respuesta);
+            limpiarCampos();
+            comboxCotizacion.removeAllItems();
+            llenarComboBoxVenta();
+        }
          
      }
      
      private void deshabilitarCotizacion(){
-         String id = String.valueOf(comboxCotizacion.getSelectedItem());
-         Cotizacion cot = bD.leerCotizacionPorId(id);
+        String id = String.valueOf(comboxCotizacion.getSelectedItem());
+        Cotizacion cot = bD.leerCotizacionPorId(id);
          
-             String mensaje = "Seguro que desea deshebilitar la cotizacion:\n"+
-                              "Nombre Cliente: "+cot.getNombreCliente()+"\n"+
-                              "Telefono Cliente: "+cot.getTelefonoCliente()+"\n"+
-                              "Valor: "+cot.getValorUnitario()+"\n"+
-                              "Email: "+cot.getEmail()+"\n";
-             
-            int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
+        String mensaje = "Seguro que desea deshebilitar la cotizacion:\n"+
+                         "Nombre Cliente: "+cot.getNombreCliente()+"\n"+
+                         "Telefono Cliente: "+cot.getTelefonoCliente()+"\n"+
+                         "Valor: "+cot.getValorUnitario()+"\n"+
+                         "Email: "+cot.getEmail()+"\n";
+
+       int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
       
-         if(opcion == 0){
-                String respuesta = bD.eliminarCotizacion(id);
-                JOptionPane.showMessageDialog(this, respuesta);
-                limpiarCamposCotizaciones();
-                llenarComboBoxCotizacion();
-            }
+        if(opcion == 0){
+            String respuesta = bD.eliminarCotizacion(id);
+            JOptionPane.showMessageDialog(this, respuesta);
+            limpiarCamposCotizaciones();
+            comboxCotizacion.removeAllItems();
+            llenarComboBoxCotizacion();
+        }
      }
      
-     private void limpiarCamposCotizaciones(){
-     
-     tNombreCliente.setText("");
-     tTel.setText("");
-     tEmail.setText("");
-     comboxCotizacion.removeAllItems();
-     comboxDia.setSelectedIndex(0);
-     comboxMes.setSelectedIndex(0);
-     comboxAno.setSelectedIndex(0);
+    private void limpiarCamposCotizaciones(){     
+        tNombreCliente.setText("");
+        tTel.setText("");
+        tEmail.setText("");
+        comboxCotizacion.removeAllItems();
+        comboxDia.setSelectedIndex(0);
+        comboxMes.setSelectedIndex(0);
+        comboxAno.setSelectedIndex(0);
+    }
+    
+    private void limpiarCamposVentas(){
+        tNombreCliente.setText("");
+        tTel.setText("");
+        tCCcliente.setText("");
+        tDescrip.setText("");
+        comboxDia.setSelectedIndex(0);
+        comboxMes.setSelectedIndex(0);
+        comboxAno.setSelectedIndex(0);
      }
     
-     private void limpiarCamposVentas(){
-     
-     tNombreCliente.setText("");
-     tTel.setText("");
-     tCCcliente.setText("");
-     tDescrip.setText("");
-     comboxDia.setSelectedIndex(0);
-     comboxMes.setSelectedIndex(0);
-     comboxAno.setSelectedIndex(0);
-     }
-    
-     public void habilitarCamposCot(boolean varControl){
-     
-     comboxProduc.setEnabled(false);
-     
-     }
+    public void habilitarCamposCot(boolean varControl){     
+        comboxProduc.setEnabled(false);
+    }
      
     public static void main(String args[]) {            
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -1666,14 +1901,18 @@ public class prinVendedor extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Profile;
+    private javax.swing.JLabel Reports;
     private javax.swing.JButton bAceptar;
     private javax.swing.JButton bAgregarCot;
     private javax.swing.JButton bAgregarVenta;
     private javax.swing.JButton bAnularCot;
     private javax.swing.JButton bAnularVenta;
+    private javax.swing.JButton bConfirmar;
     private javax.swing.JButton bConsulVenta;
     private javax.swing.JButton bConsultarCot;
     private javax.swing.JButton bModfCot;
+    private javax.swing.JButton bModfVenta;
     private javax.swing.JComboBox<String> comboxAno;
     private javax.swing.JComboBox<String> comboxCotizacion;
     private javax.swing.JComboBox<String> comboxDia;
@@ -1682,18 +1921,17 @@ public class prinVendedor extends javax.swing.JFrame {
     private javax.swing.JLabel fecha;
     private javax.swing.JLabel fechaYhora;
     private javax.swing.JLabel hora;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JLabel labAccion;
     private javax.swing.JLabel labCCcliente;
     private javax.swing.JLabel labCant;
     private javax.swing.JLabel labDescrip;
@@ -1703,6 +1941,7 @@ public class prinVendedor extends javax.swing.JFrame {
     private javax.swing.JLabel labNombreCliente;
     private javax.swing.JLabel labProducto;
     private javax.swing.JLabel labTel;
+    private javax.swing.JLabel logOut;
     private javax.swing.JTextField tCCcliente;
     private javax.swing.JTextField tCant;
     private javax.swing.JTextField tDescrip;
