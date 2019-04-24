@@ -2461,6 +2461,433 @@ public class DBConnection {
         return empty;
     }
     
+   
+    //Esta funcion lo que nos retorna los reportes de toda la empresa por dia
+    public List reporteGerenteVentasDia(String initDate, String finishDate){
+        connect();
+        //Obtaining data from database
+        sql = "SELECT EXTRACT(YEAR FROM fecha_venta) as anio, EXTRACT(MONTH "
+                + "FROM fecha_venta) as mes, EXTRACT(DAY FROM fecha_venta) "
+                + "as dia, COUNT(*) AS cant FROM Venta WHERE fecha_venta > '"+initDate+"' AND fecha_venta "
+                + "< '"+finishDate+"' GROUP BY dia, mes, anio";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String dia = "";
+            String mes = "";
+            String anio = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                dia = rs.getString("dia");
+                mes = rs.getString("mes");
+                anio = rs.getString("anio");
+                
+                cant = rs.getInt("cant");
+                report = new Report(dia+"/"+mes+"/"+anio, cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
+    //Esta funcion lo que nos retorna los reportes de toda la empresa por mes
+    public List reporteGerenteVentasMes(String initDate, String finishDate){
+        connect();
+        //Obtaining data from database
+        sql = "SELECT EXTRACT(YEAR FROM fecha_venta) as anio, EXTRACT(MONTH "
+                + "FROM fecha_venta) as mes, COUNT(*) AS cant FROM venta"
+                + " WHERE fecha_venta > '"+initDate+"' "
+                + "AND fecha_venta < '"+finishDate+"' GROUP BY mes, anio";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String mes = "";
+            String anio = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                mes = rs.getString("mes");
+                anio = rs.getString("anio");
+                
+                cant = rs.getInt("cant");
+                
+                report = new Report(mes+"/"+anio, cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
+    //Esta funcion lo que nos retorna los reportes de toda la empresa por Anio
+    public List reporteGerenteVentasAnio(String initDate, String finishDate){
+        connect();
+        //Obtaining data from database
+        sql = "SELECT EXTRACT(YEAR FROM fecha_venta) as anio, COUNT(*) AS cant FROM Venta"
+                + " WHERE fecha_venta > '"+initDate+"' "
+                + "AND fecha_venta < '"+finishDate+"' GROUP BY anio";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String anio = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                anio = rs.getString("anio");
+                cant = rs.getInt("cant");
+                report = new Report(anio, cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
+    //Esta funcion lo que nos retorna los reportes de toda la empresa por dia
+    public List reporteGerenteSedeVentasDia(String sede, String initDate, String finishDate){
+        connect();
+        //Obtaining data from database
+        sql = "SELECT EXTRACT(YEAR FROM fecha_venta) as anio, EXTRACT(MONTH "
+                + "FROM fecha_venta) as mes, EXTRACT(DAY FROM fecha_venta) "
+                + "as dia, COUNT(*) AS cant FROM venta NATURAL JOIN "
+                + "vendedor  WHERE id_sede = "+String.valueOf(sede)+" "
+                + "AND fecha_venta > '"+initDate+"' AND fecha_venta "
+                + "< '"+finishDate+"' GROUP BY anio, mes, dia";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String dia = "";
+            String mes = "";
+            String anio = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                dia = rs.getString("dia");
+                mes = rs.getString("mes");
+                anio = rs.getString("anio");
+                
+                cant = rs.getInt("cant");
+                report = new Report(dia+"/"+mes+"/"+anio, cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
+    //Esta funcion lo que nos retorna los reportes de toda la empresa por mes
+    public List reporteGerenteSedeVentasMes(String sede, String initDate, String finishDate){
+        connect();
+        //Obtaining data from database
+        sql = "SELECT EXTRACT(YEAR FROM fecha_venta) as anio, EXTRACT(MONTH "
+                + "FROM fecha_venta) as mes, COUNT(*) AS cant FROM venta NATURAL JOIN "
+                + "vendedor  WHERE id_sede = "+String.valueOf(sede)+" "
+                + "AND fecha_venta > '"+initDate+"' AND fecha_venta "
+                + "< '"+finishDate+"' GROUP BY anio, mes";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String mes = "";
+            String anio = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                mes = rs.getString("mes");
+                anio = rs.getString("anio");
+                
+                cant = rs.getInt("cant");
+                
+                report = new Report(mes+"/"+anio, cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
+    //Esta funcion lo que nos retorna los reportes de toda la empresa por Anio
+    public List reporteGerenteSedeVentasAnio(String sede, String initDate, String finishDate){
+        connect();
+        //Obtaining data from database
+        sql = "SELECT EXTRACT(YEAR FROM fecha_venta) as anio, COUNT(*) AS cant "
+                + "FROM venta NATURAL JOIN "
+                + "vendedor  WHERE id_sede = "+String.valueOf(sede)+" "
+                + "AND fecha_venta > '"+initDate+"' AND fecha_venta "
+                + "< '"+finishDate+"' GROUP BY anio";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String anio = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                anio = rs.getString("anio");
+                cant = rs.getInt("cant");
+                report = new Report(anio, cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }   
+    
+    //Esta funcion lo que nos retorna los reportes de toda la empresa por dia
+    public List reporteGerenteCotizacionesDia(String initDate, String finishDate){
+        connect();
+        //Obtaining data from database
+        sql = "SELECT EXTRACT(YEAR FROM fecha_cotizacion) as anio, EXTRACT(MONTH "
+                + "FROM fecha_cotizacion) as mes, EXTRACT(DAY FROM fecha_cotizacion) "
+                + "as dia, COUNT(*) AS cant FROM cotizacion WHERE fecha_cotizacion > '"+initDate+"' AND fecha_cotizacion "
+                + "< '"+finishDate+"' GROUP BY dia, mes, anio";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String dia = "";
+            String mes = "";
+            String anio = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                dia = rs.getString("dia");
+                mes = rs.getString("mes");
+                anio = rs.getString("anio");
+                
+                cant = rs.getInt("cant");
+                report = new Report(dia+"/"+mes+"/"+anio, cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
+    //Esta funcion lo que nos retorna los reportes de toda la empresa por mes
+    public List reporteGerenteCotizacionMes(String initDate, String finishDate){
+        connect();
+        //Obtaining data from database
+        sql = "SELECT EXTRACT(YEAR FROM fecha_cotizacion) as anio, EXTRACT(MONTH "
+                + "FROM fecha_cotizacion) as mes, COUNT(*) AS cant FROM cotizacion"
+                + " WHERE fecha_cotizacion > '"+initDate+"' "
+                + "AND fecha_cotizacion < '"+finishDate+"' GROUP BY mes, anio";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String mes = "";
+            String anio = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                mes = rs.getString("mes");
+                anio = rs.getString("anio");
+                
+                cant = rs.getInt("cant");
+                
+                report = new Report(mes+"/"+anio, cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
+    //Esta funcion lo que nos retorna los reportes de toda la empresa por Anio
+    public List reporteGerenteCotizacionAnio(String initDate, String finishDate){
+        connect();
+        //Obtaining data from database
+        sql = "SELECT EXTRACT(YEAR FROM fecha_cotizacion) as anio, COUNT(*) AS cant FROM Cotizacion"
+                + " WHERE fecha_cotizacion > '"+initDate+"' "
+                + "AND fecha_cotizacion < '"+finishDate+"' GROUP BY anio";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String anio = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                anio = rs.getString("anio");
+                cant = rs.getInt("cant");
+                report = new Report(anio, cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
+    //Esta funcion lo que nos retorna los reportes de toda la empresa por dia
+    public List reporteGerenteSedeCotizacionDia(String sede, String initDate, String finishDate){
+        connect();
+        //Obtaining data from database
+        sql = "SELECT EXTRACT(YEAR FROM fecha_cotizacion) as anio, EXTRACT(MONTH "
+                + "FROM fecha_cotizacion) as mes, EXTRACT(DAY FROM fecha_cotizacion) "
+                + "as dia, COUNT(*) AS cant FROM Cotizacion NATURAL JOIN "
+                + "vendedor  WHERE id_sede = "+String.valueOf(sede)+" "
+                + "AND fecha_cotizacion > '"+initDate+"' AND fecha_cotizacion "
+                + "< '"+finishDate+"' GROUP BY anio, mes, dia";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String dia = "";
+            String mes = "";
+            String anio = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                dia = rs.getString("dia");
+                mes = rs.getString("mes");
+                anio = rs.getString("anio");
+                
+                cant = rs.getInt("cant");
+                report = new Report(dia+"/"+mes+"/"+anio, cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
+    //Esta funcion lo que nos retorna los reportes de toda la empresa por mes
+    public List reporteGerenteSedeCotizacionMes(String sede, String initDate, String finishDate){
+        connect();
+        //Obtaining data from database
+        sql = "SELECT EXTRACT(YEAR FROM fecha_cotizacion) as anio, EXTRACT(MONTH "
+                + "FROM fecha_cotizacion) as mes, COUNT(*) AS cant FROM Cotizacion NATURAL JOIN "
+                + "vendedor  WHERE id_sede = "+String.valueOf(sede)+" "
+                + "AND fecha_cotizacion > '"+initDate+"' AND fecha_cotizacion "
+                + "< '"+finishDate+"' GROUP BY anio, mes";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String mes = "";
+            String anio = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                mes = rs.getString("mes");
+                anio = rs.getString("anio");
+                
+                cant = rs.getInt("cant");
+                
+                report = new Report(mes+"/"+anio, cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
+    //Esta funcion lo que nos retorna los reportes de toda la empresa por Anio
+    public List reporteGerenteSedeCotizacionAnio(String sede, String initDate, String finishDate){
+        connect();
+        //Obtaining data from database
+        sql = "SELECT EXTRACT(YEAR FROM fecha_cotizacion) as anio, COUNT(*) AS cant "
+                + "FROM Cotizacion NATURAL JOIN "
+                + "vendedor  WHERE id_sede = "+String.valueOf(sede)+" "
+                + "AND fecha_cotizacion > '"+initDate+"' AND fecha_cotizacion "
+                + "< '"+finishDate+"' GROUP BY anio";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String anio = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                anio = rs.getString("anio");
+                cant = rs.getInt("cant");
+                report = new Report(anio, cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
     public static void main(String args[]) {    
         DBConnection prueba = new DBConnection();
         
