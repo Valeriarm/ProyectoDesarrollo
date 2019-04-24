@@ -1312,6 +1312,77 @@ public class DBConnection {
      return "";   
      }
     
+    public String[] listarProductosVentaAnular(String idV){
+        connect();
+        sql = "SELECT modifica.id_Producto, modifica.cantidad FROM "+
+                "Modifica INNER JOIN inventario on modifica.id_producto=inventario.id_producto "+
+                "WHERE modifica.id_Factura= '"+idV+"';";                
+        try {            
+            rs = st.executeQuery(sql);
+            String id = "", cantidad = "";
+            while(rs.next()){
+                id += rs.getString("id_Producto")+"$";
+                cantidad += rs.getInt("cantidad")+"$";
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            
+            String[] respuesta = new String[2];
+            System.out.println(id);
+            System.out.println(cantidad);
+            respuesta[0] = id;
+            respuesta[1] = cantidad;
+            return respuesta;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return null;
+    }
+    
+    public String anularVenta(String id){                
+        connect();
+        //Date fechaSist = new Date();
+        //SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        //String fecha = formato.format(fechaSist);
+        
+        try {            
+            sql = "SELECT Venta.id_Factura, Modifica.id_Producto FROM Venta "
+                + "NATURAL JOIN Modifica WHERE  Modifica.id_Factura = '"+id+"';";
+            rs = st.executeQuery(sql);
+            if(rs.next()){                
+                String[] idCant = listarProductosVentaAnular(id);
+                String[] ids = idCant[0].split("\\$");
+                String[] cant = idCant[1].split("\\$");
+                int[] cantidad = new int[cant.length];
+                                
+                for(int i=0; i<cant.length; i++){
+                    cantidad[i] = Integer.parseInt(cant[i]);
+                }
+                
+                connect();
+                sql = "UPDATE Venta SET habilitada = "+false+" WHERE id_factura = '"+id+"';";
+              
+                for(int i=0; i<cantidad.length; i++){
+                        /*sql += "INSERT INTO Modifica VALUES ("+cantidad[i]+",'"+id
+                                +"','"+producto[i]+"'); ";*/
+                        sql += "UPDATE inventario SET cantidad = cantidad+"+
+                                cantidad[i]+" WHERE id_producto = '"+ids[i]+"';";
+                    }
+
+                st.executeUpdate(sql);
+                rs.close();
+                st.close();
+                connection.close();
+            }else{
+                return "La venta con el id "+id+" no existe";            
+            }
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage() + " anularVenta");
+        }        
+       return "Venta anulada con exito";
+    }
+    
     public String eliminarVenta(String id){
         connect();
         sql = "SELECT id_Factura FROM Venta WHERE id_Factura = '"+id+"'";
@@ -1814,7 +1885,7 @@ public class DBConnection {
         //Llamamos el metodo que cree arriba para poder conectarnos a la base de datos
         connect();
 
-            sql = "SELECT * FROM Venta WHERE id_Vendedor ='"+idVendedor+"'"; 
+            sql = "SELECT * FROM Venta WHERE id_Vendedor ='"+idVendedor+"' AND habilitada ="+true; 
         
         
         //Necesito un try catch porque esto me puede arrojar un error de consulta (SQL)

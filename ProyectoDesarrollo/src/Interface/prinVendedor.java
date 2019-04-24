@@ -1671,6 +1671,10 @@ public class prinVendedor extends javax.swing.JFrame {
         this.productos = new ArrayList<>();
         this.cantidades = new ArrayList<>();
         JOptionPane.showMessageDialog(this, respuesta);
+        if(respuesta.contains("Venta agregada con")){
+            limpiarCamposVentas();
+        }
+        
         llenarComboBoxProducto();
         return true;
      } 
@@ -1817,8 +1821,8 @@ public class prinVendedor extends javax.swing.JFrame {
          
         String id = String.valueOf(comboxCotizacion.getSelectedItem());
         Venta vent = bD.leerVentaPorId(id);
-        String productosC = bD.listarProductosVenta(id);
-        String[] splitedproductos = productosC.split("\\$");
+        String productosV = bD.listarProductosVenta(id);
+        String[] splitedproductos = productosV.split("\\$");
   
         String mensaje = "Nombre Cliente: "+vent.getNombreCliente()+"\n"+
                               "Cedula Cliente: "+vent.getCedulaCliente()+"\n"+
@@ -1882,22 +1886,49 @@ public class prinVendedor extends javax.swing.JFrame {
      private void deshabilitarVenta(){
         String id = String.valueOf(comboxCotizacion.getSelectedItem());
         Venta vent = bD.leerVentaPorId(id);
+        String productosV = bD.listarProductosVenta(id);
+        String[] splitedproductos = productosV.split("\\$");
          
-        String mensaje = "Seguro que desea deshebilitar la factura:\n"+
+        String mensaje = "Seguro que desea deshabilitar la factura:\n"+
                          "Nombre Cliente: "+vent.getNombreCliente()+"\n"+
                          "Telefono Cliente: "+vent.getTelefonoCliente()+"\n"+
                          "Cedula Cliente: "+vent.getCedulaCliente()+"\n"+
                          "Valor: "+vent.getValorVenta()+"\n"+
                          "Descripcion: "+vent.getDescripcionVenta()+"\n";
 
+        for(int i=0; i<splitedproductos.length;i++){
+            mensaje=mensaje+splitedproductos[i]+"\n";
+        }
        int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
 
         if(opcion == 0){
-            String respuesta = bD.eliminarVenta(id);
+            String respuesta = bD.anularVenta(id);
             JOptionPane.showMessageDialog(this, respuesta);
             limpiarCampos();
             comboxCotizacion.removeAllItems();
             llenarComboBoxVenta();
+            
+            cambiarVisibilidadCampos(false);
+            camposVentasConsulta(true);
+            
+            botonAceptar = 4;
+            bAceptar.setText("Anular");
+            bAceptar.setVisible(true);
+            //bAceptar.setEnabled(false);
+            labAccion.setVisible(true);
+            labAccion.setText("Anular Venta");
+            bConfirmar.setVisible(false);
+
+            comboxCotizacion.setSelectedIndex(0);
+            comboxCotizacion.setEnabled(true);
+            carrito.setVisible(false);
+
+            String mensajeCombox = comboxCotizacion.getSelectedItem().toString();
+            if(mensajeCombox.equals("No seleccionado") || mensajeCombox.equals("")){
+                bAceptar.setEnabled(false);
+            }else{
+                bAceptar.setEnabled(true);
+            }
         }
          
      }
@@ -1905,6 +1936,8 @@ public class prinVendedor extends javax.swing.JFrame {
      private void deshabilitarCotizacion(){
         String id = String.valueOf(comboxCotizacion.getSelectedItem());
         Cotizacion cot = bD.leerCotizacionPorId(id);
+        String productosC = bD.listarProductosCotizacion(id);
+        String[] splitedproductos = productosC.split("\\$");
          
         String mensaje = "Seguro que desea deshebilitar la cotizacion:\n"+
                          "Nombre Cliente: "+cot.getNombreCliente()+"\n"+
@@ -1912,6 +1945,9 @@ public class prinVendedor extends javax.swing.JFrame {
                          "Valor: "+cot.getValorUnitario()+"\n"+
                          "Email: "+cot.getEmail()+"\n";
 
+        for(int i=0; i<splitedproductos.length;i++){
+            mensaje=mensaje+splitedproductos[i]+"\n";
+        }
        int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
       
         if(opcion == 0){
@@ -1961,6 +1997,7 @@ public class prinVendedor extends javax.swing.JFrame {
         tTel.setText("");
         tCCcliente.setText("");
         tDescrip.setText("");
+        tCant.setText("");
         comboxDia.setSelectedIndex(0);
         comboxMes.setSelectedIndex(0);
         comboxAno.setSelectedIndex(0);
