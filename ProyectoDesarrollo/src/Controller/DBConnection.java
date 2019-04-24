@@ -30,11 +30,11 @@ public class DBConnection {
     
     //Usuario de la base de datos en postgresql
     private final String dBUser = "postgres";
-    private final String dBPassword = "Marthox2299";
+    private final String dBPassword = "1144211502";
   
 
     //puerto
-    private final String port = "5432";
+    private final String port = "5433";
     //Nombre de la base de datos
     private final String dBName = "muebles_XYZ";
     //Dirección del host de la base de datos
@@ -1184,7 +1184,7 @@ public class DBConnection {
                 return "La venta con el id "+id+" ya existe";
             }else{ 
             sql = "INSERT INTO Venta VALUES ('"+id+"','"+nombreCliente+"','"+telefonoCliente+"','"+cedulaCliente+"','"+valorVenta+"','"+descripcionVenta+
-                    "','"+fecha+"','"+idVendedor+"');";
+                    "','"+fecha+"',"+true+",'"+idVendedor+"');";
               
             for(int i=0; i<cantidad.length; i++){
                     sql += "INSERT INTO Modifica VALUES ("+cantidad[i]+",'"+id
@@ -1204,17 +1204,17 @@ public class DBConnection {
        return "Venta agregada con exito";
     }
     
-    public float obtenerValorVenta(String[] producto){
+    public float obtenerValorVenta(String[] producto, int[] cant){
         connect();
         sql="";
         float valor = 0;
         try {
             for (int i=0; i< producto.length; i++){
-                sql += "SELECT * FROM inventario WHERE id_producto = '"+producto[i]+"'";
+                sql = "SELECT * FROM inventario WHERE id_producto = '"+producto[i]+"';";
 
                     rs = st.executeQuery(sql);
                     if(rs.next()){
-                        valor += rs.getFloat("valor_unitario");
+                        valor += (rs.getFloat("valor_unitario")*cant[i]);
                     }
             }
             rs.close();
@@ -1224,6 +1224,34 @@ public class DBConnection {
                 System.out.println("ERROR DE SQL " + e.getMessage() + " obtenerValorVenta");
             }
         return valor;
+    }
+    
+    public String listarProductosVenta(String idV){
+        connect();
+        sql = "SELECT modifica.id_Producto, nombre_Producto,valor_unitario, modifica.cantidad FROM "+
+                "Modifica INNER JOIN inventario on modifica.id_producto=inventario.id_producto "+
+                "WHERE modifica.id_Factura= '"+idV+"';";                
+        try {            
+            rs = st.executeQuery(sql);
+            String id, nombre;
+            int cantidad;
+            double valorU;
+            String productos = "";
+            while(rs.next()){
+                id = rs.getString("id_Producto");
+                nombre = rs.getString("nombre_Producto");
+                cantidad = rs.getInt("cantidad");
+                valorU = rs.getDouble("valor_unitario");
+                productos = productos+id+","+nombre+","+cantidad+", Valor:"+String.format( "%.1f", (cantidad*valorU))+"$";
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return productos;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        return "";
     }
     
     public Venta leerVentaPorId(String id){
@@ -1708,7 +1736,7 @@ public class DBConnection {
             if(rs.next()){
                 return "La venta con el id "+id+" ya existe";
             }else{ 
-            sql = "INSERT INTO Cotizacion VALUES ('"+id+"','"+nombre_Cliente+"','"+telefono+"','"+email+"','"+valor_Unitario+"','"+fecha+"','"+idVendedor+"');";
+            sql = "INSERT INTO Cotizacion VALUES ('"+id+"','"+nombre_Cliente+"','"+telefono+"','"+email+"','"+valor_Unitario+"','"+fecha+"',"+true+",'"+idVendedor+"');";
                 
             for(int i=0; i<cantidad.length; i++){
                     sql += "INSERT INTO Consulta VALUES ("+cantidad[i]+",'"+id+"','"+producto[i]+"');";
@@ -1814,7 +1842,7 @@ public class DBConnection {
         //Llamamos el metodo que cree arriba para poder conectarnos a la base de datos
         connect();
 
-            sql = "SELECT * FROM Cotizacion WHERE id_Vendedor ='"+idVendedor+"'"; 
+            sql = "SELECT * FROM Cotizacion WHERE id_Vendedor ='"+idVendedor+"' AND habilitado ="+true; 
         
         
         //Necesito un try catch porque esto me puede arrojar un error de consulta (SQL)
@@ -1834,6 +1862,34 @@ public class DBConnection {
             return cotizaciones;
         } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage() + " listarCotizacion");
+        }
+        return "";
+    }
+    
+    public String listarProductosCotizacion(String idC){
+        connect();
+        sql = "SELECT consulta.id_Producto, nombre_Producto, valor_unitario, consulta.cantidad FROM "+
+                "Consulta INNER JOIN inventario on consulta.id_producto=inventario.id_producto "+
+                "WHERE consulta.id_Cotizacion= '"+idC+"';";                
+        try {            
+            rs = st.executeQuery(sql);
+            String id, nombre;
+            int cantidad;
+            double valorU;
+            String productos = "";
+            while(rs.next()){
+                id = rs.getString("id_Producto");
+                nombre = rs.getString("nombre_Producto");
+                cantidad = rs.getInt("cantidad");
+                valorU = rs.getDouble("valor_unitario");
+                productos = productos+id+","+nombre+","+cantidad+", Valor:"+String.format( "%.1f", (cantidad*valorU))+"$";
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return productos;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
         }
         return "";
     }
@@ -1929,7 +1985,7 @@ public class DBConnection {
         try {
             rs = st.executeQuery(sql);
             if(rs.next()){
-                sql = "DELETE FROM Cotizacion WHERE id_Cotizacion = '"+id+"'";
+                sql = "UPDATE Cotizacion SET habilitado = "+false+" WHERE id_Cotizacion = '"+id+"'";
                 st.executeUpdate(sql);
                 rs.close();
                 st.close();
