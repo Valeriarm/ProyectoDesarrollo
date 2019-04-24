@@ -191,7 +191,8 @@ CREATE TABLE Venta (
   cedula_Cliente VARCHAR(100) NOT NULL ,
   valor_Venta float NOT NULL ,
   descripcion_Venta VARCHAR(100),
-  fecha_Venta date,
+  fecha_Venta date NOT NULL,
+  habilitada boolean NOT NULL,
   id_Vendedor VARCHAR(100) NOT NULL,
 
   PRIMARY KEY (id_Factura),
@@ -224,6 +225,7 @@ CREATE TABLE Cotizacion (
   e_mail VARCHAR(100) NOT NULL ,
   valor_Cotizacion FLOAT NOT NULL,
   fecha_Cotizacion date NOT NULL,
+  habilitado boolean NOT NULL,
   id_Vendedor VARCHAR(100) NOT NULL,
 
   PRIMARY KEY (id_Cotizacion),

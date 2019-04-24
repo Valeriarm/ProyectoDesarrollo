@@ -65,6 +65,7 @@ public class prinVendedor extends javax.swing.JFrame {
 
         bAceptar.setVisible(false);
         cambiarVisibilidadCampos(false);
+        carrito.setVisible(false);
        }
 
     public static boolean validarFecha(String fecha) {
@@ -199,6 +200,7 @@ public class prinVendedor extends javax.swing.JFrame {
         logOut = new javax.swing.JLabel();
         Profile = new javax.swing.JLabel();
         Reports = new javax.swing.JLabel();
+        carrito = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         bAgregarVenta = new javax.swing.JButton();
         bConsulVenta = new javax.swing.JButton();
@@ -261,6 +263,7 @@ public class prinVendedor extends javax.swing.JFrame {
         });
 
         Profile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ICO vendor.png"))); // NOI18N
+        Profile.setToolTipText("Información Personal");
         Profile.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 ProfileMouseClicked(evt);
@@ -274,6 +277,13 @@ public class prinVendedor extends javax.swing.JFrame {
             }
         });
 
+        carrito.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/carrito.png"))); // NOI18N
+        carrito.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                carritoMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -282,6 +292,8 @@ public class prinVendedor extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(carrito, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(Reports)
                 .addGap(28, 28, 28)
                 .addComponent(Profile)
@@ -291,7 +303,7 @@ public class prinVendedor extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -302,6 +314,7 @@ public class prinVendedor extends javax.swing.JFrame {
                             .addComponent(Reports, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(logOut, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
+            .addComponent(carrito, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
@@ -699,6 +712,9 @@ public class prinVendedor extends javax.swing.JFrame {
         bConfirmar.setFont(new java.awt.Font("Segoe UI Light", 1, 16)); // NOI18N
         bConfirmar.setText("Confirmar");
         bConfirmar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                bConfirmarMouseExited(evt);
+            }
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 bConfirmarMouseReleased(evt);
             }
@@ -751,12 +767,11 @@ public class prinVendedor extends javax.swing.JFrame {
                                     .addComponent(tDescrip, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(labCCcliente)
                             .addComponent(labTel)
-                            .addComponent(labEmail))))
-                .addGap(63, 63, 63))
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(146, 146, 146)
-                .addComponent(labAccion, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(labEmail)))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(146, 146, 146)
+                        .addComponent(labAccion, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -879,8 +894,10 @@ public class prinVendedor extends javax.swing.JFrame {
 
         comboxCotizacion.setSelectedIndex(0);
         comboxCotizacion.setEnabled(true);
+        carrito.setVisible(false);
         
-        if(comboxCotizacion.getSelectedItem().toString().equals("No seleccionado")){
+        String mensajeCombox = comboxCotizacion.getSelectedItem().toString();
+        if(mensajeCombox.equals("No seleccionado") || mensajeCombox.equals("")){
             bAceptar.setEnabled(false);
         }else{
             bAceptar.setEnabled(true);
@@ -903,8 +920,10 @@ public class prinVendedor extends javax.swing.JFrame {
 
         comboxCotizacion.setSelectedIndex(0);
         comboxCotizacion.setEnabled(true);
+        carrito.setVisible(false);
         
-        if(comboxCotizacion.getSelectedItem().toString().equals("No seleccionado")){
+        String mensajeCombox = comboxCotizacion.getSelectedItem().toString();
+        if(mensajeCombox.equals("No seleccionado") || mensajeCombox.equals("")){
             bAceptar.setEnabled(false);
         }else{
             bAceptar.setEnabled(true);
@@ -925,8 +944,10 @@ public class prinVendedor extends javax.swing.JFrame {
 
         comboxCotizacion.setSelectedIndex(0);
         comboxCotizacion.setEnabled(true);
+        carrito.setVisible(false);
         
-        if(comboxCotizacion.getSelectedItem().toString().equals("No seleccionado")){
+        String mensajeCombox = comboxCotizacion.getSelectedItem().toString();
+        if(mensajeCombox.equals("No seleccionado") || mensajeCombox.equals("")){
             bAceptar.setEnabled(false);
         }else{
             bAceptar.setEnabled(true);
@@ -947,8 +968,10 @@ public class prinVendedor extends javax.swing.JFrame {
 
         comboxCotizacion.setSelectedIndex(0);
         comboxCotizacion.setEnabled(true);
+        carrito.setVisible(false);
         
-        if(comboxCotizacion.getSelectedItem().toString().equals("No seleccionado")){
+        String mensajeCombox = comboxCotizacion.getSelectedItem().toString();
+        if(mensajeCombox.equals("No seleccionado") || mensajeCombox.equals("")){
             bAceptar.setEnabled(false);
         }else{
             bAceptar.setEnabled(true);
@@ -1123,6 +1146,7 @@ public class prinVendedor extends javax.swing.JFrame {
         bConfirmar.setVisible(true);
         
         tDescrip.setEnabled(true);
+        carrito.setVisible(true);
     }//GEN-LAST:event_bAgregarVentaMouseReleased
 
     private void bAgregarCotMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAgregarCotMouseReleased
@@ -1142,11 +1166,12 @@ public class prinVendedor extends javax.swing.JFrame {
         labAccion.setVisible(true);
         labAccion.setText("Registrar Cotización");
         bConfirmar.setVisible(true);
+        carrito.setVisible(true);
         
-        labFecha.setVisible(true);
-        comboxDia.setVisible(true);
-        comboxMes.setVisible(true);
-        comboxAno.setVisible(true);
+        //labFecha.setVisible(true);
+        //comboxDia.setVisible(true);
+        //comboxMes.setVisible(true);
+        //comboxAno.setVisible(true);
     }//GEN-LAST:event_bAgregarCotMouseReleased
 
     private void bConfirmarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bConfirmarMouseReleased
@@ -1192,6 +1217,19 @@ public class prinVendedor extends javax.swing.JFrame {
         //int sede = ger.getIdSede();
         //new reportGerente(bD, idGerente, sede).setVisible(true);
     }//GEN-LAST:event_ReportsMouseClicked
+
+    private void bConfirmarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bConfirmarMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bConfirmarMouseExited
+
+    private void carritoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_carritoMouseClicked
+        // TODO add your handling code here:
+        String mensaje="Su carrito de compras tiene: \n";
+        for(int i=0; i < this.cantidades.size(); i++){
+            mensaje += "Producto: "+productos.get(i)+" "+" Cantidad: "+cantidades.get(i)+"\n";
+        }
+        JOptionPane.showMessageDialog(this, mensaje);
+    }//GEN-LAST:event_carritoMouseClicked
 
     public void cambiarVisibilidadCampos(boolean varControl){
         labIDcotizacion.setVisible(false);
@@ -1627,12 +1665,16 @@ public class prinVendedor extends javax.swing.JFrame {
         String telefonoCliente = tTel.getText();
         String cedulaCliente = tCCcliente.getText();
         String descripcion = tDescrip.getText();
-        float valor = bD.obtenerValorVenta(products);
+        float valor = bD.obtenerValorVenta(products,cant);
         String respuesta = bD.crearVenta(nombreCliente, telefonoCliente, valor, 
                 cedulaCliente, descripcion, products, cant, idVendedor);
         this.productos = new ArrayList<>();
         this.cantidades = new ArrayList<>();
         JOptionPane.showMessageDialog(this, respuesta);
+        if(respuesta.contains("Venta agregada con")){
+            limpiarCamposVentas();
+        }
+        
         llenarComboBoxProducto();
         return true;
      } 
@@ -1680,19 +1722,26 @@ public class prinVendedor extends javax.swing.JFrame {
             cant[i]=cantidades.get(i);
             products[i]=productos.get(i).split(",")[0];
         }
-        String dia = comboxDia.getItemAt(comboxDia.getSelectedIndex());
-        String mes = comboxMes.getItemAt(comboxMes.getSelectedIndex());        
-        String ano = comboxAno.getItemAt(comboxAno.getSelectedIndex());
-        String fecha = ano+"-"+obtenerMesNum(mes)+"-"+dia;
+        //String dia = comboxDia.getItemAt(comboxDia.getSelectedIndex());
+        //String mes = comboxMes.getItemAt(comboxMes.getSelectedIndex());        
+        //String ano = comboxAno.getItemAt(comboxAno.getSelectedIndex());
+        //String fecha = ano+"-"+obtenerMesNum(mes)+"-"+dia;
+        Date fechaSist = new Date();
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaC = formato.format(fechaSist);
+        
         String nombreCliente = tNombreCliente.getText();
         String telefonoCliente = tTel.getText();
         String email = tEmail.getText();
-        float valor = bD.obtenerValorVenta(products);
+        float valor = bD.obtenerValorVenta(products, cant);
         String respuesta = bD.crearCotizacion( nombreCliente,  telefonoCliente, 
-                email, valor,fecha, idVendedor, products, cant);
+                email, valor,fechaC, idVendedor, products, cant);
         this.productos = new ArrayList<>();
         this.cantidades = new ArrayList<>();
         JOptionPane.showMessageDialog(this, respuesta);
+        if(respuesta.contains("Cotizacion agregada con")){
+            limpiarCamposCotizaciones();
+        }
         llenarComboBoxProducto();
         return true;
      }
@@ -1765,20 +1814,25 @@ public class prinVendedor extends javax.swing.JFrame {
     }
     
 
-    private void consultarVenta(){               
+    private void consultarVenta(){
         if(!validarCamposConsultarVenta()){
             return;            
         }
          
         String id = String.valueOf(comboxCotizacion.getSelectedItem());
-        Venta vent = bD.leerVentaPorId(id);         
+        Venta vent = bD.leerVentaPorId(id);
+        String productosV = bD.listarProductosVenta(id);
+        String[] splitedproductos = productosV.split("\\$");
   
         String mensaje = "Nombre Cliente: "+vent.getNombreCliente()+"\n"+
                               "Cedula Cliente: "+vent.getCedulaCliente()+"\n"+
                               "Telefono Cliente: "+vent.getTelefonoCliente()+"\n"+
-                              "Valor: "+vent.getValorVenta()+"\n"+
+                              "Valor: "+String.format( "%.2f", vent.getValorVenta())+"\n"+
                               "Descripción Venta: "+vent.getDescripcionVenta()+"\n";
-         
+        
+        for(int i=0; i<splitedproductos.length;i++){
+            mensaje=mensaje+splitedproductos[i]+"\n";
+        }
         JOptionPane.showMessageDialog(this, mensaje);
         //limpiarCampos();
         //comboxCotizacion.removeAllItems();
@@ -1804,20 +1858,25 @@ public class prinVendedor extends javax.swing.JFrame {
     } 
      
     
-    private void consultarCotizacion(){         
+    private void consultarCotizacion(){
         if(!validarCamposConsultarCotizacion()){
             return;
         }
          
         String id = String.valueOf(comboxCotizacion.getSelectedItem());
         Cotizacion cot = bD.leerCotizacionPorId(id);
+        String productosC = bD.listarProductosCotizacion(id);
+        String[] splitedproductos = productosC.split("\\$");
          
         String mensaje = "Nombre Cliente: "+cot.getNombreCliente()+"\n"+
                          "Telefono Cliente: "+cot.getTelefonoCliente()+"\n"+
                          "Email: "+cot.getEmail()+"\n"+
-                         "Valor: "+cot.getValorUnitario()+"\n"+
+                         "Valor: "+String.format( "%.2f", cot.getValorUnitario())+"\n"+
                          "fecha: "+cot.getFecha()+"\n";
         
+        for(int i=0; i<splitedproductos.length;i++){
+            mensaje=mensaje+splitedproductos[i]+"\n";
+        }
         JOptionPane.showMessageDialog(this, mensaje);
         //limpiarCampos();
         //comboxCotizacion.removeAllItems();
@@ -1827,22 +1886,49 @@ public class prinVendedor extends javax.swing.JFrame {
      private void deshabilitarVenta(){
         String id = String.valueOf(comboxCotizacion.getSelectedItem());
         Venta vent = bD.leerVentaPorId(id);
+        String productosV = bD.listarProductosVenta(id);
+        String[] splitedproductos = productosV.split("\\$");
          
-        String mensaje = "Seguro que desea deshebilitar la factura:\n"+
+        String mensaje = "Seguro que desea deshabilitar la factura:\n"+
                          "Nombre Cliente: "+vent.getNombreCliente()+"\n"+
                          "Telefono Cliente: "+vent.getTelefonoCliente()+"\n"+
                          "Cedula Cliente: "+vent.getCedulaCliente()+"\n"+
                          "Valor: "+vent.getValorVenta()+"\n"+
                          "Descripcion: "+vent.getDescripcionVenta()+"\n";
 
+        for(int i=0; i<splitedproductos.length;i++){
+            mensaje=mensaje+splitedproductos[i]+"\n";
+        }
        int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
 
         if(opcion == 0){
-            String respuesta = bD.eliminarVenta(id);
+            String respuesta = bD.anularVenta(id);
             JOptionPane.showMessageDialog(this, respuesta);
             limpiarCampos();
             comboxCotizacion.removeAllItems();
             llenarComboBoxVenta();
+            
+            cambiarVisibilidadCampos(false);
+            camposVentasConsulta(true);
+            
+            botonAceptar = 4;
+            bAceptar.setText("Anular");
+            bAceptar.setVisible(true);
+            //bAceptar.setEnabled(false);
+            labAccion.setVisible(true);
+            labAccion.setText("Anular Venta");
+            bConfirmar.setVisible(false);
+
+            comboxCotizacion.setSelectedIndex(0);
+            comboxCotizacion.setEnabled(true);
+            carrito.setVisible(false);
+
+            String mensajeCombox = comboxCotizacion.getSelectedItem().toString();
+            if(mensajeCombox.equals("No seleccionado") || mensajeCombox.equals("")){
+                bAceptar.setEnabled(false);
+            }else{
+                bAceptar.setEnabled(true);
+            }
         }
          
      }
@@ -1850,6 +1936,8 @@ public class prinVendedor extends javax.swing.JFrame {
      private void deshabilitarCotizacion(){
         String id = String.valueOf(comboxCotizacion.getSelectedItem());
         Cotizacion cot = bD.leerCotizacionPorId(id);
+        String productosC = bD.listarProductosCotizacion(id);
+        String[] splitedproductos = productosC.split("\\$");
          
         String mensaje = "Seguro que desea deshebilitar la cotizacion:\n"+
                          "Nombre Cliente: "+cot.getNombreCliente()+"\n"+
@@ -1857,6 +1945,9 @@ public class prinVendedor extends javax.swing.JFrame {
                          "Valor: "+cot.getValorUnitario()+"\n"+
                          "Email: "+cot.getEmail()+"\n";
 
+        for(int i=0; i<splitedproductos.length;i++){
+            mensaje=mensaje+splitedproductos[i]+"\n";
+        }
        int opcion = JOptionPane.showConfirmDialog(this, mensaje, "", 0);
       
         if(opcion == 0){
@@ -1865,6 +1956,28 @@ public class prinVendedor extends javax.swing.JFrame {
             limpiarCamposCotizaciones();
             comboxCotizacion.removeAllItems();
             llenarComboBoxCotizacion();
+            
+            //PARA QUE MUESTRE LOS CAMPOS CORRECTOS
+            cambiarVisibilidadCampos(false);
+            camposCotConsulta(true);
+            //llenarComboBoxCotizacion();///////////////////////////////////////////////
+            botonAceptar = 8;
+            bAceptar.setText("Anular");
+            bAceptar.setVisible(true);
+            //bAceptar.setEnabled(false);
+            labAccion.setVisible(true);
+            labAccion.setText("Anular Cotización");
+            bConfirmar.setVisible(false);
+
+            comboxCotizacion.setSelectedIndex(0);
+            comboxCotizacion.setEnabled(true);
+
+            String mensajeCombox = comboxCotizacion.getSelectedItem().toString();
+            if(mensajeCombox.equals("No seleccionado") || mensajeCombox.equals("")){
+                bAceptar.setEnabled(false);
+            }else{
+                bAceptar.setEnabled(true);
+            }
         }
      }
      
@@ -1872,6 +1985,7 @@ public class prinVendedor extends javax.swing.JFrame {
         tNombreCliente.setText("");
         tTel.setText("");
         tEmail.setText("");
+        tCant.setText("");
         comboxCotizacion.removeAllItems();
         comboxDia.setSelectedIndex(0);
         comboxMes.setSelectedIndex(0);
@@ -1883,6 +1997,7 @@ public class prinVendedor extends javax.swing.JFrame {
         tTel.setText("");
         tCCcliente.setText("");
         tDescrip.setText("");
+        tCant.setText("");
         comboxDia.setSelectedIndex(0);
         comboxMes.setSelectedIndex(0);
         comboxAno.setSelectedIndex(0);
@@ -1913,6 +2028,7 @@ public class prinVendedor extends javax.swing.JFrame {
     private javax.swing.JButton bConsultarCot;
     private javax.swing.JButton bModfCot;
     private javax.swing.JButton bModfVenta;
+    private javax.swing.JLabel carrito;
     private javax.swing.JComboBox<String> comboxAno;
     private javax.swing.JComboBox<String> comboxCotizacion;
     private javax.swing.JComboBox<String> comboxDia;
