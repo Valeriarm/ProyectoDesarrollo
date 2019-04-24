@@ -1153,18 +1153,26 @@ public class DBConnection {
     ////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////
     
-    public String crearVenta(String nombreCliente, String telefonoCliente, 
-           String cedulaCliente, float valorVenta, String descripcionVenta, String[] producto, int[]  cantidad,String idVendedor){
+    public String crearVenta(String nombreCliente, String telefonoCliente, float valorVenta,
+           String cedulaCliente, String descripcionVenta, String[] producto, int[] cantidad,String idVendedor){
         
         String id = idSiguienteVenta();
         connect();
-
-        sql = "SELECT Venta.id_Factura, Modifica.id_Producto FROM Venta "
-                + "INNER JOIN Modifica ON  Modifica.id_Factura = '"+id+"';";
-        
+        String mensaje = "No hay existencias del producto ";
         
         try {
-            
+            for(int i=0; i<cantidad.length; i++){
+                    sql = "SELECT * FROM inventario WHERE id_producto = '"+producto[i]+"' AND cantidad < "+cantidad[i];
+                    rs = st.executeQuery(sql);
+                    if(rs.next()){
+                        mensaje += rs.getString("nombre_producto")+" id:"+rs.getString("id_producto");
+                    }
+                }
+            if(!mensaje.equals("No hay existencias del producto ")){
+                        return mensaje;
+                    }
+            sql = "SELECT Venta.id_Factura, Modifica.id_Producto FROM Venta "
+                + "INNER JOIN Modifica ON  Modifica.id_Factura = '"+id+"';";
             rs = st.executeQuery(sql);
             if(rs.next()){
                 return "La venta con el id "+id+" ya existe";
@@ -1173,8 +1181,10 @@ public class DBConnection {
                     "','"+idVendedor+"');";
               
             for(int i=0; i<cantidad.length; i++){
-                System.out.println(">:v yaaaaaaa1");
-                    sql += "INSERT INTO Modifica VALUES ("+cantidad[i]+",'"+id+"','"+producto[i]+"');";
+                    sql += "INSERT INTO Modifica VALUES ("+cantidad[i]+",'"+id
+                            +"','"+producto[i]+"'); ";
+                    sql += "UPDATE inventario SET cantidad = cantidad-"+
+                            cantidad[i]+" WHERE id_producto = '"+producto[i]+"'; ";
                 }
 
             st.executeUpdate(sql);
@@ -1187,6 +1197,28 @@ public class DBConnection {
             System.out.println("ERROR DE SQL " + e.getMessage());
         }        
        return "Venta agregada con exito";
+    }
+    
+    public float obtenerValorVenta(String[] producto){
+        connect();
+        sql="";
+        float valor = 0;
+        try {
+            for (int i=0; i< producto.length; i++){
+                sql += "SELECT * FROM inventario WHERE id_producto = '"+producto[i]+"'";
+
+                    rs = st.executeQuery(sql);
+                    if(rs.next()){
+                        valor += rs.getFloat("valor_unitario");
+                    }
+            }
+            rs.close();
+            st.close();
+            connection.close();
+        } catch (SQLException e) {
+                System.out.println("ERROR DE SQL " + e.getMessage());
+            }
+        return valor;
     }
     
     public Venta leerVentaPorId(String id){
@@ -1220,74 +1252,32 @@ public class DBConnection {
     
     public String listarVentas(){
     //Creo la sentencia sql de lo que quiero hacer, en este caso, quiero todas las columnas de la tabla
-    sql = "SELECT * FROM Venta";
-    
-    try {
-    
-    rs = st.executeQuery(sql);
-    String id,nombreCliente;
-    String ventas = "";
-    
-     while(rs.next()){
-                //Usando getString podemos obtener el resultado de nuestra consulta pasandole el nombre de la columna
-                id = rs.getString("id_factura");
-                nombreCliente = rs.getString("nombre_cliente");
-                
-                ventas = ventas+id+","+nombreCliente+"$";
-              }
-    
-    rs.close();
-    st.close();
-    connection.close();
-            
-    return ventas;
-     }
-    
-    catch (SQLException e){
-        System.out.println("ERROR DE SQL"+ e.getMessage());
-    }
-
- return "";   
- }
- 
-    
-    public String actualizarVenta(String id, String nombreCliente,String cedCliente,String descripcion, String telefonoCliente, 
-           int[] cantidad, String[] producto, float valor,String idVendedor){
-        connect();
-        sql = "SELECT id_Factura FROM Venta WHERE id_Factura = '"+id+"'";
-        System.out.println("prueba 7");
+        sql = "SELECT * FROM Venta";
         try {
-            rs = st.executeQuery(sql);
-            boolean hayVenta = rs.next();
-            System.out.println("prueba 6");
-            if(hayVenta){
-                sql = "UPDATE Venta SET  valor_Venta = '"+valor+"',cedula_Cliente = '"+cedCliente+"',nombre_Cliente = '"+nombreCliente+"',tefelono_Cliente = '"+telefonoCliente+"', descripcion_Venta = '"+descripcion+"',id_Vendedor = '"+idVendedor+"'  WHERE id_Factura = '"+id+"'";
-               System.out.println("prueba 5");
-                for(int i=0; i<cantidad.length; i++){
-                    System.out.println("prueba 4");
-                    sql += "UPDATE Modifica SET cantidad="+cantidad[i]+" WHERE id_Producto = '"+producto[i]+"' AND id_Factura = '"+id+"';";
-                    sql += "UPDATE Inventario SET cantidad="+cantidad[i]+" WHERE id_Producto = '"+producto[i]+"' ;";
-                    System.out.println(cantidad[i]+" - "+producto[i]);
-                }
-                System.out.println("prueba 3");
-                st.executeUpdate(sql);
-                rs.close();
-                st.close();
-                connection.close();
-                  System.out.println("prueba 2");
-                sql = "UPDATE Venta SET descripcion_Venta='"+descripcion+" WHERE id_Factura='"+id+"' AND id_Vendedor = '"+idVendedor+"';";
-                for(int i=0; i<cantidad.length; i++){
-                    sql += "UPDATE Modifica SET cantidad="+cantidad[i]+" WHERE id_Producto = '"+producto[i]+"' AND id_Factura='"+id+"';";
-                    System.out.println(cantidad[i]+" - "+producto[i]);
-                System.out.println("prueba 1");
-            }
-            
+        rs = st.executeQuery(sql);
+        String id,nombreCliente;
+        String ventas = "";
+         while(rs.next()){
+                    //Usando getString podemos obtener el resultado de nuestra consulta pasandole el nombre de la columna
+                    id = rs.getString("id_factura");
+                    nombreCliente = rs.getString("nombre_cliente");
+
+                    ventas = ventas+id+","+nombreCliente+"$";
+                  }
+
+        rs.close();
+        st.close();
+        connection.close();
+
+        return ventas;
+         }
+
+        catch (SQLException e){
+            System.out.println("ERROR DE SQL"+ e.getMessage());
         }
-        }catch (Exception e) {
-            System.out.println("ERROR DE SQL " + e.getMessage());
-        }
-       return "Venta actualizada con éxito";
-    }
+
+     return "";   
+     }
     
     public String eliminarVenta(String id){
         connect();
@@ -1707,28 +1697,34 @@ public class DBConnection {
     
     
     public String crearCotizacion( String nombre_Cliente, String telefono, String email , float valor_Unitario,
-                                    String fecha, String idVendedor){
+                                    String fecha, String idVendedor,String[] producto, int[] cantidad){
         
-        String respuesta = "Ocurrió un error";
-       System.out.println(idVendedor);
         String id = idSiguienteCotizacion();
         connect();
-
         
         sql = "SELECT id_Cotizacion FROM Cotizacion WHERE id_Cotizacion = '"+id+"'";
+        
         try {
-                sql = "INSERT INTO Cotizacion VALUES ('"+id+"','"+nombre_Cliente+"','"+telefono+"','"+email+"','"+valor_Unitario+"','"+fecha+"','"+idVendedor+"')";                
-                st.executeUpdate(sql);
-                rs.close();
-                st.close();
-                connection.close();
-                respuesta = "Cotizacion agregada con éxito\n\nId: "+id+"\nNombre Cliente: "+nombre_Cliente+"\nEmail Cliente: "+email;  ;
+            rs = st.executeQuery(sql);
+            if(rs.next()){
+                return "La venta con el id "+id+" ya existe";
+            }else{ 
+            sql = "INSERT INTO Cotizacion VALUES ('"+id+"','"+nombre_Cliente+"','"+telefono+"','"+email+"','"+valor_Unitario+"','"+fecha+"','"+idVendedor+"')";                
+                
+            for(int i=0; i<cantidad.length; i++){
+                    sql += "INSERT INTO Consulta VALUES ("+cantidad[i]+",'"+id+"','"+producto[i]+"');";
+                }
 
-        } catch (Exception e) {
-            System.out.println("1.1");
+            st.executeUpdate(sql);
+            rs.close();
+            st.close();
+            connection.close();
+            }
+                             
+        } catch (SQLException e) {
             System.out.println("ERROR DE SQL " + e.getMessage());
-        }
-       return respuesta;
+        }        
+        return "Cotizacion agregada con éxito\n\nId: "+id+"\nNombre Cliente: "+nombre_Cliente+"\nEmail Cliente: "+email;
     }
     
      public String actualizarCotizacion(String id, String nombreCliente, String telefono, String email, float valor){
