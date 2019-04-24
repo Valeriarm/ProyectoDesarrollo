@@ -30,11 +30,11 @@ public class DBConnection {
     
     //Usuario de la base de datos en postgresql
     private final String dBUser = "postgres";
-    private final String dBPassword = "1144211502";
+    private final String dBPassword = "Marthox2299";
   
 
     //puerto
-    private final String port = "5433";
+    private final String port = "5432";
     //Nombre de la base de datos
     private final String dBName = "muebles_XYZ";
     //Dirección del host de la base de datos
@@ -2986,6 +2986,108 @@ public class DBConnection {
                 + "vendedor  WHERE id_sede = "+String.valueOf(sede)+" "
                 + "AND fecha_cotizacion > '"+initDate+"' AND fecha_cotizacion "
                 + "< '"+finishDate+"' GROUP BY anio";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String anio = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                anio = rs.getString("anio");
+                cant = rs.getInt("cant");
+                report = new Report(anio, cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
+    public List reporteVentasDia(String vendedor, String initDate, String finishDate){
+        connect();
+        //Obtaining data from database
+        sql = "SELECT EXTRACT(YEAR FROM fecha_venta) as anio, EXTRACT(MONTH "
+                + "FROM fecha_venta) as mes, EXTRACT(DAY FROM fecha_venta) "
+                + "as dia, COUNT(*) AS cant FROM venta WHERE id_vendedor = '"
+                +vendedor+"' AND fecha_venta > '"+initDate+"' AND fecha_venta "
+                + "< '"+finishDate+"' GROUP BY dia, mes, anio";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String dia = "";
+            String mes = "";
+            String anio = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                dia = rs.getString("dia");
+                mes = rs.getString("mes");
+                anio = rs.getString("anio");
+                
+                cant = rs.getInt("cant");
+                report = new Report(dia+"/"+mes+"/"+anio, cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
+    public List reporteVentasMes(String vendedor, String initDate, String finishDate){
+        connect();
+        //Obtaining data from database
+        sql = "SELECT EXTRACT(YEAR FROM fecha_venta) as anio, EXTRACT(MONTH "
+                + "FROM fecha_venta) as mes, COUNT(*) AS cant FROM venta"
+                + " WHERE id_vendedor = '"+vendedor+"' AND fecha_venta > '"+initDate+"' "
+                + "AND fecha_venta < '"+finishDate+"' GROUP BY mes, anio";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List reportes = new ArrayList();
+            String mes = "";
+            String anio = "";
+            int cant = 0;
+            Report report = new Report("",0);
+            while(rs.next()){
+                mes = rs.getString("mes");
+                anio = rs.getString("anio");
+                
+                cant = rs.getInt("cant");
+                
+                report = new Report(mes+"/"+anio, cant);
+                reportes.add(report);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+            return reportes;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE SQL " + e.getMessage());
+        }
+        List empty = new ArrayList();
+        return empty;
+    }
+    
+    public List reporteVentasAnio(String vendedor, String initDate, String finishDate){
+        connect();
+        //Obtaining data from database
+        sql = "SELECT EXTRACT(YEAR FROM fecha_venta) as anio, COUNT(*) AS cant FROM venta"
+                + " WHERE id_vendedor = '"+vendedor+"' AND fecha_venta > '"+initDate+"' "
+                + "AND fecha_venta < '"+finishDate+"' GROUP BY anio";
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
             rs = stmt.executeQuery();
