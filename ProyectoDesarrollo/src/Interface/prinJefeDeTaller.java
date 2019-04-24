@@ -1104,6 +1104,8 @@ public class prinJefeDeTaller extends javax.swing.JFrame {
         tCantidad.setEnabled(varControl);
         bConfirmar.setVisible(varControl);
         bConfirmar.setEnabled(varControl);
+        carrito.setVisible(varControl);
+        carrito.setEnabled(varControl);
     }
     
     public void cambiarVisibilidadCamposOrdenConsultar(boolean varControl){
